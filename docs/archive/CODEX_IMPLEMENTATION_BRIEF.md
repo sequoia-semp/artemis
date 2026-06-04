@@ -9,7 +9,7 @@ Current entrypoint:
 2. `artemis.yaml`
 3. `README.md`
 4. `docs/README.md`
-5. `pjm_workbench_mvp_backlog.yaml`
+5. `work/backlog/pjm_workbench_mvp_backlog.yaml`
 
 Run:
 

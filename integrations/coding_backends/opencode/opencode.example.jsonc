@@ -1,0 +1,105 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  // Project-local OpenCode configuration template. OpenCode is optional.
+  // This config does not define Artemis domain behavior, product mappings, or safety policy.
+  // The local Ollama model below is a convenience default only. Override it at runtime
+  // or with an alternate OPENCODE_CONFIG when Ollama is unavailable.
+  "model": "ollama/qwen3-coder:30b",
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama (local)",
+      "options": {
+        "baseURL": "http://localhost:11434/v1"
+      },
+      "models": {
+        "qwen3-coder:30b": {
+          "name": "Qwen3 Coder 30B (local)",
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          }
+        },
+        "gpt-oss:20b": {
+          "name": "GPT-OSS 20B (local)",
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          }
+        }
+      }
+    }
+  },
+  "permission": {
+    "edit": "ask",
+    "bash": {
+      "python -m pytest -q": "allow",
+      "pga validate-registries": "allow",
+      "pga validate-work-items": "allow",
+      "pga work-context*": "allow",
+      "python -m pga_workbench.cli validate-registries": "allow",
+      "python -m pga_workbench.cli validate-work-items": "allow",
+      "git status*": "allow",
+      "git diff*": "allow",
+      "git log*": "allow",
+      "git branch*": "allow",
+      "git fetch --all --prune": "allow",
+      "git ls-remote*": "allow",
+      "git push*": "ask",
+      "git tag*": "ask",
+      "uv *": "ask",
+      "pga build-state-pack*": "ask",
+      "pga normalize-*": "ask",
+      "pga run-*": "ask",
+      "python -m pga_workbench*": "ask",
+      "*": "ask"
+    },
+    "skill": {
+      "*": "allow"
+    }
+  },
+  "agent": {
+    "plan": {
+      "permission": {
+        "edit": "deny",
+        "bash": "ask"
+      }
+    },
+    "build": {
+      "permission": {
+        "edit": "ask",
+        "bash": "ask"
+      }
+    },
+    "review": {
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "python -m pytest -q": "allow",
+          "pga validate-registries": "allow",
+          "pga validate-work-items": "allow",
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "*": "ask"
+        }
+      }
+    },
+    "release": {
+      "permission": {
+        "edit": "ask",
+        "bash": {
+          "python -m pytest -q": "allow",
+          "pga validate-registries": "allow",
+          "pga validate-work-items": "allow",
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "git tag*": "ask",
+          "git push*": "ask",
+          "*": "ask"
+        }
+      }
+    }
+  }
+}

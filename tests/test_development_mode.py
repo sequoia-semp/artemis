@@ -12,11 +12,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_development_context_is_backend_neutral():
-    context = collect_development_context(ROOT, "T-0018")
+    context = collect_development_context(ROOT, "T-0020")
 
     assert context["mode"] == "development"
     assert context["context_version"] == "artemis.development.v1"
-    assert context["ticket"]["id"] == "T-0018"
+    assert context["ticket"]["id"] == "T-0020"
     assert context["artemis_config"] == "artemis.yaml"
     assert context["authority_ladder"]["root_contract"] == "AGENTS.md"
     assert "repo_patch" in context["tool_policy"]

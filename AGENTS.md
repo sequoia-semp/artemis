@@ -16,7 +16,7 @@ This repository defines a model-agnostic Power + Gas Trading Analytics workbench
 8. Every material change requires tests.
 9. Every convention change requires a change request.
 10. Never remove or weaken tests to make behavior pass.
-11. Gas contract sizing is `.25/d` per contract, not `1.0/d` per contract.
+11. Do not change, reinterpret, or override locked market conventions except through an approved change request and regression tests.
 
 ## Canonical source files
 
@@ -37,9 +37,9 @@ Read these before modifying behavior:
 - `schemas/`
 - `tests/`
 
-`docs/BUILD_PACKET_v0.1.md`, wrapper setup docs, and root legacy implementation
-briefs are design records or compatibility references. They do not override
-`artemis.yaml`, locked conventions, registries, schemas, tests, or this file.
+Archived build-packet, wrapper setup, and legacy implementation briefs are design
+records or compatibility references. They do not override `artemis.yaml`, locked
+conventions, registries, schemas, tests, or this file.
 
 ## Required development flow
 

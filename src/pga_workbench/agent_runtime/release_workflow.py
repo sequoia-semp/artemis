@@ -94,8 +94,8 @@ def collect_release_readiness(repo_root: Path, ticket_id: str | None = None, ski
     validation_commands = _release_validation_commands(repo_root)
     validation_results = _run_release_validation_commands(repo_root, validation_commands, skip_tests=skip_tests)
     planning_bridge = {
-        "pjm_workbench_mvp_agent_spec.md": (repo_root / "pjm_workbench_mvp_agent_spec.md").exists(),
-        "pjm_workbench_mvp_backlog.yaml": (repo_root / "pjm_workbench_mvp_backlog.yaml").exists(),
+        "docs/archive/pjm_workbench_mvp_agent_spec.md": (repo_root / "docs/archive/pjm_workbench_mvp_agent_spec.md").exists(),
+        "work/backlog/pjm_workbench_mvp_backlog.yaml": (repo_root / "work/backlog/pjm_workbench_mvp_backlog.yaml").exists(),
     }
     ticket = load_ticket(repo_root / "work", ticket_id) if ticket_id else None
     required_note_fields = [

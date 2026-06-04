@@ -1,8 +1,8 @@
 # PJM Workbench MVP Agent Spec
 
-This root-level file is the PJM-specific planning bridge referenced by `AGENTS.md`.
-It does not replace the broader Artemis control plane. The canonical general
-architecture starts at `artemis.yaml`, `AGENTS.md`, `README.md`, and
+This archived file is the PJM-specific planning bridge retained for historical
+context. It does not replace the broader Artemis control plane. The canonical
+general architecture starts at `artemis.yaml`, `AGENTS.md`, `README.md`, and
 `docs/README.md`. Historical build-packet docs remain design records.
 
 ## MVP Mission

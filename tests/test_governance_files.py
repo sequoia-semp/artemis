@@ -16,22 +16,22 @@ def test_governance_docs_exist():
         "docs/VCS_POLICY.md",
         "docs/WORK_MANAGEMENT.md",
         "docs/RELEASE_PROCESS.md",
-        "docs/LOCAL_LLM.md",
         "docs/CODEX_WORKFLOW.md",
-        "docs/OPENCODE_SETUP.md",
-        "docs/AGENT_KB_SKILL_RELEASE_LOOP.md",
-        "docs/AGENT_WRAPPER_EVALUATION.md",
-        "docs/WRAPPER_ABSTRACTION_POLICY.md",
-        "docs/AGENT_MODES.md",
+        "docs/archive/wrappers/LOCAL_LLM.md",
+        "docs/archive/wrappers/OPENCODE_SETUP.md",
+        "docs/archive/wrappers/AGENT_KB_SKILL_RELEASE_LOOP.md",
+        "docs/archive/wrappers/AGENT_WRAPPER_EVALUATION.md",
+        "docs/archive/wrappers/WRAPPER_ABSTRACTION_POLICY.md",
+        "docs/archive/wrappers/AGENT_MODES.md",
         "planning/merge_intake.md",
-        "pjm_workbench_mvp_agent_spec.md",
-        "pjm_workbench_mvp_backlog.yaml",
+        "docs/archive/pjm_workbench_mvp_agent_spec.md",
+        "work/backlog/pjm_workbench_mvp_backlog.yaml",
     ]:
         assert (ROOT / relative).exists()
 
 
 def test_no_docs_claim_paid_github_is_required():
-    for path in [ROOT / "docs/VCS_POLICY.md", ROOT / "docs/WORK_MANAGEMENT.md", ROOT / "docs/LOCAL_LLM.md"]:
+    for path in [ROOT / "docs/VCS_POLICY.md", ROOT / "docs/WORK_MANAGEMENT.md", ROOT / "docs/archive/wrappers/LOCAL_LLM.md"]:
         text = path.read_text(encoding="utf-8").lower()
         assert "paid github" not in text.replace("no paid github", "")
         assert "not required" in text or "no paid" in text or "without paid" in text
@@ -39,11 +39,12 @@ def test_no_docs_claim_paid_github_is_required():
 
 def test_gas_point25d_convention_remains_visible():
     locked = (ROOT / "docs/CONVENTIONS_LOCKED_v0.1.md").read_text(encoding="utf-8")
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "0.25/d" in locked
     assert "2,500 MMBtu/day" in locked
-    assert "0.25/d" in readme
-    assert "2,500 MMBtu/day" in readme
+    for relative_path in ["README.md", "AGENTS.md", "llms.txt"]:
+        text = (ROOT / relative_path).read_text(encoding="utf-8")
+        assert "0.25/d" not in text
+        assert "2,500 MMBtu/day" not in text
 
 
 def test_github_templates_point_to_local_canonical_files():
@@ -59,11 +60,13 @@ def test_opencode_config_keeps_mutations_approval_gated():
     assert '"git push*": "ask"' in text
     assert '"git tag*": "ask"' in text
     assert '"pga validate-work-items": "allow"' in text
+    assert '"model"' not in text
+    assert '"provider"' not in text
 
 
 def test_agent_release_docs_preserve_deterministic_authority():
-    release_loop = (ROOT / "docs/AGENT_KB_SKILL_RELEASE_LOOP.md").read_text(encoding="utf-8")
-    wrapper_eval = (ROOT / "docs/AGENT_WRAPPER_EVALUATION.md").read_text(encoding="utf-8")
+    release_loop = (ROOT / "docs/archive/wrappers/AGENT_KB_SKILL_RELEASE_LOOP.md").read_text(encoding="utf-8")
+    wrapper_eval = (ROOT / "docs/archive/wrappers/AGENT_WRAPPER_EVALUATION.md").read_text(encoding="utf-8")
     assert "Prompt-only analytics are not authoritative" in release_loop
     assert "not as the source of analytics truth" in wrapper_eval
 
@@ -97,12 +100,8 @@ def test_root_markdown_files_are_limited_to_navigation_and_legacy_pointers():
     assert root_markdown <= {
         "README.md",
         "AGENTS.md",
-        "llms.txt",
-        "CODEX_IMPLEMENTATION_BRIEF.md",
-        "NEXT_AGENT_START_HERE.md",
-        "pjm_workbench_mvp_agent_spec.md",
     }
-    assert len(root_markdown) <= 6
+    assert len(root_markdown) <= 2
 
 
 def test_make_validate_includes_artemis_artifacts():

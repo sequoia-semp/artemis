@@ -12,9 +12,9 @@ Primary descriptor directories:
 
 Compatibility examples:
 
-- `integrations/opencode/`: legacy OpenCode example configuration.
-- `integrations/ollama/`: legacy local-model examples.
-- `integrations/openclaw/`: legacy read-only command manifest examples.
+- `integrations/coding_backends/opencode/`: optional OpenCode config examples.
+- `integrations/providers/ollama_model_profiles.legacy.yaml`: legacy local-model profile examples.
+- `integrations/orchestrators/openclaw_tools.readonly.yaml`: legacy read-only command manifest example.
 - `integrations/capability_registry.yaml`: compatibility capability registry used by `pga agent-capabilities`.
 
 Descriptors referenced from `artemis.yaml` must exist and must not set

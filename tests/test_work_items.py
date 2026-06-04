@@ -35,9 +35,10 @@ def test_required_common_fields_exist_for_initial_work_items():
     import yaml
 
     required = {"id", "type", "status", "title", "risk"}
-    for path in sorted((ROOT / "work").glob("*/*.yaml")):
-        item = yaml.safe_load(path.read_text(encoding="utf-8"))
-        assert required <= set(item), path
+    for pattern in ("epics/*.yaml", "sprints/*.yaml", "tickets/*.yaml"):
+        for path in sorted((ROOT / "work").glob(pattern)):
+            item = yaml.safe_load(path.read_text(encoding="utf-8"))
+            assert required <= set(item), path
 
 
 def test_validate_work_items():

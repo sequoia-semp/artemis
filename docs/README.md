@@ -28,16 +28,20 @@ Use this file as the docs entrypoint.
 - `integrations/coding_backends/`
 - `integrations/orchestrators/`
 
-## Authority And Design Records
+## Authority Records
 
 - `docs/CONVENTIONS_LOCKED_v0.1.md`
 - `docs/ARCHITECTURE.md`
 - `docs/architecture/power_gas_trading_agent_workbench.md`
-- `docs/BUILD_PACKET_v0.1.md`
-- `docs/AGENT_MODES.md`
-- `docs/WRAPPER_ABSTRACTION_POLICY.md`
-- `docs/AGENT_WRAPPER_EVALUATION.md`
-- `docs/OPENCODE_SETUP.md`
+
+## Archive / Compatibility Records
+
+- `docs/archive/build_packet_v0.1.md`
+- `docs/archive/pjm_workbench_mvp_agent_spec.md`
+- `docs/archive/CODEX_IMPLEMENTATION_BRIEF.md`
+- `docs/archive/NEXT_AGENT_START_HERE.md`
+- `docs/archive/MANIFEST_v0.1.yaml`
+- `docs/archive/wrappers/`
 
 Design records are useful historical context. They are not the primary control
 plane; current product configuration starts at `artemis.yaml`.

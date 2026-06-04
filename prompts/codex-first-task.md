@@ -1,15 +1,10 @@
-Read `CODEX_IMPLEMENTATION_BRIEF.md` and the required files listed there. Then run `python -m pytest -q`.
+Read `AGENTS.md`, `artemis.yaml`, `README.md`, and `docs/README.md`.
+Then run:
 
-Implement Slice 1 registry validation only:
+```bash
+make validate
+artemis capabilities
+```
 
-- Load all YAML files under `registries/`.
-- Validate them against the corresponding schemas where a schema exists.
-- Reject duplicate IDs.
-- Reject forbidden power basis orientations.
-- Validate gas quantity convention remains `1 contract = 0.25/d = 2,500 MMBtu/day`.
-- Add CLI command `pga validate-registries`.
-- Add tests.
-- Do not change market conventions.
-- Do not start PnL, dashboards, fundamentals, or model routing.
-
-Return files changed, tests added, and exact test output.
+This prompt is a compatibility starter only. Current tickets and change requests
+define the actual work scope.

@@ -4,11 +4,11 @@ source_of_truth:
   roadmap: docs/ROADMAP.md
   architecture: artemis.yaml
   docs_index: docs/README.md
-  build_packet_design_record: docs/BUILD_PACKET_v0.1.md
+  build_packet_design_record: docs/archive/build_packet_v0.1.md
 
 tracks:
   artemis_core:
-    current_ticket: T-0019
+    current_ticket: T-0020
     next:
       - data_aware_analyst_view_inputs
       - patch_proposal_backend_handoff

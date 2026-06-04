@@ -21,6 +21,5 @@ Resolution order is:
 3. `ARTEMIS_LOCAL_CONFIG` or `local/artemis.local.yaml`
 4. `artemis.yaml`
 
-`local/llm_config.example.yaml` is retained only for legacy compatibility. New
-local configuration should use `local/artemis.local.example.yaml` and untracked
-`local/artemis.local.yaml`.
+New local configuration should use `local/artemis.local.example.yaml` and
+untracked `local/artemis.local.yaml`.

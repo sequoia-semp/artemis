@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_context_loader_loads_required_startup_files_and_ticket():
-    context = collect_context(ROOT, "T-0001", ROOT / "local/llm_config.example.yaml")
+    context = collect_context(ROOT, "T-0001", ROOT / "tests/fixtures/legacy_llm_config.example.yaml")
     paths = {item["path"] for item in context["files"]}
     assert "AGENTS.md" in paths
     assert "llms.txt" in paths
@@ -24,20 +24,20 @@ def test_context_loader_loads_required_startup_files_and_ticket():
 
 
 def test_context_loader_loads_affected_files_when_present():
-    context = collect_context(ROOT, "T-0002", ROOT / "local/llm_config.example.yaml")
+    context = collect_context(ROOT, "T-0002", ROOT / "tests/fixtures/legacy_llm_config.example.yaml")
     paths = {item["path"] for item in context["files"]}
     assert "docs/VCS_POLICY.md" in paths
     assert "docs/RELEASE_PROCESS.md" in paths
 
 
 def test_t0006_onboarding_context_is_executable():
-    context = collect_context(ROOT, "T-0006", ROOT / "local/llm_config.example.yaml")
+    context = collect_context(ROOT, "T-0006", ROOT / "tests/fixtures/legacy_llm_config.example.yaml")
     paths = {item["path"] for item in context["files"]}
     assert context["ticket"]["id"] == "T-0006"
     assert "AGENTS.md" in paths
     assert "llms.txt" in paths
     assert "docs/CONVENTIONS_LOCKED_v0.1.md" in paths
-    assert "docs/OPENCODE_SETUP.md" in paths
+    assert "docs/archive/wrappers/OPENCODE_SETUP.md" in paths
 
 
 def test_context_loader_missing_required_file_fails_closed(tmp_path):
@@ -57,7 +57,7 @@ def test_context_loader_missing_required_file_fails_closed(tmp_path):
 
 
 def test_context_loader_does_not_call_external_model():
-    context = collect_context(ROOT, "T-0004", ROOT / "local/llm_config.example.yaml")
+    context = collect_context(ROOT, "T-0004", ROOT / "tests/fixtures/legacy_llm_config.example.yaml")
     assert "files" in context
     assert "ticket" in context
     assert "model_response" not in context

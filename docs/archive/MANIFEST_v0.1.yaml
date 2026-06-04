@@ -15,7 +15,7 @@ critical_conventions:
 
 primary_entrypoints:
   - AGENTS.md
-  - docs/BUILD_PACKET_v0.1.md
+  - docs/archive/build_packet_v0.1.md
   - docs/CONVENTIONS_LOCKED_v0.1.md
   - registries/
   - schemas/
