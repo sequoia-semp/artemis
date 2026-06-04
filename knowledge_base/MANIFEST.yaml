@@ -1,0 +1,15 @@
+kb_version: 0.1.0
+authority: advisory_unless_linked
+entries:
+  - path: market_conventions/README.md
+    status: scaffold
+    authority: advisory
+  - path: source_docs/README.md
+    status: scaffold
+    authority: advisory
+  - path: source_registry/README.md
+    status: scaffold
+    authority: advisory
+  - path: examples/README.md
+    status: scaffold
+    authority: advisory

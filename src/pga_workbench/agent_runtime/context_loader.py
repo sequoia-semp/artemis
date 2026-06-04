@@ -10,6 +10,7 @@ from .work_item_loader import load_ticket
 
 CONTEXT_FILE_MISSING = "CONTEXT_FILE_MISSING"
 CONTEXT_FILE_TOO_LARGE = "CONTEXT_FILE_TOO_LARGE"
+CONTEXT_PROFILE_INVALID = "CONTEXT_PROFILE_INVALID"
 
 
 def load_config(path: Path) -> dict[str, Any]:
@@ -33,9 +34,35 @@ def _load_text(repo_root: Path, relative_path: str, max_file_bytes: int) -> dict
     return {"path": relative_path, "content": path.read_text(encoding="utf-8")}
 
 
+def _resolve_profile(config: dict[str, Any]) -> tuple[str, dict[str, Any], str | None]:
+    profiles = config.get("profiles")
+    if isinstance(profiles, dict):
+        active_profile = str(config.get("active_profile") or "deterministic_only")
+        profile = profiles.get(active_profile)
+        if not isinstance(profile, dict):
+            raise WorkbenchException(CONTEXT_PROFILE_INVALID, f"Unknown local LLM profile: {active_profile}")
+        provider = profile.get("provider") or profile.get("provider_kind")
+        if provider == "none":
+            provider = None
+        return active_profile, dict(profile), provider
+
+    # Backward compatibility for the original flat local/llm_config.example.yaml shape.
+    provider = config.get("provider")
+    active_profile = str(config.get("active_profile") or provider or "deterministic_only")
+    profile: dict[str, Any] = {}
+    if provider == "ollama":
+        profile = {"provider_kind": "openai_compatible", **(config.get("ollama") or {})}
+    elif provider:
+        profile = {"provider_kind": provider}
+    else:
+        profile = {"provider_kind": "none", "required": False}
+    return active_profile, profile, provider
+
+
 def collect_context(repo_root: Path, ticket_id: str, config_path: Path) -> dict[str, Any]:
     repo_root = Path(repo_root)
     config = load_config(config_path)
+    active_profile, profile, provider = _resolve_profile(config)
     context_cfg = config.get("context") or {}
     max_file_bytes = int(context_cfg.get("max_file_bytes") or 200000)
     work_root = repo_root / str(context_cfg.get("work_item_root") or "work/")
@@ -49,7 +76,9 @@ def collect_context(repo_root: Path, ticket_id: str, config_path: Path) -> dict[
             files.append(_load_text(repo_root, relative_path, max_file_bytes))
 
     return {
-        "provider": config.get("provider"),
+        "active_profile": active_profile,
+        "profile": profile,
+        "provider": provider,
         "safety": config.get("safety") or {},
         "ticket": ticket,
         "files": files,

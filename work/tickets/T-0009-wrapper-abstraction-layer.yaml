@@ -1,0 +1,49 @@
+id: T-0009
+type: ticket
+title: Add wrapper abstraction layer and optional capability detection
+status: done
+owner: null
+epic: E-0001
+sprint: S-0001
+risk: medium
+created_at: "2026-06-04"
+updated_at: "2026-06-04"
+layer: [agent_runtime, local_llm, agent_wrapper, docs, tests]
+branch: codex/T-0009-wrapper-abstraction-layer
+problem: >
+  Local agent configuration currently presents OpenCode and Ollama as convenient
+  defaults, but the repo needs a clearer wrapper-neutral abstraction and a way to
+  inspect optional wrapper availability without making wrappers required.
+tasks:
+  - Add wrapper abstraction and agent mode documentation.
+  - Add optional integration manifests for OpenCode, Ollama, and OpenClaw.
+  - Convert the local LLM example config to profiles while preserving backward compatibility.
+  - Add capability detection for optional wrappers.
+  - Add regression tests proving optional wrappers are not required.
+acceptance_criteria:
+  - docs/WRAPPER_ABSTRACTION_POLICY.md exists.
+  - docs/AGENT_MODES.md exists.
+  - pga agent-capabilities reports missing optional wrappers without failing.
+  - pga work-context remains deterministic and supports the profile config.
+  - OpenClaw read-only manifest does not expose state-pack publish.
+required_tests:
+  - python -m pytest -q
+  - pga validate-registries
+  - pga validate-work-items
+  - pga work-context --ticket T-0009 --output /tmp/artemis_T-0009_context.json
+  - pga agent-capabilities
+affected_files:
+  - README.md
+  - docs/LOCAL_LLM.md
+  - docs/OPENCODE_SETUP.md
+  - docs/AGENT_WRAPPER_EVALUATION.md
+  - docs/WRAPPER_ABSTRACTION_POLICY.md
+  - docs/AGENT_MODES.md
+  - local/llm_config.example.yaml
+  - opencode.jsonc
+  - integrations/
+  - .opencode/
+  - src/pga_workbench/agent_runtime/
+  - src/pga_workbench/cli.py
+  - tests/
+change_request_required: false

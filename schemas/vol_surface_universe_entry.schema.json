@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VolSurfaceUniverseEntry",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "location_id": {"type": "string"},
+    "commodity": {"enum": ["power", "gas"]},
+    "status": {"type": "string"},
+    "model_convention": {"type": "string"},
+    "atm_definition": {"type": "string"},
+    "skew_representation": {"type": "string"},
+    "behavior": {"type": "string"}
+  },
+  "required": ["status"]
+}

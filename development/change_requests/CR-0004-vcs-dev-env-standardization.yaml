@@ -1,0 +1,31 @@
+change_id: CR-0004
+title: Standardize local dev environment and VCS readiness workflow
+created_at: 2026-06-04T00:00:00Z
+change_class: 7
+severity: medium
+problem_statement: >
+  Validation and merge-prep commands assume python and pga are globally available,
+  which causes recurring PATH failures when the repo-local .venv is not activated.
+  The improvement-to-merge VCS path is documented but not exposed as a repeatable
+  readiness check.
+root_cause: >
+  Local development setup and VCS readiness are distributed across docs and manual
+  command memory instead of a repo-native bootstrap and readiness command.
+affected_files:
+  - Makefile
+  - scripts/
+  - docs/VCS_POLICY.md
+  - docs/CODEX_WORKFLOW.md
+  - src/pga_workbench/agent_runtime/
+  - src/pga_workbench/cli.py
+  - tests/
+tests_required:
+  - make validate
+  - pga vcs-ready --ticket T-0010 --skip-tests
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-04T00:00:00Z
+rollback_plan: >
+  Remove the Makefile/scripts, vcs-ready command, and related docs/tests. Existing
+  deterministic analytics and conventions are unaffected.

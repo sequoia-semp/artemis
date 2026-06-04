@@ -17,6 +17,7 @@ Recommended Artemis posture:
 - Only expose read-only Artemis commands first: `pga work-context`, `pga validate-*`, and report-generation commands.
 - Require sandboxing before write/edit/shell workflows.
 - Never expose shared cache publishing, state-pack promotion, or secrets by default.
+- Keep exact OpenClaw CLI usage out of the main README unless verified against the local installation.
 
 Reference: https://github.com/openclaw/openclaw
 
@@ -62,3 +63,10 @@ Deferred command surface:
 - convention changes
 
 These deferred actions require explicit Artemis-native controls before any wrapper can use them.
+
+See also:
+
+- `docs/WRAPPER_ABSTRACTION_POLICY.md`
+- `docs/AGENT_MODES.md`
+- `integrations/capability_registry.yaml`
+- `integrations/openclaw/artemis_tools.readonly.yaml`

@@ -1,6 +1,6 @@
 # OpenCode Setup And Hardening
 
-OpenCode is a development-agent harness for Artemis. It is not part of runtime analytics, cache publishing, state-pack acceptance, or trading decision authority.
+OpenCode is an optional development-agent harness for Artemis. It is not part of runtime analytics, cache publishing, state-pack acceptance, or trading decision authority.
 
 ## Current Local Status
 
@@ -12,19 +12,7 @@ Verified on 2026-06-04:
 
 ## Setup
 
-1. Start Ollama:
-
-   ```bash
-   ollama serve
-   ```
-
-2. Pull a coding model if needed:
-
-   ```bash
-   ollama pull qwen3-coder:30b
-   ```
-
-3. From the repo root, validate deterministic state:
+1. Validate deterministic state:
 
    ```bash
    python -m pytest -q
@@ -32,17 +20,38 @@ Verified on 2026-06-04:
    pga validate-work-items
    ```
 
-4. Build a ticket context bundle:
+2. Build a ticket context bundle:
 
    ```bash
-   pga work-context --ticket T-0006 --output /tmp/artemis_T-0006_context.json
+   pga work-context --ticket T-0009 --output /tmp/artemis_T-0009_context.json
    ```
 
-5. Start OpenCode with the local model:
+3. Choose a model/provider.
+
+   The root `opencode.jsonc` has a local Ollama convenience default, but Artemis core does not require Ollama. Override the model/provider at runtime or use an alternate config under `integrations/opencode/`.
+
+4. Optional local Ollama path:
 
    ```bash
+   ollama serve
+   ollama pull qwen3-coder:30b
    opencode . --model ollama/qwen3-coder:30b
    ```
+
+5. External provider path:
+
+   ```bash
+   opencode . --agent plan
+   ```
+
+OpenCode must consume Artemis context and propose patches/reports. It does not enforce Artemis domain policy by itself.
+
+## Config Examples
+
+Provider-specific examples are under:
+
+- `integrations/opencode/opencode.ollama.example.jsonc`
+- `integrations/opencode/opencode.external-model.example.jsonc`
 
 ## Agent Modes
 
@@ -59,12 +68,13 @@ Verified on 2026-06-04:
 - Never put secrets, tokens, or API keys in `opencode.jsonc`.
 - Use `pga work-context` rather than asking OpenCode to scrape the repo ad hoc.
 - For any analytics behavior change, require tests and change requests when `development/CHANGE_POLICY.md` says so.
+- Do not rely on OpenCode to enforce Artemis domain policy.
 
 ## POC Acceptance Test
 
 The first OpenCode proof of concept should use a low-risk ticket:
 
-1. Load `T-0006` or another docs-only ticket.
+1. Load `T-0009` or another low-risk ticket.
 2. Ask OpenCode to propose a small KB/skill documentation change.
 3. Confirm it creates or updates a local work item.
 4. Run:

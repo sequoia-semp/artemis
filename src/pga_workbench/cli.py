@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 
 from .core.time import utc_now_iso
@@ -13,7 +14,11 @@ from .services.normalization import normalize_marks, normalize_positions, read_c
 from .services.pnl import run_pnl_attribution
 from .services.risk import read_historical_returns, run_historical_var
 from .state.packs import build_candidate_state_pack, publish_candidate_state_pack
+from .agent_runtime.capabilities import collect_agent_capabilities, collect_agent_doctor
 from .agent_runtime.context_loader import collect_context
+from .agent_runtime.kb_validator import validate_knowledge_base
+from .agent_runtime.release_workflow import collect_release_readiness
+from .agent_runtime.vcs_workflow import collect_vcs_readiness
 from .agent_runtime.work_item_loader import validate_work_items
 
 
@@ -107,6 +112,89 @@ def _cmd_validate_work_items(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_validate_kb(args: argparse.Namespace) -> int:
+    result = validate_knowledge_base(Path(args.kb_root), Path(args.schemas))
+    print(f"validated knowledge base manifest with {result['entries']} entries")
+    return 0
+
+
+def _cmd_agent_capabilities(args: argparse.Namespace) -> int:
+    capabilities = collect_agent_capabilities(Path(args.repo_root), check_network=args.check_network)
+    if args.json:
+        print(json.dumps(capabilities, indent=2, sort_keys=True))
+    else:
+        print(f"recommended_mode: {capabilities['recommended_mode']}")
+        for name, item in sorted((capabilities.get("core") or {}).items()):
+            status = "available" if item.get("available") else "missing"
+            print(f"core.{name}: {status}")
+        for name, item in sorted((capabilities.get("wrappers") or {}).items()):
+            status = "available" if item.get("available") else "missing"
+            suffix = ""
+            if "reachable" in item:
+                suffix = f", reachable={bool(item.get('reachable'))}"
+            print(f"wrapper.{name}: {status}, required={bool(item.get('required'))}{suffix}")
+    return 0 if (capabilities.get("core") or {}).get("pga", {}).get("available") else 1
+
+
+def _cmd_agent_doctor(args: argparse.Namespace) -> int:
+    result = collect_agent_doctor(Path(args.repo_root), check_network=args.check_network, skip_tests=args.skip_tests)
+    if args.json:
+        print(json.dumps(result, indent=2, sort_keys=True))
+    else:
+        for check in result["checks"]:
+            status = "skipped" if check.get("skipped") else "passed" if check.get("passed") else "failed"
+            print(f"{check['name']}: {status}")
+        print(f"recommended_mode: {result['capabilities']['recommended_mode']}")
+    return 0 if result["passed"] else 1
+
+
+def _cmd_vcs_ready(args: argparse.Namespace) -> int:
+    result = collect_vcs_readiness(
+        Path(args.repo_root),
+        args.ticket,
+        target_branch=args.target_branch,
+        remote=args.remote,
+        skip_tests=args.skip_tests,
+    )
+    if args.json:
+        print(json.dumps(result, indent=2, sort_keys=True))
+    else:
+        print(f"ticket: {result['ticket_id']} ({result['ticket_status']})")
+        print(f"branch: {result['current_branch']}")
+        print(f"expected_branch: {result['expected_branch']}")
+        print(f"target_branch: {result['target_branch']}")
+        print(f"validation_passed: {result['validation_passed']}")
+        print(f"ready_for_commit: {result['ready_for_commit']}")
+        print(f"ready_for_merge: {result['ready_for_merge']}")
+        for warning in result["warnings"]:
+            print(f"warning: {warning}")
+        print("standard_commands:")
+        for command in result["standard_commands"]:
+            print(f"- {command}")
+    return 0 if result["ready_for_commit"] else 1
+
+
+def _cmd_release_check(args: argparse.Namespace) -> int:
+    result = collect_release_readiness(Path(args.repo_root), ticket_id=args.ticket, skip_tests=args.skip_tests)
+    if args.json:
+        print(json.dumps(result, indent=2, sort_keys=True))
+    else:
+        package = result["package"]
+        print(f"package: {package.get('name')} {package.get('version')}")
+        print(f"requires_python: {package.get('requires_python')}")
+        print(f"validation_passed: {result['validation_passed']}")
+        print(f"ready_for_release_prep: {result['ready_for_release_prep']}")
+        print("planning_bridge:")
+        for path, exists in result["planning_bridge"].items():
+            print(f"- {path}: {'present' if exists else 'missing'}")
+        regression = result["regression_report"]
+        print(f"regression_report: {regression.get('path')} ({regression.get('test_count')} tests)")
+        print("required_release_note_fields:")
+        for field in result["required_release_note_fields"]:
+            print(f"- {field}")
+    return 0 if result["ready_for_release_prep"] else 1
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="pga")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -174,6 +262,40 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--work-root", default="work")
     p.add_argument("--schemas", default="schemas")
     p.set_defaults(func=_cmd_validate_work_items)
+
+    p = sub.add_parser("validate-kb")
+    p.add_argument("--kb-root", default="knowledge_base")
+    p.add_argument("--schemas", default="schemas")
+    p.set_defaults(func=_cmd_validate_kb)
+
+    p = sub.add_parser("agent-capabilities")
+    p.add_argument("--repo-root", default=".")
+    p.add_argument("--check-network", action="store_true")
+    p.add_argument("--json", action="store_true")
+    p.set_defaults(func=_cmd_agent_capabilities)
+
+    p = sub.add_parser("agent-doctor")
+    p.add_argument("--repo-root", default=".")
+    p.add_argument("--check-network", action="store_true")
+    p.add_argument("--json", action="store_true")
+    p.add_argument("--skip-tests", action="store_true")
+    p.set_defaults(func=_cmd_agent_doctor)
+
+    p = sub.add_parser("vcs-ready")
+    p.add_argument("--ticket", required=True)
+    p.add_argument("--repo-root", default=".")
+    p.add_argument("--target-branch", default="main")
+    p.add_argument("--remote", default="origin")
+    p.add_argument("--skip-tests", action="store_true")
+    p.add_argument("--json", action="store_true")
+    p.set_defaults(func=_cmd_vcs_ready)
+
+    p = sub.add_parser("release-check")
+    p.add_argument("--ticket")
+    p.add_argument("--repo-root", default=".")
+    p.add_argument("--skip-tests", action="store_true")
+    p.add_argument("--json", action="store_true")
+    p.set_defaults(func=_cmd_release_check)
 
     return parser
 

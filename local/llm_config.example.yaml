@@ -1,8 +1,27 @@
-provider: ollama
+active_profile: deterministic_only
 
-ollama:
-  base_url: http://localhost:11434
-  default_model: qwen3-coder:30b
+profiles:
+  deterministic_only:
+    enabled: true
+    required: false
+    provider_kind: none
+    description: "No model runtime required. Generate context bundles and run deterministic checks."
+
+  local_ollama:
+    enabled: true
+    required: false
+    provider_kind: openai_compatible
+    base_url: http://localhost:11434/v1
+    api_key_env: OLLAMA_API_KEY
+    default_model: qwen3-coder:30b
+    description: "Optional local model runtime."
+
+  external_harness:
+    enabled: true
+    required: false
+    provider_kind: external
+    notes: "Used when OpenCode, Codex, Claude Code, or another wrapper owns model invocation."
+    description: "OpenCode, Codex, ChatGPT, Claude Code, or another user-permitted harness owns model invocation."
 
 context:
   always_load:

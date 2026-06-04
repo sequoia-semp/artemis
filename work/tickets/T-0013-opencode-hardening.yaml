@@ -1,0 +1,33 @@
+id: T-0013
+type: ticket
+status: done
+title: Harden OpenCode permissions and config tests
+owner: user
+risk: medium
+created_at: "2026-06-04"
+updated_at: "2026-06-04"
+epic: E-0001
+sprint: S-0002
+layer:
+  - agent_wrapper
+  - tests
+branch: codex/T-0010-dev-env-vcs-readiness
+problem: >
+  opencode.jsonc should be safe as an optional harness config. It should not allow broad
+  package execution, state publishing, Git push/tag, or mutating commands by default.
+tasks:
+  - Remove or narrow broad python -m pga_workbench* allow.
+  - Keep deterministic validation commands allowed.
+  - Keep broad shell and mutating pga commands behind ask/deny.
+  - Add tests that parse opencode.jsonc and enforce safety properties.
+acceptance_criteria:
+  - wildcard bash remains ask.
+  - git push/tag are not allow.
+  - pga build-state-pack is not allow.
+  - broad python -m pga_workbench* is not allow.
+required_tests:
+  - make validate
+affected_files:
+  - opencode.jsonc
+  - tests/test_agent_wrapper_config.py
+change_request_required: false

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MarketIndexRules",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "rules": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "power": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "default_market_run": {"type": "string"},
+            "default_price_component": {"type": "string"},
+            "default_shape": {"type": "string"}
+          },
+          "required": ["default_market_run", "default_price_component", "default_shape"]
+        },
+        "gas": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "default_index_family": {"type": "string"},
+            "index_family_keywords": {
+              "type": "object",
+              "additionalProperties": {"type": "string"}
+            }
+          },
+          "required": ["default_index_family", "index_family_keywords"]
+        }
+      },
+      "required": ["power", "gas"]
+    }
+  },
+  "required": ["rules"]
+}

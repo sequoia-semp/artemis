@@ -1,0 +1,40 @@
+id: T-0010
+type: ticket
+title: Standardize local dev environment and VCS readiness workflow
+status: done
+owner: null
+epic: E-0001
+sprint: S-0001
+risk: medium
+created_at: "2026-06-04"
+updated_at: "2026-06-04"
+layer: [vcs, docs, agent_runtime, work_management, tests]
+branch: codex/T-0010-dev-env-vcs-readiness
+problem: >
+  Development and validation commands currently assume python and pga are available
+  on PATH. In a fresh shell, that creates recurring failures even when the repo
+  local .venv is healthy. The improvement-to-merge path also needs a standardized
+  readiness command and documented VCS sequence.
+tasks:
+  - Add repo-local bootstrap and validation commands that use .venv consistently.
+  - Add VCS readiness functionality for ticket branches.
+  - Update VCS/Codex workflow docs to use the standardized commands.
+  - Add regression tests for dev command docs and VCS readiness output.
+acceptance_criteria:
+  - make bootstrap works from the repo root.
+  - make validate runs the deterministic validation suite through .venv.
+  - pga vcs-ready reports branch, ticket, validation, and commit/merge readiness.
+  - VCS docs describe the standard improvement branch, validate, commit, push, and merge path.
+required_tests:
+  - make validate
+  - pga vcs-ready --ticket T-0010 --skip-tests
+affected_files:
+  - Makefile
+  - scripts/
+  - docs/VCS_POLICY.md
+  - docs/CODEX_WORKFLOW.md
+  - src/pga_workbench/agent_runtime/
+  - src/pga_workbench/cli.py
+  - tests/
+  - development/change_requests/CR-0004-vcs-dev-env-standardization.yaml
+change_request_required: true

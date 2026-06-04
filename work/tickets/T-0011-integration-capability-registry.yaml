@@ -1,0 +1,39 @@
+id: T-0011
+type: ticket
+status: done
+title: Integration capability registry and wrapper read-only surfaces
+owner: user
+risk: medium
+created_at: "2026-06-04"
+updated_at: "2026-06-04"
+epic: E-0001
+sprint: S-0002
+layer:
+  - agent_wrapper
+  - local_llm
+  - tests
+branch: codex/T-0010-dev-env-vcs-readiness
+problem: >
+  Optional wrappers need a shared capability registry so Artemis can describe available
+  harnesses without making them required or authoritative.
+tasks:
+  - Add integrations/capability_registry.yaml.
+  - Add integrations README files for OpenCode, Ollama, and OpenClaw.
+  - Add integrations/openclaw/artemis_tools.readonly.yaml.
+  - Add tests that wrapper configs remain non-authoritative and non-mutating by default.
+acceptance_criteria:
+  - "Every wrapper is required: false and authoritative: false."
+  - OpenClaw only exposes read/check commands by default.
+  - Mutating commands are forbidden or disabled.
+required_tests:
+  - make validate
+  - pga validate-work-items
+affected_files:
+  - integrations/README.md
+  - integrations/capability_registry.yaml
+  - integrations/opencode/README.md
+  - integrations/ollama/README.md
+  - integrations/openclaw/README.md
+  - integrations/openclaw/artemis_tools.readonly.yaml
+  - tests/test_agent_wrapper_config.py
+change_request_required: false
