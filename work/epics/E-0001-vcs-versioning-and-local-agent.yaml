@@ -1,0 +1,16 @@
+id: E-0001
+type: epic
+status: active
+title: VCS versioning and local agent governance
+owner: null
+risk: medium
+created_at: "2026-06-04"
+updated_at: "2026-06-04"
+problem: >
+  Artemis needs local-first version control, work management, and local LLM harness
+  scaffolding so future analytics work can be safely coordinated by humans and agents.
+success_criteria:
+  - Branch intake is documented.
+  - VCS and release policies exist.
+  - Local YAML work items are canonical.
+  - Local LLM context loading works without a paid provider.

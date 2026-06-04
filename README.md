@@ -31,12 +31,21 @@ Do not revert this to `1 contract = 1.0/d`.
 
 ## Current implementation status
 
-- Domain architecture: included.
-- JSON schemas: included.
-- YAML registries: included.
-- Starter Python modules: included.
-- Starter pytest tests: included.
-- Full PnL bridge/dashboard/fundamentals implementation: not included yet.
+| Area | Status |
+|---|---|
+| Locked conventions | present |
+| Registry validation | present, needs expansion |
+| Period parser | present |
+| Power/gas index normalization | present |
+| Position/mark normalization | present, early |
+| PnL attribution | early skeleton |
+| Historical VaR | early skeleton |
+| Black-76 Greeks | early skeleton, WH/HH vol guard |
+| State packs | present, early |
+| Dashboard | not implemented |
+| Fundamentals | models only / fixture ingestion only |
+| Local LLM harness | present, local-context scaffold only |
+| Work management | present, repo-native YAML work items |
 
 ## Next slice
 

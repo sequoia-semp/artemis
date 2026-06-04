@@ -1,0 +1,20 @@
+id: S-0001
+type: sprint
+status: active
+title: Merge VCS governance and local agent scaffold
+owner: null
+risk: medium
+created_at: "2026-06-04"
+updated_at: "2026-06-04"
+epic: E-0001
+tickets:
+  - T-0001
+  - T-0002
+  - T-0003
+  - T-0004
+  - T-0005
+acceptance_criteria:
+  - Governance docs are present.
+  - Work item schemas and initial tickets are present.
+  - Local LLM context loader is present and tested.
+  - Existing analytics tests still pass.

@@ -1,0 +1,26 @@
+id: T-0005
+type: ticket
+title: Update status docs to current main
+status: done
+owner: null
+epic: E-0001
+sprint: S-0001
+risk: low
+created_at: "2026-06-04"
+updated_at: "2026-06-04"
+layer: [docs]
+branch: ticket/T-0001-vcs-workscope-and-local-agent
+problem: >
+  README status should reflect the existing CLI, normalization, PnL, VaR, Greeks,
+  state-pack, work-management, and local LLM scaffold state.
+tasks:
+  - Add implementation status table.
+  - Preserve gas contract sizing correction.
+acceptance_criteria:
+  - README has accurate status table.
+  - Gas .25/d convention remains intact.
+required_tests:
+  - python -m pytest -q
+affected_files:
+  - README.md
+change_request_required: false
