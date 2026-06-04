@@ -9,8 +9,10 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_governance_docs_exist():
     for relative in [
         "Makefile",
+        "artemis.yaml",
         "scripts/bootstrap_dev.sh",
         "scripts/dev_env.sh",
+        "docs/README.md",
         "docs/VCS_POLICY.md",
         "docs/WORK_MANAGEMENT.md",
         "docs/RELEASE_PROCESS.md",
@@ -68,14 +70,50 @@ def test_agent_release_docs_preserve_deterministic_authority():
 
 def test_readme_includes_local_agent_integration_steps():
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    assert "## Local agent integration" in readme
+    assert "# Artemis" in readme
     assert "make validate" in readme
-    assert "make work-context TICKET=T-0006" in readme
-    assert "pga agent-capabilities" in readme
-    assert "pga vcs-ready --ticket T-####" in readme
-    assert "docs/WRAPPER_ABSTRACTION_POLICY.md" in readme
-    assert "integrations/" in readme
+    assert "artemis capabilities" in readme
+    assert "artemis dev context --ticket T-0019" in readme
+    assert "pga work-context --ticket T-0019" in readme
     assert "Prompt-only analytics are not authoritative" in readme
+
+
+def test_primary_navigation_does_not_route_through_legacy_build_packet():
+    primary_paths = [
+        ROOT / "README.md",
+        ROOT / "AGENTS.md",
+        ROOT / "llms.txt",
+        ROOT / "docs/README.md",
+    ]
+    for path in primary_paths:
+        text = path.read_text(encoding="utf-8")
+        assert "artemis.yaml" in text
+        assert "local/llm_config.example.yaml" not in text
+    assert "Historical build-packet" in (ROOT / "README.md").read_text(encoding="utf-8")
+
+
+def test_root_markdown_files_are_limited_to_navigation_and_legacy_pointers():
+    root_markdown = {path.name for path in ROOT.glob("*.md")}
+    assert root_markdown <= {
+        "README.md",
+        "AGENTS.md",
+        "llms.txt",
+        "CODEX_IMPLEMENTATION_BRIEF.md",
+        "NEXT_AGENT_START_HERE.md",
+        "pjm_workbench_mvp_agent_spec.md",
+    }
+    assert len(root_markdown) <= 6
+
+
+def test_make_validate_includes_artemis_artifacts():
+    makefile = (ROOT / "Makefile").read_text(encoding="utf-8")
+    assert "ARTEMIS ?= $(VENV)/bin/artemis" in makefile
+    assert "validate-artemis:" in makefile
+    assert "$(ARTEMIS) config validate" in makefile
+    assert "$(ARTEMIS) skill validate" in makefile
+    assert "$(ARTEMIS) views validate" in makefile
+    assert "$(ARTEMIS) data-sources validate" in makefile
+    assert "$(ARTEMIS) capabilities" in makefile
 
 
 def test_vcs_policy_standardizes_local_venv_and_merge_flow():

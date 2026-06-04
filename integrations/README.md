@@ -1,12 +1,21 @@
 # Integrations
 
-This directory contains optional wrapper and runtime integration artifacts.
+Integrations are optional descriptors. They are not the Artemis architecture and
+they are not authoritative for market conventions, deterministic calculations,
+state/cache promotion, mappings, or release approval.
 
-Artemis remains authoritative through repo files, deterministic `pga` commands, schemas, registries, tests, and reviewed work items. These integration files are advisory unless a future ticket explicitly promotes one into an enforced control.
+Primary descriptor directories:
 
-Current integrations:
+- `integrations/providers/`: optional model/runtime provider descriptors.
+- `integrations/coding_backends/`: optional coding or review backend descriptors.
+- `integrations/orchestrators/`: optional outer-orchestration descriptors.
 
-- `capability_registry.yaml`: optional wrapper capability declarations.
-- `opencode/`: OpenCode examples and notes.
-- `ollama/`: local model profile examples.
-- `openclaw/`: read-only command manifest and wrapper guidance.
+Compatibility examples:
+
+- `integrations/opencode/`: legacy OpenCode example configuration.
+- `integrations/ollama/`: legacy local-model examples.
+- `integrations/openclaw/`: legacy read-only command manifest examples.
+- `integrations/capability_registry.yaml`: compatibility capability registry used by `pga agent-capabilities`.
+
+Descriptors referenced from `artemis.yaml` must exist and must not set
+`authoritative: true`.

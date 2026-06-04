@@ -4,7 +4,8 @@ Artemis supports optional local LLM workflows while keeping deterministic tests 
 
 ## Runtime
 
-- `local/llm_config.example.yaml` defines optional local model/context profiles and safety settings.
+- `local/artemis.local.example.yaml` defines optional local model/context profiles and local data-source credential env names.
+- `local/llm_config.example.yaml` is a legacy compatibility example for older `pga work-context` callers.
 - `deterministic_only` is the default profile and requires no model runtime.
 - Ollama is an optional local runtime profile.
 - External harnesses such as OpenCode, Codex, Claude Code, or another wrapper can own model invocation outside Artemis.
@@ -22,7 +23,7 @@ The agent runtime loads:
 
 The context loader does not call a model. It returns a deterministic context bundle for a local model or coding agent.
 
-The profile config is advisory. Deterministic commands such as `pga validate-registries`, `pga validate-work-items`, and `pga work-context` must run without OpenCode, Ollama, OpenClaw, or any other wrapper.
+The profile config is advisory. Deterministic commands such as `pga validate-registries`, `pga validate-work-items`, `artemis dev context`, and `pga work-context` must run without OpenCode, Ollama, OpenClaw, or any other wrapper.
 
 ## Safety
 

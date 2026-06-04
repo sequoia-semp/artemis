@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+import sys
 
 import yaml
 
@@ -23,7 +24,6 @@ from .services.pnl import run_pnl_attribution
 from .services.risk import read_historical_returns, run_historical_var
 from .state.packs import build_candidate_state_pack, publish_candidate_state_pack
 from .agent_runtime.capabilities import collect_agent_capabilities, collect_agent_doctor
-from .agent_runtime.context_loader import collect_context
 from .agent_runtime.kb_validator import validate_knowledge_base
 from .agent_runtime.release_workflow import collect_release_readiness
 from .agent_runtime.vcs_workflow import collect_vcs_readiness
@@ -104,7 +104,8 @@ def _cmd_build_state_pack(args: argparse.Namespace) -> int:
 
 
 def _cmd_work_context(args: argparse.Namespace) -> int:
-    context = collect_context(Path(args.repo_root), args.ticket, Path(args.config))
+    context = collect_development_context(Path(args.repo_root), args.ticket, Path(args.config) if args.config else None)
+    context["compatibility_command"] = "pga work-context"
     if args.output:
         write_json(Path(args.output), context)
         print(f"wrote work context for {args.ticket} to {args.output}")
@@ -193,6 +194,10 @@ def _cmd_release_check(args: argparse.Namespace) -> int:
         print(f"requires_python: {package.get('requires_python')}")
         print(f"validation_passed: {result['validation_passed']}")
         print(f"ready_for_release_prep: {result['ready_for_release_prep']}")
+        print("validation_commands:")
+        for item in result.get("validation_results") or []:
+            status = "skipped" if item.get("skipped") else "passed" if item.get("passed") else "failed"
+            print(f"- {item['command']}: {status}")
         print("planning_bridge:")
         for path, exists in result["planning_bridge"].items():
             print(f"- {path}: {'present' if exists else 'missing'}")
@@ -322,8 +327,8 @@ def _cmd_release_candidate(args: argparse.Namespace) -> int:
     return 0
 
 
-def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="pga")
+def build_parser(prog: str | None = None) -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(prog=prog or Path(sys.argv[0]).name or "artemis")
     sub = parser.add_subparsers(dest="command", required=True)
 
     p = sub.add_parser("validate-registries")
@@ -380,7 +385,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     p = sub.add_parser("work-context")
     p.add_argument("--ticket", required=True)
-    p.add_argument("--config", default="local/llm_config.example.yaml")
+    p.add_argument("--config")
     p.add_argument("--repo-root", default=".")
     p.add_argument("--output")
     p.set_defaults(func=_cmd_work_context)

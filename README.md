@@ -1,137 +1,113 @@
-# artemis
+# Artemis
 
-Artemis is a local, model-agnostic Power + Gas Trading Analytics workbench. It is intended to be handed to a coding agent, file-system-aware LLM, or human developer as a self-contained starting point.
+Artemis is a local, model-agnostic Power + Gas Trading Analytics workbench. The
+durable product is the repository: deterministic Python services, domain
+conventions, schemas, registries, skills, view templates, tests, and agent-mode
+tooling.
 
-The packet is not a production trading system. It is a scaffold containing locked domain conventions, schemas, registries, starter code, tests, skills, agent role files, and an improvement protocol.
+`artemis` is the user-facing agent CLI. `pga` remains the lower-level deterministic
+analytics command family and compatibility surface.
 
-## Start here
+## Start Here
 
 1. Read `AGENTS.md`.
-2. Read `docs/BUILD_PACKET_v0.1.md`.
-3. Read `docs/CONVENTIONS_LOCKED_v0.1.md`.
-4. Inspect `registries/` and `schemas/`.
-5. Run tests from the repository root after installing the package in editable mode:
+2. Inspect `artemis.yaml`.
+3. Use `docs/README.md` as the docs index.
+4. Run validation:
 
 ```bash
-python -m pip install -e .[dev]
-python -m pytest
+make validate
+artemis capabilities
 ```
 
-## Critical correction baked into v0.1
+Primary orientation files:
+
+- `README.md`: product overview and first commands.
+- `AGENTS.md`: canonical coding-agent contract.
+- `llms.txt`: compact model/agent navigation index.
+- `artemis.yaml`: central config, mode, tool, manifest, and release map.
+- `docs/README.md`: user, analyst, developer, integration, and design-record index.
+
+Historical build-packet and wrapper docs are compatibility/design records. They do
+not override `AGENTS.md`, `artemis.yaml`, locked domain conventions, schemas,
+registries, or tests.
+
+## Critical Convention
 
 Gas exchange contract sizing uses the `.25/d` convention:
 
 ```text
 1 contract = 0.25/d = 2,500 MMBtu/day
 1.0/d = 4 contracts = 10,000 MMBtu/day
-total MMBtu = contracts × 2,500 × delivery days
+total MMBtu = contracts x 2,500 x delivery days
 ```
 
 Do not revert this to `1 contract = 1.0/d`.
 
-## Current implementation status
-
-| Area | Status |
-|---|---|
-| Locked conventions | present |
-| Registry validation | present, needs expansion |
-| Period parser | present |
-| Power/gas index normalization | present |
-| Position/mark normalization | present, early |
-| PnL attribution | early skeleton |
-| Historical VaR | early skeleton |
-| Black-76 Greeks | early skeleton, WH/HH vol guard |
-| State packs | present, early |
-| Dashboard | not implemented |
-| Fundamentals | models only / fixture ingestion only |
-| Local LLM harness | present, local-context scaffold only |
-| Work management | present, repo-native YAML work items |
-| Artemis CLI/config | present, M1 deterministic surface |
-| Analyst view engine | schema-backed skeleton |
-| Data-source descriptors | present, no live proprietary connectors |
-
-## Artemis CLI
-
-`artemis` is the user-facing alias for the same deterministic package entry point as `pga`.
-The older `pga` commands remain supported for normalization, validation, state packs, and
-release checks.
-
-Core M1 commands:
+## Core Commands
 
 ```bash
+make bootstrap
+make validate
+
 artemis config validate
 artemis capabilities
 artemis skill validate
 artemis views validate
 artemis data-sources validate
+```
+
+Analyst Mode:
+
+```bash
 artemis analyst view build --template current-day --input tests/fixtures/views/current_day_minimal.json --output /tmp/current_day_view.json
-artemis dev context --ticket T-0018 --output /tmp/T-0018_context.json
-artemis release check --ticket T-0018
 ```
 
-Analyst Mode may build workspace outputs such as views, but it cannot mutate canonical repo
-files. Development Mode is ticket-gated and remains backend-neutral; optional wrappers such as
-OpenCode or local model runtimes are not authoritative.
-
-## Local agent integration
-
-Artemis supports local agent workflows, but deterministic services remain authoritative. The wrapper-neutral boundary is `pga work-context`: it packages repo guidance, locked conventions, change policy, ticket metadata, and affected files into a deterministic context bundle.
-
-### 1. Prepare the repo
-
-From the repo root:
+Development Mode:
 
 ```bash
-make bootstrap
-make validate
+artemis dev context --ticket T-0019 --output /tmp/T-0019_context.json
+artemis dev plan --ticket T-0019
+artemis release check --ticket T-0019
 ```
 
-Generate a deterministic context bundle for a ticket:
+Compatibility:
 
 ```bash
-make work-context TICKET=T-0006
+pga validate-registries
+pga validate-work-items
+pga validate-kb
+pga work-context --ticket T-0019 --output /tmp/T-0019_context.json
 ```
 
-The context bundle loads `AGENTS.md`, `llms.txt`, locked conventions, change policy, the ticket YAML, and files listed under the ticket's `affected_files`.
+## Mode Boundaries
 
-### 2. Optional wrappers
+Analyst Mode may produce workspace outputs such as views, reports, and summaries.
+It must not mutate canonical repo files, update locked conventions, approve
+mappings, publish shared state, or submit trades.
 
-OpenCode is the first supported coding/review harness. Ollama is an optional local model runtime. OpenClaw is optional outer orchestration and should start with read-only Artemis commands only.
+Development Mode is ticket-gated and validation-gated. Coding backends and model
+providers are optional descriptors only; they are not authoritative for market
+conventions, deterministic calculations, cache/state promotion, or release
+approval.
 
-See:
+## Current Status
 
-- `docs/WRAPPER_ABSTRACTION_POLICY.md`
-- `docs/AGENT_MODES.md`
-- `docs/OPENCODE_SETUP.md`
-- `integrations/`
+| Area | Status |
+|---|---|
+| Artemis config and CLI | present |
+| Deterministic `pga` analytics CLI | present |
+| Locked conventions | present |
+| Registry/schema validation | present |
+| Analyst view engine | schema-backed skeleton |
+| Data-source descriptors | descriptor-only, no live proprietary calls |
+| Development context | Artemis config-backed |
+| Release candidate workflow | deterministic, human-review required |
+| TUI | deferred |
+| Live vendor/ISO/ICE APIs | deferred until docs and credentials exist |
 
-Use `pga agent-capabilities` to inspect optional wrapper availability. Missing optional wrappers must not break Artemis core.
-Use `artemis capabilities` to inspect the Artemis mode, provider, and tool-permission surface.
+## Non-Authority Rules
 
-Use `pga vcs-ready --ticket T-####` or `make vcs-ready TICKET=T-####` before committing and pushing a ticket branch.
-
-Use `pga validate-kb` or `make validate` to check the deterministic knowledge-base scaffold.
-
-### 3. Release loop for KB, skills, and agents
-
-Knowledge-base entries, skills, prompts, OpenCode agents, and wrapper configuration are released like code:
-
-1. Create or select a ticket under `work/tickets/`.
-2. Generate context with `pga work-context`.
-3. Update KB, skills, prompts, agent config, code, or tests on a ticket branch.
-4. Run:
-
-   ```bash
-   python -m pytest -q
-   pga validate-registries
-   pga validate-work-items
-   ```
-
-5. Merge into `main` only after review.
-6. Tag releases when the validated baseline should be shared.
-
-Prompt-only analytics are not authoritative. PnL, risk, Greeks, forecasts, state packs, and cache behavior must come from deterministic services and tests.
-
-## Next slice
-
-After the semantic base passes tests, implement D/D position and mark reconciliation, linear PnL bridge, largest-driver ranking, and exception reports.
+Prompt-only analytics are not authoritative. PnL, risk, Greeks, forecasts, state
+packs, cache behavior, mappings, and conventions must come from deterministic
+services, reviewed registries/schemas, and tests.

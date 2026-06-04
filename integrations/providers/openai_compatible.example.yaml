@@ -1,0 +1,13 @@
+id: openai_compatible
+kind: openai_compatible
+required: false
+authoritative: false
+
+configuration:
+  base_url_env: ARTEMIS_OPENAI_COMPATIBLE_BASE_URL
+  model_env: ARTEMIS_OPENAI_COMPATIBLE_MODEL
+  api_key_env: ARTEMIS_OPENAI_COMPATIBLE_API_KEY
+
+notes:
+  - Descriptor for optional OpenAI-compatible local or external model runtimes.
+  - Does not define market conventions or analytics behavior.

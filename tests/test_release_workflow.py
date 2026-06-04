@@ -18,6 +18,8 @@ def test_release_readiness_reports_package_and_planning_bridge():
     assert result["ticket"]["id"] == "T-0017"
     assert result["planning_bridge"]["pjm_workbench_mvp_agent_spec.md"] is True
     assert result["planning_bridge"]["pjm_workbench_mvp_backlog.yaml"] is True
+    assert "artemis capabilities" in result["validation_commands"]
+    assert all(item["skipped"] for item in result["validation_results"])
     assert "tests run" in result["required_release_note_fields"]
     assert result["ready_for_release_prep"] is True
 

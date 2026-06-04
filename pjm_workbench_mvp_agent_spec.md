@@ -1,9 +1,9 @@
 # PJM Workbench MVP Agent Spec
 
 This root-level file is the PJM-specific planning bridge referenced by `AGENTS.md`.
-It does not replace the broader Power + Gas build packet. The canonical general
-architecture remains `docs/BUILD_PACKET_v0.1.md`, `docs/ARCHITECTURE.md`, and
-`docs/architecture/power_gas_trading_agent_workbench.md`.
+It does not replace the broader Artemis control plane. The canonical general
+architecture starts at `artemis.yaml`, `AGENTS.md`, `README.md`, and
+`docs/README.md`. Historical build-packet docs remain design records.
 
 ## MVP Mission
 
