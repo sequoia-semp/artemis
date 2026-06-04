@@ -8,6 +8,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_governance_docs_exist():
     for relative in [
+        "Makefile",
+        "scripts/bootstrap_dev.sh",
+        "scripts/dev_env.sh",
         "docs/VCS_POLICY.md",
         "docs/WORK_MANAGEMENT.md",
         "docs/RELEASE_PROCESS.md",
@@ -16,6 +19,8 @@ def test_governance_docs_exist():
         "docs/OPENCODE_SETUP.md",
         "docs/AGENT_KB_SKILL_RELEASE_LOOP.md",
         "docs/AGENT_WRAPPER_EVALUATION.md",
+        "docs/WRAPPER_ABSTRACTION_POLICY.md",
+        "docs/AGENT_MODES.md",
         "planning/merge_intake.md",
     ]:
         assert (ROOT / relative).exists()
@@ -62,7 +67,18 @@ def test_agent_release_docs_preserve_deterministic_authority():
 def test_readme_includes_local_agent_integration_steps():
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "## Local agent integration" in readme
-    assert "opencode run" in readme
-    assert "openclaw --dev doctor" in readme
-    assert "pga work-context --ticket T-0006" in readme
+    assert "make validate" in readme
+    assert "make work-context TICKET=T-0006" in readme
+    assert "pga agent-capabilities" in readme
+    assert "pga vcs-ready --ticket T-####" in readme
+    assert "docs/WRAPPER_ABSTRACTION_POLICY.md" in readme
+    assert "integrations/" in readme
     assert "Prompt-only analytics are not authoritative" in readme
+
+
+def test_vcs_policy_standardizes_local_venv_and_merge_flow():
+    policy = (ROOT / "docs/VCS_POLICY.md").read_text(encoding="utf-8")
+    assert "make bootstrap" in policy
+    assert "make validate" in policy
+    assert "pga vcs-ready --ticket T-####" in policy
+    assert "git push -u origin codex/T-####-slug" in policy

@@ -1,0 +1,52 @@
+version: 0.1.0
+
+core:
+  pga:
+    required: true
+    purpose: deterministic_artemis_cli
+    detection:
+      command: pga --help
+
+wrappers:
+  opencode:
+    required: false
+    purpose: coding_review_harness
+    authoritative: false
+    detection:
+      command: opencode --version
+    safe_commands:
+      - pga work-context
+      - pga validate-work-items
+      - pga validate-registries
+      - python -m pytest -q
+    forbidden_commands:
+      - git push
+      - git tag
+      - pga build-state-pack --publish
+
+  ollama:
+    required: false
+    purpose: local_model_runtime
+    authoritative: false
+    detection:
+      http: http://localhost:11434/v1/models
+    provider_kind: openai_compatible
+
+  openclaw:
+    required: false
+    purpose: outer_orchestration_gateway
+    authoritative: false
+    detection:
+      command: openclaw gateway status
+    allowed_initial_mode: readonly
+    safe_commands:
+      - pga work-context
+      - pga validate-work-items
+      - pga validate-registries
+      - python -m pytest -q
+    forbidden_commands:
+      - pga build-state-pack --publish
+      - git push
+      - git tag
+      - source mapping changes
+      - convention changes
