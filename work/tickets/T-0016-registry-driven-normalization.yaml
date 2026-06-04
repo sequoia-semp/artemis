@@ -1,0 +1,37 @@
+id: T-0016
+type: ticket
+status: planned
+title: Registry-driven normalization groundwork
+owner: user
+risk: high
+created_at: "2026-06-04"
+updated_at: "2026-06-04"
+epic: E-0002
+sprint: S-0003
+layer:
+  - registry
+  - parser
+  - tests
+branch: codex/T-0016-registry-driven-normalization
+problem: >
+  Market/index/spread conventions are duplicated in registries and hard-coded Python
+  constants. Registries should become the primary source of normalization truth.
+tasks:
+  - Add registry access helpers.
+  - Drive power locations from registries/power_locations.yaml.
+  - Drive gas locations and aliases from registries/gas_locations.yaml.
+  - Drive approved/forbidden spreads from registries/quoted_spreads.yaml.
+  - Preserve current tests and add temp-registry tests.
+acceptance_criteria:
+  - Existing normalization behavior is unchanged.
+  - Registry changes can be tested through temp registries.
+  - Hard-coded market convention tables are not authoritative.
+required_tests:
+  - make validate
+  - pga validate-registries
+affected_files:
+  - src/pga_workbench/registry_access.py
+  - src/pga_workbench/indices.py
+  - src/pga_workbench/spreads.py
+  - tests/test_registry_driven_normalization.py
+change_request_required: false

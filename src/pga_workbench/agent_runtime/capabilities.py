@@ -12,6 +12,7 @@ from urllib.request import Request, urlopen
 import yaml
 
 from ..registry import validate_registries
+from .kb_validator import validate_knowledge_base
 from .work_item_loader import validate_work_items
 
 
@@ -54,8 +55,8 @@ def recommend_agent_mode(capabilities: dict[str, Any]) -> str:
     if opencode.get("available") and ollama.get("reachable"):
         return "opencode_ollama"
     if opencode.get("available"):
-        return "opencode_any_model"
-    return "deterministic_only"
+        return "opencode_external_model"
+    return "context_bundle_manual"
 
 
 def collect_agent_capabilities(repo_root: Path, check_network: bool = False) -> dict[str, Any]:
@@ -146,6 +147,14 @@ def collect_agent_doctor(repo_root: Path, check_network: bool = False, skip_test
         checks.append({"name": "validate-work-items", "passed": True, "validated": len(validated)})
     except Exception as exc:
         checks.append({"name": "validate-work-items", "passed": False, "error": str(exc)})
+
+    kb_root = repo_root / "knowledge_base"
+    if kb_root.exists():
+        try:
+            result = validate_knowledge_base(kb_root, repo_root / "schemas")
+            checks.append({"name": "validate-kb", "passed": True, "entries": result["entries"]})
+        except Exception as exc:
+            checks.append({"name": "validate-kb", "passed": False, "error": str(exc)})
 
     capabilities = collect_agent_capabilities(repo_root, check_network=check_network)
     checks.append(

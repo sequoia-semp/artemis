@@ -45,8 +45,13 @@
       "git branch*": "allow",
       "git fetch --all --prune": "allow",
       "git ls-remote*": "allow",
+      "git push*": "ask",
+      "git tag*": "ask",
       "uv *": "ask",
-      "python -m pga_workbench*": "allow",
+      "pga build-state-pack*": "ask",
+      "pga normalize-*": "ask",
+      "pga run-*": "ask",
+      "python -m pga_workbench*": "ask",
       "*": "ask"
     },
     "skill": {

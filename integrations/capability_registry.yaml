@@ -14,15 +14,23 @@ wrappers:
     authoritative: false
     detection:
       command: opencode --version
-    safe_commands:
-      - pga work-context
-      - pga validate-work-items
-      - pga validate-registries
+    allowed_modes:
+      - plan
+      - build
+      - review
+      - release
+    allowed_commands:
       - python -m pytest -q
+      - pga validate-registries
+      - pga validate-work-items
+      - pga work-context
+      - git status
+      - git diff
+      - git log
     forbidden_commands:
+      - pga build-state-pack --publish
       - git push
       - git tag
-      - pga build-state-pack --publish
 
   ollama:
     required: false
@@ -31,22 +39,31 @@ wrappers:
     detection:
       http: http://localhost:11434/v1/models
     provider_kind: openai_compatible
+    default_base_url: http://localhost:11434/v1
+    allowed_use:
+      - local coding assistance
+      - local planning
+      - local review
+    forbidden_use:
+      - authoritative calculations
+      - market convention definition
 
   openclaw:
     required: false
     purpose: outer_orchestration_gateway
     authoritative: false
     detection:
-      command: openclaw gateway status
-    allowed_initial_mode: readonly
-    safe_commands:
-      - pga work-context
-      - pga validate-work-items
-      - pga validate-registries
+      command: openclaw --dev status
+    initial_mode: read_only
+    allowed_commands:
       - python -m pytest -q
+      - pga validate-registries
+      - pga validate-work-items
+      - pga work-context
     forbidden_commands:
       - pga build-state-pack --publish
-      - git push
-      - git tag
+      - shared cache promotion
       - source mapping changes
       - convention changes
+      - trade submission
+      - broad shell or Git write commands

@@ -33,17 +33,17 @@ def test_collect_agent_capabilities_keeps_optional_wrappers_optional():
     assert capabilities["wrappers"]["ollama"]["required"] is False
     assert capabilities["wrappers"]["ollama"]["reachable"] is False
     assert capabilities["wrappers"]["ollama"]["network_check_skipped"] is True
-    assert capabilities["recommended_mode"] in {"deterministic_only", "opencode_any_model"}
+    assert capabilities["recommended_mode"] in {"context_bundle_manual", "opencode_external_model"}
 
 
-def test_recommend_agent_mode_falls_back_to_deterministic_only():
+def test_recommend_agent_mode_falls_back_to_context_bundle_manual():
     capabilities = {
         "wrappers": {
             "opencode": {"available": False},
             "ollama": {"reachable": False},
         }
     }
-    assert recommend_agent_mode(capabilities) == "deterministic_only"
+    assert recommend_agent_mode(capabilities) == "context_bundle_manual"
 
 
 def test_cli_exposes_vcs_ready_command():

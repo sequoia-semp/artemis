@@ -2,40 +2,49 @@ version: 0.1.0
 mode: readonly
 authoritative: false
 
-allowed_tools:
+tools:
   artemis_work_context:
     description: Build deterministic context bundle for a work ticket.
-    command_template: "pga work-context --ticket {ticket} --output {output}"
-    mutates_repo: false
-    requires_approval: false
+    command: "pga work-context --ticket {ticket} --output {output}"
+    mode: read_only
+    allowed: true
 
-  artemis_validate_registries:
-    command_template: "pga validate-registries"
-    mutates_repo: false
-    requires_approval: false
+  artemis_validate:
+    description: Run deterministic validation checks.
+    command: "python -m pytest -q && pga validate-registries && pga validate-work-items"
+    mode: read_only
+    allowed: true
 
-  artemis_validate_work_items:
-    command_template: "pga validate-work-items"
-    mutates_repo: false
-    requires_approval: false
-
-  artemis_pytest:
-    command_template: "python -m pytest -q"
-    mutates_repo: false
-    requires_approval: false
-
-forbidden_tools:
   artemis_publish_state_pack:
-    command_template: "pga build-state-pack --publish"
+    command: "pga build-state-pack --publish"
+    mode: mutating
+    allowed: false
     reason: "State promotion requires Artemis-native approval controls."
 
   git_push:
-    command_template: "git push"
+    command: "git push"
+    mode: mutating
+    allowed: false
     reason: "Remote mutation requires explicit human approval."
 
   git_tag:
-    command_template: "git tag"
+    command: "git tag"
+    mode: mutating
+    allowed: false
     reason: "Release mutation requires explicit human approval."
 
+  source_mapping_change:
+    mode: mutating
+    allowed: false
+    reason: "Source mapping changes require Artemis-native controls."
+
   convention_change:
+    mode: mutating
+    allowed: false
     reason: "Convention changes require change request and tests."
+
+  broad_shell:
+    command: "*"
+    mode: mutating
+    allowed: false
+    reason: "Broad shell access is not part of the read-only OpenClaw surface."

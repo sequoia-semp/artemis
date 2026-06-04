@@ -23,7 +23,7 @@ make bootstrap
 make validate
 ```
 
-`make bootstrap` creates or refreshes `.venv` and installs `.[dev]` in editable mode. For an interactive shell, source:
+`make bootstrap` creates or refreshes `.venv` and installs `.[dev]` in editable mode. `make validate` runs tests, registry validation, work-item validation, and knowledge-base manifest validation. For an interactive shell, source:
 
 ```bash
 . ./scripts/dev_env.sh

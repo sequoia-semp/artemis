@@ -1,0 +1,39 @@
+id: T-0012
+type: ticket
+status: done
+title: Flexible local LLM profiles and capability commands
+owner: user
+risk: medium
+created_at: "2026-06-04"
+updated_at: "2026-06-04"
+epic: E-0001
+sprint: S-0002
+layer:
+  - local_llm
+  - agent_runtime
+  - tests
+branch: codex/T-0010-dev-env-vcs-readiness
+problem: >
+  local/llm_config.example.yaml should work in deterministic-only mode and support
+  optional profiles without contacting a model during context generation.
+tasks:
+  - Convert local/llm_config.example.yaml to profile-based config.
+  - Keep pga work-context independent of Ollama availability.
+  - Add pga agent-capabilities.
+  - Add pga agent-doctor.
+  - Add tests with mocked tool availability.
+acceptance_criteria:
+  - deterministic_only profile exists.
+  - "all profiles have required: false."
+  - pga work-context works with deterministic_only.
+  - pga agent-capabilities succeeds without wrappers installed.
+required_tests:
+  - make validate
+  - pga work-context --ticket T-0006 --output /tmp/artemis_T-0006_context.json
+affected_files:
+  - local/llm_config.example.yaml
+  - src/pga_workbench/agent_runtime/context_loader.py
+  - src/pga_workbench/agent_runtime/capabilities.py
+  - src/pga_workbench/cli.py
+  - tests/test_agent_capabilities.py
+change_request_required: false

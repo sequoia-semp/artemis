@@ -17,6 +17,8 @@ def test_local_llm_config_uses_optional_profiles():
     assert profiles["deterministic_only"]["required"] is False
     assert profiles["local_ollama"]["required"] is False
     assert profiles["external_harness"]["required"] is False
+    assert all(profile["required"] is False for profile in profiles.values())
+    assert profiles["external_harness"]["provider_kind"] == "external"
 
 
 def test_profile_config_keeps_required_context_files():

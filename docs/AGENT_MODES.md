@@ -14,7 +14,7 @@ pga validate-registries
 pga validate-work-items
 ```
 
-## Mode 1: `context_bundle_only`
+## Mode 1: `context_bundle_manual`
 
 Generate `pga work-context` and provide the JSON bundle to any LLM or coding agent.
 
@@ -24,7 +24,7 @@ Safe commands:
 pga work-context --ticket T-0009 --output /tmp/artemis_T-0009_context.json
 ```
 
-## Mode 2: `opencode_any_model`
+## Mode 2: `opencode_external_model`
 
 Use OpenCode with a user-selected model/provider. Artemis does not care which model is selected.
 
@@ -58,6 +58,6 @@ pga validate-registries
 pga validate-work-items
 ```
 
-## Mode 5: `openclaw_sandboxed_dev`
+## Mode 5: `future_openclaw_sandboxed_dev`
 
 Future mode only. Requires sandboxing, explicit allowlist, tests, auditability, and human approval before any write command is exposed.

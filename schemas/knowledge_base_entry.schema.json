@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KnowledgeBaseManifest",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "kb_version": {"type": "string"},
+    "authority": {"type": "string"},
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "path": {"type": "string"},
+          "status": {"type": "string"},
+          "authority": {"type": "string"}
+        },
+        "required": ["path", "status", "authority"]
+      }
+    }
+  },
+  "required": ["kb_version", "authority", "entries"]
+}

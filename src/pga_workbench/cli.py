@@ -16,6 +16,7 @@ from .services.risk import read_historical_returns, run_historical_var
 from .state.packs import build_candidate_state_pack, publish_candidate_state_pack
 from .agent_runtime.capabilities import collect_agent_capabilities, collect_agent_doctor
 from .agent_runtime.context_loader import collect_context
+from .agent_runtime.kb_validator import validate_knowledge_base
 from .agent_runtime.vcs_workflow import collect_vcs_readiness
 from .agent_runtime.work_item_loader import validate_work_items
 
@@ -107,6 +108,12 @@ def _cmd_work_context(args: argparse.Namespace) -> int:
 def _cmd_validate_work_items(args: argparse.Namespace) -> int:
     validated = validate_work_items(Path(args.work_root), Path(args.schemas))
     print(f"validated {len(validated)} work items")
+    return 0
+
+
+def _cmd_validate_kb(args: argparse.Namespace) -> int:
+    result = validate_knowledge_base(Path(args.kb_root), Path(args.schemas))
+    print(f"validated knowledge base manifest with {result['entries']} entries")
     return 0
 
 
@@ -233,6 +240,11 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--work-root", default="work")
     p.add_argument("--schemas", default="schemas")
     p.set_defaults(func=_cmd_validate_work_items)
+
+    p = sub.add_parser("validate-kb")
+    p.add_argument("--kb-root", default="knowledge_base")
+    p.add_argument("--schemas", default="schemas")
+    p.set_defaults(func=_cmd_validate_kb)
 
     p = sub.add_parser("agent-capabilities")
     p.add_argument("--repo-root", default=".")

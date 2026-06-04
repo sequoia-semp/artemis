@@ -30,6 +30,16 @@ def test_context_loader_loads_affected_files_when_present():
     assert "docs/RELEASE_PROCESS.md" in paths
 
 
+def test_t0006_onboarding_context_is_executable():
+    context = collect_context(ROOT, "T-0006", ROOT / "local/llm_config.example.yaml")
+    paths = {item["path"] for item in context["files"]}
+    assert context["ticket"]["id"] == "T-0006"
+    assert "AGENTS.md" in paths
+    assert "llms.txt" in paths
+    assert "docs/CONVENTIONS_LOCKED_v0.1.md" in paths
+    assert "docs/OPENCODE_SETUP.md" in paths
+
+
 def test_context_loader_missing_required_file_fails_closed(tmp_path):
     config = tmp_path / "llm_config.yaml"
     config.write_text(

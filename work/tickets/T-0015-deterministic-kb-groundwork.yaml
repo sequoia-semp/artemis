@@ -1,0 +1,39 @@
+id: T-0015
+type: ticket
+status: done
+title: Deterministic knowledge-base groundwork
+owner: user
+risk: medium
+created_at: "2026-06-04"
+updated_at: "2026-06-04"
+epic: E-0002
+sprint: S-0002
+layer:
+  - knowledge_base
+  - docs
+  - tests
+branch: codex/T-0010-dev-env-vcs-readiness
+problem: >
+  Artemis needs a deterministic KB scaffold that can grow without becoming unreviewed
+  lore or contradicting locked conventions, registries, schemas, and tests.
+tasks:
+  - Add knowledge_base/ scaffold with manifest and policy.
+  - Document advisory-vs-authoritative boundaries.
+  - Add schemas/knowledge_base_entry.schema.json.
+  - Add pga validate-kb.
+acceptance_criteria:
+  - KB docs state they cannot override locked conventions, registries, schemas, or deterministic tests.
+  - KB manifest exists.
+  - No new market convention is added as fact unless already locked.
+required_tests:
+  - make validate
+  - pga validate-kb
+affected_files:
+  - knowledge_base/README.md
+  - knowledge_base/MANIFEST.yaml
+  - knowledge_base/market_conventions/README.md
+  - knowledge_base/source_docs/README.md
+  - knowledge_base/source_registry/README.md
+  - knowledge_base/examples/README.md
+  - schemas/knowledge_base_entry.schema.json
+change_request_required: false

@@ -83,6 +83,8 @@ Use `pga agent-capabilities` to inspect optional wrapper availability. Missing o
 
 Use `pga vcs-ready --ticket T-####` or `make vcs-ready TICKET=T-####` before committing and pushing a ticket branch.
 
+Use `pga validate-kb` or `make validate` to check the deterministic knowledge-base scaffold.
+
 ### 3. Release loop for KB, skills, and agents
 
 Knowledge-base entries, skills, prompts, OpenCode agents, and wrapper configuration are released like code:
