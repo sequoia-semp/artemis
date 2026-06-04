@@ -57,3 +57,12 @@ def test_agent_release_docs_preserve_deterministic_authority():
     wrapper_eval = (ROOT / "docs/AGENT_WRAPPER_EVALUATION.md").read_text(encoding="utf-8")
     assert "Prompt-only analytics are not authoritative" in release_loop
     assert "not as the source of analytics truth" in wrapper_eval
+
+
+def test_readme_includes_local_agent_integration_steps():
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "## Local agent integration" in readme
+    assert "opencode run" in readme
+    assert "openclaw --dev doctor" in readme
+    assert "pga work-context --ticket T-0006" in readme
+    assert "Prompt-only analytics are not authoritative" in readme
