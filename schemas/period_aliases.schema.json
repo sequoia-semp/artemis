@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PeriodAliases",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "month_codes": {
+      "type": "object",
+      "additionalProperties": {"type": "string"}
+    },
+    "planning_year": {"type": "object"},
+    "power_shorthand": {"type": "object"},
+    "gas_seasons": {"type": "object"},
+    "balmo": {
+      "type": "object",
+      "properties": {
+        "excludes_next_day": {"type": "boolean"}
+      },
+      "required": ["excludes_next_day"]
+    }
+  },
+  "required": ["month_codes", "planning_year", "power_shorthand", "gas_seasons", "balmo"]
+}

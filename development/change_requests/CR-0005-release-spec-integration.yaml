@@ -1,0 +1,31 @@
+change_id: CR-0005
+title: Integrate release readiness and PJM MVP planning bridge
+created_at: 2026-06-04T00:00:00Z
+change_class: 7
+severity: medium
+problem_statement: >
+  Release readiness, Python compatibility, and PJM MVP planning references are
+  documented but not exposed through one repo-native command. Project guidance
+  also references PJM MVP spec and backlog files that do not exist at the repo root.
+root_cause: >
+  Governance evolved before a deterministic release-readiness command and planning
+  bridge were added to the package CLI.
+affected_files:
+  - pyproject.toml
+  - Makefile
+  - docs/RELEASE_PROCESS.md
+  - pjm_workbench_mvp_agent_spec.md
+  - pjm_workbench_mvp_backlog.yaml
+  - src/pga_workbench/agent_runtime/
+  - src/pga_workbench/cli.py
+  - tests/
+tests_required:
+  - make validate
+  - pga release-check --ticket T-0017 --skip-tests
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-04T00:00:00Z
+rollback_plan: >
+  Remove the release-check command, ticket/backlog bridge files, docs updates, and
+  restore the prior Python version constraint if downstream compatibility requires it.

@@ -17,6 +17,7 @@ from .state.packs import build_candidate_state_pack, publish_candidate_state_pac
 from .agent_runtime.capabilities import collect_agent_capabilities, collect_agent_doctor
 from .agent_runtime.context_loader import collect_context
 from .agent_runtime.kb_validator import validate_knowledge_base
+from .agent_runtime.release_workflow import collect_release_readiness
 from .agent_runtime.vcs_workflow import collect_vcs_readiness
 from .agent_runtime.work_item_loader import validate_work_items
 
@@ -173,6 +174,27 @@ def _cmd_vcs_ready(args: argparse.Namespace) -> int:
     return 0 if result["ready_for_commit"] else 1
 
 
+def _cmd_release_check(args: argparse.Namespace) -> int:
+    result = collect_release_readiness(Path(args.repo_root), ticket_id=args.ticket, skip_tests=args.skip_tests)
+    if args.json:
+        print(json.dumps(result, indent=2, sort_keys=True))
+    else:
+        package = result["package"]
+        print(f"package: {package.get('name')} {package.get('version')}")
+        print(f"requires_python: {package.get('requires_python')}")
+        print(f"validation_passed: {result['validation_passed']}")
+        print(f"ready_for_release_prep: {result['ready_for_release_prep']}")
+        print("planning_bridge:")
+        for path, exists in result["planning_bridge"].items():
+            print(f"- {path}: {'present' if exists else 'missing'}")
+        regression = result["regression_report"]
+        print(f"regression_report: {regression.get('path')} ({regression.get('test_count')} tests)")
+        print("required_release_note_fields:")
+        for field in result["required_release_note_fields"]:
+            print(f"- {field}")
+    return 0 if result["ready_for_release_prep"] else 1
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="pga")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -267,6 +289,13 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--skip-tests", action="store_true")
     p.add_argument("--json", action="store_true")
     p.set_defaults(func=_cmd_vcs_ready)
+
+    p = sub.add_parser("release-check")
+    p.add_argument("--ticket")
+    p.add_argument("--repo-root", default=".")
+    p.add_argument("--skip-tests", action="store_true")
+    p.add_argument("--json", action="store_true")
+    p.set_defaults(func=_cmd_release_check)
 
     return parser
 

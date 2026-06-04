@@ -1,0 +1,44 @@
+version: 0.1.0
+source_of_truth:
+  work_items: work/
+  roadmap: docs/ROADMAP.md
+  build_packet: docs/BUILD_PACKET_v0.1.md
+
+tracks:
+  deterministic_core:
+    current_ticket: T-0016
+    next:
+      - registry_driven_normalization
+      - full_registry_schema_coverage
+      - normalized_position_builder_hardening
+      - exception_report_contract
+  state_cache:
+    next:
+      - state_pack_validation_schema
+      - rollback_and_failed_publish_tests
+      - intraday_overlay_ordering
+      - hot_state_query_router
+  pjm_fundamentals:
+    next:
+      - official_source_docs_ingestion
+      - fixture_backed_pjm_adapter
+      - morning_summary_inputs
+      - prior_day_retrospective_inputs
+  forecasts:
+    next:
+      - latest_curve_hot_product
+      - revision_history_product
+      - retention_policy_enforcement
+      - plus_minus_14_day_view
+  visuals:
+    next:
+      - outage_gantt_service
+      - topology_hook_contract
+      - forward_price_heatmap_service
+      - textual_hot_state_screens
+  agent_tooling:
+    next:
+      - read_only_tool_manifest
+      - deterministic_context_bundles
+      - release_check_gate
+      - scenario_draft_only_tools

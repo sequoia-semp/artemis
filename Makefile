@@ -5,7 +5,7 @@ BOOTSTRAP_PYTHON ?= python3
 TICKET ?= T-0010
 CONTEXT_OUT ?= /tmp/artemis_$(TICKET)_context.json
 
-.PHONY: bootstrap test validate validate-registries validate-work-items validate-kb work-context agent-capabilities agent-doctor vcs-ready clean-local reset-venv
+.PHONY: bootstrap test validate validate-registries validate-work-items validate-kb work-context agent-capabilities agent-doctor vcs-ready release-check clean-local reset-venv
 
 bootstrap:
 	./scripts/bootstrap_dev.sh
@@ -35,6 +35,9 @@ agent-doctor: bootstrap
 
 vcs-ready: bootstrap
 	$(PGA) vcs-ready --ticket $(TICKET)
+
+release-check: bootstrap
+	$(PGA) release-check --ticket $(TICKET)
 
 clean-local:
 	rm -rf .pytest_cache

@@ -1,0 +1,41 @@
+id: T-0017
+type: ticket
+status: done
+title: Integrate release readiness and PJM MVP planning bridge
+owner: user
+risk: medium
+created_at: "2026-06-04"
+updated_at: "2026-06-04"
+epic: E-0002
+sprint: S-0003
+layer:
+  - release
+  - docs
+  - agent_runtime
+  - tests
+branch: codex/T-0016-registry-driven-normalization
+problem: >
+  Release readiness and PJM MVP planning references need to be available from the
+  main deterministic toolchain, not only as narrative docs.
+tasks:
+  - Add a pga release-check command.
+  - Align Python package metadata with Python 3.11+ project guidance.
+  - Add root PJM MVP spec and backlog bridge files.
+  - Update release docs and tests.
+acceptance_criteria:
+  - pga release-check reports package version, required Python, validation status, release-note fields, and planning bridge presence.
+  - Missing PJM MVP planning references are resolved.
+  - Release checks run without optional model wrappers.
+required_tests:
+  - make validate
+  - pga release-check --ticket T-0017 --skip-tests
+affected_files:
+  - pyproject.toml
+  - Makefile
+  - docs/RELEASE_PROCESS.md
+  - pjm_workbench_mvp_agent_spec.md
+  - pjm_workbench_mvp_backlog.yaml
+  - src/pga_workbench/agent_runtime/release_workflow.py
+  - src/pga_workbench/cli.py
+  - tests/test_release_workflow.py
+change_request_required: true

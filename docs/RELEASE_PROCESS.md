@@ -28,3 +28,21 @@ Release notes should include:
 - registry changes
 - tests run
 - known gaps
+
+## Release Readiness
+
+Run the deterministic release check before preparing a tag:
+
+```bash
+make release-check TICKET=T-####
+```
+
+For shells where `pga` is already available, the equivalent command is:
+
+```bash
+pga release-check --ticket T-####
+```
+
+This command reports package metadata, validation status, required release-note
+fields, the current regression report summary, and whether the PJM MVP planning
+bridge files are present.

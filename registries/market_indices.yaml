@@ -8,3 +8,10 @@ rules:
     default_shape: ATC
   gas:
     default_index_family: GDD
+    index_family_keywords:
+      GDD: GDD
+      LD1: LD1
+      IFERC: IFERC
+      BASIS: BASIS_TO_LD1
+      INDEX: GDD_INDEX_TO_IFERC
+      SWING: GDD_SWING

@@ -22,6 +22,8 @@ def test_governance_docs_exist():
         "docs/WRAPPER_ABSTRACTION_POLICY.md",
         "docs/AGENT_MODES.md",
         "planning/merge_intake.md",
+        "pjm_workbench_mvp_agent_spec.md",
+        "pjm_workbench_mvp_backlog.yaml",
     ]:
         assert (ROOT / relative).exists()
 
@@ -80,5 +82,6 @@ def test_vcs_policy_standardizes_local_venv_and_merge_flow():
     policy = (ROOT / "docs/VCS_POLICY.md").read_text(encoding="utf-8")
     assert "make bootstrap" in policy
     assert "make validate" in policy
+    assert "make release-check" in (ROOT / "docs/RELEASE_PROCESS.md").read_text(encoding="utf-8")
     assert "pga vcs-ready --ticket T-####" in policy
     assert "git push -u origin codex/T-####-slug" in policy
