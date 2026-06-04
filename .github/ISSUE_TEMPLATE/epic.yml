@@ -1,0 +1,10 @@
+name: Epic mirror
+description: Mirror a local Artemis epic. Local YAML remains canonical.
+body:
+  - type: input
+    id: local_epic
+    attributes:
+      label: Local epic file
+      placeholder: work/epics/E-0001-example.yaml
+    validations:
+      required: true

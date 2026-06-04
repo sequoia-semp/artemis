@@ -32,9 +32,17 @@
     "edit": "ask",
     "bash": {
       "python -m pytest -q": "allow",
+      "pga validate-registries": "allow",
+      "pga validate-work-items": "allow",
+      "pga work-context*": "allow",
+      "python -m pga_workbench.cli validate-registries": "allow",
+      "python -m pga_workbench.cli validate-work-items": "allow",
       "git status*": "allow",
       "git diff*": "allow",
       "git log*": "allow",
+      "git branch*": "allow",
+      "git fetch --all --prune": "allow",
+      "git ls-remote*": "allow",
       "uv *": "ask",
       "python -m pga_workbench*": "allow",
       "*": "ask"
@@ -54,6 +62,36 @@
       "permission": {
         "edit": "ask",
         "bash": "ask"
+      }
+    },
+    "review": {
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "python -m pytest -q": "allow",
+          "pga validate-registries": "allow",
+          "pga validate-work-items": "allow",
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "*": "ask"
+        }
+      }
+    },
+    "release": {
+      "permission": {
+        "edit": "ask",
+        "bash": {
+          "python -m pytest -q": "allow",
+          "pga validate-registries": "allow",
+          "pga validate-work-items": "allow",
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "git tag*": "ask",
+          "git push*": "ask",
+          "*": "ask"
+        }
       }
     }
   }

@@ -1,0 +1,30 @@
+id: T-0002
+type: ticket
+title: Add local-first VCS and release policy
+status: done
+owner: null
+epic: E-0001
+sprint: S-0001
+risk: medium
+created_at: "2026-06-04"
+updated_at: "2026-06-04"
+layer: [vcs, docs]
+branch: ticket/T-0001-vcs-workscope-and-local-agent
+problem: >
+  Artemis needs branch, merge, release, and versioning rules that do not depend on
+  paid GitHub features.
+tasks:
+  - Add VCS policy.
+  - Add release process.
+  - Document required pre-merge checks.
+acceptance_criteria:
+  - docs/VCS_POLICY.md exists.
+  - docs/RELEASE_PROCESS.md exists.
+  - Required checks include pytest and registry validation.
+required_tests:
+  - python -m pytest -q
+  - pga validate-registries
+affected_files:
+  - docs/VCS_POLICY.md
+  - docs/RELEASE_PROCESS.md
+change_request_required: false

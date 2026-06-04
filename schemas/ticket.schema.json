@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "allOf": [
+    {"$ref": "work_item.schema.json"},
+    {
+      "type": "object",
+      "properties": {
+        "type": {"const": "ticket"},
+        "epic": {"type": "string"},
+        "sprint": {"type": "string"},
+        "layer": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "vcs",
+              "docs",
+              "work_management",
+              "schema",
+              "registry",
+              "parser",
+              "valuation",
+              "agent_runtime",
+              "local_llm",
+              "agent_wrapper",
+              "knowledge_base",
+              "skills",
+              "release",
+              "tests"
+            ]
+          }
+        },
+        "branch": {"type": "string"},
+        "problem": {"type": "string"},
+        "tasks": {"type": "array", "items": {"type": "string"}},
+        "acceptance_criteria": {"type": "array", "items": {"type": "string"}},
+        "required_tests": {"type": "array", "items": {"type": "string"}},
+        "affected_files": {"type": "array", "items": {"type": "string"}},
+        "change_request_required": {"type": "boolean"}
+      },
+      "required": [
+        "epic",
+        "sprint",
+        "layer",
+        "branch",
+        "problem",
+        "tasks",
+        "acceptance_criteria",
+        "required_tests",
+        "affected_files",
+        "change_request_required"
+      ]
+    }
+  ]
+}

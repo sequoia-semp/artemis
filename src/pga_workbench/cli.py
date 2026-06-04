@@ -13,6 +13,8 @@ from .services.normalization import normalize_marks, normalize_positions, read_c
 from .services.pnl import run_pnl_attribution
 from .services.risk import read_historical_returns, run_historical_var
 from .state.packs import build_candidate_state_pack, publish_candidate_state_pack
+from .agent_runtime.context_loader import collect_context
+from .agent_runtime.work_item_loader import validate_work_items
 
 
 def _cmd_validate_registries(args: argparse.Namespace) -> int:
@@ -87,6 +89,24 @@ def _cmd_build_state_pack(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_work_context(args: argparse.Namespace) -> int:
+    context = collect_context(Path(args.repo_root), args.ticket, Path(args.config))
+    if args.output:
+        write_json(Path(args.output), context)
+        print(f"wrote work context for {args.ticket} to {args.output}")
+    else:
+        import json
+
+        print(json.dumps(context, indent=2, sort_keys=True))
+    return 0
+
+
+def _cmd_validate_work_items(args: argparse.Namespace) -> int:
+    validated = validate_work_items(Path(args.work_root), Path(args.schemas))
+    print(f"validated {len(validated)} work items")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="pga")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -142,6 +162,18 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--synthetic", action="store_true")
     p.add_argument("--shared-readonly", action="store_true")
     p.set_defaults(func=_cmd_build_state_pack)
+
+    p = sub.add_parser("work-context")
+    p.add_argument("--ticket", required=True)
+    p.add_argument("--config", default="local/llm_config.example.yaml")
+    p.add_argument("--repo-root", default=".")
+    p.add_argument("--output")
+    p.set_defaults(func=_cmd_work_context)
+
+    p = sub.add_parser("validate-work-items")
+    p.add_argument("--work-root", default="work")
+    p.add_argument("--schemas", default="schemas")
+    p.set_defaults(func=_cmd_validate_work_items)
 
     return parser
 

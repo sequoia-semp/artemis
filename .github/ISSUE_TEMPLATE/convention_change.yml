@@ -1,0 +1,10 @@
+name: Convention change mirror
+description: Mirror a local change request. Local YAML remains canonical.
+body:
+  - type: input
+    id: change_request
+    attributes:
+      label: Local change request file
+      placeholder: development/change_requests/CR-0001-example.yaml
+    validations:
+      required: true

@@ -1,0 +1,10 @@
+name: Ticket mirror
+description: Mirror a local Artemis ticket. Local YAML remains canonical.
+body:
+  - type: input
+    id: local_ticket
+    attributes:
+      label: Local ticket file
+      placeholder: work/tickets/T-0001-example.yaml
+    validations:
+      required: true

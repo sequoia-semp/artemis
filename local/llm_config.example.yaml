@@ -1,0 +1,25 @@
+provider: ollama
+
+ollama:
+  base_url: http://localhost:11434
+  default_model: qwen3-coder:30b
+
+context:
+  always_load:
+    - AGENTS.md
+    - llms.txt
+    - README.md
+    - docs/CONVENTIONS_LOCKED_v0.1.md
+    - development/CHANGE_POLICY.md
+  work_item_root: work/
+  max_file_bytes: 200000
+
+safety:
+  require_ticket: true
+  require_change_request_for:
+    - domain/
+    - registries/
+    - schemas/
+    - src/pga_workbench/
+  require_tests_for_behavior_change: true
+  forbid_direct_main_edits: true

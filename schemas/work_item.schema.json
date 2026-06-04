@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WorkItem",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "id": {"type": "string"},
+    "type": {"enum": ["epic", "sprint", "ticket"]},
+    "status": {"enum": ["planned", "ready", "active", "blocked", "review", "done", "rejected"]},
+    "title": {"type": "string"},
+    "owner": {"type": ["string", "null"]},
+    "risk": {"enum": ["low", "medium", "high", "critical"]},
+    "created_at": {"type": ["string", "null"]},
+    "updated_at": {"type": ["string", "null"]}
+  },
+  "required": ["id", "type", "status", "title", "risk"]
+}

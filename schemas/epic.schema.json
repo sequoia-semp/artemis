@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "allOf": [
+    {"$ref": "work_item.schema.json"},
+    {
+      "type": "object",
+      "properties": {
+        "type": {"const": "epic"},
+        "problem": {"type": "string"},
+        "success_criteria": {"type": "array", "items": {"type": "string"}}
+      },
+      "required": ["problem", "success_criteria"]
+    }
+  ]
+}
