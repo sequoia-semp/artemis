@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PriceSurfacePoint",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "as_of": {
+      "type": "string"
+    },
+    "index_id": {
+      "type": "string"
+    },
+    "location_id": {
+      "type": "string"
+    },
+    "commodity": {
+      "enum": [
+        "power",
+        "gas"
+      ]
+    },
+    "period_id": {
+      "type": "string"
+    },
+    "price": {
+      "type": "number"
+    },
+    "quote_unit": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "source_role": {
+      "type": "string"
+    },
+    "lineage": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "as_of",
+    "index_id",
+    "location_id",
+    "commodity",
+    "period_id",
+    "price",
+    "quote_unit"
+  ]
+}

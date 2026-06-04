@@ -1,0 +1,30 @@
+packet_name: power-gas-analytics-agent-packet
+version: 0.1.0
+status: design_and_starter_scaffold
+created_for: local_model_agnostic_power_gas_trading_analytics_workbench
+
+critical_conventions:
+  power_price_component: FULL_LMP
+  bare_power_index_default: RT
+  bare_gas_location_default_index_family: GDD
+  gas_contract_sizing: "1 contract = 0.25/d = 2500 MMBtu/day"
+  spread_notation: "FIRST/SECOND = FIRST - SECOND"
+  power_basis_edges: [WH/AD, AD/NI, WH/NI]
+  atc: "equal MW peak + equal MW offpeak"
+  vol_mvp: [WH, HH]
+
+primary_entrypoints:
+  - AGENTS.md
+  - docs/BUILD_PACKET_v0.1.md
+  - docs/CONVENTIONS_LOCKED_v0.1.md
+  - registries/
+  - schemas/
+  - src/pga_workbench/
+  - tests/
+
+implementation_slices:
+  slice_1: market_index_period_position_price_vol_normalization
+  slice_2: dd_reconciliation_and_linear_pnl_bridge
+  slice_3: wh_hh_vol_greeks
+  slice_4: pjm_gas_fundamentals_14d_view
+  slice_5: fair_value_bridge_and_dashboard

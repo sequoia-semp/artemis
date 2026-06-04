@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "QuotedSpread",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "spread_id": {
+      "type": "string"
+    },
+    "quote_label": {
+      "type": "string"
+    },
+    "commodity": {
+      "enum": [
+        "power",
+        "gas"
+      ]
+    },
+    "first_index_id": {
+      "type": "string"
+    },
+    "second_index_id": {
+      "type": "string"
+    },
+    "formula": {
+      "const": "first_minus_second"
+    },
+    "approved_orientation": {
+      "type": "boolean"
+    },
+    "quote_unit": {
+      "type": "string"
+    },
+    "basis_price_component": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "spread_id",
+    "quote_label",
+    "commodity",
+    "first_index_id",
+    "second_index_id",
+    "formula"
+  ]
+}

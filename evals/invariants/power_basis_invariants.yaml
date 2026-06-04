@@ -1,0 +1,4 @@
+allowed_edges: [WH/AD, AD/NI, WH/NI]
+forbidden_edges: [AD/WH, NI/AD, NI/WH]
+formula: first_minus_second
+price_component: FULL_LMP

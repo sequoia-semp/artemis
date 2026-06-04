@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RawPosition",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "as_of": {
+      "type": "string"
+    },
+    "raw_product": {
+      "type": "string"
+    },
+    "raw_period": {
+      "type": "string"
+    },
+    "raw_quantity": {
+      "type": "number"
+    },
+    "raw_mark": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "book": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "strategy": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "structure_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "as_of",
+    "raw_product",
+    "raw_period",
+    "raw_quantity"
+  ]
+}

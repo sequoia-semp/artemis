@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PeriodExpression",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "raw_label": {
+      "type": "string"
+    },
+    "normalized_label": {
+      "type": "string"
+    },
+    "period_type": {
+      "type": "string"
+    },
+    "months": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "delivery_start": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "delivery_end": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "commodity_context": {
+      "enum": [
+        "power",
+        "gas",
+        "generic"
+      ]
+    },
+    "strip_weighting_rule": {
+      "type": "string"
+    },
+    "balmo_excludes_next_day": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "raw_label",
+    "period_type",
+    "months",
+    "commodity_context"
+  ]
+}

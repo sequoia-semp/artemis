@@ -1,0 +1,12 @@
+# Optional LiteLLM gateway. The core package must not depend on this.
+model_list:
+  - model_name: local-coder
+    litellm_params:
+      model: ollama_chat/qwen3-coder:30b
+      api_base: http://localhost:11434
+      keep_alive: 30m
+  - model_name: local-fast
+    litellm_params:
+      model: ollama_chat/gpt-oss:20b
+      api_base: http://localhost:11434
+      keep_alive: 30m

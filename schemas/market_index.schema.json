@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MarketIndex",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "index_id": {
+      "type": "string"
+    },
+    "commodity": {
+      "enum": [
+        "power",
+        "gas"
+      ]
+    },
+    "location_id": {
+      "type": "string"
+    },
+    "index_family": {
+      "type": "string"
+    },
+    "market_run": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "DA",
+        "RT",
+        null
+      ]
+    },
+    "price_component": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "shape": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "quote_unit": {
+      "type": "string"
+    },
+    "is_defaulted": {
+      "type": "boolean"
+    },
+    "default_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "verification_status": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "index_id",
+    "commodity",
+    "location_id",
+    "index_family",
+    "quote_unit"
+  ]
+}

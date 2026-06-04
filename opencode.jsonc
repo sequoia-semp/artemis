@@ -1,0 +1,60 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  // Project-local OpenCode configuration template.
+  // This is optional; the core pga-workbench package must run without OpenCode.
+  "model": "ollama/qwen3-coder:30b",
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama (local)",
+      "options": {
+        "baseURL": "http://localhost:11434/v1"
+      },
+      "models": {
+        "qwen3-coder:30b": {
+          "name": "Qwen3 Coder 30B (local)",
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          }
+        },
+        "gpt-oss:20b": {
+          "name": "GPT-OSS 20B (local)",
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          }
+        }
+      }
+    }
+  },
+  "permission": {
+    "edit": "ask",
+    "bash": {
+      "python -m pytest -q": "allow",
+      "git status*": "allow",
+      "git diff*": "allow",
+      "git log*": "allow",
+      "uv *": "ask",
+      "python -m pga_workbench*": "allow",
+      "*": "ask"
+    },
+    "skill": {
+      "*": "allow"
+    }
+  },
+  "agent": {
+    "plan": {
+      "permission": {
+        "edit": "deny",
+        "bash": "ask"
+      }
+    },
+    "build": {
+      "permission": {
+        "edit": "ask",
+        "bash": "ask"
+      }
+    }
+  }
+}

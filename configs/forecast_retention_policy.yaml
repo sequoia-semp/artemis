@@ -1,0 +1,12 @@
+forecast_products:
+  latest_curve:
+    tier: hot
+  revisions_6h_12h_past_7d:
+    tier: hot_warm
+  older_exact_revisions:
+    tier: cold
+  historical_evolution:
+    tier: snapshots_and_stats
+
+semantic_rule:
+  latest_curves_and_revision_history_are_separate_products: true

@@ -1,0 +1,19 @@
+WH:
+  commodity: power
+  location_id: WH
+  status: in_mvp
+  model_convention: Black76
+  atm_definition: true_at_the_money_underlying_settle
+  skew_representation: diff_to_atm_iv
+
+HH:
+  commodity: gas
+  location_id: HH
+  status: in_mvp
+  model_convention: Black76
+  atm_definition: true_at_the_money_underlying_settle
+  skew_representation: diff_to_atm_iv
+
+DEFAULT_FOR_OTHER_LOCATIONS:
+  status: not_in_mvp
+  behavior: structured_exception_for_vol_analytics

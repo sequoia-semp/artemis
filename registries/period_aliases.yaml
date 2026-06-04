@@ -1,0 +1,28 @@
+month_codes:
+  F: Jan
+  G: Feb
+  H: Mar
+  J: Apr
+  K: May
+  M: Jun
+  N: Jul
+  Q: Aug
+  U: Sep
+  V: Oct
+  X: Nov
+  Z: Dec
+
+planning_year:
+  pattern: PY{YY}
+  months: Jun{YY}-May{YY+1}
+
+power_shorthand:
+  FG: Jan-Feb
+  NQ: Jul-Aug
+
+gas_seasons:
+  XH: Nov-Mar
+  JV: Apr-Oct
+
+balmo:
+  excludes_next_day: true

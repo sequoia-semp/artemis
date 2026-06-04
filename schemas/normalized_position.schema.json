@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NormalizedPosition",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "as_of": {
+      "type": "string"
+    },
+    "raw": {
+      "type": "object"
+    },
+    "identity": {
+      "type": "object"
+    },
+    "normalized": {
+      "type": "object"
+    },
+    "derived": {
+      "type": "object"
+    },
+    "decomposition": {
+      "type": "object"
+    },
+    "exceptions": {
+      "type": "array"
+    }
+  },
+  "required": [
+    "as_of",
+    "raw",
+    "normalized",
+    "derived"
+  ]
+}

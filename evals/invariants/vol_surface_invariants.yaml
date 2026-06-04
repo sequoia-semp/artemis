@@ -1,0 +1,4 @@
+mvp_locations: [WH, HH]
+model: Black76
+atm_definition: true_at_the_money_underlying_settle
+skew_representation: diff_to_atm_iv

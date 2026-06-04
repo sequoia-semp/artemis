@@ -1,0 +1,11 @@
+historical_var:
+  method: historical_simulation
+  horizon_days: 1
+  confidence_levels: [0.95, 0.99]
+  lookback_policy: approved_price_series_available_history
+  authoritative: deterministic_service_only
+
+greeks:
+  model_convention: Black76
+  mvp_locations: [WH, HH]
+  authoritative: deterministic_service_only

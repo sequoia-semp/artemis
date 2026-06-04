@@ -1,0 +1,26 @@
+GAS_DAY_DEFAULT:
+  commodity: gas
+  window_type: gas_day
+  timezone: TBD
+  start_rule: TBD
+  end_rule: TBD
+  rollup_method: arithmetic_average
+  status: approved_placeholder_pending_exact_hour_rule
+
+POWER_DAY_DEFAULT:
+  commodity: power
+  window_type: power_day
+  timezone: EPT
+  start_rule: calendar_power_day
+  end_rule: calendar_power_day
+  rollup_method: hour_weighted_average
+  status: approved_placeholder_pending_exact_hour_rule
+
+CROSS_COMMODITY_BLEND:
+  commodity: cross_commodity
+  window_type: blended
+  timezone: TBD
+  start_rule: purpose_specific
+  end_rule: purpose_specific
+  rollup_method: custom
+  status: candidate

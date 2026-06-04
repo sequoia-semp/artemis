@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RunManifest",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "run_id": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "agent_pack_version": {
+      "type": "string"
+    },
+    "inputs": {
+      "type": "array"
+    },
+    "outputs": {
+      "type": "array"
+    },
+    "tests": {
+      "type": "object"
+    },
+    "exceptions": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "run_id",
+    "created_at",
+    "agent_pack_version"
+  ]
+}

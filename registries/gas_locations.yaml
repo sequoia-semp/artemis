@@ -1,0 +1,81 @@
+HH:
+  display_name: Henry Hub
+  aliases: [HENRY, HENRY_HUB]
+  commodity: gas
+  pipe_group: Henry
+  region: Gulf
+  location_type: benchmark_hub
+  default_index_family: GDD
+  status: approved_core
+
+TETCO_M3:
+  display_name: TETCO M3
+  aliases: [TETCO-M3, TETCO M3, M3]
+  commodity: gas
+  pipe_group: TETCO
+  region: Northeast
+  location_type: pipeline_zone_or_index_point
+  default_index_family: GDD
+  status: approved_high_priority
+  official_spec_status: needs_ingestion
+
+TETCO_M2:
+  display_name: TETCO M2
+  aliases: [TETCO-M2, TETCO M2, M2]
+  commodity: gas
+  pipe_group: TETCO
+  region: Appalachia
+  location_type: pipeline_zone_or_index_point
+  default_index_family: GDD
+  status: approved_core
+
+TRANSCO_Z6_NNY:
+  display_name: Transco Zone 6 NNY
+  aliases: [TRANSCO Z6 NNY, Z6 NNY, TRANSCO-Z6-NNY]
+  commodity: gas
+  pipe_group: Transco
+  region: Northeast
+  location_type: pipeline_zone_or_citygate
+  default_index_family: GDD
+  status: approved_high_priority
+  official_spec_status: needs_ingestion
+
+TRANSCO_Z6_NY:
+  display_name: Transco Zone 6 NY
+  aliases: [TRANSCO Z6 NY, Z6 NY, TRANSCO-Z6-NY]
+  commodity: gas
+  pipe_group: Transco
+  region: Northeast
+  location_type: pipeline_zone_or_citygate
+  default_index_family: GDD
+  status: approved_core
+
+TRANSCO_Z5:
+  display_name: Transco Zone 5
+  aliases: [TRANSCO Z5, Z5, TRANSCO-Z5]
+  commodity: gas
+  pipe_group: Transco
+  region: Mid-Atlantic / Southeast
+  location_type: pipeline_zone_or_index_point
+  default_index_family: GDD
+  status: approved_core
+
+TRANSCO_Z5_SOUTH:
+  display_name: Transco Zone 5 South
+  aliases: [TRANSCO Z5 SOUTH, Z5 SOUTH, TRANSCO-Z5-SOUTH]
+  commodity: gas
+  pipe_group: Transco
+  region: Southeast
+  location_type: pipeline_zone_or_index_point
+  default_index_family: GDD
+  status: approved_core
+
+EASTERN_GAS_SOUTH:
+  display_name: Eastern Gas South
+  aliases: [EASTERN GAS SOUTH, EGS, APPALACHIA]
+  commodity: gas
+  pipe_group: Appalachia
+  region: Appalachia
+  location_type: index_region
+  default_index_family: GDD
+  status: approved_core
