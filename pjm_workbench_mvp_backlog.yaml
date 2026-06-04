@@ -5,6 +5,13 @@ source_of_truth:
   build_packet: docs/BUILD_PACKET_v0.1.md
 
 tracks:
+  artemis_core:
+    current_ticket: T-0018
+    next:
+      - tool_permission_registry
+      - analyst_view_engine
+      - data_source_descriptors
+      - backend_neutral_release_candidate
   deterministic_core:
     current_ticket: T-0016
     next:

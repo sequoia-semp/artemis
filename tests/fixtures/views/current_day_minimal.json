@@ -1,0 +1,12 @@
+{
+  "as_of": "2026-06-04",
+  "generated_at": "2026-06-04T13:00:00Z",
+  "data_environment": "development",
+  "market_scope": {
+    "commodity": "power",
+    "regions": ["PJM", "MISO", "NYISO", "ISO-NE"],
+    "exchange_scope": ["ICE"]
+  },
+  "inputs": {},
+  "summary": "Schema-valid current-day view from minimal deterministic inputs."
+}

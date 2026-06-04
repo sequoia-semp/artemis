@@ -4,7 +4,15 @@ import argparse
 import json
 from pathlib import Path
 
+import yaml
+
+from .agent.runtime import collect_artemis_capabilities, dump_config_yaml, load_artemis_config, validate_artemis_config
+from .analyst.view_engine import build_view, validate_view_manifest
 from .core.time import utc_now_iso
+from .data.sources import credential_env_names, validate_data_sources
+from .dev.coding_backend import validate_coding_backends
+from .dev.patch_context import collect_development_context
+from .dev.release import build_release_candidate
 from .models import RunManifest
 from .periods import parse_period
 from .registry import validate_registries
@@ -20,6 +28,7 @@ from .agent_runtime.kb_validator import validate_knowledge_base
 from .agent_runtime.release_workflow import collect_release_readiness
 from .agent_runtime.vcs_workflow import collect_vcs_readiness
 from .agent_runtime.work_item_loader import validate_work_items
+from .skills.validator import validate_skill_manifest
 
 
 def _cmd_validate_registries(args: argparse.Namespace) -> int:
@@ -195,6 +204,124 @@ def _cmd_release_check(args: argparse.Namespace) -> int:
     return 0 if result["ready_for_release_prep"] else 1
 
 
+def _cmd_artemis_config_show(args: argparse.Namespace) -> int:
+    config = load_artemis_config(Path(args.repo_root), Path(args.config) if args.config else None)
+    if args.json:
+        print(json.dumps(config, indent=2, sort_keys=True))
+    else:
+        print(dump_config_yaml(config))
+    return 0
+
+
+def _cmd_artemis_config_validate(args: argparse.Namespace) -> int:
+    config = validate_artemis_config(Path(args.repo_root), Path(args.config) if args.config else None)
+    print(f"validated artemis config {config['name']} {config['version']}")
+    return 0
+
+
+def _cmd_artemis_capabilities(args: argparse.Namespace) -> int:
+    capabilities = collect_artemis_capabilities(
+        Path(args.repo_root),
+        check_network=args.check_network,
+        config_path=Path(args.config) if args.config else None,
+    )
+    if args.json:
+        print(json.dumps(capabilities, indent=2, sort_keys=True))
+    else:
+        print(f"artemis: {capabilities['version']}")
+        print(f"recommended_mode: {capabilities['recommended_mode']}")
+        print("modes:")
+        for mode_name in sorted(capabilities.get("modes") or {}):
+            mode = capabilities["modes"][mode_name]
+            print(f"- {mode_name}: can_modify_repo={bool(mode.get('can_modify_repo'))}")
+        print(f"tools: {capabilities['tools']['count']}")
+        for tool_id, policy in sorted((capabilities["tools"].get("policy") or {}).items()):
+            print(f"- {tool_id}: risk={policy['risk']}, modes={','.join(policy['modes'])}")
+    return 0
+
+
+def _cmd_analyst_view_build(args: argparse.Namespace) -> int:
+    payload = read_json(Path(args.input))
+    view = build_view(
+        Path(args.repo_root),
+        args.template,
+        payload,
+        as_of=args.as_of,
+        allow_fixture=args.allow_fixture,
+    )
+    write_json(Path(args.output), view)
+    print(f"wrote {view['view_type']} view to {args.output}")
+    return 0
+
+
+def _cmd_data_sources_list(args: argparse.Namespace) -> int:
+    payload = validate_data_sources(Path(args.registry), Path(args.schemas))
+    if args.json:
+        print(json.dumps(payload, indent=2, sort_keys=True))
+    else:
+        for source_id, item in sorted((payload.get("data_sources") or {}).items()):
+            print(f"{source_id}: kind={item['kind']}, required={bool(item['required'])}")
+    return 0
+
+
+def _cmd_data_sources_validate(args: argparse.Namespace) -> int:
+    payload = validate_data_sources(Path(args.registry), Path(args.schemas))
+    env_names = credential_env_names(payload)
+    print(f"validated {len(payload.get('data_sources') or {})} data sources; credential_env_names={len(env_names)}")
+    return 0
+
+
+def _cmd_skill_validate(args: argparse.Namespace) -> int:
+    result = validate_skill_manifest(Path(args.repo_root), Path(args.schemas))
+    print(f"validated {result['skills']} skills")
+    return 0
+
+
+def _cmd_views_validate(args: argparse.Namespace) -> int:
+    result = validate_view_manifest(Path(args.repo_root), Path(args.schemas))
+    print(f"validated {result['templates']} view templates")
+    return 0
+
+
+def _cmd_dev_context(args: argparse.Namespace) -> int:
+    context = collect_development_context(Path(args.repo_root), args.ticket, Path(args.config) if args.config else None)
+    if args.output:
+        write_json(Path(args.output), context)
+        print(f"wrote development context for {args.ticket} to {args.output}")
+    else:
+        print(json.dumps(context, indent=2, sort_keys=True))
+    return 0
+
+
+def _cmd_dev_plan(args: argparse.Namespace) -> int:
+    context = collect_development_context(Path(args.repo_root), args.ticket, Path(args.config) if args.config else None)
+    ticket = context["ticket"]
+    print(f"ticket: {ticket['id']}")
+    print(f"title: {ticket['title']}")
+    print("tasks:")
+    for task in ticket.get("tasks") or []:
+        print(f"- {task}")
+    return 0
+
+
+def _cmd_dev_propose(args: argparse.Namespace) -> int:
+    validate_coding_backends(Path(args.repo_root))
+    print(f"proposal request accepted for {args.ticket}; backend={args.backend}; repo mutation remains approval-gated")
+    return 0
+
+
+def _cmd_release_candidate(args: argparse.Namespace) -> int:
+    candidate = build_release_candidate(Path(args.repo_root), args.ticket, target_version=args.target_version)
+    if args.output:
+        output = Path(args.output)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(yaml.safe_dump(candidate, sort_keys=False), encoding="utf-8")
+        print(f"wrote release candidate to {args.output}")
+    else:
+        print(yaml.safe_dump(candidate, sort_keys=False))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="pga")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -296,6 +423,98 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--skip-tests", action="store_true")
     p.add_argument("--json", action="store_true")
     p.set_defaults(func=_cmd_release_check)
+
+    p = sub.add_parser("capabilities")
+    p.add_argument("--repo-root", default=".")
+    p.add_argument("--config")
+    p.add_argument("--check-network", action="store_true")
+    p.add_argument("--json", action="store_true")
+    p.set_defaults(func=_cmd_artemis_capabilities)
+
+    p = sub.add_parser("config")
+    config_sub = p.add_subparsers(dest="config_command", required=True)
+    c = config_sub.add_parser("show")
+    c.add_argument("--repo-root", default=".")
+    c.add_argument("--config")
+    c.add_argument("--json", action="store_true")
+    c.set_defaults(func=_cmd_artemis_config_show)
+    c = config_sub.add_parser("validate")
+    c.add_argument("--repo-root", default=".")
+    c.add_argument("--config")
+    c.set_defaults(func=_cmd_artemis_config_validate)
+
+    p = sub.add_parser("analyst")
+    analyst_sub = p.add_subparsers(dest="analyst_command", required=True)
+    view = analyst_sub.add_parser("view")
+    view_sub = view.add_subparsers(dest="view_command", required=True)
+    b = view_sub.add_parser("build")
+    b.add_argument("--template", required=True)
+    b.add_argument("--as-of")
+    b.add_argument("--input", required=True)
+    b.add_argument("--output", required=True)
+    b.add_argument("--repo-root", default=".")
+    b.add_argument("--allow-fixture", action="store_true")
+    b.set_defaults(func=_cmd_analyst_view_build)
+
+    p = sub.add_parser("data-sources")
+    ds_sub = p.add_subparsers(dest="data_sources_command", required=True)
+    d = ds_sub.add_parser("list")
+    d.add_argument("--registry", default="registries/data_sources.yaml")
+    d.add_argument("--schemas", default="schemas")
+    d.add_argument("--json", action="store_true")
+    d.set_defaults(func=_cmd_data_sources_list)
+    d = ds_sub.add_parser("validate")
+    d.add_argument("--registry", default="registries/data_sources.yaml")
+    d.add_argument("--schemas", default="schemas")
+    d.set_defaults(func=_cmd_data_sources_validate)
+
+    p = sub.add_parser("skill")
+    skill_sub = p.add_subparsers(dest="skill_command", required=True)
+    s = skill_sub.add_parser("validate")
+    s.add_argument("--repo-root", default=".")
+    s.add_argument("--schemas", default="schemas")
+    s.set_defaults(func=_cmd_skill_validate)
+
+    p = sub.add_parser("views")
+    views_sub = p.add_subparsers(dest="views_command", required=True)
+    v = views_sub.add_parser("validate")
+    v.add_argument("--repo-root", default=".")
+    v.add_argument("--schemas", default="schemas")
+    v.set_defaults(func=_cmd_views_validate)
+
+    p = sub.add_parser("dev")
+    dev_sub = p.add_subparsers(dest="dev_command", required=True)
+    d = dev_sub.add_parser("context")
+    d.add_argument("--ticket", required=True)
+    d.add_argument("--repo-root", default=".")
+    d.add_argument("--config")
+    d.add_argument("--output")
+    d.set_defaults(func=_cmd_dev_context)
+    d = dev_sub.add_parser("plan")
+    d.add_argument("--ticket", required=True)
+    d.add_argument("--repo-root", default=".")
+    d.add_argument("--config")
+    d.set_defaults(func=_cmd_dev_plan)
+    d = dev_sub.add_parser("propose")
+    d.add_argument("--ticket", required=True)
+    d.add_argument("--backend", default="human")
+    d.add_argument("--repo-root", default=".")
+    d.set_defaults(func=_cmd_dev_propose)
+
+    p = sub.add_parser("release")
+    release_sub = p.add_subparsers(dest="release_command", required=True)
+    r = release_sub.add_parser("check")
+    r.add_argument("--ticket")
+    r.add_argument("--repo-root", default=".")
+    r.add_argument("--skip-tests", action="store_true")
+    r.add_argument("--json", action="store_true")
+    r.set_defaults(func=_cmd_release_check)
+    r = release_sub.add_parser("candidate")
+    r.add_argument("--ticket", required=True)
+    r.add_argument("--repo-root", default=".")
+    r.add_argument("--target-version", default="0.2.0")
+    r.add_argument("--output")
+    r.set_defaults(func=_cmd_release_candidate)
 
     return parser
 

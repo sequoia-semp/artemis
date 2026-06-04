@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ArtemisConfig",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "version": {"type": "string"},
+    "name": {"const": "artemis"},
+    "package": {"type": "string"},
+    "mission": {
+      "type": "object",
+      "required": ["type", "description"],
+      "properties": {
+        "type": {"type": "string"},
+        "description": {"type": "string"}
+      }
+    },
+    "authority": {
+      "type": "object",
+      "required": ["root_contract", "deterministic_core", "canonical_domain", "change_policy"],
+      "properties": {
+        "root_contract": {"type": "string"},
+        "deterministic_core": {"type": "array", "items": {"type": "string"}},
+        "canonical_domain": {"type": "array", "items": {"type": "string"}},
+        "change_policy": {"type": "string"}
+      }
+    },
+    "modes": {
+      "type": "object",
+      "required": ["analyst", "development"],
+      "properties": {
+        "analyst": {"$ref": "#/$defs/mode"},
+        "development": {"$ref": "#/$defs/mode"}
+      }
+    },
+    "roles": {"type": "object"},
+    "providers": {"type": "object"},
+    "tools": {
+      "type": "object",
+      "required": ["registry", "permissions"],
+      "properties": {
+        "registry": {"type": "string"},
+        "permissions": {"type": "string"}
+      }
+    },
+    "skills": {"type": "object"},
+    "views": {"type": "object"},
+    "data_sources": {"type": "object"},
+    "release": {"type": "object"}
+  },
+  "required": ["version", "name", "package", "mission", "authority", "modes", "roles", "providers", "tools", "skills", "views", "data_sources", "release"],
+  "$defs": {
+    "mode": {
+      "type": "object",
+      "required": ["description", "can_modify_repo", "default_tools"],
+      "properties": {
+        "description": {"type": "string"},
+        "can_modify_repo": {"type": "boolean"},
+        "can_write_workspace_outputs": {"type": "boolean"},
+        "can_update_canonical_kb": {"type": "boolean"},
+        "requires_ticket": {"type": "boolean"},
+        "requires_validation": {"type": "boolean"},
+        "default_tools": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

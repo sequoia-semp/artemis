@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ToolPermissions",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": {"type": "string"},
+    "risk_levels": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["approval", "can_modify_repo"],
+        "properties": {
+          "approval": {"enum": ["never", "optional", "required", "impossible"]},
+          "can_modify_repo": {"type": "boolean"},
+          "requires_ticket": {"type": "boolean"}
+        }
+      }
+    },
+    "mode_policy": {
+      "type": "object",
+      "required": ["analyst", "development"],
+      "additionalProperties": false,
+      "properties": {
+        "analyst": {"$ref": "#/$defs/modePolicy"},
+        "development": {"$ref": "#/$defs/modePolicy"}
+      }
+    }
+  },
+  "required": ["version", "risk_levels", "mode_policy"],
+  "$defs": {
+    "modePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowed_risks", "forbidden_risks"],
+      "properties": {
+        "allowed_risks": {"type": "array", "items": {"type": "string"}},
+        "forbidden_risks": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "as_of": "2026-06-04",
+  "generated_at": "2026-06-04T13:00:00Z",
+  "data_environment": "development",
+  "market_scope": {
+    "commodity": "power",
+    "regions": ["PJM"],
+    "exchange_scope": ["ICE"]
+  },
+  "inputs": {},
+  "summary": "Schema-valid forecast-versus-actual delta view from minimal deterministic inputs."
+}

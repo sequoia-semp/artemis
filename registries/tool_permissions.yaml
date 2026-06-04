@@ -1,0 +1,49 @@
+version: 0.1.0
+
+risk_levels:
+  read_only:
+    approval: never
+    can_modify_repo: false
+
+  workspace_write:
+    approval: optional
+    can_modify_repo: false
+
+  repo_write_requires_ticket:
+    approval: required
+    can_modify_repo: true
+    requires_ticket: true
+
+  release_candidate:
+    approval: required
+    can_modify_repo: true
+    requires_ticket: true
+
+  external_api:
+    approval: optional
+    can_modify_repo: false
+
+  forbidden:
+    approval: impossible
+    can_modify_repo: false
+
+mode_policy:
+  analyst:
+    allowed_risks:
+      - read_only
+      - workspace_write
+      - external_api
+    forbidden_risks:
+      - repo_write_requires_ticket
+      - release_candidate
+      - forbidden
+
+  development:
+    allowed_risks:
+      - read_only
+      - workspace_write
+      - repo_write_requires_ticket
+      - release_candidate
+      - external_api
+    forbidden_risks:
+      - forbidden

@@ -1,0 +1,49 @@
+version: 0.1.0
+
+data_sources:
+  file_drop:
+    kind: file
+    required: true
+    credentials: none
+    supported_contracts:
+      - market_prices
+      - positions
+      - trades
+      - fundamentals
+      - weather_forecast
+      - iso_load
+      - ice_settlements
+
+  vendor_api:
+    kind: vendor_api
+    required: false
+    credentials:
+      mode: env
+      required_env:
+        - ARTEMIS_VENDOR_API_KEY
+    supported_contracts:
+      - fundamentals
+      - weather_forecast
+      - market_prices
+
+  iso_api:
+    kind: iso_api
+    required: false
+    credentials:
+      mode: env
+      required_env: []
+    supported_contracts:
+      - iso_load
+      - outages
+      - fuel_mix
+
+  ice_exchange:
+    kind: ice_exchange
+    required: false
+    credentials:
+      mode: env
+      required_env:
+        - ARTEMIS_ICE_API_KEY
+    supported_contracts:
+      - ice_settlements
+      - forward_curves

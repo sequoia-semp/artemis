@@ -1,0 +1,21 @@
+id: opencode
+kind: coding_backend
+required: false
+authoritative: false
+
+capabilities:
+  propose_patch: true
+  review_diff: true
+  run_tests: true
+
+permissions:
+  repo_write: approval_required
+  shell: approval_required
+  forbidden:
+    - git push
+    - git tag
+    - pga build-state-pack --publish
+
+notes:
+  - Uses Artemis-generated development context.
+  - Does not define market conventions or analytics behavior.

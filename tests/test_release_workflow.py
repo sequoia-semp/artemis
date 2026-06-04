@@ -13,6 +13,7 @@ def test_release_readiness_reports_package_and_planning_bridge():
     result = collect_release_readiness(ROOT, ticket_id="T-0017", skip_tests=True)
 
     assert result["package"]["name"] == "pga-workbench"
+    assert result["package"]["version"] == "0.2.0"
     assert result["package"]["requires_python"] == ">=3.11"
     assert result["ticket"]["id"] == "T-0017"
     assert result["planning_bridge"]["pjm_workbench_mvp_agent_spec.md"] is True

@@ -1,0 +1,39 @@
+version: 0.1.0
+
+regions:
+  PJM:
+    display_name: PJM Interconnection
+    commodity_scope: [power]
+    interconnection: eastern
+    status: active
+
+  MISO:
+    display_name: Midcontinent ISO
+    commodity_scope: [power]
+    interconnection: eastern
+    status: planned
+
+  NYISO:
+    display_name: New York ISO
+    commodity_scope: [power]
+    interconnection: eastern
+    status: planned
+
+  ISO_NE:
+    display_name: ISO New England
+    aliases: [ISO-NE]
+    commodity_scope: [power]
+    interconnection: eastern
+    status: planned
+
+  SERC:
+    display_name: Southeast / SERC
+    commodity_scope: [power]
+    interconnection: eastern
+    status: planned
+
+  ICE:
+    display_name: ICE exchange data scope
+    commodity_scope: [power, gas]
+    interconnection: exchange
+    status: descriptor_only

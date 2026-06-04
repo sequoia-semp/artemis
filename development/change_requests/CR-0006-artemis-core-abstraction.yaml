@@ -1,0 +1,43 @@
+change_id: CR-0006
+title: Incorporate Artemis core abstraction proposal
+created_at: 2026-06-04T00:00:00Z
+change_class: 7
+severity: medium
+problem_statement: >
+  The Artemis implementation brief defines a repo-contained, model-agnostic agent
+  identity with Analyst and Development modes, but the deterministic toolchain only
+  exposes the older pga-centric commands and wrapper-evaluation scaffold.
+root_cause: >
+  Product identity, mode policy, tool permissions, view manifests, data-source
+  descriptors, and release-candidate flow evolved as proposal material before
+  becoming deterministic, testable repo artifacts.
+affected_files:
+  - artemis.yaml
+  - local/artemis.local.example.yaml
+  - pyproject.toml
+  - pjm_workbench_mvp_backlog.yaml
+  - registries/
+  - schemas/
+  - skills/
+  - views/
+  - integrations/coding_backends/
+  - src/pga_workbench/
+  - tests/
+tests_required:
+  - python -m pytest -q
+  - pga validate-registries
+  - pga validate-work-items
+  - pga validate-kb
+  - artemis config validate
+  - artemis capabilities
+  - artemis skill validate
+  - artemis views validate
+  - artemis data-sources validate
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-04T00:00:00Z
+rollback_plan: >
+  Remove the artemis console alias, config/manifests, new validators, registries,
+  descriptors, tests, and T-0018 planning references while preserving existing pga
+  command behavior and locked market conventions.

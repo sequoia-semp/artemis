@@ -1,0 +1,118 @@
+version: 0.2.0
+name: artemis
+package: pga-workbench
+
+mission:
+  type: power_gas_analytics_agent
+  description: Local, model-agnostic Power + Gas analytics and self-development agent.
+
+authority:
+  root_contract: AGENTS.md
+  deterministic_core:
+    - src/pga_workbench/
+    - tests/
+    - schemas/
+    - registries/
+  canonical_domain:
+    - domain/
+    - docs/CONVENTIONS_LOCKED_v0.1.md
+  change_policy: development/CHANGE_POLICY.md
+
+modes:
+  analyst:
+    description: Conversational analytics, views, dashboards, reports, and explanations.
+    can_modify_repo: false
+    can_write_workspace_outputs: true
+    can_update_canonical_kb: false
+    default_tools:
+      - kb_search
+      - skill_run
+      - parse_period
+      - analyst_view_build
+      - data_source_list
+  development:
+    description: Self-improvement paired with a coding backend or human developer.
+    can_modify_repo: true
+    requires_ticket: true
+    requires_validation: true
+    default_tools:
+      - dev_context
+      - work_context
+      - validate_repo
+      - release_check
+
+roles:
+  analyst_llm:
+    required: false
+    accepted_provider_kinds:
+      - openai_compatible
+      - external_harness
+      - none
+  coding_backend:
+    required: false
+    accepted_backend_kinds:
+      - external_harness
+      - human
+  chart_renderer:
+    required: false
+    accepted_renderer_kinds:
+      - tui
+      - browser
+      - static_html
+      - markdown
+      - json
+
+providers:
+  default_profile: deterministic_only
+  profiles:
+    deterministic_only:
+      kind: deterministic_only
+      required: false
+    local_ollama:
+      kind: openai_compatible
+      required: false
+      base_url: http://localhost:11434/v1
+      model: qwen3-coder:30b
+      api_key_env: OLLAMA_API_KEY
+
+backends:
+  coding:
+    default: human
+    options:
+      human:
+        descriptor: integrations/coding_backends/human.yaml
+      opencode:
+        descriptor: integrations/coding_backends/opencode.yaml
+      external_harness:
+        descriptor: integrations/coding_backends/external_harness.example.yaml
+
+tools:
+  registry: registries/tools.yaml
+  permissions: registries/tool_permissions.yaml
+
+knowledge:
+  manifest: knowledge_base/MANIFEST.yaml
+  validation_schema: schemas/knowledge_base_entry.schema.json
+
+skills:
+  manifest: skills/manifest.yaml
+  validation_schema: schemas/skill.schema.json
+
+views:
+  manifest: views/manifest.yaml
+  validation_schema: schemas/view.schema.json
+
+data_sources:
+  registry: registries/data_sources.yaml
+  validation_schema: schemas/data_source.schema.json
+
+release:
+  validation_commands:
+    - python -m pytest -q
+    - pga validate-registries
+    - pga validate-work-items
+    - pga validate-kb
+    - artemis config validate
+    - artemis skill validate
+    - artemis views validate
+    - artemis data-sources validate

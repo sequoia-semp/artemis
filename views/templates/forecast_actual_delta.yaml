@@ -1,0 +1,21 @@
+id: forecast_actual_delta
+view_type: forecast_actual_delta
+required_inputs: []
+optional_inputs:
+  - load_forecast
+  - actual_load
+  - weather_forecast
+  - vendor_fundamentals
+allowed_modes:
+  - analyst
+skill_refs:
+  - analyst.explain_forecast_actual_delta
+llm_role:
+  allowed:
+    - summarize
+    - explain
+    - rank_drivers
+  forbidden:
+    - invent_conventions
+    - define_product_mapping
+    - place_trades

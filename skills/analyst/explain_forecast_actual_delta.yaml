@@ -1,0 +1,24 @@
+id: analyst.explain_forecast_actual_delta
+class: analyst
+intent: Explain forecast-versus-actual deltas from deterministic inputs.
+inputs:
+  required: []
+  optional:
+    - load_forecast
+    - actual_load
+    - weather_forecast
+tools:
+  - analyst_view_build
+outputs:
+  - view.forecast_actual_delta
+llm_role:
+  allowed:
+    - summarize
+    - explain
+  forbidden:
+    - invent_conventions
+    - define_product_mapping
+    - place_trades
+validation:
+  schemas:
+    - schemas/view.schema.json

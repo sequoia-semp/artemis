@@ -1,0 +1,21 @@
+id: human
+kind: coding_backend
+required: false
+authoritative: false
+
+capabilities:
+  propose_patch: true
+  review_diff: true
+  run_tests: true
+
+permissions:
+  repo_write: human_controlled
+  shell: human_controlled
+  forbidden:
+    - git push without review
+    - git tag without review
+    - pga build-state-pack --publish
+
+notes:
+  - Human developer remains responsible for approval and promotion.
+  - Does not define market conventions or analytics behavior.
