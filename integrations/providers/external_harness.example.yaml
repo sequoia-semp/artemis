@@ -1,0 +1,11 @@
+id: external_harness
+kind: external_harness
+required: false
+authoritative: false
+
+capabilities:
+  model_invocation_owned_externally: true
+
+notes:
+  - Descriptor for Codex, ChatGPT, Claude Code, or another user-approved harness.
+  - Artemis remains authoritative through deterministic repo artifacts.

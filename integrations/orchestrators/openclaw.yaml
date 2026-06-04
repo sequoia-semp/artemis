@@ -1,0 +1,23 @@
+id: openclaw
+kind: orchestrator
+required: false
+authoritative: false
+initial_mode: read_only
+
+allowed_commands:
+  - artemis capabilities
+  - artemis config validate
+  - artemis dev context
+  - pga validate-registries
+  - pga validate-work-items
+
+forbidden_commands:
+  - pga build-state-pack --publish
+  - shared cache promotion
+  - source mapping changes
+  - convention changes
+  - trade submission
+
+notes:
+  - Optional outer orchestration descriptor only.
+  - Confirm local installation and sandbox posture before executable integration.

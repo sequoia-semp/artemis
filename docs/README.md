@@ -1,0 +1,43 @@
+# Artemis Docs
+
+Use this file as the docs entrypoint.
+
+## User Docs
+
+- `docs/user/configuration.md`
+- `docs/user/analyst_mode.md`
+- `docs/user/tui_roadmap.md`
+
+## Analyst Docs
+
+- `docs/analyst/fundamental_views.md`
+- `docs/analyst/data_sources.md`
+- `docs/analyst/eastern_power_scope.md`
+- `docs/analyst/ice_data_scope.md`
+
+## Developer Docs
+
+- `docs/developer/architecture.md`
+- `docs/developer/self_development.md`
+- `docs/developer/release_process.md`
+
+## Integration Docs
+
+- `integrations/README.md`
+- `integrations/providers/`
+- `integrations/coding_backends/`
+- `integrations/orchestrators/`
+
+## Authority And Design Records
+
+- `docs/CONVENTIONS_LOCKED_v0.1.md`
+- `docs/ARCHITECTURE.md`
+- `docs/architecture/power_gas_trading_agent_workbench.md`
+- `docs/BUILD_PACKET_v0.1.md`
+- `docs/AGENT_MODES.md`
+- `docs/WRAPPER_ABSTRACTION_POLICY.md`
+- `docs/AGENT_WRAPPER_EVALUATION.md`
+- `docs/OPENCODE_SETUP.md`
+
+Design records are useful historical context. They are not the primary control
+plane; current product configuration starts at `artemis.yaml`.

@@ -10,12 +10,15 @@
     "source_branch": {"type": "string"},
     "commit": {"type": ["string", "null"]},
     "created_at": {"type": "string"},
+    "package_version": {"type": "string"},
     "scope": {"type": "array", "items": {"type": "string"}},
     "changed_artifacts": {"type": "array", "items": {"type": "string"}},
+    "validation_commands": {"type": "array", "items": {"type": "string"}},
     "validation": {"type": "object"},
+    "manifest_hashes": {"type": "object"},
     "requires_human_review": {"type": "boolean"},
     "approved": {"type": "boolean"},
     "notes": {"type": "array", "items": {"type": "string"}}
   },
-  "required": ["id", "target_version", "base_branch", "source_branch", "created_at", "scope", "changed_artifacts", "validation", "requires_human_review", "approved", "notes"]
+  "required": ["id", "target_version", "base_branch", "source_branch", "created_at", "package_version", "scope", "changed_artifacts", "validation_commands", "validation", "manifest_hashes", "requires_human_review", "approved", "notes"]
 }

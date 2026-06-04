@@ -1,3 +1,10 @@
+legacy: true
+legacy_replacement: local/artemis.local.example.yaml
+legacy_note: >
+  Retained for older pga work-context callers and tests. Current Artemis
+  Development Mode context is built from artemis.yaml plus optional
+  local/artemis.local.yaml overrides.
+
 active_profile: deterministic_only
 
 profiles:

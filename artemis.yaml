@@ -68,12 +68,19 @@ providers:
     deterministic_only:
       kind: deterministic_only
       required: false
+      descriptor: integrations/providers/deterministic_only.yaml
     local_ollama:
       kind: openai_compatible
       required: false
+      descriptor: integrations/providers/openai_compatible.example.yaml
       base_url: http://localhost:11434/v1
       model: qwen3-coder:30b
       api_key_env: OLLAMA_API_KEY
+
+orchestrators:
+  openclaw:
+    descriptor: integrations/orchestrators/openclaw.yaml
+    required: false
 
 backends:
   coding:
@@ -116,3 +123,4 @@ release:
     - artemis skill validate
     - artemis views validate
     - artemis data-sources validate
+    - artemis capabilities

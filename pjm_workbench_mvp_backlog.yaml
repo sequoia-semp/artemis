@@ -2,16 +2,17 @@ version: 0.1.0
 source_of_truth:
   work_items: work/
   roadmap: docs/ROADMAP.md
-  build_packet: docs/BUILD_PACKET_v0.1.md
+  architecture: artemis.yaml
+  docs_index: docs/README.md
+  build_packet_design_record: docs/BUILD_PACKET_v0.1.md
 
 tracks:
   artemis_core:
-    current_ticket: T-0018
+    current_ticket: T-0019
     next:
-      - tool_permission_registry
-      - analyst_view_engine
-      - data_source_descriptors
-      - backend_neutral_release_candidate
+      - data_aware_analyst_view_inputs
+      - patch_proposal_backend_handoff
+      - tui_shell
   deterministic_core:
     current_ticket: T-0016
     next:

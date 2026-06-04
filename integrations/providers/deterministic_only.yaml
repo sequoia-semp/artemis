@@ -1,0 +1,12 @@
+id: deterministic_only
+kind: deterministic_only
+required: false
+authoritative: false
+
+capabilities:
+  model_calls: false
+  deterministic_tools: true
+
+notes:
+  - Default provider profile for Artemis.
+  - No model runtime is required.

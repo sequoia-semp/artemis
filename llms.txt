@@ -1,21 +1,46 @@
-# Power + Gas Analytics Workbench
+# Artemis Navigation Index
 
-This repository contains a model-agnostic Power + Gas Trading Analytics system.
+This repository is a model-agnostic Power + Gas Trading Analytics workbench.
 
-## Start here
+## Primary Entry Points
 
-- `AGENTS.md`: operating instructions for agents.
-- `docs/BUILD_PACKET_v0.1.md`: full architecture and scope.
-- `docs/CONVENTIONS_LOCKED_v0.1.md`: locked v0.1 market conventions.
-- `domain/`: canonical market conventions.
-- `registries/`: machine-readable approved product/index/location definitions.
-- `schemas/`: JSON schemas for normalized objects.
-- `analytics/`: deterministic calculation logic.
-- `src/pga_workbench/`: starter Python implementation.
-- `skills/`: reusable analytical procedures.
-- `evals/` and `tests/`: invariants and executable tests.
-- `development/`: controlled improvement process.
+- `AGENTS.md`: required coding-agent contract.
+- `artemis.yaml`: central config, modes, tools, manifests, data sources, and release validation commands.
+- `README.md`: product overview and core commands.
+- `docs/README.md`: docs index.
+- `pjm_workbench_mvp_agent_spec.md`: PJM MVP planning bridge.
+- `pjm_workbench_mvp_backlog.yaml`: current work tracks.
 
-## Most important rules
+## Authority Files
 
-Do not infer conventions. Do not reverse spreads. Do not value unknown products. Gas contract sizing is `.25/d` per contract. Fail closed with structured exceptions.
+- `docs/CONVENTIONS_LOCKED_v0.1.md`
+- `domain/source_policy.md`
+- `domain/market_index_model.md`
+- `domain/power_basis_conventions.md`
+- `domain/gas_index_families.md`
+- `domain/period_grammar.md`
+- `domain/units_and_quantities.md`
+- `development/CHANGE_POLICY.md`
+
+## Deterministic Artifacts
+
+- `src/pga_workbench/`
+- `registries/`
+- `schemas/`
+- `skills/manifest.yaml`
+- `views/manifest.yaml`
+- `tests/`
+
+## Current Commands
+
+```bash
+make validate
+artemis capabilities
+artemis dev context --ticket T-0019 --output /tmp/T-0019_context.json
+```
+
+## Rules
+
+Do not infer market conventions. Do not reverse quoted spread orientation. Do not
+silently normalize unknown products. Gas contract sizing is `.25/d` per contract.
+Fail closed with structured exceptions.

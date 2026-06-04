@@ -22,7 +22,9 @@ This repository defines a model-agnostic Power + Gas Trading Analytics workbench
 
 Read these before modifying behavior:
 
-- `docs/BUILD_PACKET_v0.1.md`
+- `artemis.yaml`
+- `README.md`
+- `docs/README.md`
 - `docs/CONVENTIONS_LOCKED_v0.1.md`
 - `domain/source_policy.md`
 - `domain/market_index_model.md`
@@ -31,6 +33,13 @@ Read these before modifying behavior:
 - `domain/period_grammar.md`
 - `domain/units_and_quantities.md`
 - `development/CHANGE_POLICY.md`
+- `registries/`
+- `schemas/`
+- `tests/`
+
+`docs/BUILD_PACKET_v0.1.md`, wrapper setup docs, and root legacy implementation
+briefs are design records or compatibility references. They do not override
+`artemis.yaml`, locked conventions, registries, schemas, tests, or this file.
 
 ## Required development flow
 
