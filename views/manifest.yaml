@@ -1,0 +1,27 @@
+version: 0.1.0
+
+templates:
+  - id: current_day
+    path: templates/current_day.yaml
+    skill_refs:
+      - analyst.build_current_day_view
+  - id: prior_day_retrospective
+    path: templates/prior_day_retrospective.yaml
+    skill_refs:
+      - analyst.build_prior_day_retrospective
+  - id: fourteen_day_fundamentals
+    path: templates/fourteen_day_fundamentals.yaml
+    skill_refs:
+      - analyst.build_fourteen_day_fundamental_view
+  - id: eastern_power_market
+    path: templates/eastern_power_market.yaml
+    skill_refs:
+      - analyst.build_eastern_power_view
+  - id: gas_basis_market
+    path: templates/gas_basis_market.yaml
+    skill_refs:
+      - analyst.build_gas_basis_view
+  - id: forecast_actual_delta
+    path: templates/forecast_actual_delta.yaml
+    skill_refs:
+      - analyst.explain_forecast_actual_delta

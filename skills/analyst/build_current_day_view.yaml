@@ -1,0 +1,27 @@
+id: analyst.build_current_day_view
+class: analyst
+intent: Build a current-day fundamental/market view.
+inputs:
+  required: []
+  optional:
+    - weather_forecast
+    - iso_load
+    - ice_settlements
+    - vendor_fundamentals
+tools:
+  - analyst_view_build
+outputs:
+  - view.current_day
+llm_role:
+  allowed:
+    - summarize
+    - synthesize
+    - explain
+    - rank_drivers
+  forbidden:
+    - invent_conventions
+    - define_product_mapping
+    - place_trades
+validation:
+  schemas:
+    - schemas/view.schema.json

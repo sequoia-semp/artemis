@@ -1,0 +1,21 @@
+id: external_harness
+kind: coding_backend
+required: false
+authoritative: false
+
+capabilities:
+  propose_patch: true
+  review_diff: true
+  run_tests: false
+
+permissions:
+  repo_write: approval_required
+  shell: approval_required
+  forbidden:
+    - git push
+    - git tag
+    - pga build-state-pack --publish
+
+notes:
+  - Descriptor for optional external coding backends.
+  - Does not define market conventions or analytics behavior.

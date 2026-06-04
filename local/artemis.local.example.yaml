@@ -1,0 +1,32 @@
+profiles:
+  local_ollama:
+    role_bindings:
+      analyst_llm:
+        kind: openai_compatible
+        base_url: http://localhost:11434/v1
+        model: qwen3-coder:30b
+        api_key_env: OLLAMA_API_KEY
+
+  opencode_dev:
+    role_bindings:
+      coding_backend:
+        kind: external_harness
+        command_template: "opencode run --agent build --file {context_file} {instruction}"
+
+  deterministic_only:
+    role_bindings:
+      analyst_llm:
+        kind: none
+
+data_sources:
+  example_vendor:
+    credentials:
+      mode: env
+      required_env:
+        - ARTEMIS_VENDOR_API_KEY
+
+  example_ice:
+    credentials:
+      mode: env
+      required_env:
+        - ARTEMIS_ICE_API_KEY

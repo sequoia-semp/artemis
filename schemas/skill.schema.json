@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SkillDescriptor",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "id": {"type": "string"},
+    "class": {"enum": ["analyst", "development", "reporting"]},
+    "intent": {"type": "string"},
+    "inputs": {
+      "type": "object",
+      "required": ["required", "optional"],
+      "properties": {
+        "required": {"type": "array", "items": {"type": "string"}},
+        "optional": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "tools": {"type": "array", "items": {"type": "string"}},
+    "outputs": {"type": "array", "items": {"type": "string"}},
+    "llm_role": {
+      "type": "object",
+      "required": ["allowed", "forbidden"],
+      "properties": {
+        "allowed": {"type": "array", "items": {"type": "string"}},
+        "forbidden": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "validation": {"type": "object"}
+  },
+  "required": ["id", "class", "intent", "inputs", "tools", "outputs", "llm_role", "validation"]
+}

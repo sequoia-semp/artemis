@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MarketPricesContract",
+  "$ref": "#/$defs/base",
+  "$defs": {
+    "base": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["source", "as_of", "ingested_at", "data_environment", "lineage_id", "raw_reference", "normalization_version"],
+      "properties": {
+        "source": {"type": "string"},
+        "as_of": {"type": "string"},
+        "ingested_at": {"type": "string"},
+        "data_environment": {"enum": ["production", "development", "fixture", "test"]},
+        "lineage_id": {"type": "string"},
+        "raw_reference": {"type": "string"},
+        "normalization_version": {"type": "string"}
+      }
+    }
+  }
+}

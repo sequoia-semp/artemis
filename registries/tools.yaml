@@ -1,0 +1,72 @@
+version: 0.1.0
+
+tools:
+  config_show:
+    command: artemis config show
+    risk: read_only
+    modes: [analyst, development]
+
+  config_validate:
+    command: artemis config validate
+    risk: read_only
+    modes: [analyst, development]
+
+  capabilities:
+    command: artemis capabilities
+    risk: read_only
+    modes: [analyst, development]
+
+  validate_registries:
+    command: pga validate-registries
+    risk: read_only
+    modes: [development]
+
+  validate_work_items:
+    command: pga validate-work-items
+    risk: read_only
+    modes: [development]
+
+  validate_kb:
+    command: pga validate-kb
+    risk: read_only
+    modes: [development]
+
+  work_context:
+    command: pga work-context
+    risk: read_only
+    modes: [development]
+
+  parse_period:
+    command: pga parse-period
+    risk: read_only
+    modes: [analyst, development]
+
+  analyst_view_build:
+    command: artemis analyst view build
+    risk: workspace_write
+    modes: [analyst]
+
+  data_source_list:
+    command: artemis data-sources list
+    risk: read_only
+    modes: [analyst, development]
+
+  dev_context:
+    command: artemis dev context
+    risk: read_only
+    modes: [development]
+
+  release_check:
+    command: artemis release check
+    risk: read_only
+    modes: [development]
+
+  release_candidate:
+    command: artemis release candidate
+    risk: release_candidate
+    modes: [development]
+
+  repo_patch:
+    command: artemis dev propose
+    risk: repo_write_requires_ticket
+    modes: [development]

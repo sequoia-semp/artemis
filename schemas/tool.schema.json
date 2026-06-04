@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ToolRegistry",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": {"type": "string"},
+    "tools": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["command", "risk", "modes"],
+        "properties": {
+          "command": {"type": "string"},
+          "risk": {"type": "string"},
+          "modes": {
+            "type": "array",
+            "items": {"enum": ["analyst", "development"]},
+            "minItems": 1
+          }
+        }
+      }
+    }
+  },
+  "required": ["version", "tools"]
+}

@@ -46,6 +46,32 @@ Do not revert this to `1 contract = 1.0/d`.
 | Fundamentals | models only / fixture ingestion only |
 | Local LLM harness | present, local-context scaffold only |
 | Work management | present, repo-native YAML work items |
+| Artemis CLI/config | present, M1 deterministic surface |
+| Analyst view engine | schema-backed skeleton |
+| Data-source descriptors | present, no live proprietary connectors |
+
+## Artemis CLI
+
+`artemis` is the user-facing alias for the same deterministic package entry point as `pga`.
+The older `pga` commands remain supported for normalization, validation, state packs, and
+release checks.
+
+Core M1 commands:
+
+```bash
+artemis config validate
+artemis capabilities
+artemis skill validate
+artemis views validate
+artemis data-sources validate
+artemis analyst view build --template current-day --input tests/fixtures/views/current_day_minimal.json --output /tmp/current_day_view.json
+artemis dev context --ticket T-0018 --output /tmp/T-0018_context.json
+artemis release check --ticket T-0018
+```
+
+Analyst Mode may build workspace outputs such as views, but it cannot mutate canonical repo
+files. Development Mode is ticket-gated and remains backend-neutral; optional wrappers such as
+OpenCode or local model runtimes are not authoritative.
 
 ## Local agent integration
 
@@ -80,6 +106,7 @@ See:
 - `integrations/`
 
 Use `pga agent-capabilities` to inspect optional wrapper availability. Missing optional wrappers must not break Artemis core.
+Use `artemis capabilities` to inspect the Artemis mode, provider, and tool-permission surface.
 
 Use `pga vcs-ready --ticket T-####` or `make vcs-ready TICKET=T-####` before committing and pushing a ticket branch.
 

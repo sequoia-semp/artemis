@@ -1,0 +1,28 @@
+id: analyst.build_fourteen_day_fundamental_view
+class: analyst
+intent: Build a plus/minus fourteen-day fundamentals view.
+inputs:
+  required: []
+  optional:
+    - load_forecast
+    - actual_load
+    - weather_forecast
+    - vendor_fundamentals
+    - ice_settlements
+tools:
+  - analyst_view_build
+outputs:
+  - view.fourteen_day_fundamentals
+llm_role:
+  allowed:
+    - summarize
+    - synthesize
+    - explain
+    - rank_drivers
+  forbidden:
+    - invent_conventions
+    - define_product_mapping
+    - place_trades
+validation:
+  schemas:
+    - schemas/view.schema.json

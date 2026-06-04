@@ -1,0 +1,24 @@
+version: 0.1.0
+
+skills:
+  - id: analyst.build_current_day_view
+    class: analyst
+    path: analyst/build_current_day_view.yaml
+  - id: analyst.build_prior_day_retrospective
+    class: analyst
+    path: analyst/build_prior_day_retrospective.yaml
+  - id: analyst.build_fourteen_day_fundamental_view
+    class: analyst
+    path: analyst/build_fourteen_day_fundamental_view.yaml
+  - id: analyst.explain_forecast_actual_delta
+    class: analyst
+    path: analyst/explain_forecast_actual_delta.yaml
+  - id: analyst.rank_fundamental_drivers
+    class: analyst
+    path: analyst/rank_fundamental_drivers.yaml
+  - id: analyst.build_gas_basis_view
+    class: analyst
+    path: analyst/build_gas_basis_view.yaml
+  - id: analyst.build_eastern_power_view
+    class: analyst
+    path: analyst/build_eastern_power_view.yaml

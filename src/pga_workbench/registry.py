@@ -158,6 +158,10 @@ def validate_registries(registry_dir: Path, schema_dir: Path) -> RegistryValidat
         "quoted_spreads.yaml": lambda data: _validate_quoted_spreads(data, _load_schema(schema_dir, "quoted_spread.schema.json")),
         "quantity_conventions.yaml": _validate_gas_quantity_convention,
         "vol_surface_universe.yaml": lambda data: _validate_vol_surface_universe(data, _load_schema(schema_dir, "vol_surface_universe_entry.schema.json")),
+        "tools.yaml": lambda data: _validate_mapping(data, _load_schema(schema_dir, "tool.schema.json"), "tools"),
+        "tool_permissions.yaml": lambda data: _validate_mapping(data, _load_schema(schema_dir, "tool_permissions.schema.json"), "tool_permissions"),
+        "data_sources.yaml": lambda data: _validate_mapping(data, _load_schema(schema_dir, "data_source.schema.json"), "data_sources"),
+        "market_regions.yaml": lambda data: _validate_mapping(data, _load_schema(schema_dir, "market_region.schema.json"), "market_regions"),
     }
 
     for path in sorted(registry_dir.glob("*.yaml")):

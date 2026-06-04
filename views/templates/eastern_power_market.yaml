@@ -1,0 +1,24 @@
+id: eastern_power_market
+view_type: eastern_power_market
+required_inputs: []
+optional_inputs:
+  - load_forecast
+  - actual_load
+  - weather_forecast
+  - ice_settlements
+  - iso_outages
+  - vendor_fundamentals
+allowed_modes:
+  - analyst
+skill_refs:
+  - analyst.build_eastern_power_view
+llm_role:
+  allowed:
+    - summarize
+    - synthesize
+    - explain
+    - rank_drivers
+  forbidden:
+    - invent_conventions
+    - define_product_mapping
+    - place_trades

@@ -1,0 +1,26 @@
+id: analyst.build_gas_basis_view
+class: analyst
+intent: Build a gas basis market view from approved gas semantics.
+inputs:
+  required: []
+  optional:
+    - ice_settlements
+    - forward_curves
+    - vendor_fundamentals
+tools:
+  - analyst_view_build
+outputs:
+  - view.gas_basis_market
+llm_role:
+  allowed:
+    - summarize
+    - synthesize
+    - explain
+    - rank_drivers
+  forbidden:
+    - invent_conventions
+    - define_product_mapping
+    - place_trades
+validation:
+  schemas:
+    - schemas/view.schema.json

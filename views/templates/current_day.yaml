@@ -1,0 +1,24 @@
+id: current_day
+view_type: current_day
+required_inputs: []
+optional_inputs:
+  - load_forecast
+  - actual_load
+  - weather_forecast
+  - ice_settlements
+  - iso_outages
+  - vendor_fundamentals
+allowed_modes:
+  - analyst
+skill_refs:
+  - analyst.build_current_day_view
+llm_role:
+  allowed:
+    - summarize
+    - synthesize
+    - explain
+    - rank_drivers
+  forbidden:
+    - invent_conventions
+    - define_product_mapping
+    - place_trades

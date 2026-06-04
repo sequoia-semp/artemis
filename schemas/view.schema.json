@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AnalystView",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "view_id": {"type": "string"},
+    "view_type": {"type": "string"},
+    "as_of": {"type": "string", "format": "date"},
+    "generated_at": {"type": "string"},
+    "market_scope": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["commodity", "regions"],
+      "properties": {
+        "commodity": {"type": "string"},
+        "regions": {"type": "array", "items": {"type": "string"}},
+        "exchange_scope": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "horizon": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "start_date", "center_date", "end_date"],
+      "properties": {
+        "type": {"type": "string"},
+        "start_date": {"type": "string", "format": "date"},
+        "center_date": {"type": "string", "format": "date"},
+        "end_date": {"type": "string", "format": "date"}
+      }
+    },
+    "mode": {"enum": ["analyst", "development"]},
+    "stance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["direction", "strength", "summary"],
+      "properties": {
+        "direction": {"type": "string"},
+        "strength": {"type": "string"},
+        "summary": {"type": "string"}
+      }
+    },
+    "summary": {"type": "string"},
+    "drivers": {"type": "array"},
+    "driver_deltas": {"type": "array"},
+    "forecast_actual_diffs": {"type": "array"},
+    "prior_day_retrospective": {"type": ["object", "null"]},
+    "current_day_view": {"type": ["object", "null"]},
+    "fourteen_day_outlook": {"type": ["object", "null"]},
+    "evidence": {"type": "array"},
+    "data_quality": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["missing_required_inputs", "stale_inputs", "fixture_mode"],
+      "properties": {
+        "missing_required_inputs": {"type": "array", "items": {"type": "string"}},
+        "stale_inputs": {"type": "array"},
+        "fixture_mode": {"type": "boolean"},
+        "data_environment": {"type": "string"}
+      }
+    },
+    "missing_inputs": {"type": "array", "items": {"type": "string"}},
+    "source_lineage": {"type": "array"},
+    "scenarios": {"type": "array"}
+  },
+  "required": [
+    "view_id",
+    "view_type",
+    "as_of",
+    "generated_at",
+    "market_scope",
+    "horizon",
+    "mode",
+    "stance",
+    "summary",
+    "drivers",
+    "driver_deltas",
+    "forecast_actual_diffs",
+    "prior_day_retrospective",
+    "current_day_view",
+    "fourteen_day_outlook",
+    "evidence",
+    "data_quality",
+    "missing_inputs",
+    "source_lineage",
+    "scenarios"
+  ]
+}

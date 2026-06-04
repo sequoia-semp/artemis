@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReleaseCandidate",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "id": {"type": "string"},
+    "target_version": {"type": "string"},
+    "base_branch": {"type": "string"},
+    "source_branch": {"type": "string"},
+    "commit": {"type": ["string", "null"]},
+    "created_at": {"type": "string"},
+    "scope": {"type": "array", "items": {"type": "string"}},
+    "changed_artifacts": {"type": "array", "items": {"type": "string"}},
+    "validation": {"type": "object"},
+    "requires_human_review": {"type": "boolean"},
+    "approved": {"type": "boolean"},
+    "notes": {"type": "array", "items": {"type": "string"}}
+  },
+  "required": ["id", "target_version", "base_branch", "source_branch", "created_at", "scope", "changed_artifacts", "validation", "requires_human_review", "approved", "notes"]
+}

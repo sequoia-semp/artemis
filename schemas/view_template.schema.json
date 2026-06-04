@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ViewTemplate",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "id": {"type": "string"},
+    "view_type": {"type": "string"},
+    "required_inputs": {"type": "array", "items": {"type": "string"}},
+    "optional_inputs": {"type": "array", "items": {"type": "string"}},
+    "allowed_modes": {"type": "array", "items": {"enum": ["analyst", "development"]}},
+    "skill_refs": {"type": "array", "items": {"type": "string"}},
+    "llm_role": {
+      "type": "object",
+      "required": ["allowed", "forbidden"],
+      "properties": {
+        "allowed": {"type": "array", "items": {"type": "string"}},
+        "forbidden": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  },
+  "required": ["id", "view_type", "required_inputs", "optional_inputs", "allowed_modes", "llm_role"]
+}

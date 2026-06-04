@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MarketRegionRegistry",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": {"type": "string"},
+    "regions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["display_name", "commodity_scope", "interconnection", "status"],
+        "properties": {
+          "display_name": {"type": "string"},
+          "aliases": {"type": "array", "items": {"type": "string"}},
+          "commodity_scope": {"type": "array", "items": {"enum": ["power", "gas"]}, "minItems": 1},
+          "interconnection": {"type": "string"},
+          "status": {"type": "string"}
+        }
+      }
+    }
+  },
+  "required": ["version", "regions"]
+}

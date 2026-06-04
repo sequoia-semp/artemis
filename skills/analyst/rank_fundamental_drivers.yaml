@@ -1,0 +1,25 @@
+id: analyst.rank_fundamental_drivers
+class: analyst
+intent: Rank supplied fundamental drivers without inventing missing inputs.
+inputs:
+  required: []
+  optional:
+    - weather_forecast
+    - iso_load
+    - iso_outages
+    - vendor_fundamentals
+tools:
+  - analyst_view_build
+outputs:
+  - view.driver_ranking
+llm_role:
+  allowed:
+    - summarize
+    - rank_drivers
+  forbidden:
+    - invent_conventions
+    - define_product_mapping
+    - place_trades
+validation:
+  schemas:
+    - schemas/view.schema.json
