@@ -1,0 +1,32 @@
+WH:
+  display_name: PJM Western Hub
+  commodity: power
+  iso_or_ba: PJM
+  location_type: hub
+  default_market_run: RT
+  default_price_component: FULL_LMP
+  supported_market_runs: [DA, RT]
+  supported_shapes: [PEAK, OFFPEAK, ATC]
+  status: approved_core
+
+AD:
+  display_name: AEP-Dayton Hub
+  commodity: power
+  iso_or_ba: PJM
+  location_type: hub
+  default_market_run: RT
+  default_price_component: FULL_LMP
+  supported_market_runs: [DA, RT]
+  supported_shapes: [PEAK, OFFPEAK, ATC]
+  status: approved_core
+
+NI:
+  display_name: Northern Illinois Hub
+  commodity: power
+  iso_or_ba: PJM
+  location_type: hub
+  default_market_run: RT
+  default_price_component: FULL_LMP
+  supported_market_runs: [DA, RT]
+  supported_shapes: [PEAK, OFFPEAK, ATC]
+  status: approved_core

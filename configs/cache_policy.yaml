@@ -1,0 +1,8 @@
+shared_cache:
+  publish_requires_validation: true
+  shared_readonly_can_publish: false
+  synthetic_can_publish_authoritative: false
+
+state_pack:
+  build_order: candidate_validate_publish_pointer_swap
+  current_pointer: current.json

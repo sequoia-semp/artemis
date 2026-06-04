@@ -1,0 +1,32 @@
+change_id: CR-0002
+title: Correct gas exchange contract sizing to .25/d per contract
+severity: critical
+change_class: 6
+
+problem_statement: >
+  Prior draft incorrectly described one gas contract as 1.0/d. User clarified that
+  a single contract should be considered .25/d.
+
+root_cause: >
+  Ambiguous shorthand was over-expanded without locking the desk convention.
+
+approved_convention:
+  convention_id: ICE_GAS_CONTRACT_0_25D_EQUIVALENT
+  one_contract_d_per_day: 0.25
+  one_contract_mmbtu_per_day: 2500
+  one_d_contracts: 4
+  one_d_mmbtu_per_day: 10000
+  total_mmbtu_formula: signed_contracts * 2500 * delivery_days
+
+tests_required:
+  - test_single_gas_contract_is_point25d
+  - test_one_d_is_four_contracts
+  - test_gas_total_mmbtu
+
+approval:
+  required: true
+  approved_by: user
+  approved_at: TBD
+
+rollback_plan: >
+  No rollback unless user explicitly revises quantity convention. This convention directly affects valuation.

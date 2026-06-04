@@ -1,0 +1,8 @@
+name: forecast_cycle_refresh
+status: future_slice_4
+steps:
+  - ingest_forecast_vintage
+  - normalize_delivery_windows
+  - compare_prior_forecast_vintage
+  - update_fundamental_surface
+  - produce_delta_report

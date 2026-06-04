@@ -1,0 +1,21 @@
+# Power + Gas Analytics Workbench
+
+This repository contains a model-agnostic Power + Gas Trading Analytics system.
+
+## Start here
+
+- `AGENTS.md`: operating instructions for agents.
+- `docs/BUILD_PACKET_v0.1.md`: full architecture and scope.
+- `docs/CONVENTIONS_LOCKED_v0.1.md`: locked v0.1 market conventions.
+- `domain/`: canonical market conventions.
+- `registries/`: machine-readable approved product/index/location definitions.
+- `schemas/`: JSON schemas for normalized objects.
+- `analytics/`: deterministic calculation logic.
+- `src/pga_workbench/`: starter Python implementation.
+- `skills/`: reusable analytical procedures.
+- `evals/` and `tests/`: invariants and executable tests.
+- `development/`: controlled improvement process.
+
+## Most important rules
+
+Do not infer conventions. Do not reverse spreads. Do not value unknown products. Gas contract sizing is `.25/d` per contract. Fail closed with structured exceptions.

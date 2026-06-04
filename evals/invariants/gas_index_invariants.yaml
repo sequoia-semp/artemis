@@ -1,0 +1,3 @@
+default_index_family: GDD
+recognized_location_without_family_defaults_to: GDD
+contract_sizing: "1 contract = 0.25/d = 2500 MMBtu/day"

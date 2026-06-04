@@ -1,0 +1,11 @@
+name: development_improvement_loop
+steps:
+  - observe_issue_or_request
+  - classify_change_class
+  - create_change_request
+  - design_abstraction
+  - add_tests
+  - implement_change
+  - run_regressions
+  - produce_diff_report
+  - require_approval_if_behavioral

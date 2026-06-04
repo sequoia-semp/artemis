@@ -1,0 +1,10 @@
+# Market indices are built from location + semantic fields.
+# This file is intentionally sparse in v0.1. Builders should generate canonical IDs.
+
+rules:
+  power:
+    default_market_run: RT
+    default_price_component: FULL_LMP
+    default_shape: ATC
+  gas:
+    default_index_family: GDD

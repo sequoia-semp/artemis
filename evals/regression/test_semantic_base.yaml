@@ -1,0 +1,10 @@
+regression_suite: semantic_base_v0_1
+must_pass:
+  - power basis allowed/forbidden orientation
+  - WH/NI decomposition identity
+  - bare power defaults to RT full LMP
+  - gas defaults to GDD
+  - gas single contract equals .25/d
+  - PY, XH, JV, FG, NQ period parsing
+  - ATC equal MW decomposition
+  - WH/HH vol only in MVP

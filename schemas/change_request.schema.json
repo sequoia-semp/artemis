@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ChangeRequest",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "change_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "change_class": {
+      "type": "integer"
+    },
+    "severity": {
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "problem_statement": {
+      "type": "string"
+    },
+    "root_cause": {
+      "type": "string"
+    },
+    "affected_files": {
+      "type": "array"
+    },
+    "tests_required": {
+      "type": "array"
+    },
+    "approval": {
+      "type": "object"
+    },
+    "rollback_plan": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "change_id",
+    "title",
+    "change_class",
+    "severity",
+    "problem_statement"
+  ]
+}

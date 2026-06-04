@@ -1,0 +1,44 @@
+# Product master seed. Do not treat this as exhaustive.
+# Official specs must be ingested and verified before product mechanics are considered official.
+
+PJM_WH_RT_FULL_LMP_ATC:
+  commodity: power
+  location_id: WH
+  market_run: RT
+  price_component: FULL_LMP
+  shape: ATC
+  status: user_approved_internal_index
+
+PJM_WH_DA_FULL_LMP_ATC:
+  commodity: power
+  location_id: WH
+  market_run: DA
+  price_component: FULL_LMP
+  shape: ATC
+  status: user_approved_internal_index
+
+GAS_HH_GDD:
+  commodity: gas
+  location_id: HH
+  index_family: GDD
+  status: user_approved_internal_index
+
+GAS_HH_LD1:
+  commodity: gas
+  location_id: HH
+  index_family: LD1
+  status: needs_official_spec_ingestion
+
+GAS_TETCO_M3_GDD:
+  commodity: gas
+  location_id: TETCO_M3
+  index_family: GDD
+  status: user_approved_high_priority
+  official_spec_status: needs_ingestion
+
+GAS_TRANSCO_Z6_NNY_GDD:
+  commodity: gas
+  location_id: TRANSCO_Z6_NNY
+  index_family: GDD
+  status: user_approved_high_priority
+  official_spec_status: needs_ingestion

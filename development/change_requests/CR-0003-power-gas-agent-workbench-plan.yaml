@@ -1,0 +1,26 @@
+change_id: CR-0003
+title: Power and Gas Trading Agent Workbench MVP implementation
+created_at: 2026-06-04T00:00:00Z
+change_class: 7
+severity: high
+problem_statement: >
+  The seed packet contains semantic conventions and starter tests but lacks the deterministic
+  services, state safety, risk outputs, and agent governance needed for the requested
+  power and gas trading assistant workbench.
+root_cause: planned_mvp_expansion
+affected_files:
+  - src/pga_workbench/
+  - configs/
+  - docs/architecture/
+  - tests/
+tests_required:
+  - registry validation
+  - normalization
+  - pnl attribution
+  - historical var
+  - Black76 greeks
+  - state pack publishing safety
+  - read-only agent controls
+approval:
+  status: proposed
+rollback_plan: revert CR-0003 implementation files and return to packet v0.1 baseline

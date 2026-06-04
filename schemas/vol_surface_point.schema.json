@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VolSurfacePoint",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "as_of": {
+      "type": "string"
+    },
+    "underlying_index_id": {
+      "type": "string"
+    },
+    "delivery_period_id": {
+      "type": "string"
+    },
+    "option_expiry": {
+      "type": "string"
+    },
+    "model_convention": {
+      "const": "Black76"
+    },
+    "atm": {
+      "type": "object"
+    },
+    "skew": {
+      "type": "object"
+    },
+    "status": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "as_of",
+    "underlying_index_id",
+    "delivery_period_id",
+    "model_convention",
+    "status"
+  ]
+}

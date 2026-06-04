@@ -1,0 +1,31 @@
+WH/AD:
+  commodity: power
+  first: WH
+  second: AD
+  formula: first_minus_second
+  basis_price_component: FULL_LMP
+  approved_orientation: true
+  decomposition: null
+
+AD/NI:
+  commodity: power
+  first: AD
+  second: NI
+  formula: first_minus_second
+  basis_price_component: FULL_LMP
+  approved_orientation: true
+  decomposition: null
+
+WH/NI:
+  commodity: power
+  first: WH
+  second: NI
+  formula: first_minus_second
+  basis_price_component: FULL_LMP
+  approved_orientation: true
+  decomposition: WH/AD + AD/NI
+
+FORBIDDEN_BY_DEFAULT:
+  - AD/WH
+  - NI/AD
+  - NI/WH

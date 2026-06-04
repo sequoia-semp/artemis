@@ -1,0 +1,45 @@
+change_id: CR-0001
+title: Add convention firewall after unsafe basis/product assumptions
+severity: critical
+change_class: 6
+
+problem_statement: >
+  Agent previously inferred unsafe power basis orientation and promoted an official
+  but unapproved ICE product into scope. This creates unacceptable convention risk.
+
+root_cause: >
+  Product existence, convention, and scope were not separated. Model inference was
+  allowed to act like market knowledge.
+
+new_rules:
+  - No inferred basis orientation.
+  - No product promoted into v1 solely because it appears in an exchange product list.
+  - User-approved convention overrides model inference.
+  - Official source required for exchange metadata.
+  - Unknown product/orientation fails closed.
+  - All power basis uses full LMP unless explicitly approved otherwise.
+
+approved_power_basis_edges:
+  - WH/AD
+  - AD/NI
+  - WH/NI
+
+forbidden_by_default:
+  - AD/WH
+  - NI/AD
+  - NI/WH
+
+tests_required:
+  - test_power_basis_allowed_edges
+  - test_power_basis_formula
+  - test_power_basis_decomposition
+  - test_short_canonical_power_basis
+  - test_unknown_product_fail_closed
+
+approval:
+  required: true
+  approved_by: user
+  approved_at: TBD
+
+rollback_plan: >
+  Revert convention firewall only by explicit user approval. Do not allow inferred basis orientation.

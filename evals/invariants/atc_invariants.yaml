@@ -1,0 +1,3 @@
+atc: equal_mw_peak_plus_offpeak
+valuation: sum_component_values
+display_price: hour_weighted_blend

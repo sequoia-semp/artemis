@@ -1,0 +1,7 @@
+name: ad_hoc_market_update
+status: future
+steps:
+  - load_latest_surfaces
+  - run_requested_normalization_or_reconciliation
+  - explain_material_changes
+  - flag_exceptions

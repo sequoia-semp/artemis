@@ -1,0 +1,10 @@
+- `market_index_normalization/SKILL.md`
+- `period_parsing/SKILL.md`
+- `spread_basis_decomposition/SKILL.md`
+- `atc_strip_decomposition/SKILL.md`
+- `position_normalization/SKILL.md`
+- `price_surface_normalization/SKILL.md`
+- `vol_surface_normalization/SKILL.md`
+- `pnl_bridge/SKILL.md`
+- `exception_diagnosis/SKILL.md`
+- `dashboard_narrative/SKILL.md`

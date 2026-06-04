@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExposureRecord",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "as_of": {
+      "type": "string"
+    },
+    "position_id": {
+      "type": "string"
+    },
+    "index_id": {
+      "type": "string"
+    },
+    "period_id": {
+      "type": "string"
+    },
+    "signed_quantity": {
+      "type": "number"
+    },
+    "quantity_unit": {
+      "type": "string"
+    },
+    "derived_MWh": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "derived_MMBtu": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "market_value": {
+      "type": [
+        "number",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "as_of",
+    "position_id",
+    "index_id",
+    "period_id",
+    "signed_quantity",
+    "quantity_unit"
+  ]
+}

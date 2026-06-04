@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DeliveryWindowPolicy",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "policy_id": {
+      "type": "string"
+    },
+    "commodity": {
+      "enum": [
+        "gas",
+        "power",
+        "cross_commodity"
+      ]
+    },
+    "window_type": {
+      "type": "string"
+    },
+    "timezone": {
+      "type": "string"
+    },
+    "start_rule": {
+      "type": "string"
+    },
+    "end_rule": {
+      "type": "string"
+    },
+    "rollup_method": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "policy_id",
+    "commodity",
+    "window_type",
+    "rollup_method"
+  ]
+}

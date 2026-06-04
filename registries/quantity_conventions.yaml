@@ -1,0 +1,15 @@
+POWER_MW:
+  commodity: power
+  raw_quantity_unit: MW
+  derived_unit: MWh
+  formula: signed_MW * reference_hours
+
+ICE_GAS_CONTRACT_0_25D_EQUIVALENT:
+  commodity: gas
+  raw_quantity_unit: contracts
+  d_per_contract: 0.25
+  mmbtu_per_contract_per_day: 2500
+  contracts_per_1d: 4
+  mmbtu_per_1d_per_day: 10000
+  total_mmbtu_formula: signed_contracts * 2500 * delivery_days
+  status: approved_v0_1

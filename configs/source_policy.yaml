@@ -1,0 +1,10 @@
+authoritative_inputs:
+  positions: local_csv_or_table_until_sql_hardening
+  marks: local_csv_or_table_until_sql_hardening
+  fundamentals: pjm_official_first
+  forecasts: pjm_official_first
+
+source_rules:
+  live_api_docs_must_be_committed_before_canonical_adapter: true
+  preserve_raw_normalized_source_timestamp_lineage: true
+  llm_inference_is_candidate_only: true

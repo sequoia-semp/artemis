@@ -1,0 +1,14 @@
+name: daily_batch
+status: future_slice_2
+steps:
+  - validate_registries
+  - normalize_market_indices
+  - parse_periods
+  - normalize_prices
+  - normalize_positions
+  - build_exposures
+  - reconcile_positions
+  - reconcile_marks
+  - build_linear_pnl_bridge
+  - produce_exception_report
+  - produce_run_manifest
