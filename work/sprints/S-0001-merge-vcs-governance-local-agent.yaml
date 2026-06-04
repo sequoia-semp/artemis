@@ -13,8 +13,14 @@ tickets:
   - T-0003
   - T-0004
   - T-0005
+  - T-0006
+  - T-0007
+  - T-0008
 acceptance_criteria:
   - Governance docs are present.
   - Work item schemas and initial tickets are present.
   - Local LLM context loader is present and tested.
+  - OpenCode setup and hardening are documented.
+  - KB/skill release loop is documented.
+  - OpenClaw and Hermes wrapper posture is documented.
   - Existing analytics tests still pass.

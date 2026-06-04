@@ -43,4 +43,4 @@ def test_required_common_fields_exist_for_initial_work_items():
 def test_validate_work_items():
     validated = validate_work_items(ROOT / "work", ROOT / "schemas")
     assert any(path.endswith("T-0001-merge-existing-branch.yaml") for path in validated)
-    assert len(validated) == 7
+    assert len(validated) == 10

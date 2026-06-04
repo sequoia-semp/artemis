@@ -13,6 +13,9 @@ def test_governance_docs_exist():
         "docs/RELEASE_PROCESS.md",
         "docs/LOCAL_LLM.md",
         "docs/CODEX_WORKFLOW.md",
+        "docs/OPENCODE_SETUP.md",
+        "docs/AGENT_KB_SKILL_RELEASE_LOOP.md",
+        "docs/AGENT_WRAPPER_EVALUATION.md",
         "planning/merge_intake.md",
     ]:
         assert (ROOT / relative).exists()
@@ -39,3 +42,18 @@ def test_github_templates_point_to_local_canonical_files():
         if path.is_file():
             text = path.read_text(encoding="utf-8")
             assert "Local" in text or "local" in text
+
+
+def test_opencode_config_keeps_mutations_approval_gated():
+    text = (ROOT / "opencode.jsonc").read_text(encoding="utf-8")
+    assert '"*": "ask"' in text
+    assert '"git push*": "ask"' in text
+    assert '"git tag*": "ask"' in text
+    assert '"pga validate-work-items": "allow"' in text
+
+
+def test_agent_release_docs_preserve_deterministic_authority():
+    release_loop = (ROOT / "docs/AGENT_KB_SKILL_RELEASE_LOOP.md").read_text(encoding="utf-8")
+    wrapper_eval = (ROOT / "docs/AGENT_WRAPPER_EVALUATION.md").read_text(encoding="utf-8")
+    assert "Prompt-only analytics are not authoritative" in release_loop
+    assert "not as the source of analytics truth" in wrapper_eval

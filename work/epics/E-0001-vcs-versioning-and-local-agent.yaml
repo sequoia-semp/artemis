@@ -14,3 +14,6 @@ success_criteria:
   - VCS and release policies exist.
   - Local YAML work items are canonical.
   - Local LLM context loading works without a paid provider.
+  - OpenCode hardening and POC flow are documented.
+  - Agent KB and skill release boundaries are documented.
+  - Optional wrappers are evaluated without adding required external dependencies.

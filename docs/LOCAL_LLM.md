@@ -23,3 +23,9 @@ The context loader does not call a model. It returns a deterministic context bun
 ## Safety
 
 Any update to canonical knowledge, domain rules, schemas, registries, or source code must go through reviewed work items, change requests when required, and tests.
+
+See also:
+
+- `docs/OPENCODE_SETUP.md`
+- `docs/AGENT_KB_SKILL_RELEASE_LOOP.md`
+- `docs/AGENT_WRAPPER_EVALUATION.md`

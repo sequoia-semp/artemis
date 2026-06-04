@@ -21,6 +21,10 @@
               "valuation",
               "agent_runtime",
               "local_llm",
+              "agent_wrapper",
+              "knowledge_base",
+              "skills",
+              "release",
               "tests"
             ]
           }
