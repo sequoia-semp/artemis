@@ -1,0 +1,21 @@
+active_profile: deterministic_only
+
+profiles:
+  deterministic_only:
+    enabled: true
+    required: false
+    provider_kind: none
+
+context:
+  always_load:
+    - AGENTS.md
+    - llms.txt
+    - README.md
+    - docs/CONVENTIONS_LOCKED_v0.1.md
+    - docs/archive/wrappers/OPENCODE_SETUP.md
+    - development/CHANGE_POLICY.md
+  work_item_root: work/
+  max_file_bytes: 200000
+
+safety:
+  require_ticket: true

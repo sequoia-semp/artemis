@@ -28,21 +28,10 @@ Primary orientation files:
 - `artemis.yaml`: central config, mode, tool, manifest, and release map.
 - `docs/README.md`: user, analyst, developer, integration, and design-record index.
 
-Historical build-packet and wrapper docs are compatibility/design records. They do
-not override `AGENTS.md`, `artemis.yaml`, locked domain conventions, schemas,
-registries, or tests.
-
-## Critical Convention
-
-Gas exchange contract sizing uses the `.25/d` convention:
-
-```text
-1 contract = 0.25/d = 2,500 MMBtu/day
-1.0/d = 4 contracts = 10,000 MMBtu/day
-total MMBtu = contracts x 2,500 x delivery days
-```
-
-Do not revert this to `1 contract = 1.0/d`.
+Historical build-packet and wrapper docs are archive/design records. They do not
+override `AGENTS.md`, `artemis.yaml`, locked domain conventions, schemas,
+registries, or tests. Domain convention details live in `domain/`,
+`docs/CONVENTIONS_LOCKED_v0.1.md`, and regression tests.
 
 ## Core Commands
 

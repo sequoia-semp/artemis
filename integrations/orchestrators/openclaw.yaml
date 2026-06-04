@@ -3,6 +3,7 @@ kind: orchestrator
 required: false
 authoritative: false
 initial_mode: read_only
+readonly_manifest: integrations/orchestrators/openclaw_tools.readonly.yaml
 
 allowed_commands:
   - artemis capabilities

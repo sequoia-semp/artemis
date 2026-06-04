@@ -1,0 +1,43 @@
+change_id: CR-0008
+title: Foundation architecture cleanup and root contract hardening
+created_at: 2026-06-04T00:00:00Z
+change_class: 7
+severity: medium
+problem_statement: >
+  Artemis has a consolidated control plane, but root/product entrypoints still
+  expose legacy planning files, wrapper configuration, and individual market
+  convention math. This weakens the workflow-traced architecture contract.
+root_cause: >
+  Earlier cleanup preserved compatibility files in primary locations. The root
+  entrypoint layer needs a stricter allowlist and legacy artifacts need archive
+  or descriptor locations.
+affected_files:
+  - README.md
+  - AGENTS.md
+  - llms.txt
+  - docs/README.md
+  - docs/archive/
+  - work/backlog/
+  - local/llm_config.example.yaml
+  - opencode.jsonc
+  - integrations/
+  - src/pga_workbench/agent_runtime/release_workflow.py
+  - tests/
+tests_required:
+  - python -m pytest -q
+  - make validate
+  - artemis config validate
+  - artemis capabilities
+  - artemis skill validate
+  - artemis views validate
+  - artemis data-sources validate
+  - artemis dev context --ticket T-0019 --output /tmp/T-0019_context.json
+  - pga work-context --ticket T-0019 --output /tmp/T-0019_pga_context.json
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-04T00:00:00Z
+rollback_plan: >
+  Restore archived root planning files, previous root OpenCode config, previous
+  local LLM example, and prior tests if downstream tooling requires the older
+  root layout.

@@ -1,51 +1,6 @@
 legacy: true
 legacy_replacement: local/artemis.local.example.yaml
 legacy_note: >
-  Retained for older pga work-context callers and tests. Current Artemis
-  Development Mode context is built from artemis.yaml plus optional
-  local/artemis.local.yaml overrides.
-
-active_profile: deterministic_only
-
-profiles:
-  deterministic_only:
-    enabled: true
-    required: false
-    provider_kind: none
-    description: "No model runtime required. Generate context bundles and run deterministic checks."
-
-  local_ollama:
-    enabled: true
-    required: false
-    provider_kind: openai_compatible
-    base_url: http://localhost:11434/v1
-    api_key_env: OLLAMA_API_KEY
-    default_model: qwen3-coder:30b
-    description: "Optional local model runtime."
-
-  external_harness:
-    enabled: true
-    required: false
-    provider_kind: external
-    notes: "Used when OpenCode, Codex, Claude Code, or another wrapper owns model invocation."
-    description: "OpenCode, Codex, ChatGPT, Claude Code, or another user-permitted harness owns model invocation."
-
-context:
-  always_load:
-    - AGENTS.md
-    - llms.txt
-    - README.md
-    - docs/CONVENTIONS_LOCKED_v0.1.md
-    - development/CHANGE_POLICY.md
-  work_item_root: work/
-  max_file_bytes: 200000
-
-safety:
-  require_ticket: true
-  require_change_request_for:
-    - domain/
-    - registries/
-    - schemas/
-    - src/pga_workbench/
-  require_tests_for_behavior_change: true
-  forbid_direct_main_edits: true
+  Retained only so older file references fail informatively. Current Artemis
+  local configuration uses local/artemis.local.example.yaml and untracked
+  local/artemis.local.yaml.

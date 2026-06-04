@@ -8,8 +8,6 @@ This repository is a model-agnostic Power + Gas Trading Analytics workbench.
 - `artemis.yaml`: central config, modes, tools, manifests, data sources, and release validation commands.
 - `README.md`: product overview and core commands.
 - `docs/README.md`: docs index.
-- `pjm_workbench_mvp_agent_spec.md`: PJM MVP planning bridge.
-- `pjm_workbench_mvp_backlog.yaml`: current work tracks.
 
 ## Authority Files
 
@@ -41,6 +39,5 @@ artemis dev context --ticket T-0019 --output /tmp/T-0019_context.json
 
 ## Rules
 
-Do not infer market conventions. Do not reverse quoted spread orientation. Do not
-silently normalize unknown products. Gas contract sizing is `.25/d` per contract.
-Fail closed with structured exceptions.
+Follow `AGENTS.md`. Treat market conventions as locked authority owned by
+domain/convention files, registries, schemas, and tests.

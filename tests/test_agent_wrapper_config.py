@@ -37,12 +37,16 @@ def _load_jsonc(path: Path):
     return json.loads("".join(without_comments))
 
 
-def test_root_opencode_config_keeps_permissions_conservative():
+def test_root_opencode_config_is_permissions_only_shim():
     path = ROOT / "opencode.jsonc"
     text = path.read_text(encoding="utf-8")
     config = _load_jsonc(path)
     bash = config["permission"]["bash"]
-    assert "OpenCode is optional" in text
+
+    assert "Compatibility shim only" in text
+    assert "AGENTS.md plus artemis.yaml" in text
+    assert "model" not in config
+    assert "provider" not in config
     assert config["permission"]["edit"] == "ask"
     assert bash["*"] == "ask"
     assert bash["git push*"] == "ask"
@@ -50,19 +54,17 @@ def test_root_opencode_config_keeps_permissions_conservative():
     assert bash["pga build-state-pack*"] == "ask"
     assert bash["pga normalize-*"] == "ask"
     assert bash["pga run-*"] == "ask"
-    assert bash["python -m pga_workbench*"] == "ask"
-    assert "enabled_providers" not in text
 
 
-def test_wrapper_docs_and_examples_exist():
-    assert (ROOT / "docs/WRAPPER_ABSTRACTION_POLICY.md").exists()
-    assert (ROOT / "docs/AGENT_MODES.md").exists()
-    assert (ROOT / "integrations/opencode/opencode.ollama.example.jsonc").exists()
-    assert (ROOT / "integrations/opencode/opencode.external-model.example.jsonc").exists()
+def test_optional_backend_provider_orchestrator_examples_live_under_descriptor_dirs():
+    assert (ROOT / "integrations/coding_backends/opencode/opencode.ollama.example.jsonc").exists()
+    assert (ROOT / "integrations/coding_backends/opencode/opencode.external-model.example.jsonc").exists()
+    assert (ROOT / "integrations/providers/ollama_model_profiles.legacy.yaml").exists()
+    assert (ROOT / "integrations/orchestrators/openclaw_tools.readonly.yaml").exists()
 
 
 def test_openclaw_manifest_is_readonly_and_blocks_publish():
-    manifest = yaml.safe_load((ROOT / "integrations/openclaw/artemis_tools.readonly.yaml").read_text(encoding="utf-8"))
+    manifest = yaml.safe_load((ROOT / "integrations/orchestrators/openclaw_tools.readonly.yaml").read_text(encoding="utf-8"))
     assert manifest["mode"] == "readonly"
     tools = manifest["tools"]
     allowed_commands = [item.get("command", "") for item in tools.values() if item.get("allowed") is True]
