@@ -46,8 +46,10 @@ affected_files:
   - .opencode/commands/artemis-context.md
   - .opencode/commands/artemis-review-ticket.md
   - .opencode/commands/artemis-validate.md
+  - .agents/skills/spread-basis-decomposition/SKILL.md
   - docs/developer/native_workflow.md
   - tests/test_governance_files.py
+  - tests/test_context_audit.py
   - tests/test_docs_native_workflow.py
 change_request_required: true
 implemented_at: "2026-06-05T00:00:00Z"

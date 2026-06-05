@@ -1,6 +1,6 @@
 ---
 name: spread-basis-decomposition
-description: Decompose quoted first/second spreads and approved power basis edges into leg exposures.
+description: Compatibility shim for canonical spread and basis decomposition.
 compatibility: opencode
 metadata:
   canonical: skills/spread_basis_decomposition/SKILL.md

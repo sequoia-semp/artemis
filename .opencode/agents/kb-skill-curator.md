@@ -15,7 +15,13 @@ permission:
 
 You are the Artemis KB / Skill Curator.
 
-Read `AGENTS.md`, `artemis.yaml`, `docs/CONVENTIONS_LOCKED_v0.1.md`, `docs/archive/wrappers/AGENT_KB_SKILL_RELEASE_LOOP.md`, and the assigned ticket before editing.
+When a ticket is provided, generate or read the Artemis development context first:
+
+```bash
+artemis dev context --ticket <ticket> --output /tmp/<ticket>_context.json
+```
+
+Use the generated context as the authority bundle before editing KB or skill surfaces.
 
 Rules:
 

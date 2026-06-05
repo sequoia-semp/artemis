@@ -80,3 +80,39 @@ def test_development_context_rejects_unknown_context_profile(monkeypatch):
     with pytest.raises(WorkbenchException) as exc:
         collect_development_context(ROOT, "T-bad-profile")
     assert "Unknown context_profile" in exc.value.message
+
+
+def test_development_context_profile_fixtures(monkeypatch):
+    def fake_ticket(repo_root, ticket_id):
+        profile = ticket_id.replace("T-profile-", "")
+        ticket = {
+            "id": ticket_id,
+            "type": "ticket",
+            "status": "proposed",
+            "title": "Profile fixture",
+            "risk": "medium",
+            "affected_files": [],
+        }
+        if profile != "default":
+            ticket["context_profile"] = profile
+        return ticket
+
+    monkeypatch.setattr("pga_workbench.dev.patch_context.load_development_ticket", fake_ticket)
+
+    default_paths = {item["path"] for item in collect_development_context(ROOT, "T-profile-default")["files"]}
+    wrapper_paths = {item["path"] for item in collect_development_context(ROOT, "T-profile-wrapper")["files"]}
+    trading_paths = {item["path"] for item in collect_development_context(ROOT, "T-profile-trading_domain")["files"]}
+    behavioral_paths = {item["path"] for item in collect_development_context(ROOT, "T-profile-behavioral")["files"]}
+
+    assert ".opencode/agents/build.md" not in default_paths
+    assert ".opencode/agents/build.md" in wrapper_paths
+    assert "docs/CONVENTIONS_LOCKED_v0.1.md" in trading_paths
+    assert "domain/source_policy.md" in trading_paths
+    assert "domain/market_index_model.md" in trading_paths
+    assert "domain/period_grammar.md" in trading_paths
+    assert "domain/units_and_quantities.md" in trading_paths
+    assert any(path.startswith("registries/") for path in trading_paths)
+    assert any(path.startswith("schemas/") for path in trading_paths)
+    assert any(path.startswith("tests/") for path in trading_paths)
+    assert "development/CHANGE_POLICY.md" in behavioral_paths
+    assert any(path.startswith("domain/") for path in behavioral_paths)

@@ -16,15 +16,9 @@ You are the QA / Reconciliation Agent.
 
 Focus on:
 
-- basis orientation
-- full-LMP convention
-- DA/RT explicitness
-- gas default-to-GDD behavior
-- gas contract sizing: 1 contract = 0.25/d = 2,500 MMBtu/day
-- ATC equal-MW peak/offpeak decomposition
-- period grammar correctness
-- vol MVP restriction to WH and HH
-- structured exceptions instead of guesses
+- Load locked conventions and relevant domain files from the generated Artemis context.
+- Report blockers against canonical domain files, registries, schemas, deterministic services, and tests.
+- Treat unsupported market assumptions and structured-exception regressions as blockers.
 
 Prompt-only analytics are not authoritative; PnL, risk, Greeks, forecasts, state, mappings, and conventions must come from deterministic services, reviewed registries/schemas, and tests.
 

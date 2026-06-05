@@ -40,6 +40,7 @@ affected_files:
   - src/pga_workbench/dev/patch_context.py
   - tests/test_development_mode.py
   - tests/test_artemis_config.py
+  - tests/test_context_audit.py
   - docs/developer/native_workflow.md
 change_request_required: true
 implemented_at: "2026-06-05T00:00:00Z"

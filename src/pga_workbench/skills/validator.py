@@ -10,6 +10,15 @@ from ..registry import load_yaml_unique
 from ..tools.registry import load_tool_registry, registered_tool_ids
 
 SKILL_VALIDATION_ERROR = "SKILL_VALIDATION_ERROR"
+SHIM_FORBIDDEN_TERMS = (
+    "basis orientation",
+    "0.25/d",
+    "first/second",
+    "full lmp",
+    "default-to-gdd",
+    "da/rt",
+    "atc =",
+)
 
 
 def load_skill_ids(skills_root: Path) -> set[str]:
@@ -95,6 +104,7 @@ def _validate_procedural_manifest(repo_root: Path, skills_root: Path) -> dict[st
             shim_path = repo_root / str(shim)
             if not shim_path.exists() or not shim_path.is_file():
                 raise WorkbenchException(SKILL_VALIDATION_ERROR, f"Procedural skill {skill_id} shim missing: {shim}")
+            _validate_shim(repo_root, shim_path, str(item.get("path") or ""), skill_id)
             declared_shims.add(str(shim))
         validated.append(str(path))
 
@@ -107,3 +117,31 @@ def _validate_procedural_manifest(repo_root: Path, skills_root: Path) -> dict[st
         "procedural_skills": len(validated),
         "procedural_validated": validated,
     }
+
+
+def _validate_shim(repo_root: Path, shim_path: Path, canonical_path: str, skill_id: str) -> None:
+    text = shim_path.read_text(encoding="utf-8")
+    shim_canonical = _shim_canonical(text)
+    expected = f"skills/{canonical_path}"
+    if shim_canonical != expected:
+        raise WorkbenchException(SKILL_VALIDATION_ERROR, f"Procedural skill {skill_id} shim canonical mismatch: {shim_path}")
+    if not (repo_root / shim_canonical).exists():
+        raise WorkbenchException(SKILL_VALIDATION_ERROR, f"Procedural skill {skill_id} shim canonical missing: {shim_canonical}")
+    lowered = text.lower()
+    for term in SHIM_FORBIDDEN_TERMS:
+        if term in lowered:
+            raise WorkbenchException(SKILL_VALIDATION_ERROR, f"Procedural skill {skill_id} shim restates domain authority: {term}")
+
+
+def _shim_canonical(text: str) -> str | None:
+    in_metadata = False
+    for raw_line in text.splitlines():
+        line = raw_line.strip()
+        if line == "metadata:":
+            in_metadata = True
+            continue
+        if in_metadata and line.startswith("canonical:"):
+            return line.split(":", 1)[1].strip()
+        if in_metadata and line and not raw_line.startswith(" "):
+            in_metadata = False
+    return None

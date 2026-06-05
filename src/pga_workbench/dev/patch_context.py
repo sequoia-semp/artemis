@@ -50,7 +50,7 @@ def _configured_profile_files(repo_root: Path, config: dict[str, Any], ticket: d
         path = repo_root / relative_path
         if path.is_dir():
             for child in sorted(path.rglob("*")):
-                if child.is_file():
+                if child.is_file() and "__pycache__" not in child.parts and child.suffix in {".md", ".yaml", ".yml", ".json", ".py", ".toml", ".txt"}:
                     files.append(str(child.relative_to(repo_root)))
         else:
             files.append(relative_path)

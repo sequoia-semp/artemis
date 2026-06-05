@@ -17,11 +17,30 @@ ACTIVE_PROMPT_ROOTS = (
 )
 
 ACTIVE_DOC_RE = re.compile(r"(?P<path>(?:docs|development|work|registries|schemas|skills|\.agents|\.opencode)/[A-Za-z0-9_./-]+\.md)")
+ARGUMENT_PLACEHOLDER_RE = re.compile(r"--(?P<arg>ticket|validation-report|input|output)\s*(?:$|\n)")
 STALE_VALIDATION_COMMANDS = (
     "python -m pytest -q",
     "pga validate-registries",
     "pga validate-work-items",
 )
+CONVENTION_KEYWORDS = (
+    "basis orientation",
+    "full-lmp",
+    "da/rt",
+    "default-to-gdd",
+    "0.25/d",
+    "atc equal-mw",
+    "period grammar correctness",
+    "vol mvp",
+)
+ALLOWED_ARTEMIS_PERMISSION_COMMANDS = {
+    "artemis validate",
+    "artemis validate report",
+    "artemis context audit",
+    "artemis skill validate",
+    "artemis release check",
+    "artemis config validate",
+}
 
 
 @dataclass(frozen=True)
@@ -102,43 +121,97 @@ def _audit_active_prompt_paths(repo_root: Path) -> list[ContextAuditFinding]:
     for path in _active_prompt_files(repo_root):
         relative_path = _rel(repo_root, path)
         text = path.read_text(encoding="utf-8")
-        if "docs/BUILD_PACKET" in text or "docs/archive/build_packet" in text:
+        findings.extend(_audit_prompt_text(repo_root, relative_path, text))
+    return findings
+
+
+def _audit_prompt_text(repo_root: Path, relative_path: str, text: str) -> list[ContextAuditFinding]:
+    findings: list[ContextAuditFinding] = []
+    lower = text.lower()
+    if "docs/build_packet" in lower or "docs/archive/build_packet" in lower:
+        findings.append(
+            ContextAuditFinding(
+                severity="blocker",
+                code="stale_build_packet_reference",
+                surface="wrapper_prompt",
+                path=relative_path,
+                message="Active wrapper prompt references build-packet context.",
+                remediation="Use AGENTS.md, artemis.yaml, docs/README.md, and artemis dev context instead.",
+            )
+        )
+    if "pga work-context" in text:
+        findings.append(
+            ContextAuditFinding(
+                severity="blocker",
+                code="legacy_work_context_in_active_wrapper",
+                surface="wrapper_prompt",
+                path=relative_path,
+                message="Active wrapper prompt uses pga work-context.",
+                remediation="Use artemis dev context; keep pga work-context only as a labeled compatibility alias.",
+            )
+        )
+    for command in STALE_VALIDATION_COMMANDS:
+        if command in text:
             findings.append(
                 ContextAuditFinding(
                     severity="blocker",
-                    code="stale_build_packet_reference",
+                    code="stale_validation_command",
                     surface="wrapper_prompt",
                     path=relative_path,
-                    message="Active wrapper prompt references build-packet context.",
-                    remediation="Use AGENTS.md, artemis.yaml, docs/README.md, and artemis dev context instead.",
+                    message=f"Active wrapper hard-codes stale validation command: {command}",
+                    remediation="Use artemis validate --strict or artemis release check as the canonical validation surface.",
                 )
             )
-        if "pga work-context" in text:
+    for match in ARGUMENT_PLACEHOLDER_RE.finditer(text):
+        findings.append(
+            ContextAuditFinding(
+                severity="blocker",
+                code="blank_required_argument",
+                surface="wrapper_prompt",
+                path=relative_path,
+                message=f"Active wrapper contains --{match.group('arg')} without a value.",
+                remediation="Use <ticket>, $ARGUMENTS, or a named shell variable for required arguments.",
+            )
+        )
+    for keyword in CONVENTION_KEYWORDS:
+        if keyword in lower:
             findings.append(
                 ContextAuditFinding(
                     severity="blocker",
-                    code="legacy_work_context_in_active_wrapper",
+                    code="duplicated_convention_authority",
                     surface="wrapper_prompt",
                     path=relative_path,
-                    message="Active wrapper prompt uses pga work-context.",
-                    remediation="Use artemis dev context; keep pga work-context only as a labeled compatibility alias.",
+                    message=f"Active wrapper restates convention authority: {keyword}",
+                    remediation="Load locked conventions through Artemis context and cite canonical files instead of restating rules.",
                 )
             )
-        for command in STALE_VALIDATION_COMMANDS:
-            if command in text:
-                findings.append(
-                    ContextAuditFinding(
-                        severity="blocker",
-                        code="stale_validation_command",
-                        surface="wrapper_prompt",
-                        path=relative_path,
-                        message=f"Active wrapper hard-codes stale validation command: {command}",
-                        remediation="Use artemis validate --strict or artemis release check as the canonical validation surface.",
-                    )
+    for command in _permission_artemis_commands(text):
+        if command not in ALLOWED_ARTEMIS_PERMISSION_COMMANDS:
+            findings.append(
+                ContextAuditFinding(
+                    severity="blocker",
+                    code="unknown_artemis_permission_command",
+                    surface="wrapper_prompt",
+                    path=relative_path,
+                    message=f"Wrapper permission allows an Artemis command that is not exposed: {command}",
+                    remediation="Remove the permission or use an exposed Artemis command.",
                 )
-        for match in ACTIVE_DOC_RE.finditer(text):
+            )
+    for line in text.splitlines():
+        for match in ACTIVE_DOC_RE.finditer(line):
             referenced = match.group("path").rstrip("`.,)")
             if referenced.startswith("docs/archive/"):
+                if not _archive_reference_is_historical(line):
+                    findings.append(
+                        ContextAuditFinding(
+                            severity="blocker",
+                            code="archive_authority_reference",
+                            surface="wrapper_prompt",
+                            path=relative_path,
+                            message=f"Active wrapper treats archive path as authority: {referenced}",
+                            remediation="Promote still-current guidance to an active doc or label the archive mention as historical/non-authoritative.",
+                        )
+                    )
                 continue
             if not (repo_root / referenced).exists():
                 findings.append(
@@ -152,6 +225,28 @@ def _audit_active_prompt_paths(repo_root: Path) -> list[ContextAuditFinding]:
                     )
                 )
     return findings
+
+
+def _archive_reference_is_historical(line: str) -> bool:
+    lowered = line.lower()
+    return "historical" in lowered or "non-authoritative" in lowered or "archive/design record" in lowered
+
+
+def _permission_artemis_commands(text: str) -> set[str]:
+    commands: set[str] = set()
+    for raw_line in text.splitlines():
+        line = raw_line.strip()
+        if not line.startswith('"artemis '):
+            continue
+        command = line.split('"', 2)[1].rstrip("*").strip()
+        words = command.split()
+        if len(words) >= 3 and words[:2] == ["artemis", "context"]:
+            commands.add(" ".join(words[:3]))
+        elif len(words) >= 3 and tuple(words[:2]) in {("artemis", "skill"), ("artemis", "release"), ("artemis", "config"), ("artemis", "validate")}:
+            commands.add(" ".join(words[:3]))
+        elif len(words) >= 2:
+            commands.add(" ".join(words[:2]))
+    return commands
 
 
 def audit_context_surfaces(repo_root: Path) -> dict[str, Any]:

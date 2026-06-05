@@ -28,7 +28,7 @@ def _snapshot_for_ticket(ticket_id: str) -> list[dict[str, object]]:
     return snapshot
 
 
-def _write_report(tmp_path: Path, *, ticket_id: str = "T-0030", skipped: bool = False, stale: bool = False, strict: bool = True) -> Path:
+def _write_report(tmp_path: Path, *, ticket_id: str = "T-0030", skipped: bool = False, stale: bool = False, strict: bool = True, context_audit_status: str = "passed") -> Path:
     snapshot = _snapshot_for_ticket("T-0030")
     if stale and snapshot:
         snapshot[0]["sha256"] = "stale"
@@ -48,6 +48,15 @@ def _write_report(tmp_path: Path, *, ticket_id: str = "T-0030", skipped: bool = 
                 required=True,
                 duration_seconds=0.1,
                 summary="pytest",
+                details={},
+            ),
+            ValidationCheckResult(
+                check_id="context_audit",
+                label="context audit",
+                status=context_audit_status,
+                required=True,
+                duration_seconds=0.1,
+                summary="context audit",
                 details={},
             )
         ],
@@ -91,6 +100,13 @@ def test_non_strict_validation_report_blocks_readiness(tmp_path: Path):
 
     assert result["ready_for_release_prep"] is False
     assert "validation report was not strict" in result["blockers"]
+
+
+def test_failed_context_audit_blocks_readiness(tmp_path: Path):
+    result = collect_release_readiness(ROOT, ticket_id="T-0030", validation_report=_write_report(tmp_path, context_audit_status="failed"), skip_tests=True)
+
+    assert result["ready_for_release_prep"] is False
+    assert "validation report lacks passed context_audit evidence" in result["blockers"]
 
 
 def test_incomplete_approved_change_request_blocks_readiness(monkeypatch, tmp_path: Path):

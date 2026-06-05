@@ -45,6 +45,7 @@ affected_files:
   - tests/test_release_readiness_native_validation.py
   - tests/test_release_workflow.py
   - tests/test_native_validation_runner.py
+  - tests/test_context_audit.py
 change_request_required: true
 implemented_at: "2026-06-05T00:00:00Z"
 implementation_summary: >

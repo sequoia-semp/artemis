@@ -39,6 +39,7 @@ affected_files:
   - src/pga_workbench/skills/validator.py
   - src/pga_workbench/cli.py
   - .agents/skills/
+  - .agents/skills/spread-basis-decomposition/SKILL.md
   - tests/test_skill_view_manifests.py
   - tests/test_artemis_cli.py
 change_request_required: true

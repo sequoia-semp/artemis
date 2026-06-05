@@ -1,7 +1,11 @@
 from __future__ import annotations
 
 from pathlib import Path
+import shutil
 
+import pytest
+
+from pga_workbench.exceptions import WorkbenchException
 from pga_workbench.analyst.view_engine import validate_view_manifest
 from pga_workbench.skills.validator import validate_skill_manifest
 
@@ -20,3 +24,47 @@ def test_view_manifest_validates_and_references_registered_skills():
     result = validate_view_manifest(ROOT, ROOT / "schemas")
 
     assert result["templates"] == 6
+
+
+def _copy_skill_validation_repo(tmp_path: Path) -> Path:
+    repo = tmp_path / "repo"
+    shutil.copytree(ROOT / "skills", repo / "skills")
+    shutil.copytree(ROOT / ".agents", repo / ".agents")
+    (repo / "registries").mkdir()
+    shutil.copy2(ROOT / "registries" / "tools.yaml", repo / "registries" / "tools.yaml")
+    shutil.copytree(ROOT / "schemas", repo / "schemas")
+    return repo
+
+
+def test_skill_validation_rejects_unmanifested_shim(tmp_path: Path):
+    repo = _copy_skill_validation_repo(tmp_path)
+    extra = repo / ".agents" / "skills" / "unmanifested" / "SKILL.md"
+    extra.parent.mkdir(parents=True)
+    extra.write_text(
+        "---\nmetadata:\n  canonical: skills/period_parsing/SKILL.md\n---\nLoad canonical skill.\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(WorkbenchException) as exc:
+        validate_skill_manifest(repo, repo / "schemas")
+    assert "Unmanifested active skill shims" in exc.value.message
+
+
+def test_skill_validation_rejects_missing_canonical_pointer(tmp_path: Path):
+    repo = _copy_skill_validation_repo(tmp_path)
+    shim = repo / ".agents" / "skills" / "period-parsing" / "SKILL.md"
+    shim.write_text(shim.read_text(encoding="utf-8").replace("skills/period_parsing/SKILL.md", "skills/missing/SKILL.md"), encoding="utf-8")
+
+    with pytest.raises(WorkbenchException) as exc:
+        validate_skill_manifest(repo, repo / "schemas")
+    assert "shim canonical mismatch" in exc.value.message
+
+
+def test_skill_validation_rejects_shim_domain_rules(tmp_path: Path):
+    repo = _copy_skill_validation_repo(tmp_path)
+    shim = repo / ".agents" / "skills" / "period-parsing" / "SKILL.md"
+    shim.write_text(shim.read_text(encoding="utf-8") + "\nBasis orientation is first minus second.\n", encoding="utf-8")
+
+    with pytest.raises(WorkbenchException) as exc:
+        validate_skill_manifest(repo, repo / "schemas")
+    assert "shim restates domain authority" in exc.value.message

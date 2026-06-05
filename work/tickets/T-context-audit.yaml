@@ -40,6 +40,7 @@ affected_files:
   - src/pga_workbench/agent_runtime/
   - tests/test_native_validation_runner.py
   - tests/test_cli_validation_commands.py
+  - tests/test_context_audit.py
   - tests/test_governance_files.py
 change_request_required: true
 implemented_at: "2026-06-05T00:00:00Z"

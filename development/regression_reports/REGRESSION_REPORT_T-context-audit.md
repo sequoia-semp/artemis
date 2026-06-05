@@ -1,12 +1,12 @@
 # Regression Report: T-context-audit
 
-Generated At: 2026-06-05T17:38:01Z
+Generated At: 2026-06-05T19:07:48Z
 Validation Status: passed
 Strict Mode: True
 Ticket: T-context-audit
 Commit / Branch Snapshot:
 - Branch: main
-- Commit: f6271f15b86751c2ff623993968b476cc9cb5f0c
+- Commit: e5dde83aab1c18643009c3a6b9c86e2943efe6a6
 
 Checks:
 - pytest: passed (pytest passed)
@@ -22,7 +22,7 @@ Checks:
 - release_sanity: passed (native release sanity checks passed)
 
 Command Results:
-- python -m pytest -q: passed - 232 passed
+- python -m pytest -q: passed - 242 passed
 
 Warnings:
 - none

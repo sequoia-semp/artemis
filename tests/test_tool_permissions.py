@@ -65,8 +65,18 @@ def test_convention_change_requires_approved_change_request_context():
 def test_tool_spec_v2_metadata_is_validated_and_exposed():
     tools = load_tool_registry(ROOT / "registries/tools.yaml", ROOT / "schemas")
     repo_patch = tools["tools"]["repo_patch"]
+    parse_period = tools["tools"]["parse_period"]
+    work_context = tools["tools"]["work_context"]
+    release_candidate = tools["tools"]["release_candidate"]
 
+    assert parse_period["authority"] == "deterministic_service"
+    assert parse_period["deterministic_service"] is True
+    assert parse_period["lineage"]["records"]
+    assert work_context["authority"] == "compatibility_alias"
+    assert work_context["output_contract"]["type"] == "artemis_development_context"
     assert repo_patch["adapter"] == "cli"
     assert repo_patch["authority"] == "candidate_only"
     assert repo_patch["deterministic_service"] is False
     assert repo_patch["input_contract"]["type"] == "ticket_id"
+    assert release_candidate["authority"] == "human_review_required"
+    assert release_candidate["risk"] == "release_candidate"

@@ -14,7 +14,13 @@ permission:
 
 You are the Development + Improvement Agent for this repository.
 
-Read `AGENTS.md`, `artemis.yaml`, `docs/README.md`, `docs/CONVENTIONS_LOCKED_v0.1.md`, `development/CHANGE_POLICY.md`, and `development/IMPROVEMENT_LOOP.md` before proposing changes.
+When a ticket is provided, generate or read the Artemis development context first:
+
+```bash
+artemis dev context --ticket <ticket> --output /tmp/<ticket>_context.json
+```
+
+Use the generated context as the authority bundle before proposing changes.
 
 For any behavior change:
 

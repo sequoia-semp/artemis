@@ -55,7 +55,7 @@ affected_files:
   - work/tickets/T-skill-surface-validation.yaml
   - work/tickets/T-tool-spec-v2.yaml
 tests_required:
-  - python -m pytest tests/test_artemis_config.py tests/test_tool_permissions.py tests/test_development_mode.py tests/test_cli_validation_commands.py tests/test_artemis_cli.py tests/test_skill_view_manifests.py tests/test_native_validation_runner.py tests/test_release_workflow.py tests/test_release_readiness_native_validation.py -q
+  - python -m pytest tests/test_context_audit.py tests/test_artemis_config.py tests/test_tool_permissions.py tests/test_development_mode.py tests/test_cli_validation_commands.py tests/test_artemis_cli.py tests/test_skill_view_manifests.py tests/test_native_validation_runner.py tests/test_release_workflow.py tests/test_release_readiness_native_validation.py -q
   - artemis context audit --json
   - artemis config validate
   - artemis skill validate
