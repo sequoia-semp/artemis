@@ -13,6 +13,8 @@ def test_governance_docs_exist():
         "scripts/bootstrap_dev.sh",
         "scripts/dev_env.sh",
         "docs/README.md",
+        "docs/user/setup.md",
+        "local/.env.example",
         "docs/VCS_POLICY.md",
         "docs/WORK_MANAGEMENT.md",
         "docs/RELEASE_PROCESS.md",
@@ -76,6 +78,7 @@ def test_readme_includes_local_agent_integration_steps():
     assert "# Artemis" in readme
     assert "make validate" in readme
     assert "artemis capabilities" in readme
+    assert "docs/user/setup.md" in readme
     assert "artemis dev context --ticket T-0019" in readme
     assert "pga work-context --ticket T-0019" in readme
     assert "Prompt-only analytics are not authoritative" in readme
@@ -93,6 +96,15 @@ def test_primary_navigation_does_not_route_through_legacy_build_packet():
         assert "artemis.yaml" in text
         assert "local/llm_config.example.yaml" not in text
     assert "Historical build-packet" in (ROOT / "README.md").read_text(encoding="utf-8")
+
+
+def test_setup_doc_covers_local_llm_env_and_file_sources():
+    text = (ROOT / "docs/user/setup.md").read_text(encoding="utf-8")
+    assert "ollama pull" in text
+    assert "opencode" in text.lower()
+    assert "local/.env" in text
+    assert "ARTEMIS_MARKS_ROOT" in text
+    assert "ARTEMIS_POSITIONS_ROOT" in text
 
 
 def test_root_markdown_files_are_limited_to_navigation_and_legacy_pointers():

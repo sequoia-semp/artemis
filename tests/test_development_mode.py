@@ -18,6 +18,7 @@ def test_development_context_is_backend_neutral():
     assert context["context_version"] == "artemis.development.v1"
     assert context["ticket"]["id"] == "T-0020"
     assert context["artemis_config"] == "artemis.yaml"
+    assert context["active_backend"] == "human"
     assert context["authority_ladder"]["root_contract"] == "AGENTS.md"
     assert "repo_patch" in context["tool_policy"]
     assert set(context["backend_options"]) == {"external_harness", "human", "opencode"}

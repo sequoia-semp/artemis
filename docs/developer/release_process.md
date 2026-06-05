@@ -13,3 +13,6 @@ shared state automatically from a coding backend.
 Release candidates include package version, command statuses, and hashes for the
 key config/manifest files. Human approval, merge, tag, and publication remain
 separate actions.
+
+Use `--skip-tests` only for dry-run inspection. Skipped validations are recorded
+as skipped and do not make a release candidate ready.

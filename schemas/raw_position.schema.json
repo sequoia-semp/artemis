@@ -34,10 +34,34 @@
         "null"
       ]
     },
+    "portfolio": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sleeve": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "structure_id": {
       "type": [
         "string",
         "null"
+      ]
+    },
+    "tags": {
+      "oneOf": [
+        {"type": "string"},
+        {"type": "array", "items": {"type": "string"}}
+      ]
+    },
+    "metadata": {
+      "oneOf": [
+        {"type": "string"},
+        {"type": "object", "additionalProperties": true}
       ]
     }
   },

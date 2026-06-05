@@ -20,8 +20,10 @@ def test_release_readiness_reports_package_and_planning_bridge():
     assert result["planning_bridge"]["work/backlog/pjm_workbench_mvp_backlog.yaml"] is True
     assert "artemis capabilities" in result["validation_commands"]
     assert all(item["skipped"] for item in result["validation_results"])
+    assert result["validation_skipped"] is True
+    assert result["validation_passed"] is False
     assert "tests run" in result["required_release_note_fields"]
-    assert result["ready_for_release_prep"] is True
+    assert result["ready_for_release_prep"] is False
 
 
 def test_cli_exposes_release_check_command():

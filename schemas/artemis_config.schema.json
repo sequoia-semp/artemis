@@ -3,6 +3,7 @@
   "title": "ArtemisConfig",
   "type": "object",
   "additionalProperties": true,
+  "not": {"required": ["profiles"]},
   "properties": {
     "version": {"type": "string"},
     "name": {"const": "artemis"},
@@ -35,6 +36,26 @@
     },
     "roles": {"type": "object"},
     "providers": {"type": "object"},
+    "runtime": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "env_files": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "file_sources": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "marks_root_env": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+        "positions_root_env": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+        "trades_root_env": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+        "internal_db_root_env": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"}
+      }
+    },
     "tools": {
       "type": "object",
       "required": ["registry", "permissions"],
@@ -46,9 +67,36 @@
     "skills": {"type": "object"},
     "views": {"type": "object"},
     "data_sources": {"type": "object"},
+    "policies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cache", "forecast_retention", "source", "risk"],
+      "properties": {
+        "cache": {"type": "string"},
+        "forecast_retention": {"type": "string"},
+        "source": {"type": "string"},
+        "risk": {"type": "string"}
+      }
+    },
     "release": {"type": "object"}
   },
-  "required": ["version", "name", "package", "mission", "authority", "modes", "roles", "providers", "tools", "skills", "views", "data_sources", "release"],
+  "required": [
+    "version",
+    "name",
+    "package",
+    "mission",
+    "authority",
+    "modes",
+    "roles",
+    "providers",
+    "file_sources",
+    "tools",
+    "skills",
+    "views",
+    "data_sources",
+    "policies",
+    "release"
+  ],
   "$defs": {
     "mode": {
       "type": "object",

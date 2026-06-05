@@ -40,9 +40,15 @@ def build_release_candidate(repo_root: Path, ticket_id: str, target_version: str
         "registries/tools.yaml",
         "registries/tool_permissions.yaml",
         "registries/data_sources.yaml",
+        "configs/cache_policy.yaml",
+        "configs/forecast_retention_policy.yaml",
+        "configs/source_policy.yaml",
+        "configs/risk_policy.yaml",
         "skills/manifest.yaml",
         "views/manifest.yaml",
         "schemas/artemis_config.schema.json",
+        "schemas/state_pack.schema.json",
+        "schemas/forward_price_heatmap.schema.json",
         "schemas/release_candidate.schema.json",
     ]
     candidate = {
@@ -64,6 +70,9 @@ def build_release_candidate(repo_root: Path, ticket_id: str, target_version: str
         ],
         "changed_artifacts": list(ticket.get("affected_files") or []),
         "validation_commands": list(readiness.get("validation_commands") or []),
+        "validation_skipped": bool(readiness.get("validation_skipped")),
+        "validation_passed": bool(readiness.get("validation_passed")),
+        "ready_for_release_prep": bool(readiness.get("ready_for_release_prep")),
         "validation": {
             item["command"]: {
                 "status": "skipped" if item.get("skipped") else "passed" if item.get("passed") else "failed",

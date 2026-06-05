@@ -1,0 +1,44 @@
+change_id: CR-0014
+title: Price instrument, option contract, position metadata, and PnL spine
+created_at: 2026-06-05T00:00:00Z
+change_class: 6
+severity: medium
+problem_statement: >
+  Artemis needs a price-centric ETRM/CTRM-style contract and position spine so
+  futures, options, positions, exposures, PnL, and simple option Greeks can be
+  represented with enough descriptive metadata for deterministic valuation and
+  compact portfolio grouping.
+root_cause: >
+  Existing futures, price, position, PnL, and Greek services were useful MVP
+  artifacts but options were only anonymous calculation rows, position metadata
+  was limited, and PnL grouping did not inherit portfolio dimensions.
+affected_files:
+  - domain/price_instrument_model.md
+  - registries/option_contracts.yaml
+  - registries/tools.yaml
+  - schemas/option_contract.schema.json
+  - schemas/position_lot.schema.json
+  - schemas/exposure_record.schema.json
+  - schemas/raw_position.schema.json
+  - schemas/normalized_position.schema.json
+  - schemas/pnl_bridge.schema.json
+  - schemas/pnl_explain.schema.json
+  - src/pga_workbench/models.py
+  - src/pga_workbench/registry.py
+  - src/pga_workbench/registry_access.py
+  - src/pga_workbench/services/normalization.py
+  - src/pga_workbench/services/greeks.py
+  - src/pga_workbench/services/pnl.py
+  - tests/test_price_instrument_spine.py
+  - work/tickets/T-0026-price-instrument-position-pnl-spine.yaml
+tests_required:
+  - .venv/bin/python -m pytest tests/test_price_instrument_spine.py tests/test_workbench_mvp.py tests/test_forward_fundamental_mapping.py -q
+  - make validate
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-05T00:00:00Z
+rollback_plan: >
+  Remove option_contracts.yaml and its schema handler, remove the new position
+  metadata and PnL grouping fields, restore Greeks to unregistered row inputs,
+  and remove price_instrument_model.md plus the related tests.

@@ -30,8 +30,10 @@ planning bridge files live under archive or work-management paths.
 - role requirements
 - optional provider profiles
 - optional coding backend and orchestrator descriptors
+- optional `.env` loading and file-source root environment contracts
 - tool registry and permission paths
 - knowledge-base, skill, view, and data-source manifest paths
+- cache, forecast-retention, source, and risk policy paths
 - release validation commands
 
 Domain convention details remain in `domain/`, locked convention docs,
@@ -117,9 +119,11 @@ The deterministic core lives in:
 - `tests/`
 
 Calculations for normalization, quantities, period parsing, strip expansion,
-spread decomposition, vol transformations, view rendering, release checks, and
-validation must be implemented in tested code. LLM output may explain or propose;
-it must not be the source of capital-sensitive calculations.
+spread decomposition, option contract resolution, position/exposure grouping,
+PnL explain rollups, vol transformations, forward price heatmaps, view
+rendering, release checks, and validation must be implemented in tested code.
+LLM output may explain or propose; it must not be the source of
+capital-sensitive calculations.
 
 ## Release Validation
 
@@ -132,3 +136,5 @@ capabilities.
 Release readiness is checked through `artemis release check`. Release candidate
 artifacts include package metadata, target version, ticket, validation command
 statuses, manifest hashes where available, and a human-review requirement flag.
+Skipped validation is recorded as dry-run evidence only and does not mark a
+release as ready.

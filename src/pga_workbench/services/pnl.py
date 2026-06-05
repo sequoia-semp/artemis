@@ -25,6 +25,58 @@ def _value(position: NormalizedPosition | None) -> float:
     return float(position.derived.get("market_value") or 0.0)
 
 
+def _identity(position: NormalizedPosition | None) -> dict[str, object]:
+    if position is None:
+        return {}
+    return dict(position.identity or {})
+
+
+def _group_breakdowns(drivers: list[dict[str, object]]) -> list[dict[str, object]]:
+    totals: dict[tuple[str, str], dict[str, object]] = {}
+    for driver in drivers:
+        identity = dict(driver.get("identity") or {})
+        tags = identity.get("tags") or []
+        group_values = {
+            "book": identity.get("book"),
+            "strategy": identity.get("strategy"),
+            "portfolio": identity.get("portfolio"),
+            "sleeve": identity.get("sleeve"),
+        }
+        for dimension, raw_value in group_values.items():
+            if raw_value is None or raw_value == "":
+                continue
+            key = (dimension, str(raw_value))
+            item = totals.setdefault(
+                key,
+                {
+                    "dimension": dimension,
+                    "value": str(raw_value),
+                    "price_move_effect": 0.0,
+                    "position_change_effect": 0.0,
+                    "total_effect": 0.0,
+                    "residual": 0.0,
+                },
+            )
+            for field in ["price_move_effect", "position_change_effect", "total_effect", "residual"]:
+                item[field] = float(item[field]) + float(driver[field])
+        for tag in tags if isinstance(tags, list) else []:
+            key = ("tag", str(tag))
+            item = totals.setdefault(
+                key,
+                {
+                    "dimension": "tag",
+                    "value": str(tag),
+                    "price_move_effect": 0.0,
+                    "position_change_effect": 0.0,
+                    "total_effect": 0.0,
+                    "residual": 0.0,
+                },
+            )
+            for field in ["price_move_effect", "position_change_effect", "total_effect", "residual"]:
+                item[field] = float(item[field]) + float(driver[field])
+    return sorted(totals.values(), key=lambda item: (str(item["dimension"]), str(item["value"])))
+
+
 def run_pnl_attribution(
     prior_positions: list[NormalizedPosition],
     current_positions: list[NormalizedPosition],
@@ -34,7 +86,7 @@ def run_pnl_attribution(
     current = _index(current_positions)
     position_change_effect = 0.0
     price_move_effect = 0.0
-    drivers: list[dict[str, float | str]] = []
+    drivers: list[dict[str, object]] = []
 
     for position_id in sorted(set(prior) | set(current)):
         p0 = prior.get(position_id)
@@ -52,6 +104,8 @@ def run_pnl_attribution(
         drivers.append(
             {
                 "position_id": position_id,
+                "instrument_id": (p1 or p0).position_lot.get("instrument_id") if (p1 or p0) else None,
+                "identity": _identity(p1 or p0),
                 "price_move_effect": price_effect,
                 "position_change_effect": position_effect,
                 "total_effect": total_effect,
@@ -75,4 +129,5 @@ def run_pnl_attribution(
         unexplained_residual=total_residual,
         bridge_sums=abs(total_residual) < 1e-9,
         drivers=drivers,
+        group_breakdowns=_group_breakdowns(drivers),
     )

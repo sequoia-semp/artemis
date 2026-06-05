@@ -1,0 +1,51 @@
+change_id: CR-0013
+title: Artemis runtime hardening and setup guide
+created_at: 2026-06-05T00:00:00Z
+change_class: 7
+severity: high
+problem_statement: >
+  Artemis has a compact control plane and validation gate, but several runtime
+  surfaces still preserve MVP shortcuts: the Artemis console alias exposes the
+  full lower-level PGA command surface, local setup examples do not activate the
+  provider shape consumed by Artemis, skipped release validation is reported as
+  ready, state-pack validation is shallow, and setup guidance for local LLM,
+  environment variables, and file-source roots is spread across multiple files.
+root_cause: >
+  Earlier tickets focused on consolidation and compatibility. The next hardening
+  pass needs to turn the reviewed architecture concerns into runtime contracts
+  and a single setup path without changing locked market conventions.
+affected_files:
+  - pyproject.toml
+  - artemis.yaml
+  - local/artemis.local.example.yaml
+  - local/.env.example
+  - docs/user/setup.md
+  - docs/README.md
+  - README.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/agent/runtime.py
+  - src/pga_workbench/dev/patch_context.py
+  - src/pga_workbench/agent_runtime/release_workflow.py
+  - src/pga_workbench/dev/release.py
+  - src/pga_workbench/analyst/view_engine.py
+  - src/pga_workbench/services/heatmap.py
+  - schemas/forward_price_heatmap.schema.json
+  - src/pga_workbench/state/packs.py
+  - src/pga_workbench/cache/hot_state.py
+  - schemas/artemis_config.schema.json
+  - schemas/state_pack.schema.json
+  - tests/
+tests_required:
+  - python -m pytest -q
+  - make validate
+  - artemis config validate
+  - artemis capabilities --check-network
+  - artemis release check --ticket T-0025
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-05T00:00:00Z
+rollback_plan: >
+  Restore the prior single-parser console entrypoint, local config example,
+  release readiness semantics, state-pack validator, and docs if downstream
+  tooling requires the old compatibility shape.

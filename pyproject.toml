@@ -14,7 +14,7 @@ dev = ["pytest>=7.0"]
 
 [project.scripts]
 pga = "pga_workbench.cli:main"
-artemis = "pga_workbench.cli:main"
+artemis = "pga_workbench.cli:artemis_main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

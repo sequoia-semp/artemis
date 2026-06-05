@@ -23,12 +23,15 @@ def test_artemis_config_validates_and_modes_are_separated():
 def test_local_artemis_example_uses_env_names_not_secrets():
     payload = yaml.safe_load((ROOT / "local/artemis.local.example.yaml").read_text(encoding="utf-8"))
     text = (ROOT / "local/artemis.local.example.yaml").read_text(encoding="utf-8")
+    env_text = (ROOT / "local/.env.example").read_text(encoding="utf-8")
 
-    assert "ARTEMIS_VENDOR_API_KEY" in text
-    assert "ARTEMIS_ICE_API_KEY" in text
+    assert "ARTEMIS_VENDOR_API_KEY" in env_text
+    assert "ARTEMIS_ICE_API_KEY" in env_text
     assert "api_key_env" in text
-    assert "sk-" not in text
-    assert payload["profiles"]["deterministic_only"]["role_bindings"]["analyst_llm"]["kind"] == "none"
+    assert "sk-" not in text + env_text
+    assert "profiles" not in payload
+    assert payload["providers"]["profiles"]["local_ollama"]["kind"] == "openai_compatible"
+    assert payload["backends"]["coding"]["default"] == "human"
 
 
 def test_capabilities_report_tool_policy_and_optional_providers():
@@ -36,9 +39,12 @@ def test_capabilities_report_tool_policy_and_optional_providers():
 
     assert capabilities["name"] == "artemis"
     assert capabilities["providers"]["profiles"]["local_ollama"]["required"] is False
+    assert capabilities["file_sources"]["marks_root_env"]["env"] == "ARTEMIS_MARKS_ROOT"
+    assert capabilities["policies"]["cache"] == "configs/cache_policy.yaml"
     assert capabilities["tools"]["policy"]["repo_patch"]["can_modify_repo"] is True
     assert capabilities["tools"]["policy"]["repo_patch"]["requires_ticket"] is True
     assert capabilities["tools"]["policy"]["analyst_view_build"]["can_modify_repo"] is False
+    assert capabilities["tools"]["policy"]["forward_price_heatmap"]["risk"] == "workspace_write"
 
 
 def test_artemis_config_resolution_order_cli_over_env(monkeypatch, tmp_path):
@@ -71,3 +77,27 @@ def test_artemis_config_resolution_reads_env_override(monkeypatch, tmp_path):
     config = load_artemis_config(ROOT)
 
     assert config["providers"]["default_profile"] == "env_profile"
+
+
+def test_artemis_config_rejects_stale_root_profiles_shape(tmp_path):
+    stale = tmp_path / "stale.yaml"
+    stale.write_text(yaml.safe_dump({"profiles": {"local_ollama": {"kind": "openai_compatible"}}}), encoding="utf-8")
+
+    import pytest
+    from pga_workbench.exceptions import WorkbenchException
+
+    with pytest.raises(WorkbenchException):
+        validate_artemis_config(ROOT, config_path=stale)
+
+
+def test_artemis_env_file_loads_file_source_roots(monkeypatch, tmp_path):
+    monkeypatch.delenv("ARTEMIS_MARKS_ROOT", raising=False)
+    env_file = tmp_path / "artemis.env"
+    env_file.write_text("ARTEMIS_MARKS_ROOT=/tmp/artemis-marks\n", encoding="utf-8")
+    overlay = tmp_path / "overlay.yaml"
+    overlay.write_text(yaml.safe_dump({"runtime": {"env_files": [str(env_file)]}}), encoding="utf-8")
+
+    capabilities = collect_artemis_capabilities(ROOT, config_path=overlay)
+
+    assert capabilities["file_sources"]["marks_root_env"]["configured"] is True
+    assert capabilities["file_sources"]["marks_root_env"]["path"] == "/tmp/artemis-marks"

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PositionLot",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "as_of": {"type": "string"},
+    "position_id": {"type": "string"},
+    "instrument_id": {"type": "string"},
+    "instrument_type": {"type": "string"},
+    "raw_product": {"type": "string"},
+    "period_id": {"type": "string"},
+    "signed_quantity": {"type": "number"},
+    "quantity_unit": {"type": "string"},
+    "mark": {"type": ["number", "null"]},
+    "source": {"type": "string"},
+    "source_role": {"type": "string"},
+    "book": {"type": ["string", "null"]},
+    "strategy": {"type": ["string", "null"]},
+    "portfolio": {"type": ["string", "null"]},
+    "sleeve": {"type": ["string", "null"]},
+    "structure_id": {"type": ["string", "null"]},
+    "tags": {"type": "array", "items": {"type": "string"}},
+    "metadata": {"type": "object", "additionalProperties": true}
+  },
+  "required": [
+    "as_of",
+    "position_id",
+    "instrument_id",
+    "instrument_type",
+    "raw_product",
+    "period_id",
+    "signed_quantity",
+    "quantity_unit",
+    "source",
+    "source_role",
+    "tags",
+    "metadata"
+  ]
+}

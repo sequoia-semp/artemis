@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ForwardPriceHeatmapReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["run_id", "as_of", "history_days", "cells", "lineage"],
+  "properties": {
+    "run_id": {"type": "string"},
+    "as_of": {"type": "string"},
+    "history_days": {
+      "type": "array",
+      "items": {"type": "integer"},
+      "minItems": 1
+    },
+    "cells": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "index_id",
+          "period_id",
+          "location_id",
+          "commodity",
+          "quote_unit",
+          "current_as_of",
+          "current_price",
+          "history",
+          "source",
+          "source_role"
+        ],
+        "properties": {
+          "index_id": {"type": "string"},
+          "period_id": {"type": "string"},
+          "location_id": {"type": "string"},
+          "commodity": {"enum": ["power", "gas"]},
+          "quote_unit": {"type": "string"},
+          "current_as_of": {"type": "string"},
+          "current_price": {"type": "number"},
+          "history": {"type": "object"},
+          "source": {"type": "string"},
+          "source_role": {"type": "string"}
+        }
+      }
+    },
+    "lineage": {"type": "object"}
+  }
+}

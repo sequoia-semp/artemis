@@ -18,6 +18,8 @@ This file is a pointer register, not a guarantee that all listed specs have been
 - ICE PJM Western Hub Day-Ahead Off-Peak Fixed Price Future
 - ICE PJM Western Hub Real-Time Peak Fixed Price Future
 - ICE PJM Western Hub Real-Time Peak (1 MW) Fixed Price Future (`PMI`)
+- ICE Option on PJM Western Hub Real-Time Peak (1 MW) Fixed Price Future (`PMI`)
+- ICE Option on PJM Western Hub Real-Time Peak Calendar Year One Time Fixed Price Future (`P1X`)
 - ICE PJM Western Hub Real-Time Peak Daily Fixed Price Future (`PDP`)
 - ICE PJM Western Hub Real-Time Off-Peak Fixed Price Future
 - ICE PJM Western Hub Day-Ahead Peak/Off-Peak Fixed Price Futures (`PJC`, `PJD`)
@@ -35,6 +37,7 @@ This file is a pointer register, not a guarantee that all listed specs have been
 ### Gas
 
 - ICE Henry LD1 / NYMEX Henry Hub reference (`H`)
+- ICE Option on Henry Penultimate Fixed Price Future (`PHE`)
 - ICE TETCO M2 fixed/basis/swing/index products (`BM1`, `BM2`, `BM3`, `MB4`)
 - ICE TETCO M3 basis and index products (`TMT`, `MTI`)
 - ICE Transco Z6 NY fixed/basis/swing products (`TZ6`, `TZS`, `ZSS`)

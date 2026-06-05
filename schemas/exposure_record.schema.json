@@ -22,6 +22,18 @@
     "quantity_unit": {
       "type": "string"
     },
+    "exposure_type": {
+      "type": "string"
+    },
+    "component": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "component_weight": {
+      "type": "number"
+    },
     "derived_MWh": {
       "type": [
         "number",
@@ -39,6 +51,40 @@
         "number",
         "null"
       ]
+    },
+    "book": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "strategy": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "portfolio": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sleeve": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
     }
   },
   "required": [

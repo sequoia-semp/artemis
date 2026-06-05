@@ -23,6 +23,7 @@ class RegistryCatalog:
     approved_spreads: dict[str, dict[str, Any]]
     forbidden_spreads: frozenset[str]
     exchange_contracts: dict[str, dict[str, Any]]
+    option_contracts: dict[str, dict[str, Any]]
     forward_fundamental_mappings: dict[str, dict[str, Any]]
 
 
@@ -61,6 +62,7 @@ def load_registry_catalog(registry_dir: str | Path = DEFAULT_REGISTRY_DIR) -> Re
     gas_locations = _read_mapping(root, "gas_locations.yaml")
     quoted_spreads = _read_mapping(root, "quoted_spreads.yaml")
     exchange_contracts = _read_mapping(root, "exchange_contracts.yaml")
+    option_contracts = _read_mapping(root, "option_contracts.yaml")
     forward_fundamental_mappings = _read_mapping(root, "forward_fundamental_mappings.yaml")
 
     forbidden = frozenset(str(item).strip().upper().replace(" ", "") for item in quoted_spreads.get("FORBIDDEN_BY_DEFAULT", []))
@@ -78,6 +80,7 @@ def load_registry_catalog(registry_dir: str | Path = DEFAULT_REGISTRY_DIR) -> Re
         approved_spreads=approved,
         forbidden_spreads=forbidden,
         exchange_contracts={str(key).upper(): dict(value) for key, value in exchange_contracts.items()},
+        option_contracts={str(key).upper(): dict(value) for key, value in option_contracts.items()},
         forward_fundamental_mappings={str(key).upper(): dict(value) for key, value in forward_fundamental_mappings.items()},
     )
 
@@ -139,3 +142,29 @@ def find_forward_fundamental_mapping(raw: str, catalog: RegistryCatalog | None =
     if mapping is None:
         raise WorkbenchException(UNKNOWN_PRODUCT, f"Unknown forward/fundamental mapping for {raw}")
     return mapping
+
+
+def lookup_option_contract(raw: str, catalog: RegistryCatalog | None = None) -> dict[str, Any] | None:
+    catalog = catalog or load_registry_catalog()
+    raw_compact = compact_label(raw)
+    raw_tokens = {compact_label(token) for token in re.split(r"\s+", raw.upper()) if compact_label(token)}
+    for contract_id, contract in catalog.option_contracts.items():
+        values = {
+            contract_id,
+            str(contract.get("contract_symbol") or ""),
+            str(contract.get("product_name") or ""),
+            str(contract.get("product_guide_id") or ""),
+        }
+        candidates = {compact_label(value) for value in values if compact_label(value)}
+        if raw_compact in candidates or bool(raw_tokens & candidates):
+            record = dict(contract)
+            record.setdefault("option_contract_id", contract_id)
+            return record
+    return None
+
+
+def find_option_contract(raw: str, catalog: RegistryCatalog | None = None) -> dict[str, Any]:
+    contract = lookup_option_contract(raw, catalog)
+    if contract is None:
+        raise WorkbenchException(UNKNOWN_PRODUCT, f"Unknown option contract for {raw}")
+    return contract

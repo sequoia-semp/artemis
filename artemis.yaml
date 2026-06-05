@@ -80,6 +80,17 @@ providers:
       model: qwen3-coder:30b
       api_key_env: OLLAMA_API_KEY
 
+runtime:
+  env_files:
+    - .env
+    - local/.env
+
+file_sources:
+  marks_root_env: ARTEMIS_MARKS_ROOT
+  positions_root_env: ARTEMIS_POSITIONS_ROOT
+  trades_root_env: ARTEMIS_TRADES_ROOT
+  internal_db_root_env: ARTEMIS_INTERNAL_DB_ROOT
+
 orchestrators:
   openclaw:
     descriptor: integrations/orchestrators/openclaw.yaml
@@ -115,6 +126,12 @@ views:
 data_sources:
   registry: registries/data_sources.yaml
   validation_schema: schemas/data_source.schema.json
+
+policies:
+  cache: configs/cache_policy.yaml
+  forecast_retention: configs/forecast_retention_policy.yaml
+  source: configs/source_policy.yaml
+  risk: configs/risk_policy.yaml
 
 release:
   validation_commands:

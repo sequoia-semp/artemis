@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PnLExplain",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "run_id": {"type": "string"},
+    "current_as_of": {"type": "string"},
+    "prior_as_of": {"type": "string"},
+    "position_change_effect": {"type": "number"},
+    "price_move_effect": {"type": "number"},
+    "basis_move_effect": {"type": "number"},
+    "strip_weight_effect": {"type": "number"},
+    "atc_component_effect": {"type": "number"},
+    "mark_adjustment_effect": {"type": "number"},
+    "option_delta_effect": {"type": "number"},
+    "option_gamma_effect": {"type": "number"},
+    "option_vega_effect": {"type": "number"},
+    "option_theta_effect": {"type": "number"},
+    "unexplained_residual": {"type": "number"},
+    "bridge_sums": {"type": "boolean"},
+    "drivers": {"type": "array"},
+    "group_breakdowns": {"type": "array"},
+    "exceptions": {"type": "array"}
+  },
+  "required": [
+    "run_id",
+    "current_as_of",
+    "prior_as_of",
+    "position_change_effect",
+    "price_move_effect",
+    "unexplained_residual",
+    "bridge_sums"
+  ]
+}

@@ -9,6 +9,8 @@ Normalize WH and HH vol curves/surfaces.
 - ATM is true ATM strike for underlying settle.
 - Skew is diff to ATM IV.
 - Derive absolute IV, RR, and costless collar metrics.
+- Registered option Greeks may use Black76 screening analytics only for WH and HH.
+- Non-European exercise styles must be explicitly flagged as screening-only if Black76 is used.
 
 ## Required output
 - VolSurfacePoint

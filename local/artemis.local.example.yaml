@@ -1,32 +1,29 @@
-profiles:
-  local_ollama:
-    role_bindings:
-      analyst_llm:
-        kind: openai_compatible
-        base_url: http://localhost:11434/v1
-        model: qwen3-coder:30b
-        api_key_env: OLLAMA_API_KEY
+runtime:
+  env_files:
+    - local/.env
 
-  opencode_dev:
-    role_bindings:
-      coding_backend:
-        kind: external_harness
-        command_template: "opencode run --agent build --file {context_file} {instruction}"
+providers:
+  # Keep deterministic_only for no-model operation. Change this to local_ollama
+  # when the local Ollama server is reachable and you want Artemis context to
+  # advertise the local model profile.
+  default_profile: deterministic_only
+  profiles:
+    local_ollama:
+      kind: openai_compatible
+      required: false
+      descriptor: integrations/providers/openai_compatible.example.yaml
+      base_url: http://localhost:11434/v1
+      model: qwen3-coder:30b
+      api_key_env: OLLAMA_API_KEY
 
-  deterministic_only:
-    role_bindings:
-      analyst_llm:
-        kind: none
+backends:
+  coding:
+    # Keep human for manual/Codex-driven development. Change to opencode when
+    # delegating generated development context to the OpenCode backend.
+    default: human
 
-data_sources:
-  example_vendor:
-    credentials:
-      mode: env
-      required_env:
-        - ARTEMIS_VENDOR_API_KEY
-
-  example_ice:
-    credentials:
-      mode: env
-      required_env:
-        - ARTEMIS_ICE_API_KEY
+file_sources:
+  marks_root_env: ARTEMIS_MARKS_ROOT
+  positions_root_env: ARTEMIS_POSITIONS_ROOT
+  trades_root_env: ARTEMIS_TRADES_ROOT
+  internal_db_root_env: ARTEMIS_INTERNAL_DB_ROOT

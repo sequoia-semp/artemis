@@ -8,12 +8,14 @@ This repository is a model-agnostic Power + Gas Trading Analytics workbench.
 - `artemis.yaml`: central config, modes, tools, manifests, data sources, and release validation commands.
 - `README.md`: product overview and core commands.
 - `docs/README.md`: docs index.
+- `docs/user/setup.md`: local install, optional LLM, env var, and file-source setup.
 
 ## Authority Files
 
 - `docs/CONVENTIONS_LOCKED_v0.1.md`
 - `domain/source_policy.md`
 - `domain/market_index_model.md`
+- `domain/price_instrument_model.md`
 - `domain/power_basis_conventions.md`
 - `domain/gas_index_families.md`
 - `domain/period_grammar.md`
@@ -24,6 +26,7 @@ This repository is a model-agnostic Power + Gas Trading Analytics workbench.
 
 - `src/pga_workbench/`
 - `registries/`
+- `registries/option_contracts.yaml`
 - `schemas/`
 - `skills/manifest.yaml`
 - `views/manifest.yaml`

@@ -19,5 +19,13 @@ def test_legacy_llm_config_is_minimal_stub():
 
 def test_artemis_local_config_is_primary_local_template():
     config = yaml.safe_load((ROOT / "local/artemis.local.example.yaml").read_text(encoding="utf-8"))
-    assert config["profiles"]["deterministic_only"]["role_bindings"]["analyst_llm"]["kind"] == "none"
-    assert config["data_sources"]["example_ice"]["credentials"]["required_env"] == ["ARTEMIS_ICE_API_KEY"]
+    assert config["providers"]["default_profile"] == "deterministic_only"
+    assert config["providers"]["profiles"]["local_ollama"]["kind"] == "openai_compatible"
+    assert config["backends"]["coding"]["default"] == "human"
+
+
+def test_local_env_example_contains_credentials_and_file_roots():
+    text = (ROOT / "local/.env.example").read_text(encoding="utf-8")
+    assert "ARTEMIS_ICE_API_KEY=" in text
+    assert "ARTEMIS_MARKS_ROOT=" in text
+    assert "ARTEMIS_POSITIONS_ROOT=" in text

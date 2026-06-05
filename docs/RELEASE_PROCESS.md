@@ -46,3 +46,6 @@ pga release-check --ticket T-####
 This command reports package metadata, validation status, required release-note
 fields, the current regression report summary, and whether the PJM MVP planning
 bridge files are present.
+
+`--skip-tests` is only a dry-run inspection mode. It should not be used as a
+release gate because skipped validation is reported as not release-ready.

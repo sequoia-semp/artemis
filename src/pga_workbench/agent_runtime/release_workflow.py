@@ -68,7 +68,7 @@ def _run_release_validation_commands(repo_root: Path, commands: list[str], skip_
     results: list[dict[str, Any]] = []
     for command in commands:
         if skip_tests:
-            results.append({"command": command, "passed": True, "skipped": True, "returncode": None})
+            results.append({"command": command, "passed": False, "skipped": True, "returncode": None})
             continue
         resolved = _resolve_command(repo_root, command)
         completed = subprocess.run(resolved, cwd=repo_root, capture_output=True, text=True)
@@ -106,7 +106,8 @@ def collect_release_readiness(repo_root: Path, ticket_id: str | None = None, ski
         "tests run",
         "known gaps",
     ]
-    validation_passed = all(result.get("passed") for result in validation_results)
+    validation_skipped = any(result.get("skipped") for result in validation_results)
+    validation_passed = all(result.get("passed") for result in validation_results) and not validation_skipped
     ready = bool(doctor.get("passed")) and validation_passed and all(planning_bridge.values())
 
     return {
@@ -121,6 +122,7 @@ def collect_release_readiness(repo_root: Path, ticket_id: str | None = None, ski
         "required_release_note_fields": required_note_fields,
         "validation_commands": validation_commands,
         "validation_results": validation_results,
+        "validation_skipped": validation_skipped,
         "validation_passed": validation_passed,
         "doctor": doctor,
         "ready_for_release_prep": ready,

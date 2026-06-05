@@ -4,6 +4,7 @@ Use this file as the docs entrypoint.
 
 ## User Docs
 
+- `docs/user/setup.md`
 - `docs/user/configuration.md`
 - `docs/user/analyst_mode.md`
 - `docs/user/tui_roadmap.md`
@@ -32,6 +33,7 @@ Use this file as the docs entrypoint.
 
 - `docs/CONVENTIONS_LOCKED_v0.1.md`
 - `domain/`
+- `domain/price_instrument_model.md`
 - `registries/`
 - `schemas/`
 - `tests/`

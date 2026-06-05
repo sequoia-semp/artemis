@@ -164,6 +164,7 @@ def validate_registries(registry_dir: Path, schema_dir: Path) -> RegistryValidat
         "period_aliases.yaml": lambda data: _validate_mapping(data, _load_schema(schema_dir, "period_aliases.schema.json"), "period_aliases"),
         "product_master.yaml": lambda data: _validate_product_master(data, _load_schema(schema_dir, "product_master_entry.schema.json")),
         "exchange_contracts.yaml": lambda data: _validate_keyed_mapping(data, _load_schema(schema_dir, "exchange_contract.schema.json"), "exchange_contracts", "contract_id"),
+        "option_contracts.yaml": lambda data: _validate_keyed_mapping(data, _load_schema(schema_dir, "option_contract.schema.json"), "option_contracts", "option_contract_id"),
         "forward_fundamental_mappings.yaml": lambda data: _validate_keyed_mapping(data, _load_schema(schema_dir, "forward_fundamental_mapping.schema.json"), "forward_fundamental_mappings", "mapping_id"),
         "quoted_spreads.yaml": lambda data: _validate_quoted_spreads(data, _load_schema(schema_dir, "quoted_spread.schema.json")),
         "quantity_conventions.yaml": _validate_gas_quantity_convention,

@@ -217,6 +217,34 @@ def test_state_pack_candidate_publish_and_hot_state(tmp_path):
     assert HotState(tmp_path).artifacts()["prices"][0]["value"] == 1
 
 
+def test_state_pack_validation_rejects_non_utc_and_manifest_mismatch(tmp_path):
+    manifest = RunManifest(run_id="bad-time", created_at="2026-06-04T12:00:00Z", agent_pack_version="0.1.0")
+    with pytest.raises(WorkbenchException) as exc:
+        build_candidate_state_pack(tmp_path, "bad-time", "2026-06-04T12:00:00+00:00", {}, manifest)
+    assert exc.value.code == "STATE_PACK_INVALID"
+
+    mismatch = RunManifest(run_id="other-run", created_at="2026-06-04T12:00:00Z", agent_pack_version="0.1.0")
+    with pytest.raises(WorkbenchException) as exc:
+        build_candidate_state_pack(tmp_path, "bad-manifest", "2026-06-04T12:00:00Z", {}, mismatch)
+    assert exc.value.code == "STATE_PACK_INVALID"
+
+
+def test_state_pack_validation_rejects_invalid_delivery_windows(tmp_path):
+    manifest = RunManifest(run_id="bad-window", created_at="2026-06-04T12:00:00Z", agent_pack_version="0.1.0")
+    artifacts = {
+        "observations": [
+            {
+                "delivery_start": "2026-06-04T14:00:00Z",
+                "delivery_end": "2026-06-04T13:00:00Z",
+                "value": 100,
+            }
+        ]
+    }
+    with pytest.raises(WorkbenchException) as exc:
+        build_candidate_state_pack(tmp_path, "bad-window", "2026-06-04T12:00:00Z", artifacts, manifest)
+    assert exc.value.code == "STATE_PACK_INVALID"
+
+
 def test_state_pack_blocks_synthetic_and_shared_readonly_publish(tmp_path):
     manifest = RunManifest(run_id="state-1", created_at="2026-06-04T12:00:00Z", agent_pack_version="0.1.0")
     build_candidate_state_pack(tmp_path, "state-1", "2026-06-04T12:00:00Z", {}, manifest, synthetic=True)
@@ -228,6 +256,19 @@ def test_state_pack_blocks_synthetic_and_shared_readonly_publish(tmp_path):
     with pytest.raises(WorkbenchException) as exc:
         publish_candidate_state_pack(tmp_path, "state-2", shared_readonly=True)
     assert exc.value.code == SHARED_READONLY_PUBLISH_BLOCKED
+
+
+def test_failed_publish_preserves_current_hot_state(tmp_path):
+    manifest = RunManifest(run_id="state-1", created_at="2026-06-04T12:00:00Z", agent_pack_version="0.1.0")
+    build_candidate_state_pack(tmp_path, "state-1", "2026-06-04T12:00:00Z", {"prices": [{"value": 1}]}, manifest)
+    publish_candidate_state_pack(tmp_path, "state-1")
+
+    synthetic_manifest = RunManifest(run_id="state-2", created_at="2026-06-04T13:00:00Z", agent_pack_version="0.1.0")
+    build_candidate_state_pack(tmp_path, "state-2", "2026-06-04T13:00:00Z", {"prices": [{"value": 2}]}, synthetic_manifest, synthetic=True)
+    with pytest.raises(WorkbenchException):
+        publish_candidate_state_pack(tmp_path, "state-2")
+
+    assert HotState(tmp_path).artifacts()["prices"][0]["value"] == 1
 
 
 def test_agent_tools_are_read_only_and_change_requests_are_reviewed(tmp_path):

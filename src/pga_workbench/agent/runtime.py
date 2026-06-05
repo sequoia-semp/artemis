@@ -16,6 +16,41 @@ from ..tools.registry import load_tool_registry
 ARTEMIS_CONFIG_ERROR = "ARTEMIS_CONFIG_ERROR"
 
 
+def _load_env_file(path: Path, required: bool = False) -> bool:
+    path = Path(path)
+    if not path.exists():
+        if required:
+            raise WorkbenchException(ARTEMIS_CONFIG_ERROR, f"Artemis env file override missing: {path}")
+        return False
+    if not path.is_file():
+        raise WorkbenchException(ARTEMIS_CONFIG_ERROR, f"Artemis env file path is not a file: {path}")
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("export "):
+            line = line[len("export ") :].strip()
+        if "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        if key and key not in os.environ:
+            os.environ[key] = value
+    return True
+
+
+def _load_default_env_files(repo_root: Path) -> None:
+    for path in [repo_root / ".env", repo_root / "local" / ".env"]:
+        _load_env_file(path, required=False)
+    explicit = os.environ.get("ARTEMIS_ENV_FILE")
+    if explicit:
+        path = Path(explicit)
+        if not path.is_absolute():
+            path = repo_root / path
+        _load_env_file(path, required=True)
+
+
 def _deep_merge(base: dict[str, Any], overlay: dict[str, Any]) -> dict[str, Any]:
     merged = dict(base)
     for key, value in overlay.items():
@@ -37,6 +72,7 @@ def _load_config_file(path: Path) -> dict[str, Any]:
 
 def load_artemis_config(repo_root: Path, config_path: Path | None = None) -> dict[str, Any]:
     repo_root = Path(repo_root)
+    _load_default_env_files(repo_root)
     config = _load_config_file(repo_root / "artemis.yaml")
     candidates = [
         ("local", os.environ.get("ARTEMIS_LOCAL_CONFIG") or str(repo_root / "local" / "artemis.local.yaml"), bool(os.environ.get("ARTEMIS_LOCAL_CONFIG"))),
@@ -53,6 +89,11 @@ def load_artemis_config(repo_root: Path, config_path: Path | None = None) -> dic
             config = _deep_merge(config, _load_config_file(path))
         elif required:
             raise WorkbenchException(ARTEMIS_CONFIG_ERROR, f"{label} Artemis config override missing: {path}")
+    for relative_path in (config.get("runtime") or {}).get("env_files") or []:
+        path = Path(str(relative_path))
+        if not path.is_absolute():
+            path = repo_root / path
+        _load_env_file(path, required=False)
     return config
 
 
@@ -80,6 +121,9 @@ def validate_artemis_config(repo_root: Path, config_path: Path | None = None) ->
     ]:
         if not (repo_root / relative_path).exists():
             missing_paths.append(relative_path)
+    for relative_path in (config.get("policies") or {}).values():
+        if not (repo_root / str(relative_path)).exists():
+            missing_paths.append(str(relative_path))
     if missing_paths:
         raise WorkbenchException(ARTEMIS_CONFIG_ERROR, f"Config references missing paths: {missing_paths}")
     return config
@@ -107,6 +151,20 @@ def collect_artemis_capabilities(repo_root: Path, check_network: bool = False, c
         }
         for name, item in profiles.items()
     }
+    file_sources = {
+        key: {
+            "env": env_name,
+            "configured": bool(os.environ.get(str(env_name))),
+            "path": os.environ.get(str(env_name)),
+        }
+        for key, env_name in (config.get("file_sources") or {}).items()
+    }
+    runtime_env_files = []
+    for relative_path in (config.get("runtime") or {}).get("env_files") or []:
+        path = Path(str(relative_path))
+        if not path.is_absolute():
+            path = repo_root / path
+        runtime_env_files.append({"path": str(relative_path), "exists": path.exists()})
 
     return {
         "name": config.get("name"),
@@ -118,6 +176,11 @@ def collect_artemis_capabilities(repo_root: Path, check_network: bool = False, c
             "default_profile": providers.get("default_profile"),
             "profiles": optional_profiles,
         },
+        "runtime": {
+            "env_files": runtime_env_files,
+        },
+        "file_sources": file_sources,
+        "policies": config.get("policies") or {},
         "tools": {
             "count": len(tools.get("tools") or {}),
             "policy": summarize_tool_policy(tools, permissions),

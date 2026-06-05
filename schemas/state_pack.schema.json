@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MorningStatePack",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["state_id", "as_of", "created_at", "synthetic", "artifacts", "manifest"],
+  "properties": {
+    "state_id": {"type": "string", "minLength": 1},
+    "as_of": {"type": "string"},
+    "created_at": {"type": "string"},
+    "synthetic": {"type": "boolean"},
+    "artifacts": {"type": "object"},
+    "manifest": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["run_id", "created_at", "agent_pack_version"],
+      "properties": {
+        "run_id": {"type": "string", "minLength": 1},
+        "created_at": {"type": "string"},
+        "agent_pack_version": {"type": "string", "minLength": 1},
+        "inputs": {"type": "array"},
+        "outputs": {"type": "array"},
+        "tests": {"type": "object"},
+        "exceptions": {"type": "object"}
+      }
+    }
+  }
+}

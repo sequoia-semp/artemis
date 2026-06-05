@@ -24,6 +24,12 @@
     },
     "exceptions": {
       "type": "array"
+    },
+    "position_lot": {
+      "type": "object"
+    },
+    "exposures": {
+      "type": "array"
     }
   },
   "required": [

@@ -8,7 +8,7 @@ import sys
 import yaml
 
 from .agent.runtime import collect_artemis_capabilities, dump_config_yaml, load_artemis_config, validate_artemis_config
-from .analyst.view_engine import build_view, validate_view_manifest
+from .analyst.view_engine import build_view, merge_hot_state_artifacts, validate_view_manifest
 from .core.time import utc_now_iso
 from .data.sources import credential_env_names, validate_data_sources
 from .dev.coding_backend import validate_coding_backends
@@ -19,9 +19,11 @@ from .periods import parse_period
 from .registry import validate_registries
 from .serialization import read_json, to_plain, write_json
 from .services.greeks import read_option_rows, run_black76_greeks
+from .services.heatmap import build_forward_price_heatmap, read_price_surface_points, validate_forward_price_heatmap
 from .services.normalization import normalize_marks, normalize_positions, read_csv_rows
 from .services.pnl import run_pnl_attribution
 from .services.risk import read_historical_returns, run_historical_var
+from .cache.hot_state import HotState
 from .state.packs import build_candidate_state_pack, publish_candidate_state_pack
 from .agent_runtime.capabilities import collect_agent_capabilities, collect_agent_doctor
 from .agent_runtime.kb_validator import validate_knowledge_base
@@ -88,6 +90,14 @@ def _cmd_run_greeks(args: argparse.Namespace) -> int:
     report = run_black76_greeks(read_option_rows(Path(args.input)), args.run_id)
     write_json(Path(args.output), report)
     print(f"wrote Greeks to {args.output}")
+    return 0
+
+
+def _cmd_build_forward_price_heatmap(args: argparse.Namespace) -> int:
+    report = build_forward_price_heatmap(read_price_surface_points(Path(args.input)), args.as_of, run_id=args.run_id)
+    validate_forward_price_heatmap(report, Path(args.schemas))
+    write_json(Path(args.output), report)
+    print(f"wrote forward price heatmap to {args.output}")
     return 0
 
 
@@ -192,6 +202,7 @@ def _cmd_release_check(args: argparse.Namespace) -> int:
         package = result["package"]
         print(f"package: {package.get('name')} {package.get('version')}")
         print(f"requires_python: {package.get('requires_python')}")
+        print(f"validation_skipped: {result['validation_skipped']}")
         print(f"validation_passed: {result['validation_passed']}")
         print(f"ready_for_release_prep: {result['ready_for_release_prep']}")
         print("validation_commands:")
@@ -206,7 +217,7 @@ def _cmd_release_check(args: argparse.Namespace) -> int:
         print("required_release_note_fields:")
         for field in result["required_release_note_fields"]:
             print(f"- {field}")
-    return 0 if result["ready_for_release_prep"] else 1
+    return 0 if args.skip_tests or result["ready_for_release_prep"] else 1
 
 
 def _cmd_artemis_config_show(args: argparse.Namespace) -> int:
@@ -247,6 +258,8 @@ def _cmd_artemis_capabilities(args: argparse.Namespace) -> int:
 
 def _cmd_analyst_view_build(args: argparse.Namespace) -> int:
     payload = read_json(Path(args.input))
+    if args.state_root:
+        payload = merge_hot_state_artifacts(payload, HotState(Path(args.state_root)).artifacts())
     view = build_view(
         Path(args.repo_root),
         args.template,
@@ -373,6 +386,14 @@ def build_parser(prog: str | None = None) -> argparse.ArgumentParser:
     p.add_argument("--run-id", default="greeks-run")
     p.set_defaults(func=_cmd_run_greeks)
 
+    p = sub.add_parser("build-forward-price-heatmap")
+    p.add_argument("--input", required=True)
+    p.add_argument("--as-of", required=True)
+    p.add_argument("--output", required=True)
+    p.add_argument("--run-id", default="forward-price-heatmap")
+    p.add_argument("--schemas", default="schemas")
+    p.set_defaults(func=_cmd_build_forward_price_heatmap)
+
     p = sub.add_parser("build-state-pack")
     p.add_argument("--state-root", required=True)
     p.add_argument("--run-id", required=True)
@@ -457,9 +478,133 @@ def build_parser(prog: str | None = None) -> argparse.ArgumentParser:
     b.add_argument("--as-of")
     b.add_argument("--input", required=True)
     b.add_argument("--output", required=True)
+    b.add_argument("--state-root")
     b.add_argument("--repo-root", default=".")
     b.add_argument("--allow-fixture", action="store_true")
     b.set_defaults(func=_cmd_analyst_view_build)
+    heatmap = analyst_sub.add_parser("heatmap")
+    heatmap_sub = heatmap.add_subparsers(dest="heatmap_command", required=True)
+    h = heatmap_sub.add_parser("build")
+    h.add_argument("--input", required=True)
+    h.add_argument("--as-of", required=True)
+    h.add_argument("--output", required=True)
+    h.add_argument("--run-id", default="forward-price-heatmap")
+    h.add_argument("--schemas", default="schemas")
+    h.set_defaults(func=_cmd_build_forward_price_heatmap)
+
+    p = sub.add_parser("data-sources")
+    ds_sub = p.add_subparsers(dest="data_sources_command", required=True)
+    d = ds_sub.add_parser("list")
+    d.add_argument("--registry", default="registries/data_sources.yaml")
+    d.add_argument("--schemas", default="schemas")
+    d.add_argument("--json", action="store_true")
+    d.set_defaults(func=_cmd_data_sources_list)
+    d = ds_sub.add_parser("validate")
+    d.add_argument("--registry", default="registries/data_sources.yaml")
+    d.add_argument("--schemas", default="schemas")
+    d.set_defaults(func=_cmd_data_sources_validate)
+
+    p = sub.add_parser("skill")
+    skill_sub = p.add_subparsers(dest="skill_command", required=True)
+    s = skill_sub.add_parser("validate")
+    s.add_argument("--repo-root", default=".")
+    s.add_argument("--schemas", default="schemas")
+    s.set_defaults(func=_cmd_skill_validate)
+
+    p = sub.add_parser("views")
+    views_sub = p.add_subparsers(dest="views_command", required=True)
+    v = views_sub.add_parser("validate")
+    v.add_argument("--repo-root", default=".")
+    v.add_argument("--schemas", default="schemas")
+    v.set_defaults(func=_cmd_views_validate)
+
+    p = sub.add_parser("dev")
+    dev_sub = p.add_subparsers(dest="dev_command", required=True)
+    d = dev_sub.add_parser("context")
+    d.add_argument("--ticket", required=True)
+    d.add_argument("--repo-root", default=".")
+    d.add_argument("--config")
+    d.add_argument("--output")
+    d.set_defaults(func=_cmd_dev_context)
+    d = dev_sub.add_parser("plan")
+    d.add_argument("--ticket", required=True)
+    d.add_argument("--repo-root", default=".")
+    d.add_argument("--config")
+    d.set_defaults(func=_cmd_dev_plan)
+    d = dev_sub.add_parser("propose")
+    d.add_argument("--ticket", required=True)
+    d.add_argument("--backend", default="human")
+    d.add_argument("--repo-root", default=".")
+    d.set_defaults(func=_cmd_dev_propose)
+
+    p = sub.add_parser("release")
+    release_sub = p.add_subparsers(dest="release_command", required=True)
+    r = release_sub.add_parser("check")
+    r.add_argument("--ticket")
+    r.add_argument("--repo-root", default=".")
+    r.add_argument("--skip-tests", action="store_true")
+    r.add_argument("--json", action="store_true")
+    r.set_defaults(func=_cmd_release_check)
+    r = release_sub.add_parser("candidate")
+    r.add_argument("--ticket", required=True)
+    r.add_argument("--repo-root", default=".")
+    r.add_argument("--target-version", default="0.2.0")
+    r.add_argument("--output")
+    r.set_defaults(func=_cmd_release_candidate)
+
+    return parser
+
+
+def build_artemis_parser(prog: str | None = None) -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(prog=prog or "artemis")
+    sub = parser.add_subparsers(dest="command", required=True)
+
+    p = sub.add_parser("parse-period")
+    p.add_argument("label")
+    p.add_argument("--commodity", default="generic", choices=["generic", "power", "gas"])
+    p.set_defaults(func=_cmd_parse_period)
+
+    p = sub.add_parser("capabilities")
+    p.add_argument("--repo-root", default=".")
+    p.add_argument("--config")
+    p.add_argument("--check-network", action="store_true")
+    p.add_argument("--json", action="store_true")
+    p.set_defaults(func=_cmd_artemis_capabilities)
+
+    p = sub.add_parser("config")
+    config_sub = p.add_subparsers(dest="config_command", required=True)
+    c = config_sub.add_parser("show")
+    c.add_argument("--repo-root", default=".")
+    c.add_argument("--config")
+    c.add_argument("--json", action="store_true")
+    c.set_defaults(func=_cmd_artemis_config_show)
+    c = config_sub.add_parser("validate")
+    c.add_argument("--repo-root", default=".")
+    c.add_argument("--config")
+    c.set_defaults(func=_cmd_artemis_config_validate)
+
+    p = sub.add_parser("analyst")
+    analyst_sub = p.add_subparsers(dest="analyst_command", required=True)
+    view = analyst_sub.add_parser("view")
+    view_sub = view.add_subparsers(dest="view_command", required=True)
+    b = view_sub.add_parser("build")
+    b.add_argument("--template", required=True)
+    b.add_argument("--as-of")
+    b.add_argument("--input", required=True)
+    b.add_argument("--output", required=True)
+    b.add_argument("--state-root")
+    b.add_argument("--repo-root", default=".")
+    b.add_argument("--allow-fixture", action="store_true")
+    b.set_defaults(func=_cmd_analyst_view_build)
+    heatmap = analyst_sub.add_parser("heatmap")
+    heatmap_sub = heatmap.add_subparsers(dest="heatmap_command", required=True)
+    h = heatmap_sub.add_parser("build")
+    h.add_argument("--input", required=True)
+    h.add_argument("--as-of", required=True)
+    h.add_argument("--output", required=True)
+    h.add_argument("--run-id", default="forward-price-heatmap")
+    h.add_argument("--schemas", default="schemas")
+    h.set_defaults(func=_cmd_build_forward_price_heatmap)
 
     p = sub.add_parser("data-sources")
     ds_sub = p.add_subparsers(dest="data_sources_command", required=True)
@@ -525,6 +670,12 @@ def build_parser(prog: str | None = None) -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = build_parser()
+    parser = build_parser("pga")
+    args = parser.parse_args(argv)
+    return int(args.func(args))
+
+
+def artemis_main(argv: list[str] | None = None) -> int:
+    parser = build_artemis_parser("artemis")
     args = parser.parse_args(argv)
     return int(args.func(args))

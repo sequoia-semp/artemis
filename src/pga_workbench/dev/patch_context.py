@@ -75,6 +75,10 @@ def collect_development_context(repo_root: Path, ticket_id: str, config_path: Pa
     providers = config.get("providers") or {}
     profile_id = str(providers.get("default_profile") or "deterministic_only")
     profile = (providers.get("profiles") or {}).get(profile_id) or {"kind": "none", "required": False}
+    coding_config = (config.get("backends") or {}).get("coding") or {}
+    active_backend = str(coding_config.get("default") or "human")
+    if active_backend not in backend_descriptors:
+        raise WorkbenchException("CODING_BACKEND_INVALID", f"Unknown coding backend: {active_backend}")
 
     return {
         "mode": "development",
@@ -83,6 +87,7 @@ def collect_development_context(repo_root: Path, ticket_id: str, config_path: Pa
         "active_profile": profile_id,
         "profile": profile,
         "provider": None if profile.get("kind") in {None, "none", "deterministic_only"} else profile.get("kind"),
+        "active_backend": active_backend,
         "authority_ladder": {
             "root_contract": config["authority"]["root_contract"],
             "canonical_domain": config["authority"]["canonical_domain"],

@@ -46,6 +46,31 @@ tools:
     risk: workspace_write
     modes: [analyst]
 
+  forward_price_heatmap:
+    command: artemis analyst heatmap build
+    risk: workspace_write
+    modes: [analyst]
+
+  normalize_prices:
+    command: pga normalize-prices
+    risk: workspace_write
+    modes: [analyst, development]
+
+  normalize_positions:
+    command: pga normalize-positions
+    risk: workspace_write
+    modes: [analyst, development]
+
+  pnl_attribution:
+    command: pga run-pnl-attribution
+    risk: workspace_write
+    modes: [analyst, development]
+
+  option_greeks:
+    command: pga run-greeks
+    risk: workspace_write
+    modes: [analyst, development]
+
   data_source_list:
     command: artemis data-sources list
     risk: read_only

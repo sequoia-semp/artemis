@@ -45,6 +45,53 @@ def load_view_template(repo_root: Path, template_id: str) -> dict[str, Any]:
     raise WorkbenchException(VIEW_ERROR, f"Unknown view template: {template_id}")
 
 
+def _merge_view_dicts(base: dict[str, Any], overlay: dict[str, Any]) -> dict[str, Any]:
+    merged = dict(base)
+    for key, value in overlay.items():
+        if isinstance(value, dict) and isinstance(merged.get(key), dict):
+            merged[key] = _merge_view_dicts(merged[key], value)
+        else:
+            merged[key] = value
+    return merged
+
+
+def merge_hot_state_artifacts(input_payload: dict[str, Any], artifacts: dict[str, Any]) -> dict[str, Any]:
+    state_payload = artifacts.get("view_payload") if isinstance(artifacts.get("view_payload"), dict) else {}
+    merged = _merge_view_dicts(dict(state_payload), input_payload)
+
+    state_inputs = artifacts.get("inputs") if isinstance(artifacts.get("inputs"), dict) else {}
+    supplied_inputs = input_payload.get("inputs") if isinstance(input_payload.get("inputs"), dict) else {}
+    if state_inputs or supplied_inputs:
+        merged["inputs"] = _merge_view_dicts(dict(state_inputs), dict(supplied_inputs))
+
+    for field in [
+        "drivers",
+        "driver_deltas",
+        "forecast_actual_diffs",
+        "evidence",
+        "scenarios",
+        "prior_day_retrospective",
+        "current_day_view",
+        "fourteen_day_outlook",
+        "summary",
+        "stance_summary",
+        "market_scope",
+    ]:
+        if field in artifacts and field not in input_payload:
+            merged[field] = artifacts[field]
+
+    lineage = []
+    if isinstance(artifacts.get("source_lineage"), list):
+        lineage.extend(artifacts["source_lineage"])
+    if isinstance(input_payload.get("source_lineage"), list):
+        lineage.extend(input_payload["source_lineage"])
+    if artifacts:
+        lineage.append({"source": "hot_state", "artifact_keys": sorted(str(key) for key in artifacts)})
+    if lineage:
+        merged["source_lineage"] = lineage
+    return merged
+
+
 def _horizon_for(view_type: str, as_of: date) -> dict[str, str]:
     if view_type == "fourteen_day_fundamentals":
         return plus_minus_days(as_of).to_dict()

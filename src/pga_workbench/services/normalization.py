@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import json
 from pathlib import Path
 from typing import Any
 
@@ -27,6 +28,25 @@ def _int(value: Any, default: int | None = None) -> int | None:
     if value is None or value == "":
         return default
     return int(float(value))
+
+
+def _tags(value: Any) -> list[str]:
+    if value is None or value == "":
+        return []
+    if isinstance(value, list):
+        return [str(item).strip() for item in value if str(item).strip()]
+    return [item.strip() for item in str(value).replace(";", ",").split(",") if item.strip()]
+
+
+def _metadata(value: Any) -> dict[str, Any]:
+    if value is None or value == "":
+        return {}
+    if isinstance(value, dict):
+        return dict(value)
+    parsed = json.loads(str(value))
+    if not isinstance(parsed, dict):
+        raise WorkbenchException("POSITION_METADATA_INVALID", "Position metadata must be a JSON object")
+    return parsed
 
 
 def market_index_from_raw(raw_product: str) -> MarketIndex:
@@ -96,7 +116,11 @@ def raw_position_from_row(row: dict[str, Any], row_number: int) -> RawPosition:
         raw_mark=_float(row.get("raw_mark")),
         book=row.get("book") or None,
         strategy=row.get("strategy") or None,
+        portfolio=row.get("portfolio") or None,
+        sleeve=row.get("sleeve") or None,
         structure_id=row.get("structure_id") or None,
+        tags=_tags(row.get("tags")),
+        metadata=_metadata(row.get("metadata")),
         source=row.get("source") or "local_positions_csv",
         source_role=row.get("source_role") or "authoritative_input",
         reference_hours=_float(row.get("reference_hours")),
@@ -114,6 +138,7 @@ def normalize_position(position: RawPosition, price_surface: list[PriceSurfacePo
     product = position.raw_product.strip().upper()
 
     decomposition: dict[str, Any] = {}
+    exposure_bases: list[dict[str, Any]] = []
     if "/" in product:
         spread = decompose_power_spread(product, position.raw_quantity)
         commodity = "power"
@@ -134,6 +159,22 @@ def normalize_position(position: RawPosition, price_surface: list[PriceSurfacePo
             "first_leg_exposure": spread.first_leg_exposure,
             "second_leg_exposure": spread.second_leg_exposure,
         }
+        exposure_bases = [
+            {
+                "index_base": f"PJM.{spread.first}.RT.FULL_LMP.ATC",
+                "signed_quantity": spread.first_leg_exposure,
+                "component": "first",
+                "component_weight": 1.0,
+                "exposure_type": "spread_leg",
+            },
+            {
+                "index_base": f"PJM.{spread.second}.RT.FULL_LMP.ATC",
+                "signed_quantity": spread.second_leg_exposure,
+                "component": "second",
+                "component_weight": -1.0,
+                "exposure_type": "spread_leg",
+            },
+        ]
     else:
         idx = market_index_from_raw(position.raw_product)
         period = parse_period(position.raw_period, idx.commodity)
@@ -151,6 +192,15 @@ def normalize_position(position: RawPosition, price_surface: list[PriceSurfacePo
             "is_defaulted": idx.is_defaulted,
             "default_reason": idx.default_reason,
         }
+        exposure_bases = [
+            {
+                "index_base": index_base,
+                "signed_quantity": position.raw_quantity,
+                "component": None,
+                "component_weight": 1.0,
+                "exposure_type": "flat_price",
+            }
+        ]
 
     mark = position.raw_mark
     if mark is None:
@@ -175,6 +225,57 @@ def normalize_position(position: RawPosition, price_surface: list[PriceSurfacePo
         valuation_quantity = derived_mmbtu
 
     market_value = valuation_quantity * mark if mark is not None else None
+    identity = {
+        "book": position.book,
+        "strategy": position.strategy,
+        "portfolio": position.portfolio,
+        "sleeve": position.sleeve,
+        "structure_id": position.structure_id,
+        "tags": position.tags,
+        "metadata": position.metadata,
+    }
+    position_lot = {
+        "as_of": position.as_of,
+        "position_id": position.position_id,
+        "instrument_id": f"{index_base}.{period.normalized_label}",
+        "instrument_type": normalized_product["product_type"],
+        "raw_product": position.raw_product,
+        "period_id": period.normalized_label,
+        "signed_quantity": position.raw_quantity,
+        "quantity_unit": position.quantity_unit,
+        "mark": mark,
+        "source": position.source,
+        "source_role": position.source_role,
+        **identity,
+    }
+    exposures = []
+    for base in exposure_bases:
+        exposure_quantity = float(base["signed_quantity"])
+        exposure_mwh = None
+        exposure_mmbtu = None
+        if commodity == "power":
+            exposure_mwh = power_mw_to_mwh(exposure_quantity, float(position.reference_hours or 0.0))
+        elif position.quantity_unit.lower() == "contracts":
+            exposure_mmbtu = gas_contracts_to_total_mmbtu(exposure_quantity, int(position.delivery_days or 0))
+        else:
+            exposure_mmbtu = exposure_quantity
+        exposures.append(
+            {
+                "as_of": position.as_of,
+                "position_id": position.position_id,
+                "index_id": f"{base['index_base']}.{period.normalized_label}",
+                "period_id": period.normalized_label,
+                "signed_quantity": exposure_quantity,
+                "quantity_unit": position.quantity_unit,
+                "exposure_type": base["exposure_type"],
+                "component": base["component"],
+                "component_weight": base["component_weight"],
+                "derived_MWh": exposure_mwh,
+                "derived_MMBtu": exposure_mmbtu,
+                "market_value": None if mark is None else (exposure_mwh if exposure_mwh is not None else exposure_mmbtu) * mark,
+                **identity,
+            }
+        )
     return NormalizedPosition(
         as_of=position.as_of,
         position_id=position.position_id,
@@ -186,7 +287,7 @@ def normalize_position(position: RawPosition, price_surface: list[PriceSurfacePo
             "source": position.source,
             "source_role": position.source_role,
         },
-        identity={"book": position.book, "strategy": position.strategy, "structure_id": position.structure_id},
+        identity=identity,
         normalized={**normalized_product, "quote_unit": quote_unit, "mark": mark},
         derived={
             "derived_MWh": derived_mwh,
@@ -195,6 +296,8 @@ def normalize_position(position: RawPosition, price_surface: list[PriceSurfacePo
             "market_value": market_value,
         },
         decomposition=decomposition,
+        position_lot=position_lot,
+        exposures=exposures,
     )
 
 

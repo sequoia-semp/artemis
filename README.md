@@ -13,7 +13,8 @@ analytics command family and compatibility surface.
 1. Read `AGENTS.md`.
 2. Inspect `artemis.yaml`.
 3. Use `docs/README.md` as the docs index.
-4. Run validation:
+4. Use `docs/user/setup.md` for local installation and optional model/source setup.
+5. Run validation:
 
 ```bash
 make validate
@@ -27,6 +28,7 @@ Primary orientation files:
 - `llms.txt`: compact model/agent navigation index.
 - `artemis.yaml`: central config, mode, tool, manifest, and release map.
 - `docs/README.md`: user, analyst, developer, integration, and design-record index.
+- `docs/user/setup.md`: installation, local LLM, `.env`, and file-source setup.
 
 Historical build-packet and wrapper docs are archive/design records. They do not
 override `AGENTS.md`, `artemis.yaml`, locked domain conventions, schemas,
@@ -88,7 +90,10 @@ approval.
 | Deterministic `pga` analytics CLI | present |
 | Locked conventions | present |
 | Registry/schema validation | present |
+| ICE option contract descriptors | PMI, P1X, and PHE descriptor-backed MVP |
+| Position/exposure/PnL grouping | book, strategy, portfolio, sleeve, and tags |
 | Analyst view engine | schema-backed skeleton |
+| Forward price heatmap | deterministic 1d/5d/10d/30d history deltas |
 | Data-source descriptors | descriptor-only, no live proprietary calls |
 | Development context | Artemis config-backed |
 | Release candidate workflow | deterministic, human-review required |

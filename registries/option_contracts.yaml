@@ -1,0 +1,167 @@
+ICE_PMI_OPTION_PJM_WH_RT_PEAK_1MW:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590526"
+  product_name: Option on PJM Western Hub Real-Time Peak (1 MW) Fixed Price Future
+  contract_symbol: PMI
+  commodity: power
+  location_id: WH
+  market_run: RT
+  price_component: FULL_LMP
+  shape: PEAK
+  underlying_contract_id: ICE_PMI_PJM_WH_RT_PEAK_1MW
+  underlying_contract_symbol: PMI
+  underlying_index_id: PJM.WH.RT.FULL_LMP.PEAK
+  settlement_method: Exercise into Underlying Futures Contract
+  contract_size:
+    value: 1
+    unit: MW
+  contract_period: monthly
+  premium_quote_unit: USD_per_MWh
+  strike_unit: USD_per_MWh
+  currency: USD
+  minimum_price_fluctuation: One cent ($0.01) per MWh; minimum price fluctuation may vary by trade type.
+  listing_cycle: Up to 50 consecutive monthly Contract Periods
+  last_trading_day_rule: At 2:30pm EPT on the second Business Day prior to the first calendar day of the Contract Period
+  option_style: American
+  exercise_method: Manual; Automatic on Last Trading Day
+  exercise_procedure: Clearing Members provide exercise and abandon instructions; in-the-money options automatically exercise on Last Trading Day.
+  exercise_day_rule: Manual on any Business Day; automatic on Last Trading Day
+  automatic_exercise: In-the-money options exercise into the underlying futures contract with contract price equal to the strike price; out-of-the-money options expire.
+  valuation_model: Black76
+  model_scope: screening_greeks_only_american_exercise_not_modeled
+  reference_price:
+    id: ELECTRICITY-PJM-WESTERN-HUB-REAL-TIME-PEAK-MONTHLY-ICE
+    publisher: ICE
+    description: Settlement price per MWh on ICE of the PJM Western Hub Real-Time Peak Mini Fixed Price Swap Futures Contract.
+    pricing_date_rule: Two Business Days prior to the first calendar day of the Contract Period
+    specified_price_rule: Settlement Price
+    pricing_calendar: ICE
+    delivery_date_rule: Contract Period
+  strike_price_listing:
+    minimum_strikes: 10
+    standard_increment: USD 1.00 per MWh
+    user_defined_increment: USD 0.05 per MWh
+    notes: Strike boundaries are adjusted according to futures price movements.
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590526
+      notes: Official ICE product page for PMI WH RT peak option contract metadata.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/6590526/pdf
+      notes: Official ICE PDF spec for PMI option contract metadata.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_P1X_OPTION_PJM_WH_RT_PEAK_CAL_YEAR_1X:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "64286936"
+  product_name: Option on PJM Western Hub Real-Time Peak Calendar Year One Time Fixed Price Future
+  contract_symbol: P1X
+  commodity: power
+  location_id: WH
+  market_run: RT
+  price_component: FULL_LMP
+  shape: PEAK
+  underlying_contract_id: ICE_PMI_PJM_WH_RT_PEAK_1MW
+  underlying_contract_symbol: PMI
+  underlying_index_id: PJM.WH.RT.FULL_LMP.PEAK
+  settlement_method: Exercise into Underlying Futures Contract
+  contract_size:
+    value: 1
+    unit: MW
+    description: One lot is equivalent to 1 MW per peak hour of the applicable calendar year.
+  contract_period: annual_strip
+  premium_quote_unit: USD_per_MWh
+  strike_unit: USD_per_MWh
+  currency: USD
+  minimum_price_fluctuation: One cent ($0.01) per MWh; minimum price fluctuation may vary by trade type.
+  listing_cycle: Up to 4 consecutive January-December yearly Contract Periods
+  last_trading_day_rule: At 2:30pm EPT on the second Friday prior to the first calendar day of the first Contract Period in the basket
+  option_style: European
+  exercise_method: Automatic Only
+  exercise_procedure: Manual exercise or abandon is not permitted; in-the-money options exercise automatically into twelve underlying monthly futures contracts.
+  exercise_day_rule: The Last Trading Day
+  automatic_exercise: In-the-money options exercise using the weighted average of Reference Price A prices into one underlying futures contract for each contract month in the basket.
+  valuation_model: Black76
+  model_scope: strip_screening_greeks_with_weighted_average_forward
+  reference_price:
+    id: ELECTRICITY-PJM-WESTERN-HUB-REAL-TIME-PEAK-MONTHLY-ICE
+    publisher: ICE
+    description: Settlement price per MWh on ICE of the PJM Western Hub Real-Time Peak Fixed Price Futures Contract for each delivery date in the basket.
+    pricing_date_rule: Second to Last Friday in December preceding the Contract Period
+    specified_price_rule: Settlement Price
+    pricing_calendar: ICE
+    delivery_date_rule: Each Contract Period in the basket
+  strike_price_listing:
+    minimum_strikes: 10
+    standard_increment: USD 1.00 per MWh
+    user_defined_increment: USD 0.05 per MWh
+    notes: Strike boundaries are adjusted according to futures price movements.
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/64286936
+      notes: Official ICE product page for P1X WH RT peak calendar-year one-time option.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/64286936/pdf
+      notes: Official ICE PDF spec for P1X option contract metadata.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_PHE_OPTION_HENRY_PENULTIMATE_FIXED_PRICE:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590274"
+  product_name: Option on Henry Penultimate Fixed Price Future
+  contract_symbol: PHE
+  commodity: gas
+  location_id: HH
+  underlying_contract_symbol: PHH
+  underlying_index_id: GAS.HH.NYMEX_PENULTIMATE
+  settlement_method: Exercise into Underlying Futures Contract
+  contract_size:
+    value: 2500
+    unit: MMBtu
+  contract_period: monthly
+  premium_quote_unit: USD_per_MMBtu
+  strike_unit: USD_per_MMBtu
+  currency: USD
+  minimum_price_fluctuation: One hundredth of a cent ($0.0001) per MMBtu; minimum price fluctuation may vary by trade type.
+  listing_cycle: Up to 84 consecutive monthly Contract Periods
+  last_trading_day_rule: At 2:30pm EPT on the fourth Business Day prior to the first calendar day of the Contract Period
+  option_style: European
+  exercise_method: Automatic Only
+  exercise_procedure: Manual exercise or abandon is not permitted; in-the-money options exercise automatically into the underlying futures contract.
+  exercise_day_rule: The Last Trading Day
+  automatic_exercise: In-the-money options exercise into the underlying futures contract with contract price equal to the strike price; out-of-the-money options expire.
+  valuation_model: Black76
+  model_scope: standard_european_option_on_future_screening_greeks
+  reference_price:
+    id: NATURAL-GAS-NYMEX
+    publisher: NYMEX
+    description: Settlement price per MMBtu of the NYMEX Henry Hub Natural Gas Futures Contract for the delivery date.
+    pricing_date_rule: One Business Day prior to the last scheduled trading day of the NYMEX Henry Hub Natural Gas Futures Contract for the Delivery Date
+    specified_price_rule: Settlement price
+    pricing_calendar: NYMEX
+    delivery_date_rule: Contract Period
+  strike_price_listing:
+    minimum_strikes: 10
+    standard_increment: USD 0.25 per MMBtu
+    user_defined_increment: USD 0.001 per MMBtu
+    notes: Strike boundaries are adjusted according to futures price movements.
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590274
+      notes: Official ICE product page for PHE Henry Penultimate option contract metadata.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/6590274/pdf
+      notes: Official ICE PDF spec for PHE option contract metadata.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
