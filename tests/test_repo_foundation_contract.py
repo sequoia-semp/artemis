@@ -70,6 +70,9 @@ def test_agents_has_general_convention_rule_not_specific_math():
     text = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
     assert "locked market conventions" in text
     assert "approved change request" in text
+    forbidden = ["power basis", "gas index", "full LMP", "GDD", "basis orientation", "quoted spread"]
+    for item in forbidden:
+        assert item not in text
 
 
 def test_legacy_llm_config_is_absent_or_stub():
@@ -105,3 +108,54 @@ def test_root_opencode_is_minimal_permissions_shim():
     assert "model" not in config
     assert "provider" not in config
     assert config["permission"]["edit"] == "ask"
+
+
+def test_current_architecture_docs_do_not_use_stale_canonical_layers():
+    forbidden = ["`agents/`", "`adapters/`", "`analytics/`"]
+    current_architecture_docs = [
+        ROOT / "docs/ARCHITECTURE.md",
+        ROOT / "docs/architecture/power_gas_trading_agent_workbench.md",
+    ]
+    for path in current_architecture_docs:
+        text = path.read_text(encoding="utf-8")
+        for item in forbidden:
+            assert item not in text, f"{path.relative_to(ROOT)} uses stale canonical layer {item}"
+
+
+def test_architecture_docs_cover_current_artemis_layers():
+    text = (ROOT / "docs/ARCHITECTURE.md").read_text(encoding="utf-8")
+    required = [
+        "Root Entrypoint Layer",
+        "Control Plane",
+        "Analyst Mode",
+        "Development Mode",
+        "Tool Bus",
+        "Data-Source Descriptors",
+        "Manifests",
+        "Optional Integration Descriptors",
+        "Deterministic Analytics Core",
+        "Release Validation",
+    ]
+    for item in required:
+        assert item in text
+
+
+def test_docs_index_separates_authority_architecture_and_archive():
+    text = (ROOT / "docs/README.md").read_text(encoding="utf-8")
+    assert "## Current Authority" in text
+    assert "## Current Architecture" in text
+    assert "## Archive / Compatibility Records" in text
+    assert text.index("## Current Authority") < text.index("## Current Architecture")
+    assert text.index("## Current Architecture") < text.index("## Archive / Compatibility Records")
+    assert "## Authority Records" not in text
+
+
+def test_local_ollama_profile_is_optional_descriptor_backed_and_non_authoritative():
+    config = yaml.safe_load((ROOT / "artemis.yaml").read_text(encoding="utf-8")) or {}
+    profile = config["providers"]["profiles"]["local_ollama"]
+    assert profile["required"] is False
+    assert profile["descriptor"] == "integrations/providers/openai_compatible.example.yaml"
+
+    descriptor = yaml.safe_load((ROOT / profile["descriptor"]).read_text(encoding="utf-8")) or {}
+    assert descriptor["authoritative"] is False
+    assert descriptor["required"] is False

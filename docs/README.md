@@ -28,9 +28,16 @@ Use this file as the docs entrypoint.
 - `integrations/coding_backends/`
 - `integrations/orchestrators/`
 
-## Authority Records
+## Current Authority
 
 - `docs/CONVENTIONS_LOCKED_v0.1.md`
+- `domain/`
+- `registries/`
+- `schemas/`
+- `tests/`
+
+## Current Architecture
+
 - `docs/ARCHITECTURE.md`
 - `docs/architecture/power_gas_trading_agent_workbench.md`
 

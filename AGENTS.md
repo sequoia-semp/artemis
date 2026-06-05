@@ -8,7 +8,7 @@ This repository defines a model-agnostic Power + Gas Trading Analytics workbench
 
 1. Do not invent market convention.
 2. Do not silently normalize unknown products.
-3. Do not reverse quoted spread orientation.
+3. Do not reinterpret quoted orientation or source semantics.
 4. Use deterministic code for calculations.
 5. Treat LLM inference as candidate-only unless approved.
 6. Preserve raw inputs, normalized outputs, source, timestamp, and lineage.
@@ -55,11 +55,9 @@ For any behavioral change:
 
 ## Prohibited behavior
 
-- No unsupported product additions.
-- No inferred basis orientation.
-- No unapproved power basis edges.
-- No unapproved gas index-family assumptions except the approved GDD default.
-- No power price component other than full LMP unless explicitly approved.
+- No unsupported product, source, mapping, or convention additions.
+- No inferred convention orientation, family, component, calendar, unit, or source semantics.
+- No unapproved convention exceptions or scope expansion.
 - No hidden prompt-only calculation logic.
 - No production behavior change based only on model memory or confidence.
 
