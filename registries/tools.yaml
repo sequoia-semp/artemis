@@ -5,93 +5,279 @@ tools:
     command: artemis config show
     risk: read_only
     modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: artemis_config
+    output_contract:
+      type: sanitized_config
+    lineage:
+      records: [artemis.yaml]
+    authority: deterministic_service
+    deterministic_service: true
 
   config_validate:
     command: artemis config validate
     risk: read_only
     modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: artemis_config
+    output_contract:
+      type: validation_summary
+    lineage:
+      records: [artemis.yaml, registries/tools.yaml, schemas/artemis_config.schema.json]
+    authority: deterministic_service
+    deterministic_service: true
 
   capabilities:
     command: artemis capabilities
     risk: read_only
     modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: artemis_config
+      required: []
+    output_contract:
+      type: capability_report
+    lineage:
+      records: [artemis.yaml, registries/tools.yaml, registries/tool_permissions.yaml]
+    authority: deterministic_service
+    deterministic_service: true
 
   validate_registries:
     command: pga validate-registries
     risk: read_only
     modes: [development]
+    adapter: cli
+    input_contract:
+      type: registry_directory
+    output_contract:
+      type: validation_summary
+    lineage:
+      records: [registries/, schemas/]
+    authority: deterministic_service
+    deterministic_service: true
 
   validate_work_items:
     command: pga validate-work-items
     risk: read_only
     modes: [development]
+    adapter: cli
+    input_contract:
+      type: work_items
+    output_contract:
+      type: validation_summary
+    lineage:
+      records: [work/, schemas/]
+    authority: deterministic_service
+    deterministic_service: true
 
   validate_kb:
     command: pga validate-kb
     risk: read_only
     modes: [development]
+    adapter: cli
+    input_contract:
+      type: knowledge_base_manifest
+    output_contract:
+      type: validation_summary
+    lineage:
+      records: [knowledge_base/, schemas/]
+    authority: deterministic_service
+    deterministic_service: true
+
+  validate_repo:
+    command: artemis validate --strict
+    risk: read_only
+    modes: [development]
+    adapter: cli
+    input_contract:
+      type: repo
+    output_contract:
+      type: validation_report
+    lineage:
+      records: [artemis.yaml, registries/, schemas/, tests/, work/]
+    authority: deterministic_service
+    deterministic_service: true
 
   work_context:
     command: pga work-context
     risk: read_only
     modes: [development]
+    adapter: cli
+    input_contract:
+      type: ticket_id
+    output_contract:
+      type: artemis_development_context
+    lineage:
+      records: [artemis.yaml, work/]
+    authority: compatibility_alias
+    deterministic_service: true
 
   parse_period:
     command: pga parse-period
     risk: read_only
     modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: period_label
+    output_contract:
+      type: PeriodExpression
+    lineage:
+      records: [domain/period_grammar.md, src/pga_workbench/periods.py]
+    authority: deterministic_service
+    deterministic_service: true
 
   analyst_view_build:
     command: artemis analyst view build
     risk: workspace_write
     modes: [analyst]
+    adapter: cli
+    input_contract:
+      type: view_inputs
+    output_contract:
+      type: view_artifact
+    lineage:
+      records: [views/manifest.yaml, schemas/view.schema.json]
+    authority: deterministic_service
+    deterministic_service: true
 
   forward_price_heatmap:
     command: artemis analyst heatmap build
     risk: workspace_write
     modes: [analyst]
+    adapter: cli
+    input_contract:
+      type: price_surface_points
+    output_contract:
+      type: forward_price_heatmap
+    lineage:
+      records: [schemas/forward_price_heatmap.schema.json, src/pga_workbench/services/heatmap.py]
+    authority: deterministic_service
+    deterministic_service: true
 
   normalize_prices:
     command: pga normalize-prices
     risk: workspace_write
     modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: raw_marks
+    output_contract:
+      type: PriceSurfacePoint
+    lineage:
+      records: [schemas/price_surface_point.schema.json, src/pga_workbench/services/normalization.py]
+    authority: deterministic_service
+    deterministic_service: true
 
   normalize_positions:
     command: pga normalize-positions
     risk: workspace_write
     modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: raw_positions
+    output_contract:
+      type: NormalizedPosition
+    lineage:
+      records: [schemas/normalized_position.schema.json, src/pga_workbench/services/normalization.py]
+    authority: deterministic_service
+    deterministic_service: true
 
   pnl_attribution:
     command: pga run-pnl-attribution
     risk: workspace_write
     modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: normalized_positions
+    output_contract:
+      type: pnl_bridge
+    lineage:
+      records: [schemas/pnl_bridge.schema.json, src/pga_workbench/services/pnl.py]
+    authority: deterministic_service
+    deterministic_service: true
 
   option_greeks:
     command: pga run-greeks
     risk: workspace_write
     modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: option_rows
+    output_contract:
+      type: option_greeks
+    lineage:
+      records: [src/pga_workbench/services/greeks.py]
+    authority: deterministic_service
+    deterministic_service: true
 
   data_source_list:
     command: artemis data-sources list
     risk: read_only
     modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: data_source_registry
+    output_contract:
+      type: data_source_list
+    lineage:
+      records: [registries/data_sources.yaml, schemas/data_source.schema.json]
+    authority: deterministic_service
+    deterministic_service: true
 
   dev_context:
     command: artemis dev context
     risk: read_only
     modes: [development]
+    adapter: cli
+    input_contract:
+      type: ticket_id
+    output_contract:
+      type: artemis_development_context
+    lineage:
+      records: [artemis.yaml, work/]
+    authority: deterministic_service
+    deterministic_service: true
 
   release_check:
     command: artemis release check
     risk: read_only
     modes: [development]
+    adapter: cli
+    input_contract:
+      type: validation_report
+    output_contract:
+      type: release_readiness_report
+    lineage:
+      records: [development/validation_reports/, work/, artemis.yaml]
+    authority: deterministic_service
+    deterministic_service: true
 
   release_candidate:
     command: artemis release candidate
     risk: release_candidate
     modes: [development]
+    adapter: cli
+    input_contract:
+      type: validated_ticket
+    output_contract:
+      type: release_candidate
+    lineage:
+      records: [work/, development/validation_reports/]
+    authority: human_review_required
+    deterministic_service: true
 
   repo_patch:
     command: artemis dev propose
     risk: repo_write_requires_ticket
     modes: [development]
+    adapter: cli
+    input_contract:
+      type: ticket_id
+    output_contract:
+      type: patch_proposal
+    lineage:
+      records: [work/, development/change_requests/]
+    authority: candidate_only
+    deterministic_service: false

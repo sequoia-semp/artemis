@@ -3,9 +3,7 @@
 Run deterministic validation:
 
 ```bash
-python -m pytest -q
-pga validate-registries
-pga validate-work-items
+artemis validate --strict
 ```
 
-Do not claim success unless all commands run and pass.
+Do not claim success unless the Artemis validation report passes.

@@ -26,6 +26,7 @@ from .services.risk import read_historical_returns, run_historical_var
 from .cache.hot_state import HotState
 from .state.packs import build_candidate_state_pack, publish_candidate_state_pack
 from .agent_runtime.capabilities import collect_agent_capabilities, collect_agent_doctor
+from .agent_runtime.context_audit import audit_context_surfaces
 from .agent_runtime.native_loop import run_native_agent_loop
 from .agent_runtime.kb_validator import validate_knowledge_base
 from .agent_runtime.release_workflow import collect_release_readiness
@@ -379,6 +380,18 @@ def _cmd_artemis_capabilities(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_context_audit(args: argparse.Namespace) -> int:
+    result = audit_context_surfaces(Path(args.repo_root))
+    if args.json:
+        print(json.dumps(result, indent=2, sort_keys=True))
+    else:
+        status = "passed" if result["passed"] else "failed"
+        print(f"context_audit: {status}")
+        for finding in result.get("findings") or []:
+            print(f"- {finding['severity']} {finding['code']} {finding['path']}: {finding['message']}")
+    return 0 if result["passed"] else 1
+
+
 def _cmd_analyst_view_build(args: argparse.Namespace) -> int:
     payload = read_json(Path(args.input))
     if args.state_root:
@@ -414,7 +427,7 @@ def _cmd_data_sources_validate(args: argparse.Namespace) -> int:
 
 def _cmd_skill_validate(args: argparse.Namespace) -> int:
     result = validate_skill_manifest(Path(args.repo_root), Path(args.schemas))
-    print(f"validated {result['skills']} skills")
+    print(f"validated {result['skills']} skills; procedural_skills={result.get('procedural_skills', 0)}")
     return 0
 
 
@@ -622,6 +635,13 @@ def build_parser(prog: str | None = None) -> argparse.ArgumentParser:
     p.add_argument("--json", action="store_true")
     p.set_defaults(func=_cmd_artemis_capabilities)
 
+    p = sub.add_parser("context")
+    context_sub = p.add_subparsers(dest="context_command", required=True)
+    audit = context_sub.add_parser("audit")
+    audit.add_argument("--repo-root", default=".")
+    audit.add_argument("--json", action="store_true")
+    audit.set_defaults(func=_cmd_context_audit)
+
     p = sub.add_parser("config")
     config_sub = p.add_subparsers(dest="config_command", required=True)
     c = config_sub.add_parser("show")
@@ -760,6 +780,13 @@ def build_artemis_parser(prog: str | None = None) -> argparse.ArgumentParser:
     p.add_argument("--check-network", action="store_true")
     p.add_argument("--json", action="store_true")
     p.set_defaults(func=_cmd_artemis_capabilities)
+
+    p = sub.add_parser("context")
+    context_sub = p.add_subparsers(dest="context_command", required=True)
+    audit = context_sub.add_parser("audit")
+    audit.add_argument("--repo-root", default=".")
+    audit.add_argument("--json", action="store_true")
+    audit.set_defaults(func=_cmd_context_audit)
 
     p = sub.add_parser("config")
     config_sub = p.add_subparsers(dest="config_command", required=True)

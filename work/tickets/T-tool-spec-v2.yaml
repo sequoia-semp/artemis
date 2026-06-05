@@ -1,0 +1,55 @@
+id: T-tool-spec-v2
+type: ticket
+status: validated
+title: ToolSpec v2 schema upgrade
+owner: user
+risk: medium
+created_at: "2026-06-05"
+updated_at: "2026-06-05"
+epic: E-0001
+sprint: S-002
+layer:
+  - schema
+  - registry
+  - agent
+  - validation
+  - tests
+branch: codex/tool-spec-v2
+context_profile: wrapper
+problem: >
+  The current tool registry is command-oriented. It is sufficient for CLI
+  compatibility, but not expressive enough for a model-agnostic harness that
+  needs adapter, input, output, lineage, and authority boundaries.
+tasks:
+  - Extend the tool schema with adapter, input contract, output contract, lineage, authority, and deterministic-service fields.
+  - Migrate registries/tools.yaml without breaking existing command execution compatibility.
+  - Update permission summaries to surface authority and mutation boundaries.
+  - Add tests for schema validation, permission behavior, and capabilities output.
+  - Do this after T-context-tool-integrity, T-wrapper-shim-cleanup, T-context-audit, and T-skill-surface-validation are implemented.
+acceptance_criteria:
+  - Existing CLI command tools remain compatible.
+  - ToolSpec v2 distinguishes prompt-only candidate tools from deterministic authoritative services.
+  - Capabilities output exposes authority, lineage, and IO contract summaries without secrets.
+  - Permission checks continue to fail closed for repo mutation, release candidate, and convention-changing operations.
+required_tests:
+  - python -m pytest tests/test_tool_permissions.py tests/test_artemis_config.py tests/test_agent_capabilities.py -q
+  - artemis capabilities --json
+  - artemis validate --strict --ticket T-tool-spec-v2
+affected_files:
+  - schemas/tool.schema.json
+  - registries/tools.yaml
+  - src/pga_workbench/tools/registry.py
+  - src/pga_workbench/tools/permissions.py
+  - src/pga_workbench/agent/runtime.py
+  - tests/test_tool_permissions.py
+  - tests/test_artemis_config.py
+  - tests/test_agent_capabilities.py
+change_request_required: true
+implemented_at: "2026-06-05T00:00:00Z"
+implementation_summary: >
+  Upgraded ToolSpec to include adapter, input/output contracts, lineage,
+  authority, and deterministic-service metadata while preserving CLI command
+  compatibility.
+validated_at: "2026-06-05T00:00:00Z"
+validation_report: development/validation_reports/T-tool-spec-v2/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-tool-spec-v2.md

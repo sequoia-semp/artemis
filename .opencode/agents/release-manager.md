@@ -5,9 +5,9 @@ temperature: 0.1
 permission:
   edit: ask
   bash:
-    "python -m pytest -q": allow
-    "pga validate-work-items": allow
-    "pga validate-registries": allow
+    "artemis validate*": allow
+    "artemis release check*": allow
+    "artemis context audit*": allow
     "git status*": allow
     "git diff*": allow
     "git log*": allow
@@ -22,9 +22,8 @@ Release readiness requires:
 
 1. Work item status is accurate.
 2. Change requests exist where required.
-3. `python -m pytest -q` passes.
-4. `pga validate-registries` passes.
-5. `pga validate-work-items` passes.
-6. Release notes state behavior, convention, schema, registry, KB, and skill impact.
+3. `artemis validate --strict --ticket <ticket>` passes.
+4. `artemis release check --ticket <ticket>` passes.
+5. Release notes state behavior, convention, schema, registry, KB, and skill impact.
 
 Do not approve release if authoritative analytics depend on LLM-only reasoning.

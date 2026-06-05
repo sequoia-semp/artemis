@@ -60,3 +60,13 @@ def test_convention_change_requires_approved_change_request_context():
             approval_context={"convention_change": True},
         )
     assert "approved change request" in exc.value.message
+
+
+def test_tool_spec_v2_metadata_is_validated_and_exposed():
+    tools = load_tool_registry(ROOT / "registries/tools.yaml", ROOT / "schemas")
+    repo_patch = tools["tools"]["repo_patch"]
+
+    assert repo_patch["adapter"] == "cli"
+    assert repo_patch["authority"] == "candidate_only"
+    assert repo_patch["deterministic_service"] is False
+    assert repo_patch["input_contract"]["type"] == "ticket_id"

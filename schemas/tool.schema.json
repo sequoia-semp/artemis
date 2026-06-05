@@ -11,7 +11,7 @@
       "additionalProperties": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["command", "risk", "modes"],
+        "required": ["command", "risk", "modes", "adapter", "input_contract", "output_contract", "lineage", "authority", "deterministic_service"],
         "properties": {
           "command": {"type": "string"},
           "risk": {"type": "string"},
@@ -19,7 +19,42 @@
             "type": "array",
             "items": {"enum": ["analyst", "development"]},
             "minItems": 1
-          }
+          },
+          "adapter": {"enum": ["cli", "python", "mcp", "external", "manual"]},
+          "input_contract": {
+            "type": "object",
+            "required": ["type"],
+            "additionalProperties": true,
+            "properties": {
+              "type": {"type": "string"},
+              "required": {"type": "array", "items": {"type": "string"}}
+            }
+          },
+          "output_contract": {
+            "type": "object",
+            "required": ["type"],
+            "additionalProperties": true,
+            "properties": {
+              "type": {"type": "string"}
+            }
+          },
+          "lineage": {
+            "type": "object",
+            "required": ["records"],
+            "additionalProperties": true,
+            "properties": {
+              "records": {"type": "array", "items": {"type": "string"}}
+            }
+          },
+          "authority": {
+            "enum": [
+              "deterministic_service",
+              "compatibility_alias",
+              "candidate_only",
+              "human_review_required"
+            ]
+          },
+          "deterministic_service": {"type": "boolean"}
         }
       }
     }

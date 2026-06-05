@@ -4,8 +4,7 @@ Release checks only.
 
 Must verify:
 
-- tests pass
-- registry validation passes
-- work items validate
+- `artemis validate --strict --ticket <ticket>` passes
+- `artemis release check --ticket <ticket>` passes
 - version/tag plan exists
 - no unapproved convention/schema changes

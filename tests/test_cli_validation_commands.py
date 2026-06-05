@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from pga_workbench.cli import artemis_main, build_artemis_parser
-from pga_workbench.validation.models import ValidationCheckResult, ValidationReport
+from pga_workbench.validation.models import CommandResult, ValidationCheckResult, ValidationReport
 
 
 def _report() -> ValidationReport:
@@ -26,6 +26,15 @@ def _report() -> ValidationReport:
                 details={},
             )
         ],
+        command_results=[
+            CommandResult(
+                command="python -m pytest -q",
+                returncode=0,
+                status="passed",
+                duration_seconds=0.1,
+                stdout="232 passed in 5.94s\n",
+            )
+        ],
     )
 
 
@@ -36,6 +45,14 @@ def test_artemis_validate_parser_accepts_native_options():
     assert args.func.__name__ == "_cmd_validate"
     assert args.strict is True
     assert args.ticket == "T-0030"
+
+
+def test_artemis_context_audit_parser_accepts_json():
+    parser = build_artemis_parser()
+    args = parser.parse_args(["context", "audit", "--json"])
+
+    assert args.func.__name__ == "_cmd_context_audit"
+    assert args.json is True
 
 
 def test_artemis_validate_cli_writes_output(monkeypatch, tmp_path: Path):
@@ -54,4 +71,6 @@ def test_artemis_validate_report_cli_writes_markdown(tmp_path: Path):
     write_validation_report(_report(), report_path)
 
     assert artemis_main(["validate", "report", "--input", str(report_path), "--markdown", str(markdown_path)]) == 0
-    assert "# Regression Report: T-0030" in markdown_path.read_text(encoding="utf-8")
+    text = markdown_path.read_text(encoding="utf-8")
+    assert "# Regression Report: T-0030" in text
+    assert "232 passed" in text

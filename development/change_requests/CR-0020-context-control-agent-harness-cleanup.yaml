@@ -1,0 +1,72 @@
+change_id: CR-0020
+title: Context-control and agent-harness cleanup sprint
+created_at: 2026-06-05T00:00:00Z
+change_class: 7
+severity: high
+tickets:
+  - T-context-tool-integrity
+  - T-wrapper-shim-cleanup
+  - T-context-audit
+  - T-validation-release-consolidation
+  - T-context-profiles
+  - T-skill-surface-validation
+  - T-tool-spec-v2
+problem_statement: >
+  Active prompt, tool, context, validation, and skill surfaces could drift from
+  Artemis deterministic authority. Missing default tools, legacy wrapper
+  context commands, hard-coded validation lists, unmanifested markdown skills,
+  and command-only ToolSpec records made it possible for agent harness behavior
+  to contradict the core rule that prompt-only analytics are not authoritative.
+root_cause: >
+  Prior Artemis consolidation added native commands while preserving compatibility
+  wrappers and older prompt records. Cross-surface validation did not yet enforce
+  registry/config consistency, active wrapper shims, context profiles, procedural
+  skill authority, or richer tool authority metadata.
+affected_files:
+  - artemis.yaml
+  - registries/tools.yaml
+  - schemas/artemis_config.schema.json
+  - schemas/ticket.schema.json
+  - schemas/tool.schema.json
+  - skills/manifest.yaml
+  - skills/procedural_manifest.yaml
+  - .agents/skills/
+  - .opencode/
+  - docs/developer/native_workflow.md
+  - docs/developer/release_process.md
+  - docs/developer/self_development.md
+  - src/pga_workbench/agent/runtime.py
+  - src/pga_workbench/agent_runtime/context_audit.py
+  - src/pga_workbench/agent_runtime/release_workflow.py
+  - src/pga_workbench/dev/patch_context.py
+  - src/pga_workbench/skills/validator.py
+  - src/pga_workbench/tools/permissions.py
+  - src/pga_workbench/tools/registry.py
+  - src/pga_workbench/validation/runner.py
+  - src/pga_workbench/cli.py
+  - tests/
+  - work/backlog/pjm_workbench_mvp_backlog.yaml
+  - work/sprints/S-002-context-control-agent-harness-cleanup.yaml
+  - work/tickets/T-context-tool-integrity.yaml
+  - work/tickets/T-wrapper-shim-cleanup.yaml
+  - work/tickets/T-context-audit.yaml
+  - work/tickets/T-validation-release-consolidation.yaml
+  - work/tickets/T-context-profiles.yaml
+  - work/tickets/T-skill-surface-validation.yaml
+  - work/tickets/T-tool-spec-v2.yaml
+tests_required:
+  - python -m pytest tests/test_artemis_config.py tests/test_tool_permissions.py tests/test_development_mode.py tests/test_cli_validation_commands.py tests/test_artemis_cli.py tests/test_skill_view_manifests.py tests/test_native_validation_runner.py tests/test_release_workflow.py tests/test_release_readiness_native_validation.py -q
+  - artemis context audit --json
+  - artemis config validate
+  - artemis skill validate
+  - artemis validate --strict --ticket T-context-tool-integrity
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-05T00:00:00Z
+rollback_plan: >
+  Revert CR-0020 changes together: restore the previous artemis.yaml release
+  commands and mode defaults, previous command-only tool schema/registry,
+  previous wrapper prompts, previous skill validation behavior, and remove the
+  context audit check from strict validation. Keep existing native validation and
+  release-readiness gates from earlier CRs intact.

@@ -25,8 +25,6 @@ modes:
     can_write_workspace_outputs: true
     can_update_canonical_kb: false
     default_tools:
-      - kb_search
-      - skill_run
       - parse_period
       - analyst_view_build
       - data_source_list
@@ -37,9 +35,56 @@ modes:
     requires_validation: true
     default_tools:
       - dev_context
-      - work_context
       - validate_repo
       - release_check
+
+context:
+  max_file_bytes: 200000
+  profiles:
+    default:
+      description: Standard development context for repo workflow changes.
+      files: []
+    wrapper:
+      description: Context for agent harness, prompt, wrapper, and validation cleanup.
+      files:
+        - opencode.jsonc
+        - .opencode/commands/artemis-context.md
+        - .opencode/commands/artemis-review-ticket.md
+        - .opencode/commands/artemis-validate.md
+        - .opencode/agents/build.md
+        - .opencode/agents/development-improvement.md
+        - .opencode/agents/kb-skill-curator.md
+        - .opencode/agents/plan.md
+        - .opencode/agents/qa-reconciliation.md
+        - .opencode/agents/release-manager.md
+        - .opencode/agents/release.md
+        - .opencode/agents/review.md
+        - registries/tools.yaml
+        - registries/tool_permissions.yaml
+        - src/pga_workbench/validation/runner.py
+        - src/pga_workbench/agent_runtime/release_workflow.py
+    trading_domain:
+      description: Context for convention-sensitive trading analytics behavior.
+      files:
+        - docs/CONVENTIONS_LOCKED_v0.1.md
+        - domain/source_policy.md
+        - domain/market_index_model.md
+        - domain/power_basis_conventions.md
+        - domain/gas_index_families.md
+        - domain/period_grammar.md
+        - domain/units_and_quantities.md
+        - registries/
+        - schemas/
+        - tests/
+    behavioral:
+      description: Context for parser, normalization, valuation, and source semantics changes.
+      files:
+        - docs/CONVENTIONS_LOCKED_v0.1.md
+        - development/CHANGE_POLICY.md
+        - domain/
+        - registries/
+        - schemas/
+        - tests/
 
 roles:
   analyst_llm:
@@ -117,6 +162,7 @@ knowledge:
 
 skills:
   manifest: skills/manifest.yaml
+  procedural_manifest: skills/procedural_manifest.yaml
   validation_schema: schemas/skill.schema.json
 
 views:
@@ -135,12 +181,4 @@ policies:
 
 release:
   validation_commands:
-    - python -m pytest -q
-    - pga validate-registries
-    - pga validate-work-items
-    - pga validate-kb
-    - artemis config validate
-    - artemis skill validate
-    - artemis views validate
-    - artemis data-sources validate
-    - artemis capabilities
+    - artemis validate --strict

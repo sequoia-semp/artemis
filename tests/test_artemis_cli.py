@@ -31,6 +31,10 @@ def test_artemis_config_validate_cli_smoke():
     assert artemis_main(["config", "validate"]) == 0
 
 
+def test_artemis_context_audit_cli_smoke():
+    assert artemis_main(["context", "audit"]) == 0
+
+
 def test_existing_pga_parse_period_command_still_works():
     assert main(["parse-period", "N26", "--commodity", "power"]) == 0
 

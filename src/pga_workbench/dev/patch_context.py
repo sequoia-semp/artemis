@@ -12,6 +12,7 @@ from .tickets import load_development_ticket
 
 CONTEXT_FILE_MISSING = "CONTEXT_FILE_MISSING"
 CONTEXT_FILE_TOO_LARGE = "CONTEXT_FILE_TOO_LARGE"
+CONTEXT_PROFILE_INVALID = "CONTEXT_PROFILE_INVALID"
 
 
 PRIMARY_CONTEXT_FILES = [
@@ -35,6 +36,25 @@ def _load_text(repo_root: Path, relative_path: str, max_file_bytes: int) -> dict
     if size > max_file_bytes:
         raise WorkbenchException(CONTEXT_FILE_TOO_LARGE, f"Context file too large: {relative_path}")
     return {"path": relative_path, "content": path.read_text(encoding="utf-8")}
+
+
+def _configured_profile_files(repo_root: Path, config: dict[str, Any], ticket: dict[str, Any]) -> tuple[str, list[str]]:
+    context_cfg = config.get("context") or {}
+    profiles = context_cfg.get("profiles") or {}
+    profile_id = str(ticket.get("context_profile") or "default")
+    if profile_id not in profiles:
+        raise WorkbenchException(CONTEXT_PROFILE_INVALID, f"Unknown context_profile: {profile_id}")
+    files: list[str] = []
+    for item in profiles.get(profile_id, {}).get("files") or []:
+        relative_path = str(item)
+        path = repo_root / relative_path
+        if path.is_dir():
+            for child in sorted(path.rglob("*")):
+                if child.is_file():
+                    files.append(str(child.relative_to(repo_root)))
+        else:
+            files.append(relative_path)
+    return profile_id, files
 
 
 def _affected_file_status(repo_root: Path, ticket: dict[str, Any]) -> tuple[list[dict[str, Any]], list[str]]:
@@ -63,6 +83,11 @@ def collect_development_context(repo_root: Path, ticket_id: str, config_path: Pa
 
     files = [_load_text(repo_root, relative_path, max_file_bytes) for relative_path in PRIMARY_CONTEXT_FILES]
     loaded_paths = {item["path"] for item in files}
+    context_profile, profile_files = _configured_profile_files(repo_root, config, ticket)
+    for relative_path in profile_files:
+        if relative_path not in loaded_paths:
+            files.append(_load_text(repo_root, relative_path, max_file_bytes))
+            loaded_paths.add(relative_path)
     for item in affected_files:
         if item["exists"] and item["is_file"] and item["path"] not in loaded_paths:
             files.append(_load_text(repo_root, item["path"], max_file_bytes))
@@ -84,6 +109,7 @@ def collect_development_context(repo_root: Path, ticket_id: str, config_path: Pa
         "mode": "development",
         "context_version": "artemis.development.v1",
         "artemis_config": "artemis.yaml",
+        "context_profile": context_profile,
         "active_profile": profile_id,
         "profile": profile,
         "provider": None if profile.get("kind") in {None, "none", "deterministic_only"} else profile.get("kind"),

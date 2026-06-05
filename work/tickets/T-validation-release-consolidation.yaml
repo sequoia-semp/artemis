@@ -1,0 +1,56 @@
+id: T-validation-release-consolidation
+type: ticket
+status: validated
+title: Validation and release readiness consolidation
+owner: user
+risk: high
+created_at: "2026-06-05"
+updated_at: "2026-06-05"
+epic: E-0001
+sprint: S-002
+layer:
+  - validation
+  - release
+  - config
+  - docs
+  - tests
+branch: codex/validation-release-consolidation
+context_profile: wrapper
+problem: >
+  Release and validation readiness are partly canonical in Artemis code and
+  partly duplicated in wrapper prompts. The duplicates are already stale and can
+  give agents conflicting instructions.
+tasks:
+  - Make artemis.yaml release.validation_commands and the native validation runner the only canonical validation command source.
+  - Ensure artemis release check consumes native strict validation evidence and context audit evidence.
+  - Replace prompt-level command inventories with references to artemis validate --strict and artemis release check.
+  - Document how wrappers should report validation without becoming validation authorities.
+acceptance_criteria:
+  - Release readiness rejects missing, stale, non-strict, ticket-mismatched, or context-audit-failing validation evidence.
+  - Active wrappers no longer carry independent validation command inventories.
+  - Docs state that wrapper prompts may request validation but cannot define release authority.
+  - Validation reports identify the effective command set used for release checks.
+required_tests:
+  - python -m pytest tests/test_release_readiness_native_validation.py tests/test_release_workflow.py tests/test_native_validation_runner.py -q
+  - artemis validate --strict --ticket T-validation-release-consolidation
+affected_files:
+  - artemis.yaml
+  - src/pga_workbench/agent_runtime/release_workflow.py
+  - src/pga_workbench/validation/runner.py
+  - src/pga_workbench/validation/reports.py
+  - src/pga_workbench/cli.py
+  - docs/developer/release_process.md
+  - docs/developer/native_workflow.md
+  - .opencode/
+  - tests/test_release_readiness_native_validation.py
+  - tests/test_release_workflow.py
+  - tests/test_native_validation_runner.py
+change_request_required: true
+implemented_at: "2026-06-05T00:00:00Z"
+implementation_summary: >
+  Release validation now uses artemis validate --strict as the canonical command
+  source, and release readiness requires strict native validation with passed
+  context-audit evidence.
+validated_at: "2026-06-05T00:00:00Z"
+validation_report: development/validation_reports/T-validation-release-consolidation/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-validation-release-consolidation.md

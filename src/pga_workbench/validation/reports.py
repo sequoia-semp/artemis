@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import re
 from typing import Any
 
 from ..exceptions import WorkbenchException
@@ -66,6 +67,17 @@ def render_regression_markdown(report: ValidationReport) -> str:
     ]
     for check in report.checks:
         lines.append(f"- {check.check_id}: {check.status} ({check.summary})")
+    lines.extend(["", "Command Results:"])
+    if report.command_results:
+        for result in report.command_results:
+            evidence = ""
+            combined = "\n".join([result.stdout or "", result.stderr or ""])
+            match = re.search(r"(\d+\s+passed(?:,\s+\d+\s+\w+)*)", combined)
+            if match:
+                evidence = f" - {match.group(1)}"
+            lines.append(f"- {result.command}: {result.status}{evidence}")
+    else:
+        lines.append("- none")
     lines.extend(["", "Warnings:"])
     lines.extend([f"- {item}" for item in report.warnings] or ["- none"])
     lines.extend(["", "Errors:"])

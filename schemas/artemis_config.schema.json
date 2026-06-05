@@ -36,6 +36,25 @@
     },
     "roles": {"type": "object"},
     "providers": {"type": "object"},
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "max_file_bytes": {"type": "integer", "minimum": 1},
+        "profiles": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["description", "files"],
+            "additionalProperties": false,
+            "properties": {
+              "description": {"type": "string"},
+              "files": {"type": "array", "items": {"type": "string"}}
+            }
+          }
+        }
+      }
+    },
     "runtime": {
       "type": "object",
       "additionalProperties": true,

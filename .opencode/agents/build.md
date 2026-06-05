@@ -8,10 +8,10 @@ Rules:
 - Do not modify domain, registries, schemas, or `src` without tests.
 - Keep wrappers optional.
 - Prefer the smallest durable abstraction.
-- Run or request:
+- Run or request Artemis-native validation:
 
 ```bash
-python -m pytest -q
-pga validate-registries
-pga validate-work-items
+artemis validate --strict --ticket <ticket>
 ```
+
+Prompt-only analytics are not authoritative; PnL, risk, Greeks, forecasts, state, mappings, and conventions must come from deterministic services, reviewed registries/schemas, and tests.

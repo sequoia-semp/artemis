@@ -188,6 +188,8 @@ def _native_validation_summary(repo_root: Path, ticket_id: str | None, ticket: d
     for check in report.checks:
         if check.required and check.status in {"skipped", "failed", "error"}:
             blockers.append(f"required validation check {check.check_id} is {check.status}")
+    if not any(check.check_id == "context_audit" and check.status == "passed" for check in report.checks):
+        blockers.append("validation report lacks passed context_audit evidence")
     if ticket_id and not report.affected_files_snapshot:
         blockers.append("validation report lacks affected file snapshot")
     for item in report.affected_files_snapshot:

@@ -29,6 +29,7 @@ def test_native_runner_reports_expected_checks(monkeypatch):
         "views",
         "data_sources",
         "capabilities",
+        "context_audit",
         "release_sanity",
     } <= check_ids
     assert report.ticket_id == "T-0030"

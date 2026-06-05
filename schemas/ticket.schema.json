@@ -35,6 +35,7 @@
           }
         },
         "branch": {"type": "string"},
+        "context_profile": {"type": "string"},
         "problem": {"type": "string"},
         "tasks": {"type": "array", "items": {"type": "string"}},
         "acceptance_criteria": {"type": "array", "items": {"type": "string"}},

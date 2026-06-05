@@ -1,0 +1,136 @@
+version: 0.1.0
+
+procedural_skills:
+  - id: market_index_normalization
+    path: market_index_normalization/SKILL.md
+    authority: deterministic_services_only
+    analytics_impact: true
+    deterministic_dependencies:
+      - domain/market_index_model.md
+      - registries/
+      - schemas/market_index.schema.json
+      - tests/test_indices.py
+    inputs: [raw_market_label]
+    outputs: [MarketIndex, structured_exceptions]
+    tests:
+      - tests/test_indices.py
+    shims:
+      - .agents/skills/market-index-normalization/SKILL.md
+  - id: period_parsing
+    path: period_parsing/SKILL.md
+    authority: deterministic_services_only
+    analytics_impact: true
+    deterministic_dependencies:
+      - domain/period_grammar.md
+      - src/pga_workbench/periods.py
+      - tests/test_period_parser.py
+    inputs: [raw_period_label]
+    outputs: [PeriodExpression]
+    tests:
+      - tests/test_period_parser.py
+    shims:
+      - .agents/skills/period-parsing/SKILL.md
+  - id: spread_basis_decomposition
+    path: spread_basis_decomposition/SKILL.md
+    authority: deterministic_services_only
+    analytics_impact: true
+    deterministic_dependencies:
+      - domain/power_basis_conventions.md
+      - src/pga_workbench/spreads.py
+      - tests/test_power_basis.py
+    inputs: [quoted_spread]
+    outputs: [leg_exposures, structured_exceptions]
+    tests:
+      - tests/test_power_basis.py
+    shims:
+      - .agents/skills/spread-basis-decomposition/SKILL.md
+  - id: atc_strip_decomposition
+    path: atc_strip_decomposition/SKILL.md
+    authority: deterministic_services_only
+    analytics_impact: true
+    deterministic_dependencies:
+      - src/pga_workbench/atc.py
+      - tests/test_atc_vol.py
+    inputs: [atc_or_strip_position]
+    outputs: [component_exposures, lineage]
+    tests:
+      - tests/test_atc_vol.py
+    shims:
+      - .agents/skills/atc-strip-decomposition/SKILL.md
+  - id: position_normalization
+    path: position_normalization/SKILL.md
+    authority: deterministic_services_only
+    analytics_impact: true
+    deterministic_dependencies:
+      - schemas/normalized_position.schema.json
+      - src/pga_workbench/services/normalization.py
+      - tests/test_registry_driven_normalization.py
+    inputs: [raw_position]
+    outputs: [NormalizedPosition, ExposureRecord, ExceptionReport]
+    tests:
+      - tests/test_registry_driven_normalization.py
+    shims:
+      - .agents/skills/position-normalization/SKILL.md
+  - id: price_surface_normalization
+    path: price_surface_normalization/SKILL.md
+    authority: deterministic_services_only
+    analytics_impact: true
+    deterministic_dependencies:
+      - schemas/price_surface_point.schema.json
+      - src/pga_workbench/services/normalization.py
+      - tests/test_registry_driven_normalization.py
+    inputs: [raw_mark, raw_settle]
+    outputs: [PriceSurfacePoint, structured_exceptions]
+    tests:
+      - tests/test_registry_driven_normalization.py
+    shims:
+      - .agents/skills/price-surface-normalization/SKILL.md
+  - id: vol_surface_normalization
+    path: vol_surface_normalization/SKILL.md
+    authority: deterministic_services_only
+    analytics_impact: true
+    deterministic_dependencies:
+      - src/pga_workbench/vol.py
+      - src/pga_workbench/services/greeks.py
+      - tests/test_atc_vol.py
+    inputs: [raw_vol_surface]
+    outputs: [VolSurfacePoint, derived_metrics, structured_exceptions]
+    tests:
+      - tests/test_atc_vol.py
+    shims:
+      - .agents/skills/vol-surface-normalization/SKILL.md
+  - id: pnl_bridge
+    path: pnl_bridge/SKILL.md
+    authority: deterministic_services_only
+    analytics_impact: true
+    deterministic_dependencies:
+      - schemas/pnl_bridge.schema.json
+      - src/pga_workbench/services/pnl.py
+    inputs: [normalized_positions, price_surface_points]
+    outputs: [pnl_bridge]
+    tests:
+      - tests/test_price_instrument_spine.py
+    shims: []
+  - id: exception_diagnosis
+    path: exception_diagnosis/SKILL.md
+    authority: candidate_only
+    analytics_impact: false
+    deterministic_dependencies:
+      - development/CHANGE_POLICY.md
+    inputs: [ExceptionReport]
+    outputs: [remediation_proposal]
+    tests:
+      - tests/test_skill_view_manifests.py
+    shims:
+      - .agents/skills/exception-diagnosis/SKILL.md
+  - id: dashboard_narrative
+    path: dashboard_narrative/SKILL.md
+    authority: candidate_only
+    analytics_impact: false
+    deterministic_dependencies:
+      - schemas/view.schema.json
+    inputs: [validated_artifacts]
+    outputs: [narrative_summary]
+    tests:
+      - tests/test_skill_view_manifests.py
+    shims: []

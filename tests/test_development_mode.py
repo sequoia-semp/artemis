@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 from pathlib import Path
+import pytest
 
 from pga_workbench.cli import main
 from pga_workbench.dev.coding_backend import validate_coding_backends
 from pga_workbench.dev.patch_context import collect_development_context
 from pga_workbench.dev.self_improvement import repo_mutation_requires_ticket
+from pga_workbench.exceptions import WorkbenchException
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -22,9 +24,10 @@ def test_development_context_is_backend_neutral():
     assert context["authority_ladder"]["root_contract"] == "AGENTS.md"
     assert "repo_patch" in context["tool_policy"]
     assert set(context["backend_options"]) == {"external_harness", "human", "opencode"}
-    assert "python -m pytest -q" in context["release_validation_commands"]
+    assert context["release_validation_commands"] == ["artemis validate --strict"]
     assert context["missing_affected_files"] == []
     assert {item["path"] for item in context["files"]} >= {"AGENTS.md", "artemis.yaml", "docs/README.md"}
+    assert context["context_profile"] == "default"
 
 
 def test_development_context_default_does_not_depend_on_legacy_llm_config():
@@ -49,3 +52,31 @@ def test_pga_work_context_compatibility_uses_artemis_shape(tmp_path):
     assert payload["context_version"] == "artemis.development.v1"
     assert payload["compatibility_command"] == "pga work-context"
     assert payload["artemis_config"] == "artemis.yaml"
+
+
+def test_development_context_honors_ticket_context_profile():
+    context = collect_development_context(ROOT, "T-context-profiles")
+    paths = {item["path"] for item in context["files"]}
+
+    assert context["context_profile"] == "wrapper"
+    assert ".opencode/commands/artemis-context.md" in paths
+    assert "registries/tools.yaml" in paths
+
+
+def test_development_context_rejects_unknown_context_profile(monkeypatch):
+    monkeypatch.setattr(
+        "pga_workbench.dev.patch_context.load_development_ticket",
+        lambda repo_root, ticket_id: {
+            "id": ticket_id,
+            "type": "ticket",
+            "status": "proposed",
+            "title": "Bad profile",
+            "risk": "medium",
+            "affected_files": [],
+            "context_profile": "__missing__",
+        },
+    )
+
+    with pytest.raises(WorkbenchException) as exc:
+        collect_development_context(ROOT, "T-bad-profile")
+    assert "Unknown context_profile" in exc.value.message

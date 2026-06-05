@@ -1,0 +1,60 @@
+id: T-wrapper-shim-cleanup
+type: ticket
+status: validated
+title: Wrapper prompt shim cleanup
+owner: user
+risk: high
+created_at: "2026-06-05"
+updated_at: "2026-06-05"
+epic: E-0001
+sprint: S-002
+layer:
+  - agent_wrapper
+  - docs
+  - validation
+  - tests
+branch: codex/wrapper-shim-cleanup
+context_profile: wrapper
+problem: >
+  Active OpenCode prompts still contain stale archived build-packet references,
+  missing document references, legacy pga work-context usage, and hard-coded
+  validation command lists that can drift from Artemis validation policy.
+tasks:
+  - Rewrite active .opencode agents and commands as thin shims over Artemis-native context, validation, release, and review commands.
+  - Remove active references to docs/BUILD_PACKET_v0.1.md and route archived build-packet references through docs/archive only when explicitly historical.
+  - Remove or replace the missing docs/AGENT_KB_SKILL_RELEASE_LOOP.md reference with a canonical active file or an archived path.
+  - Replace pga work-context usage in active wrappers with artemis dev context; retain pga work-context only as a labeled compatibility alias in docs if needed.
+  - Remove hard-coded validation command lists from wrappers in favor of artemis validate --strict and artemis release check.
+acceptance_criteria:
+  - No active .opencode prompt requires archived build-packet files as canonical context.
+  - No active .opencode prompt references a missing document.
+  - .opencode/commands/artemis-context.md invokes artemis dev context.
+  - Wrapper prompts state that authoritative analytics must come from deterministic services, reviewed registries/schemas, and tests.
+  - Wrapper validation instructions defer to Artemis-native validation or release commands.
+required_tests:
+  - python -m pytest tests/test_governance_files.py tests/test_docs_native_workflow.py -q
+  - artemis validate --strict --ticket T-wrapper-shim-cleanup
+affected_files:
+  - .opencode/agents/build.md
+  - .opencode/agents/development-improvement.md
+  - .opencode/agents/kb-skill-curator.md
+  - .opencode/agents/plan.md
+  - .opencode/agents/qa-reconciliation.md
+  - .opencode/agents/release-manager.md
+  - .opencode/agents/release.md
+  - .opencode/agents/review.md
+  - .opencode/commands/artemis-context.md
+  - .opencode/commands/artemis-review-ticket.md
+  - .opencode/commands/artemis-validate.md
+  - docs/developer/native_workflow.md
+  - tests/test_governance_files.py
+  - tests/test_docs_native_workflow.py
+change_request_required: true
+implemented_at: "2026-06-05T00:00:00Z"
+implementation_summary: >
+  Active OpenCode prompts and commands now act as Artemis shims, use artemis dev
+  context, defer validation to Artemis-native commands, and state deterministic
+  authority boundaries.
+validated_at: "2026-06-05T00:00:00Z"
+validation_report: development/validation_reports/T-wrapper-shim-cleanup/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-wrapper-shim-cleanup.md

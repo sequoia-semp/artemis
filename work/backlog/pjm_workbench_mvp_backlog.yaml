@@ -62,7 +62,15 @@ tracks:
       - forward_price_heatmap_service
       - textual_hot_state_screens
   agent_tooling:
+    current_sprint: S-002
     next:
+      - T-context-tool-integrity
+      - T-wrapper-shim-cleanup
+      - T-context-audit
+      - T-validation-release-consolidation
+      - T-context-profiles
+      - T-skill-surface-validation
+      - T-tool-spec-v2
       - read_only_tool_manifest
       - deterministic_context_bundles
       - release_check_gate

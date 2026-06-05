@@ -11,7 +11,7 @@ from ..agent_runtime.capabilities import collect_agent_capabilities
 from ..exceptions import WorkbenchException
 from ..registry import load_yaml_unique
 from ..tools.permissions import load_tool_permissions, summarize_tool_policy
-from ..tools.registry import load_tool_registry
+from ..tools.registry import load_tool_registry, registered_tool_ids
 
 ARTEMIS_CONFIG_ERROR = "ARTEMIS_CONFIG_ERROR"
 
@@ -116,6 +116,7 @@ def validate_artemis_config(repo_root: Path, config_path: Path | None = None) ->
         config["tools"]["permissions"],
         config["knowledge"]["manifest"],
         config["skills"]["manifest"],
+        *(([config["skills"]["procedural_manifest"]] if (config.get("skills") or {}).get("procedural_manifest") else [])),
         config["views"]["manifest"],
         config["data_sources"]["registry"],
     ]:
@@ -126,6 +127,20 @@ def validate_artemis_config(repo_root: Path, config_path: Path | None = None) ->
             missing_paths.append(str(relative_path))
     if missing_paths:
         raise WorkbenchException(ARTEMIS_CONFIG_ERROR, f"Config references missing paths: {missing_paths}")
+
+    tools = load_tool_registry(repo_root / config["tools"]["registry"], repo_root / "schemas")
+    tool_ids = registered_tool_ids(tools)
+    default_tool_errors: list[str] = []
+    for mode_name, mode in sorted((config.get("modes") or {}).items()):
+        for tool_id in mode.get("default_tools") or []:
+            if tool_id not in tool_ids:
+                default_tool_errors.append(f"{mode_name}.{tool_id}: not registered")
+                continue
+            tool_modes = set(((tools.get("tools") or {}).get(tool_id) or {}).get("modes") or [])
+            if mode_name not in tool_modes:
+                default_tool_errors.append(f"{mode_name}.{tool_id}: registered for {sorted(tool_modes)}")
+    if default_tool_errors:
+        raise WorkbenchException(ARTEMIS_CONFIG_ERROR, f"Default tool registry mismatch: {default_tool_errors}")
     return config
 
 

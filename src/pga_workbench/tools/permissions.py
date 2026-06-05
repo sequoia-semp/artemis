@@ -121,5 +121,11 @@ def summarize_tool_policy(tools: dict[str, Any], permissions: dict[str, Any]) ->
             "approval": risk_policy.get("approval"),
             "can_modify_repo": bool(risk_policy.get("can_modify_repo")),
             "requires_ticket": bool(risk_policy.get("requires_ticket")),
+            "adapter": tool.get("adapter"),
+            "input_contract": tool.get("input_contract") or {},
+            "output_contract": tool.get("output_contract") or {},
+            "lineage": tool.get("lineage") or {},
+            "authority": tool.get("authority"),
+            "deterministic_service": bool(tool.get("deterministic_service")),
         }
     return summary

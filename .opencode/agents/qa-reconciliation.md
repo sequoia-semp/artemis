@@ -5,7 +5,8 @@ temperature: 0.1
 permission:
   edit: deny
   bash:
-    "python -m pytest -q": allow
+    "artemis validate*": allow
+    "artemis context audit*": allow
     "git diff*": allow
     "git status*": allow
     "*": ask
@@ -24,5 +25,7 @@ Focus on:
 - period grammar correctness
 - vol MVP restriction to WH and HH
 - structured exceptions instead of guesses
+
+Prompt-only analytics are not authoritative; PnL, risk, Greeks, forecasts, state, mappings, and conventions must come from deterministic services, reviewed registries/schemas, and tests.
 
 Return blockers first, then warnings, then suggested tests.

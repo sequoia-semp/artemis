@@ -13,6 +13,7 @@ def test_skill_manifest_validates_and_references_registered_tools():
     result = validate_skill_manifest(ROOT, ROOT / "schemas")
 
     assert result["skills"] == 7
+    assert result["procedural_skills"] == 10
 
 
 def test_view_manifest_validates_and_references_registered_skills():

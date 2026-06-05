@@ -10,6 +10,7 @@ Core commands:
 ```bash
 make bootstrap
 artemis validate --strict
+artemis context audit
 artemis work validate
 artemis work show T-0030
 artemis dev context --ticket T-0030 --output /tmp/T-0030_context.json
@@ -21,11 +22,23 @@ artemis release check --ticket T-0030
 `artemis validate report --input ... --markdown ...` to bridge machine-readable
 validation evidence into curated regression reports.
 
+`artemis dev context` is the canonical context path. `pga work-context` is a
+compatibility alias only and active wrapper prompts must call the Artemis command
+directly. Tickets may request a configured `context_profile`; unknown profiles
+fail closed.
+
 Release readiness must fail when validation is skipped, stale, missing, tied to
 the wrong ticket, non-strict, or disconnected from ticket lifecycle state. Coding
 backends may propose patches, but deterministic Artemis checks decide readiness.
+Strict validation includes context audit evidence for prompt, tool, skill, and
+wrapper surface drift.
 
 Runtime tools must pass executable mode policy before they run. Analyst mode is
 limited to read-only and workspace-output actions. Development repo writes
 require a ticket, release-candidate tools require passed native validation
 context, and convention-changing actions require approved change-request context.
+
+Tool registry records carry command compatibility plus adapter, input/output
+contract, lineage, authority, and deterministic-service metadata. Prompt-only or
+candidate tools are never authoritative for PnL, risk, Greeks, forecasts, state,
+mappings, or conventions.

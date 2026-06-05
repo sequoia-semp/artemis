@@ -8,7 +8,5 @@ Required:
 git status --short
 git diff --stat
 git diff
-python -m pytest -q
-pga validate-registries
-pga validate-work-items
+artemis validate --strict --ticket "$ARGUMENTS"
 ```

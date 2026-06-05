@@ -12,6 +12,7 @@ from typing import Any
 
 from ..agent.runtime import collect_artemis_capabilities, validate_artemis_config
 from ..agent_runtime.kb_validator import validate_knowledge_base
+from ..agent_runtime.context_audit import audit_context_surfaces
 from ..agent_runtime.work_item_loader import load_ticket, validate_work_items
 from ..analyst.view_engine import validate_view_manifest
 from ..core.time import utc_now_iso
@@ -128,6 +129,13 @@ def _release_sanity(repo_root: Path) -> dict[str, Any]:
     return {"summary": "native release sanity checks passed", "validation_commands": commands}
 
 
+def _context_audit(repo_root: Path) -> dict[str, Any]:
+    result = audit_context_surfaces(repo_root)
+    if not result.get("passed"):
+        raise WorkbenchException("CONTEXT_AUDIT_FAILED", f"context audit blockers: {result['counts']['blockers']}")
+    return {"summary": "context audit passed", **result}
+
+
 def run_validation(repo_root: Path, ticket_id: str | None = None, strict: bool = False) -> ValidationReport:
     repo_root = Path(repo_root).resolve()
     generated_at = utc_now_iso()
@@ -181,6 +189,7 @@ def run_validation(repo_root: Path, ticket_id: str | None = None, strict: bool =
             _check("view manifest validation", "views", True, lambda: {"summary": "view manifest passed", **validate_view_manifest(repo_root, repo_root / "schemas")}),
             _check("data-source descriptor validation", "data_sources", True, lambda: {"summary": "data sources passed", **validate_data_sources(repo_root / "registries" / "data_sources.yaml", repo_root / "schemas")}),
             _check("capability validation", "capabilities", True, lambda: {"summary": "capabilities passed", "recommended_mode": collect_artemis_capabilities(repo_root).get("recommended_mode")}),
+            _check("context surface audit", "context_audit", True, lambda: _context_audit(repo_root)),
             _check("release-readiness sanity", "release_sanity", True, lambda: _release_sanity(repo_root)),
         ]
     )

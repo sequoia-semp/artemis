@@ -3,9 +3,11 @@ from __future__ import annotations
 from pathlib import Path
 
 import yaml
+import pytest
 
 from pga_workbench.agent.modes import AgentMode, mode_can_modify_repo, mode_requires_ticket
 from pga_workbench.agent.runtime import collect_artemis_capabilities, load_artemis_config, validate_artemis_config
+from pga_workbench.exceptions import WorkbenchException
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -45,6 +47,8 @@ def test_capabilities_report_tool_policy_and_optional_providers():
     assert capabilities["tools"]["policy"]["repo_patch"]["requires_ticket"] is True
     assert capabilities["tools"]["policy"]["analyst_view_build"]["can_modify_repo"] is False
     assert capabilities["tools"]["policy"]["forward_price_heatmap"]["risk"] == "workspace_write"
+    assert capabilities["tools"]["policy"]["validate_repo"]["authority"] == "deterministic_service"
+    assert capabilities["tools"]["policy"]["repo_patch"]["authority"] == "candidate_only"
 
 
 def test_artemis_config_resolution_order_cli_over_env(monkeypatch, tmp_path):
@@ -83,11 +87,27 @@ def test_artemis_config_rejects_stale_root_profiles_shape(tmp_path):
     stale = tmp_path / "stale.yaml"
     stale.write_text(yaml.safe_dump({"profiles": {"local_ollama": {"kind": "openai_compatible"}}}), encoding="utf-8")
 
-    import pytest
-    from pga_workbench.exceptions import WorkbenchException
-
     with pytest.raises(WorkbenchException):
         validate_artemis_config(ROOT, config_path=stale)
+
+
+def test_artemis_config_rejects_missing_default_tool(tmp_path):
+    overlay = tmp_path / "missing_tool.yaml"
+    overlay.write_text(yaml.safe_dump({"modes": {"analyst": {"default_tools": ["__missing_tool__"]}}}), encoding="utf-8")
+
+    with pytest.raises(WorkbenchException) as exc:
+        validate_artemis_config(ROOT, config_path=overlay)
+    assert "Default tool registry mismatch" in exc.value.message
+    assert "__missing_tool__" in exc.value.message
+
+
+def test_artemis_config_rejects_mode_incompatible_default_tool(tmp_path):
+    overlay = tmp_path / "wrong_mode.yaml"
+    overlay.write_text(yaml.safe_dump({"modes": {"analyst": {"default_tools": ["validate_repo"]}}}), encoding="utf-8")
+
+    with pytest.raises(WorkbenchException) as exc:
+        validate_artemis_config(ROOT, config_path=overlay)
+    assert "validate_repo" in exc.value.message
 
 
 def test_artemis_env_file_loads_file_source_roots(monkeypatch, tmp_path):
