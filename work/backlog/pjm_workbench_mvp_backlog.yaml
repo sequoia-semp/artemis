@@ -8,7 +8,7 @@ source_of_truth:
 
 tracks:
   artemis_core:
-    current_ticket: T-0020
+    current_ticket: T-0021
     next:
       - data_aware_analyst_view_inputs
       - patch_proposal_backend_handoff

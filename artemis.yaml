@@ -69,6 +69,9 @@ providers:
       kind: deterministic_only
       required: false
       descriptor: integrations/providers/deterministic_only.yaml
+    # Optional non-authoritative convenience profile. The descriptor, not this
+    # profile, defines provider binding shape; deterministic commands must not
+    # require this runtime.
     local_ollama:
       kind: openai_compatible
       required: false

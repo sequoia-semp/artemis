@@ -1,0 +1,35 @@
+change_id: CR-0009
+title: Current architecture authority consolidation
+created_at: 2026-06-04T00:00:00Z
+change_class: 7
+severity: medium
+problem_statement: >
+  Current architecture documentation still reflects pre-Artemis layers and
+  optional wrapper assumptions. The docs index also groups architecture and
+  domain authority records together, which makes current authority harder to
+  distinguish from archive and compatibility records.
+root_cause: >
+  Earlier architecture notes were preserved while the repo moved to an
+  artemis.yaml control plane, manifest-driven agent surfaces, descriptor-based
+  integrations, and a stricter root entrypoint contract.
+affected_files:
+  - AGENTS.md
+  - artemis.yaml
+  - docs/ARCHITECTURE.md
+  - docs/README.md
+  - docs/architecture/power_gas_trading_agent_workbench.md
+  - tests/test_repo_foundation_contract.py
+  - work/backlog/pjm_workbench_mvp_backlog.yaml
+  - work/tickets/T-0021-architecture-authority-consolidation.yaml
+tests_required:
+  - python -m pytest tests/test_repo_foundation_contract.py tests/test_governance_files.py tests/test_artemis_config.py -q
+  - python -m pytest -q
+  - make validate
+  - artemis release check --ticket T-0021
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-04T00:00:00Z
+rollback_plan: >
+  Restore the previous architecture docs and foundation tests if downstream
+  tooling still depends on the older documentation shape.
