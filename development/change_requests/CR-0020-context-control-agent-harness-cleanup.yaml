@@ -35,6 +35,7 @@ affected_files:
   - docs/developer/native_workflow.md
   - docs/developer/release_process.md
   - docs/developer/self_development.md
+  - development/CHANGE_POLICY.md
   - src/pga_workbench/agent/runtime.py
   - src/pga_workbench/agent_runtime/context_audit.py
   - src/pga_workbench/agent_runtime/release_workflow.py

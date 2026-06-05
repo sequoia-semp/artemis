@@ -33,6 +33,15 @@ backends may propose patches, but deterministic Artemis checks decide readiness.
 Strict validation includes context audit evidence for prompt, tool, skill, and
 wrapper surface drift.
 
+Semantic-impact tickets are gated before release readiness. Changes touching
+domain docs, locked conventions, product or market registries, semantic schemas,
+normalization, exposure, PnL, risk, units, periods, spreads, vol, or mapping
+services must use the `trading_domain` or `behavioral` context profile. Release
+readiness also requires strict validation evidence for pytest, registry/schema
+validation, capability/lineage summaries, context audit, and a complete
+affected-file snapshot. Convention-sensitive semantic changes require an
+approved change request with affected files, required tests, and rollback plan.
+
 Runtime tools must pass executable mode policy before they run. Analyst mode is
 limited to read-only and workspace-output actions. Development repo writes
 require a ticket, release-candidate tools require passed native validation

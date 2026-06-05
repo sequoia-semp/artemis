@@ -1,48 +1,67 @@
 id: T-0024
 type: ticket
-status: active
+status: validated
 title: ICE gas contract to gas index mapping semantics
 owner: user
 risk: medium
-created_at: "2026-06-05"
-updated_at: "2026-06-05"
+created_at: '2026-06-05'
+updated_at: '2026-06-05T21:50:34Z'
 epic: E-0001
 sprint: S-0001
 layer:
-  - docs
-  - registry
-  - schema
-  - tests
+- docs
+- registry
+- schema
+- tests
 branch: codex/T-0024-ice-gas-contract-index-mapping
-problem: >
-  Artemis needs listed ICE natural gas outright, basis, swing, and index contracts to
-  map into canonical gas daily/monthly index families with explicit formula
-  semantics, using the same core architecture as the PJM power forward mapping
-  demo.
+context_profile: trading_domain
+problem: 'Artemis needs listed ICE natural gas outright, basis, swing, and index contracts
+  to map into canonical gas daily/monthly index families with explicit formula semantics,
+  using the same core architecture as the PJM power forward mapping demo.
+
+  '
 tasks:
-  - Generalize exchange contract and contract mapping schemas for gas index families and formula legs.
-  - Add official ICE gas contract records for Henry LD1, TETCO M2 fixed/basis/swing/index, TETCO M3 basis/index, Transco Z6 NY fixed/swing/basis, Transco Z6 non-NY fixed/basis/swing/index, Transco Z5 fixed/basis/swing/index, Transco Z5 South fixed/basis/swing/index, and Eastern Gas South basis/index contracts.
-  - Add gas contract-to-index mappings for LD1, IFERC, GDD, BASIS_TO_LD1, and GDD_INDEX_TO_IFERC targets.
-  - Document gas formula conventions and the contract-to-index storage model.
-  - Add regression tests for gas symbol normalization, formula preservation, and mark lineage.
+- Generalize exchange contract and contract mapping schemas for gas index families
+  and formula legs.
+- Add official ICE gas contract records for Henry LD1, TETCO M2 fixed/basis/swing/index,
+  TETCO M3 basis/index, Transco Z6 NY fixed/swing/basis, Transco Z6 non-NY fixed/basis/swing/index,
+  Transco Z5 fixed/basis/swing/index, Transco Z5 South fixed/basis/swing/index, and
+  Eastern Gas South basis/index contracts.
+- Add gas contract-to-index mappings for LD1, IFERC, GDD, BASIS_TO_LD1, and GDD_INDEX_TO_IFERC
+  targets.
+- Document gas formula conventions and the contract-to-index storage model.
+- Add regression tests for gas symbol normalization, formula preservation, and mark
+  lineage.
 acceptance_criteria:
-  - ICE gas symbols H, BM1, BM2, BM3, MB4, TMT, MTI, TZ6, ZSS, TZS, TPH, TPB, TPS, TPI, TZ5, DKR, DKS, DKT, T5Z, T5B, T5C, T5I, DOM, and DIS resolve to canonical gas MarketIndex records.
-  - Basis mappings preserve official Reference Price A minus Reference Price B formula legs.
-  - Index mappings preserve official average Gas Daily Reference Price A minus Inside FERC Reference Price B formula legs.
-  - Registry validation accepts gas exchange contracts and gas mapping records with no warnings.
-  - No live ICE API, vendor API, cache, or state-pack publishing behavior is introduced.
+- ICE gas symbols H, BM1, BM2, BM3, MB4, TMT, MTI, TZ6, ZSS, TZS, TPH, TPB, TPS, TPI,
+  TZ5, DKR, DKS, DKT, T5Z, T5B, T5C, T5I, DOM, and DIS resolve to canonical gas MarketIndex
+  records.
+- Basis mappings preserve official Reference Price A minus Reference Price B formula
+  legs.
+- Index mappings preserve official average Gas Daily Reference Price A minus Inside
+  FERC Reference Price B formula legs.
+- Registry validation accepts gas exchange contracts and gas mapping records with
+  no warnings.
+- No live ICE API, vendor API, cache, or state-pack publishing behavior is introduced.
 required_tests:
-  - .venv/bin/python -m pytest tests/test_forward_fundamental_mapping.py tests/test_registry_driven_normalization.py tests/test_indices.py -q
-  - make validate
+- .venv/bin/python -m pytest tests/test_forward_fundamental_mapping.py tests/test_registry_driven_normalization.py
+  tests/test_indices.py -q
+- make validate
 affected_files:
-  - domain/forward_fundamental_mapping.md
-  - domain/gas_index_families.md
-  - docs/OFFICIAL_SOURCE_REGISTER.md
-  - registries/exchange_contracts.yaml
-  - registries/forward_fundamental_mappings.yaml
-  - registries/gas_locations.yaml
-  - registries/product_master.yaml
-  - schemas/exchange_contract.schema.json
-  - schemas/forward_fundamental_mapping.schema.json
-  - tests/test_forward_fundamental_mapping.py
+- domain/forward_fundamental_mapping.md
+- domain/gas_index_families.md
+- docs/OFFICIAL_SOURCE_REGISTER.md
+- registries/exchange_contracts.yaml
+- registries/forward_fundamental_mappings.yaml
+- registries/gas_locations.yaml
+- registries/product_master.yaml
+- schemas/exchange_contract.schema.json
+- schemas/forward_fundamental_mapping.schema.json
+- tests/test_forward_fundamental_mapping.py
 change_request_required: true
+change_id: CR-0012
+implemented_at: '2026-06-05T21:50:34Z'
+implementation_summary: Implementation completed; validation pending.
+validated_at: '2026-06-05T21:50:34Z'
+validation_report: development/validation_reports/T-0024/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0024.md

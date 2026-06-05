@@ -1,64 +1,72 @@
 id: T-0018
 type: ticket
-status: active
+status: validated
 title: Artemis identity, modes, manifests, and M1 CLI surface
 owner: user
 risk: medium
-created_at: "2026-06-04"
-updated_at: "2026-06-04"
+created_at: '2026-06-04'
+updated_at: '2026-06-05T21:50:33Z'
 epic: E-0001
 sprint: S-0001
 layer:
-  - agent_runtime
-  - schema
-  - registry
-  - skills
-  - release
-  - tests
+- agent_runtime
+- schema
+- registry
+- skills
+- release
+- tests
 branch: feature/T-0011-artemis-agent-architecture
-problem: >
-  The attached Artemis implementation brief needs to be incorporated into the repo
-  as deterministic, model-agnostic project tooling without replacing existing pga
-  commands or creating vendor-specific prompt trees.
+context_profile: behavioral
+problem: 'The attached Artemis implementation brief needs to be incorporated into
+  the repo as deterministic, model-agnostic project tooling without replacing existing
+  pga commands or creating vendor-specific prompt trees.
+
+  '
 tasks:
-  - Add artemis as a console script alias while preserving pga.
-  - Add committed artemis.yaml config and local example config without secrets.
-  - Add Analyst and Development mode contracts plus optional provider descriptors.
-  - Add tool registry and permission validation.
-  - Add data-source descriptors and fixture/test data guard.
-  - Add schema-backed Analyst view templates and minimal build command.
-  - Add skill and view manifests with validation commands.
-  - Add backend-neutral development context and release-candidate commands.
+- Add artemis as a console script alias while preserving pga.
+- Add committed artemis.yaml config and local example config without secrets.
+- Add Analyst and Development mode contracts plus optional provider descriptors.
+- Add tool registry and permission validation.
+- Add data-source descriptors and fixture/test data guard.
+- Add schema-backed Analyst view templates and minimal build command.
+- Add skill and view manifests with validation commands.
+- Add backend-neutral development context and release-candidate commands.
 acceptance_criteria:
-  - artemis config validate passes without optional providers or credentials.
-  - artemis capabilities reports modes, provider optionality, and tool policy.
-  - artemis analyst view build can emit schema-valid current-day, prior-day, and fourteen-day views from deterministic JSON inputs.
-  - artemis data-sources validate passes and credentials are env-name descriptors only.
-  - artemis skill validate and artemis views validate pass.
-  - Existing pga commands and validations remain compatible.
+- artemis config validate passes without optional providers or credentials.
+- artemis capabilities reports modes, provider optionality, and tool policy.
+- artemis analyst view build can emit schema-valid current-day, prior-day, and fourteen-day
+  views from deterministic JSON inputs.
+- artemis data-sources validate passes and credentials are env-name descriptors only.
+- artemis skill validate and artemis views validate pass.
+- Existing pga commands and validations remain compatible.
 required_tests:
-  - python -m pytest -q
-  - pga validate-registries
-  - pga validate-work-items
-  - pga validate-kb
-  - artemis config validate
-  - artemis capabilities
-  - artemis skill validate
-  - artemis views validate
-  - artemis data-sources validate
+- python -m pytest -q
+- pga validate-registries
+- pga validate-work-items
+- pga validate-kb
+- artemis config validate
+- artemis capabilities
+- artemis skill validate
+- artemis views validate
+- artemis data-sources validate
 affected_files:
-  - pyproject.toml
-  - artemis.yaml
-  - local/artemis.local.example.yaml
-  - pjm_workbench_mvp_backlog.yaml
-  - registries/tools.yaml
-  - registries/tool_permissions.yaml
-  - registries/data_sources.yaml
-  - registries/market_regions.yaml
-  - schemas/
-  - skills/
-  - views/
-  - integrations/coding_backends/
-  - src/pga_workbench/
-  - tests/
+- pyproject.toml
+- artemis.yaml
+- local/artemis.local.example.yaml
+- pjm_workbench_mvp_backlog.yaml
+- registries/tools.yaml
+- registries/tool_permissions.yaml
+- registries/data_sources.yaml
+- registries/market_regions.yaml
+- schemas/
+- skills/
+- views/
+- integrations/coding_backends/
+- src/pga_workbench/
+- tests/
 change_request_required: true
+implemented_at: '2026-06-05T21:50:33Z'
+implementation_summary: Implementation completed; validation pending.
+validated_at: '2026-06-05T21:50:33Z'
+validation_report: development/validation_reports/T-0018/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0018.md

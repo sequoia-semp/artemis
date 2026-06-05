@@ -1,55 +1,69 @@
 id: T-0022
 type: ticket
-status: active
+status: validated
 title: PJM Western Hub RT peak forward-to-fundamental mapping
 owner: user
 risk: medium
-created_at: "2026-06-05"
-updated_at: "2026-06-05"
+created_at: '2026-06-05'
+updated_at: '2026-06-05T21:50:33Z'
 epic: E-0001
 sprint: S-0001
 layer:
-  - docs
-  - schema
-  - registry
-  - tests
+- docs
+- schema
+- registry
+- tests
 branch: codex/T-0022-pjm-wh-rt-peak-forward-fundamental-mapping
-problem: >
-  ICE PJM Western Hub real-time peak contracts PMI and PDP need to map
-  deterministically to the PJM Western Hub RT full-LMP peak index and pnode
-  51288 so forward price artifacts can be compared with fundamental LMP
-  history without an ICE API dependency.
+context_profile: trading_domain
+problem: 'ICE PJM Western Hub real-time peak contracts PMI and PDP need to map deterministically
+  to the PJM Western Hub RT full-LMP peak index and pnode 51288 so forward price artifacts
+  can be compared with fundamental LMP history without an ICE API dependency.
+
+  '
 tasks:
-  - Add source-backed exchange contract specs for ICE PMI and PDP.
-  - Add deterministic forward-to-fundamental mappings from PMI/PDP to PJM.WH.RT.FULL_LMP.PEAK.
-  - Record WH pnode 51288 semantics with explicit source status.
-  - Add registry schemas and validation handlers for contract and mapping records.
-  - Extend market-index normalization to resolve raw PMI/PDP marks through the mapping.
-  - Add regression tests for mapping resolution, mark normalization lineage, and source-document enforcement.
-  - Document the mapping and official source status.
+- Add source-backed exchange contract specs for ICE PMI and PDP.
+- Add deterministic forward-to-fundamental mappings from PMI/PDP to PJM.WH.RT.FULL_LMP.PEAK.
+- Record WH pnode 51288 semantics with explicit source status.
+- Add registry schemas and validation handlers for contract and mapping records.
+- Extend market-index normalization to resolve raw PMI/PDP marks through the mapping.
+- Add regression tests for mapping resolution, mark normalization lineage, and source-document
+  enforcement.
+- Document the mapping and official source status.
 acceptance_criteria:
-  - Registry validation accepts exchange_contracts.yaml and forward_fundamental_mappings.yaml with no warnings.
-  - PMI and PDP resolve to PJM.WH.RT.FULL_LMP.PEAK with market_run RT, price_component FULL_LMP, shape PEAK, and quote_unit USD_per_MWh.
-  - The mapping target preserves pnode_id 51288, pnode_name WESTERN HUB, pnode_type HUB, and PJM feed names.
-  - Raw marks with product PMI normalize to PJM.WH.RT.FULL_LMP.PEAK.<period> and preserve source_contract_id and mapping_id lineage.
-  - Official exchange contract records cannot omit source_documents.
-  - No ICE API, PJM API, vendor connector, cache, or state-pack publishing behavior is introduced.
+- Registry validation accepts exchange_contracts.yaml and forward_fundamental_mappings.yaml
+  with no warnings.
+- PMI and PDP resolve to PJM.WH.RT.FULL_LMP.PEAK with market_run RT, price_component
+  FULL_LMP, shape PEAK, and quote_unit USD_per_MWh.
+- The mapping target preserves pnode_id 51288, pnode_name WESTERN HUB, pnode_type
+  HUB, and PJM feed names.
+- Raw marks with product PMI normalize to PJM.WH.RT.FULL_LMP.PEAK.<period> and preserve
+  source_contract_id and mapping_id lineage.
+- Official exchange contract records cannot omit source_documents.
+- No ICE API, PJM API, vendor connector, cache, or state-pack publishing behavior
+  is introduced.
 required_tests:
-  - .venv/bin/python -m pytest tests/test_forward_fundamental_mapping.py tests/test_registry_driven_normalization.py tests/test_indices.py -q
-  - make validate
+- .venv/bin/python -m pytest tests/test_forward_fundamental_mapping.py tests/test_registry_driven_normalization.py
+  tests/test_indices.py -q
+- make validate
 affected_files:
-  - domain/forward_fundamental_mapping.md
-  - docs/OFFICIAL_SOURCE_REGISTER.md
-  - registries/exchange_contracts.yaml
-  - registries/forward_fundamental_mappings.yaml
-  - registries/power_locations.yaml
-  - registries/product_master.yaml
-  - schemas/exchange_contract.schema.json
-  - schemas/forward_fundamental_mapping.schema.json
-  - schemas/market_index.schema.json
-  - src/pga_workbench/indices.py
-  - src/pga_workbench/registry.py
-  - src/pga_workbench/registry_access.py
-  - src/pga_workbench/services/normalization.py
-  - tests/test_forward_fundamental_mapping.py
+- domain/forward_fundamental_mapping.md
+- docs/OFFICIAL_SOURCE_REGISTER.md
+- registries/exchange_contracts.yaml
+- registries/forward_fundamental_mappings.yaml
+- registries/power_locations.yaml
+- registries/product_master.yaml
+- schemas/exchange_contract.schema.json
+- schemas/forward_fundamental_mapping.schema.json
+- schemas/market_index.schema.json
+- src/pga_workbench/indices.py
+- src/pga_workbench/registry.py
+- src/pga_workbench/registry_access.py
+- src/pga_workbench/services/normalization.py
+- tests/test_forward_fundamental_mapping.py
 change_request_required: true
+change_id: CR-0010
+implemented_at: '2026-06-05T21:50:33Z'
+implementation_summary: Implementation completed; validation pending.
+validated_at: '2026-06-05T21:50:33Z'
+validation_report: development/validation_reports/T-0022/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0022.md

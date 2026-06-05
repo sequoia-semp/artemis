@@ -3,6 +3,8 @@ title: PJM Western Hub RT peak forward-to-fundamental mapping
 created_at: 2026-06-05T00:00:00Z
 change_class: 6
 severity: medium
+tickets:
+  - T-0022
 problem_statement: >
   Artemis needs a durable core-semantics demo that maps ICE PJM Western Hub
   real-time peak forward contracts to the PJM Western Hub real-time LMP index

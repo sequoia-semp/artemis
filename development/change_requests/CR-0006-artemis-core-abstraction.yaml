@@ -3,6 +3,8 @@ title: Incorporate Artemis core abstraction proposal
 created_at: 2026-06-04T00:00:00Z
 change_class: 7
 severity: medium
+tickets:
+  - T-0018
 problem_statement: >
   The Artemis implementation brief defines a repo-contained, model-agnostic agent
   identity with Analyst and Development modes, but the deterministic toolchain only

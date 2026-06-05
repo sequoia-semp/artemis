@@ -3,6 +3,8 @@ title: Current architecture authority consolidation
 created_at: 2026-06-04T00:00:00Z
 change_class: 7
 severity: medium
+tickets:
+  - T-0021
 problem_statement: >
   Current architecture documentation still reflects pre-Artemis layers and
   optional wrapper assumptions. The docs index also groups architecture and

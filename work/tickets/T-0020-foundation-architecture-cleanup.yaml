@@ -1,62 +1,69 @@
 id: T-0020
 type: ticket
-status: active
+status: validated
 title: Foundation architecture cleanup
 owner: user
 risk: medium
-created_at: "2026-06-04"
-updated_at: "2026-06-04"
+created_at: '2026-06-04'
+updated_at: '2026-06-05T21:50:33Z'
 epic: E-0001
 sprint: S-0001
 layer:
-  - docs
-  - agent_runtime
-  - schema
-  - registry
-  - release
-  - tests
+- docs
+- agent_runtime
+- schema
+- registry
+- release
+- tests
 branch: codex/T-0020-foundation-architecture-cleanup
-problem: >
-  Root/product entrypoints still contain convention math, root planning bridge
-  files, and wrapper-specific artifacts. Artemis needs a workflow-traced root
-  contract with optional integrations represented as descriptors.
+problem: 'Root/product entrypoints still contain convention math, root planning bridge
+  files, and wrapper-specific artifacts. Artemis needs a workflow-traced root contract
+  with optional integrations represented as descriptors.
+
+  '
 tasks:
-  - Remove individual market-convention math from README, AGENTS.md, and llms.txt.
-  - Move root planning bridge files to archive/backlog locations.
-  - Demote legacy wrapper/build-packet docs under docs/archive.
-  - Convert local/llm_config.example.yaml to a minimal legacy stub.
-  - Move active OpenCode example config under integrations/coding_backends/opencode/.
-  - Keep root opencode.jsonc as a minimal permissions-only compatibility shim.
-  - Refactor wrapper tests into descriptor/foundation tests.
-  - Add tests/test_repo_foundation_contract.py.
-  - Preserve pga work-context compatibility and existing pga commands.
+- Remove individual market-convention math from README, AGENTS.md, and llms.txt.
+- Move root planning bridge files to archive/backlog locations.
+- Demote legacy wrapper/build-packet docs under docs/archive.
+- Convert local/llm_config.example.yaml to a minimal legacy stub.
+- Move active OpenCode example config under integrations/coding_backends/opencode/.
+- Keep root opencode.jsonc as a minimal permissions-only compatibility shim.
+- Refactor wrapper tests into descriptor/foundation tests.
+- Add tests/test_repo_foundation_contract.py.
+- Preserve pga work-context compatibility and existing pga commands.
 acceptance_criteria:
-  - A new agent can orient from README.md, AGENTS.md, llms.txt, artemis.yaml, docs/README.md, and artemis capabilities.
-  - Root Markdown files are limited to README.md and AGENTS.md.
-  - Root/product entrypoints do not contain individual market-convention math.
-  - local/llm_config.example.yaml is absent or a minimal legacy stub.
-  - opencode.jsonc, if present, is a permissions-only compatibility shim.
-  - Optional integration descriptors are non-authoritative.
+- A new agent can orient from README.md, AGENTS.md, llms.txt, artemis.yaml, docs/README.md,
+  and artemis capabilities.
+- Root Markdown files are limited to README.md and AGENTS.md.
+- Root/product entrypoints do not contain individual market-convention math.
+- local/llm_config.example.yaml is absent or a minimal legacy stub.
+- opencode.jsonc, if present, is a permissions-only compatibility shim.
+- Optional integration descriptors are non-authoritative.
 required_tests:
-  - python -m pytest -q
-  - make validate
-  - artemis config validate
-  - artemis capabilities
-  - artemis skill validate
-  - artemis views validate
-  - artemis data-sources validate
-  - artemis dev context --ticket T-0019 --output /tmp/T-0019_context.json
-  - pga work-context --ticket T-0019 --output /tmp/T-0019_pga_context.json
+- python -m pytest -q
+- make validate
+- artemis config validate
+- artemis capabilities
+- artemis skill validate
+- artemis views validate
+- artemis data-sources validate
+- artemis dev context --ticket T-0019 --output /tmp/T-0019_context.json
+- pga work-context --ticket T-0019 --output /tmp/T-0019_pga_context.json
 affected_files:
-  - README.md
-  - AGENTS.md
-  - llms.txt
-  - docs/README.md
-  - docs/archive/
-  - work/backlog/
-  - local/llm_config.example.yaml
-  - opencode.jsonc
-  - integrations/
-  - src/pga_workbench/agent_runtime/release_workflow.py
-  - tests/
+- README.md
+- AGENTS.md
+- llms.txt
+- docs/README.md
+- docs/archive/
+- work/backlog/
+- local/llm_config.example.yaml
+- opencode.jsonc
+- integrations/
+- src/pga_workbench/agent_runtime/release_workflow.py
+- tests/
 change_request_required: true
+implemented_at: '2026-06-05T21:50:33Z'
+implementation_summary: Implementation completed; validation pending.
+validated_at: '2026-06-05T21:50:33Z'
+validation_report: development/validation_reports/T-0020/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0020.md

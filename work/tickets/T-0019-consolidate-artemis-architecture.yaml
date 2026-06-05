@@ -1,63 +1,73 @@
 id: T-0019
 type: ticket
-status: active
+status: validated
 title: Consolidate Artemis repo architecture and runtime context
 owner: user
 risk: medium
-created_at: "2026-06-04"
-updated_at: "2026-06-04"
+created_at: '2026-06-04'
+updated_at: '2026-06-05T21:50:33Z'
 epic: E-0001
 sprint: S-0001
 layer:
-  - docs
-  - agent_runtime
-  - schema
-  - registry
-  - release
-  - tests
+- docs
+- agent_runtime
+- schema
+- registry
+- release
+- tests
 branch: codex/T-0019-consolidate-artemis-architecture
-problem: >
-  The repository has a first-pass Artemis 0.2.0 architecture, but primary docs,
-  validation, and runtime context still route through legacy build-packet and
+problem: 'The repository has a first-pass Artemis 0.2.0 architecture, but primary
+  docs, validation, and runtime context still route through legacy build-packet and
   local-wrapper scaffolding.
+
+  '
 tasks:
-  - Rewrite primary navigation around Artemis product identity.
-  - Add docs/README.md as the central docs index.
-  - Update AGENTS.md and llms.txt to point at artemis.yaml and current authority files.
-  - Mark legacy build-packet/local-LLM entrypoints as compatibility/design records.
-  - Refactor Development Mode context to load from artemis.yaml instead of local/llm_config.example.yaml.
-  - Keep pga work-context usable as a compatibility command backed by the Artemis context shape.
-  - Expand Makefile validation to include first-class Artemis artifacts.
-  - Normalize integration docs and descriptor directories.
-  - Harden release check and release candidate metadata.
-  - Add regression tests for navigation, context, validation, and descriptors.
+- Rewrite primary navigation around Artemis product identity.
+- Add docs/README.md as the central docs index.
+- Update AGENTS.md and llms.txt to point at artemis.yaml and current authority files.
+- Mark legacy build-packet/local-LLM entrypoints as compatibility/design records.
+- Refactor Development Mode context to load from artemis.yaml instead of local/llm_config.example.yaml.
+- Keep pga work-context usable as a compatibility command backed by the Artemis context
+  shape.
+- Expand Makefile validation to include first-class Artemis artifacts.
+- Normalize integration docs and descriptor directories.
+- Harden release check and release candidate metadata.
+- Add regression tests for navigation, context, validation, and descriptors.
 acceptance_criteria:
-  - Primary docs orient through README.md, AGENTS.md, llms.txt, artemis.yaml, docs/README.md, and artemis capabilities.
-  - artemis dev context does not depend on local/llm_config.example.yaml.
-  - pga work-context remains usable and returns the Artemis development-context shape.
-  - make validate runs tests, registry/work/KB validation, Artemis config, skills, views, data sources, and capabilities.
-  - Integration descriptors referenced by artemis.yaml exist and are non-authoritative.
-  - Release candidate output includes package version, validation commands/statuses, and manifest hashes.
+- Primary docs orient through README.md, AGENTS.md, llms.txt, artemis.yaml, docs/README.md,
+  and artemis capabilities.
+- artemis dev context does not depend on local/llm_config.example.yaml.
+- pga work-context remains usable and returns the Artemis development-context shape.
+- make validate runs tests, registry/work/KB validation, Artemis config, skills, views,
+  data sources, and capabilities.
+- Integration descriptors referenced by artemis.yaml exist and are non-authoritative.
+- Release candidate output includes package version, validation commands/statuses,
+  and manifest hashes.
 required_tests:
-  - python -m pytest -q
-  - make validate
-  - artemis config validate
-  - artemis capabilities
-  - artemis skill validate
-  - artemis views validate
-  - artemis data-sources validate
-  - artemis dev context --ticket T-0018 --output /tmp/T-0018_context.json
+- python -m pytest -q
+- make validate
+- artemis config validate
+- artemis capabilities
+- artemis skill validate
+- artemis views validate
+- artemis data-sources validate
+- artemis dev context --ticket T-0018 --output /tmp/T-0018_context.json
 affected_files:
-  - README.md
-  - AGENTS.md
-  - llms.txt
-  - docs/README.md
-  - CODEX_IMPLEMENTATION_BRIEF.md
-  - NEXT_AGENT_START_HERE.md
-  - local/llm_config.example.yaml
-  - Makefile
-  - integrations/
-  - artemis.yaml
-  - src/pga_workbench/
-  - tests/
+- README.md
+- AGENTS.md
+- llms.txt
+- docs/README.md
+- CODEX_IMPLEMENTATION_BRIEF.md
+- NEXT_AGENT_START_HERE.md
+- local/llm_config.example.yaml
+- Makefile
+- integrations/
+- artemis.yaml
+- src/pga_workbench/
+- tests/
 change_request_required: true
+implemented_at: '2026-06-05T21:50:33Z'
+implementation_summary: Implementation completed; validation pending.
+validated_at: '2026-06-05T21:50:33Z'
+validation_report: development/validation_reports/T-0019/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0019.md

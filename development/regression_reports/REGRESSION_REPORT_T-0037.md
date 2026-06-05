@@ -1,12 +1,12 @@
 # Regression Report: T-0037
 
-Generated At: 2026-06-05T16:00:22Z
+Generated At: 2026-06-05T21:58:47Z
 Validation Status: passed
 Strict Mode: True
 Ticket: T-0037
 Commit / Branch Snapshot:
 - Branch: main
-- Commit: f22f01c15596a716a2d26107ea1d28f5882b854b
+- Commit: 434beb0d5b538aa2778dcd72b504fe557f5a8ef2
 
 Checks:
 - pytest: passed (pytest passed)
@@ -18,7 +18,11 @@ Checks:
 - views: passed (view manifest passed)
 - data_sources: passed (data sources passed)
 - capabilities: passed (capabilities passed)
+- context_audit: passed (context audit passed)
 - release_sanity: passed (native release sanity checks passed)
+
+Command Results:
+- python -m pytest -q: passed - 251 passed
 
 Warnings:
 - none

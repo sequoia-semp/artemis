@@ -1,12 +1,12 @@
 # Regression Report: T-validation-release-consolidation
 
-Generated At: 2026-06-05T19:07:55Z
+Generated At: 2026-06-05T21:59:57Z
 Validation Status: passed
 Strict Mode: True
 Ticket: T-validation-release-consolidation
 Commit / Branch Snapshot:
 - Branch: main
-- Commit: e5dde83aab1c18643009c3a6b9c86e2943efe6a6
+- Commit: 434beb0d5b538aa2778dcd72b504fe557f5a8ef2
 
 Checks:
 - pytest: passed (pytest passed)
@@ -22,7 +22,7 @@ Checks:
 - release_sanity: passed (native release sanity checks passed)
 
 Command Results:
-- python -m pytest -q: passed - 242 passed
+- python -m pytest -q: passed - 251 passed
 
 Warnings:
 - none

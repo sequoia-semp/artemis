@@ -24,3 +24,4 @@ development/validation_reports/latest.json
 development/validation_reports/*_validation.json
 development/validation_reports/*/latest.json
 development/validation_reports/*/*_validation.json
+!development/validation_reports/*/latest.json

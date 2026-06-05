@@ -3,6 +3,8 @@ title: Artemis runtime hardening and setup guide
 created_at: 2026-06-05T00:00:00Z
 change_class: 7
 severity: high
+tickets:
+  - T-0025
 problem_statement: >
   Artemis has a compact control plane and validation gate, but several runtime
   surfaces still preserve MVP shortcuts: the Artemis console alias exposes the

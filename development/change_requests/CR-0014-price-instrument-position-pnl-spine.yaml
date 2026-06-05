@@ -3,6 +3,8 @@ title: Price instrument, option contract, position metadata, and PnL spine
 created_at: 2026-06-05T00:00:00Z
 change_class: 6
 severity: medium
+tickets:
+  - T-0026
 problem_statement: >
   Artemis needs a price-centric ETRM/CTRM-style contract and position spine so
   futures, options, positions, exposures, PnL, and simple option Greeks can be

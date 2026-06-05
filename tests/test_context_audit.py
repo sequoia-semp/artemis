@@ -43,3 +43,11 @@ def test_context_audit_flags_unknown_artemis_permission_command():
     text = 'permission:\n  bash:\n    "artemis missing command*": allow\n'
 
     assert "unknown_artemis_permission_command" in _codes(text)
+
+
+def test_context_audit_parses_unquoted_permission_commands():
+    text = "permission:\n  bash:\n    artemis missing command*: allow\n    artemis validate*: allow\n"
+    codes = _codes(text)
+
+    assert "unknown_artemis_permission_command" in codes
+    assert len([code for code in codes if code == "unknown_artemis_permission_command"]) == 1

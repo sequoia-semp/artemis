@@ -3,6 +3,8 @@ title: Foundation architecture cleanup and root contract hardening
 created_at: 2026-06-04T00:00:00Z
 change_class: 7
 severity: medium
+tickets:
+  - T-0020
 problem_statement: >
   Artemis has a consolidated control plane, but root/product entrypoints still
   expose legacy planning files, wrapper configuration, and individual market

@@ -1,45 +1,61 @@
 id: T-0023
 type: ticket
-status: active
+status: validated
 title: PJM hub contract grid and price storage semantics
 owner: user
 risk: medium
-created_at: "2026-06-05"
-updated_at: "2026-06-05"
+created_at: '2026-06-05'
+updated_at: '2026-06-05T21:50:34Z'
 epic: E-0001
 sprint: S-0001
 layer:
-  - docs
-  - registry
-  - tests
+- docs
+- registry
+- tests
 branch: codex/T-0023-pjm-hub-contract-grid-price-storage-semantics
-problem: >
-  Artemis needs a planned core price/index storage model and a broader PJM hub
-  mapping grid so Western Hub, AEP-Dayton Hub, and Northern Illinois Hub can map
+context_profile: trading_domain
+problem: 'Artemis needs a planned core price/index storage model and a broader PJM
+  hub mapping grid so Western Hub, AEP-Dayton Hub, and Northern Illinois Hub can map
   ICE monthly DA/RT peak/offpeak futures into canonical full-LMP market indices.
+
+  '
 tasks:
-  - Expand exchange contract records for WH, AD, and NI monthly DA/RT peak/offpeak ICE contracts.
-  - Expand forward-to-fundamental mappings for WH, AD, and NI monthly DA/RT peak/offpeak contracts.
-  - Include OPJ as the Western Hub real-time offpeak mapping symbol.
-  - Record AD and NI pnode identifiers with explicit source status.
-  - Document the layered price/index storage model.
-  - Add regression tests for the monthly PJM hub contract grid.
+- Expand exchange contract records for WH, AD, and NI monthly DA/RT peak/offpeak ICE
+  contracts.
+- Expand forward-to-fundamental mappings for WH, AD, and NI monthly DA/RT peak/offpeak
+  contracts.
+- Include OPJ as the Western Hub real-time offpeak mapping symbol.
+- Record AD and NI pnode identifiers with explicit source status.
+- Document the layered price/index storage model.
+- Add regression tests for the monthly PJM hub contract grid.
 acceptance_criteria:
-  - WH monthly symbols PJC, PJD, PMI, and OPJ resolve to canonical WH DA/RT peak/offpeak full-LMP indices.
-  - AD monthly symbols ADB, ADD, MSO, and AOD resolve to canonical AD DA/RT peak/offpeak full-LMP indices.
-  - NI monthly symbols NIB, NID, PNL, and NIO resolve to canonical NI DA/RT peak/offpeak full-LMP indices.
-  - Mapping records preserve pnode IDs 51288, 34497127, and 33092315 with feed names and shape aggregation rules.
-  - Docs describe the separation between MarketIndex, ExchangeContract, ForwardFundamentalMapping, and PriceSurfacePoint.
-  - No live ICE API, PJM API, cache, or state-pack publishing behavior is introduced.
+- WH monthly symbols PJC, PJD, PMI, and OPJ resolve to canonical WH DA/RT peak/offpeak
+  full-LMP indices.
+- AD monthly symbols ADB, ADD, MSO, and AOD resolve to canonical AD DA/RT peak/offpeak
+  full-LMP indices.
+- NI monthly symbols NIB, NID, PNL, and NIO resolve to canonical NI DA/RT peak/offpeak
+  full-LMP indices.
+- Mapping records preserve pnode IDs 51288, 34497127, and 33092315 with feed names
+  and shape aggregation rules.
+- Docs describe the separation between MarketIndex, ExchangeContract, ForwardFundamentalMapping,
+  and PriceSurfacePoint.
+- No live ICE API, PJM API, cache, or state-pack publishing behavior is introduced.
 required_tests:
-  - .venv/bin/python -m pytest tests/test_forward_fundamental_mapping.py tests/test_registry_driven_normalization.py tests/test_indices.py -q
-  - make validate
+- .venv/bin/python -m pytest tests/test_forward_fundamental_mapping.py tests/test_registry_driven_normalization.py
+  tests/test_indices.py -q
+- make validate
 affected_files:
-  - domain/forward_fundamental_mapping.md
-  - docs/OFFICIAL_SOURCE_REGISTER.md
-  - registries/exchange_contracts.yaml
-  - registries/forward_fundamental_mappings.yaml
-  - registries/power_locations.yaml
-  - registries/product_master.yaml
-  - tests/test_forward_fundamental_mapping.py
+- domain/forward_fundamental_mapping.md
+- docs/OFFICIAL_SOURCE_REGISTER.md
+- registries/exchange_contracts.yaml
+- registries/forward_fundamental_mappings.yaml
+- registries/power_locations.yaml
+- registries/product_master.yaml
+- tests/test_forward_fundamental_mapping.py
 change_request_required: true
+change_id: CR-0011
+implemented_at: '2026-06-05T21:50:34Z'
+implementation_summary: Implementation completed; validation pending.
+validated_at: '2026-06-05T21:50:34Z'
+validation_report: development/validation_reports/T-0023/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0023.md

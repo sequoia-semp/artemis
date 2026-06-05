@@ -3,6 +3,8 @@ title: Consolidate Artemis architecture and runtime context
 created_at: 2026-06-04T00:00:00Z
 change_class: 7
 severity: medium
+tickets:
+  - T-0019
 problem_statement: >
   Artemis 0.2.0 introduced the new product identity, config, modes, manifests,
   and CLI surface, but primary navigation and runtime context still point through

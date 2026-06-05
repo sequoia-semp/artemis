@@ -34,13 +34,19 @@ CONVENTION_KEYWORDS = (
     "vol mvp",
 )
 ALLOWED_ARTEMIS_PERMISSION_COMMANDS = {
+    "artemis capabilities",
     "artemis validate",
     "artemis validate report",
     "artemis context audit",
+    "artemis dev context",
+    "artemis release candidate",
     "artemis skill validate",
     "artemis release check",
     "artemis config validate",
+    "artemis work show",
+    "artemis work validate",
 }
+PERMISSION_ARTEMIS_COMMAND_RE = re.compile(r"""^['"]?(artemis(?:\s+[A-Za-z0-9_-]+){1,})(?:\*)?['"]?\s*:""")
 
 
 @dataclass(frozen=True)
@@ -236,11 +242,16 @@ def _permission_artemis_commands(text: str) -> set[str]:
     commands: set[str] = set()
     for raw_line in text.splitlines():
         line = raw_line.strip()
-        if not line.startswith('"artemis '):
+        match = PERMISSION_ARTEMIS_COMMAND_RE.match(line)
+        if not match:
             continue
-        command = line.split('"', 2)[1].rstrip("*").strip()
+        command = match.group(1).rstrip("*").strip()
         words = command.split()
         if len(words) >= 3 and words[:2] == ["artemis", "context"]:
+            commands.add(" ".join(words[:3]))
+        elif len(words) >= 3 and words[:2] == ["artemis", "dev"]:
+            commands.add(" ".join(words[:3]))
+        elif len(words) >= 3 and words[:2] == ["artemis", "work"]:
             commands.add(" ".join(words[:3]))
         elif len(words) >= 3 and tuple(words[:2]) in {("artemis", "skill"), ("artemis", "release"), ("artemis", "config"), ("artemis", "validate")}:
             commands.add(" ".join(words[:3]))

@@ -2,199 +2,226 @@
   "affected_files_snapshot": [
     {
       "exists": true,
-      "modified_at": 1780673572.6770022,
+      "modified_at": 1780696579.1357162,
       "path": ".gitignore",
-      "sha256": "ba64b747413f37eaf27ed3f7bbe9b6894c0c2fd3f048ecb6e063ceb73de2230a"
+      "sha256": "7ad88b2d28ce24e06be4bd94454081e189f753630af0cef5182bf47b778511f7"
     },
     {
       "exists": true,
-      "modified_at": 1780673071.8887484,
+      "modified_at": 1780673703.5751011,
       "path": "Makefile",
       "sha256": "54c0299dc2c74499fa23f361d556bffba47b7a2d3817c796a48b3fe216fcb402"
     },
     {
       "exists": true,
-      "modified_at": 1780673071.8891,
+      "modified_at": 1780673703.575236,
       "path": "README.md",
       "sha256": "1e18feca62bbfd67768c195ee7f6f85f8315f450761d1aed2322c27d1cafb0a6"
     },
     {
       "exists": true,
-      "modified_at": 1780673071.8893907,
+      "modified_at": 1780673703.5760424,
       "path": "docs/README.md",
       "sha256": "db6b0c0d3b4da28c180da9ad9cb06b7aeb799f07e39585f28d226766f9e041ea"
     },
     {
       "exists": true,
-      "modified_at": 1780673089.3793125,
+      "modified_at": 1780673703.5764697,
       "path": "docs/user/setup.md",
       "sha256": "4722234817a19466af12625e6470c496a258ba7582a1294d3da160e459b1cbf1"
     },
     {
       "exists": true,
-      "modified_at": 1780673071.889584,
+      "modified_at": 1780692947.6593976,
       "path": "docs/developer/native_workflow.md",
-      "sha256": "947cca450ae35349b3627de7b99cf57785f7cf4e0e6de0833886a1d1fd7751c0"
+      "sha256": "400d256cd5b3bb5db72029bbc6c8ff99ac8d3408c2a94afdfe185345fca7e583"
     },
     {
       "exists": true,
-      "modified_at": 1780673269.781351,
+      "modified_at": 1780673703.57615,
       "path": "docs/developer/local_agent_loop.md",
       "sha256": "cb9e615d6a50a2c8fa24b886139ba8acc890012c3be6ea42fbe751dcc3b45c13"
     },
     {
       "exists": true,
-      "modified_at": 1780672863.2687173,
+      "modified_at": 1780673703.5767837,
       "path": "schemas/work_item.schema.json",
       "sha256": "412c42b36bff01e9b7072e8b7bc7d57071f03b7eeff5902fc3b491d9063939c9"
     },
     {
       "exists": true,
-      "modified_at": 1780672863.2689893,
+      "modified_at": 1780680281.0094817,
       "path": "schemas/ticket.schema.json",
-      "sha256": "c19f435e41a55c68bfc8f33c0bc82e80b352c2e9e1e4c3a564b81bbeca2e67fa"
+      "sha256": "de2ab8f7895898c6aa646bdac9f70d8212774a58c35a932b4dde97710128af00"
     },
     {
       "exists": true,
-      "modified_at": 1780672957.7427526,
+      "modified_at": 1780673703.5769887,
       "path": "src/pga_workbench/agent_runtime/native_loop.py",
       "sha256": "dfd1f09bb6680dc3eee1db057d281a9c501dac65c342d599e4f55586cadaac07"
     },
     {
       "exists": true,
-      "modified_at": 1780673582.9778166,
+      "modified_at": 1780693178.8672838,
       "path": "src/pga_workbench/agent_runtime/release_workflow.py",
-      "sha256": "68a1c2cfa41307547ee34933fee1cb5fa142ef05b0b035ca943b6bb74eeccfa9"
+      "sha256": "e8846a859b5e8b4a88f8a2c7fabf328f6dd7c52922670fdb4e0f7a17b3a54ae0"
     },
     {
       "exists": true,
-      "modified_at": 1780672863.26947,
+      "modified_at": 1780673703.5774314,
       "path": "src/pga_workbench/agent_runtime/work_item_loader.py",
       "sha256": "4eb2a976e62751746bc479237785ab1d7cb008425e3c8ad9704ac67c7a097bfe"
     },
     {
       "exists": true,
-      "modified_at": 1780672833.1339374,
+      "modified_at": 1780673703.5777397,
       "path": "src/pga_workbench/validation/__init__.py",
       "sha256": "4b3892f94eef66977fa2b1e4e787d299620610238472ef759a63e6ebc0c20efb"
     },
     {
       "exists": true,
-      "modified_at": 1780672833.1342556,
+      "modified_at": 1780673703.577849,
       "path": "src/pga_workbench/validation/models.py",
       "sha256": "c400586df7b43c70bc63247f5b670ace0f06a31916c402b21868360c74d84692"
     },
     {
       "exists": true,
-      "modified_at": 1780672833.1344767,
+      "modified_at": 1780680866.3517492,
       "path": "src/pga_workbench/validation/reports.py",
-      "sha256": "853bd6b63e80663b956ee63e16ff825db1df2f966cc78a337c5b027785018f7a"
+      "sha256": "bf70d2c806cffdb7bc93d9e9541a94f976da853d5613f419a30cbf423fcd381c"
     },
     {
       "exists": true,
-      "modified_at": 1780672833.1347458,
+      "modified_at": 1780680364.427368,
       "path": "src/pga_workbench/validation/runner.py",
-      "sha256": "6b8ccbdb862a8e87bfe502b867eb2e08fbb44832c8eb6bb87d3aa1389438441c"
+      "sha256": "c3c9abfc92c35f4f2b36d53377ed52024660c3b9732d7dcb6f9121a90fd2ad57"
     },
     {
       "exists": true,
-      "modified_at": 1780673033.9939687,
+      "modified_at": 1780680587.9817567,
       "path": "src/pga_workbench/cli.py",
-      "sha256": "2b89ca9eb536d075c39ce1338a0f0363150a15c33f9c3e1d7beb465004085085"
+      "sha256": "3ec754a10c76ab7b82ce886973d727598b02bc97a4f0765b603c02c82c63b11c"
     },
     {
       "exists": true,
-      "modified_at": 1780673178.9844658,
+      "modified_at": 1780679919.4473894,
       "path": "work/backlog/pjm_workbench_mvp_backlog.yaml",
-      "sha256": "26f45a43d9c2b0c9c19f36eecc08645feb7111443ea2d2239ba05c0a490acc65"
+      "sha256": "138126ddfbf1c6d50c7399ccbdbbfbf9549ce12134166993b4f60494e4677c87"
     },
     {
       "exists": true,
-      "modified_at": 1780673263.7969117,
+      "modified_at": 1780680472.4219103,
       "path": "tests/test_native_validation_runner.py",
-      "sha256": "0f751ccb24d3a7c98fe001f530c98929a2c86ade84b3f8e3dda15fe015d849bf"
+      "sha256": "8bc835dec881869a1609ad3d1f664db44ec4c15cef2890780bcd6766859d7d7a"
     },
     {
       "exists": true,
-      "modified_at": 1780673263.7966194,
+      "modified_at": 1780673703.5787158,
       "path": "tests/test_validation_report_artifacts.py",
       "sha256": "981223d49ec81bead67bb93d3d44092a4d324af0c62a24c7bffae1427840293e"
     },
     {
       "exists": true,
-      "modified_at": 1780673263.7971227,
+      "modified_at": 1780680874.363889,
       "path": "tests/test_cli_validation_commands.py",
-      "sha256": "96434f1e2e97a66a802e81804651a08fbd59498be0a5878216bcc1a755d9e366"
+      "sha256": "66cc0a4d936bc8a1c0b1e929fc6a0c1d0fa1fae652580dc9a7a1793c692a8f96"
     },
     {
       "exists": true,
-      "modified_at": 1780673411.9351146,
+      "modified_at": 1780693069.5323944,
       "path": "tests/test_release_readiness_native_validation.py",
-      "sha256": "c1226d97d75bb0fb01ed25568d3b78bac8c5966c0554c974e5894d612672e3cd"
+      "sha256": "f32ddb0808f7b087d8178541f128c871ba50327a1f6543bdafd7591f792d9c2b"
     },
     {
       "exists": true,
-      "modified_at": 1780673263.7974596,
+      "modified_at": 1780673703.5789206,
       "path": "tests/test_work_item_lifecycle.py",
       "sha256": "5c62be5da1eb76c9b919054a80f8c23ea1fc4670aede31f596be6ac4d8ca0d25"
     },
     {
       "exists": true,
-      "modified_at": 1780673263.797629,
+      "modified_at": 1780673703.5788188,
       "path": "tests/test_work_cli.py",
       "sha256": "23b668cc522b5aaa83ae5e456753c5f986beac031f2e1d6c3484e3ad03dcc400"
     },
     {
       "exists": true,
-      "modified_at": 1780673263.7978022,
+      "modified_at": 1780673703.5783901,
       "path": "tests/test_native_agent_loop.py",
       "sha256": "424629e506cab9f599bc3dd22255e08032f0fc7a0689c8dfbdca82652718b7fc"
     },
     {
       "exists": true,
-      "modified_at": 1780673263.797991,
+      "modified_at": 1780673703.5782876,
       "path": "tests/test_docs_native_workflow.py",
       "sha256": "519c1dbb21c87e7e9e8f832191cc167794abcd04d2a196dd519e34d6255f8abb"
     }
   ],
-  "branch": "codex/sprint-1-native-workflow",
+  "branch": "main",
   "changed_files_snapshot": [
     "M .gitignore",
-    " M Makefile",
-    " M README.md",
-    " M docs/README.md",
-    " M docs/user/setup.md",
-    " M schemas/ticket.schema.json",
-    " M schemas/work_item.schema.json",
+    " M development/CHANGE_POLICY.md",
+    " M development/change_requests/CR-0006-artemis-core-abstraction.yaml",
+    " M development/change_requests/CR-0007-artemis-consolidation.yaml",
+    " M development/change_requests/CR-0008-foundation-architecture-cleanup.yaml",
+    " M development/change_requests/CR-0009-architecture-authority-consolidation.yaml",
+    " M development/change_requests/CR-0010-pjm-wh-rt-peak-forward-fundamental-mapping.yaml",
+    " M development/change_requests/CR-0011-pjm-hub-contract-grid-price-storage-semantics.yaml",
+    " M development/change_requests/CR-0012-ice-gas-contract-index-mapping.yaml",
+    " M development/change_requests/CR-0013-artemis-runtime-hardening-and-setup.yaml",
+    " M development/change_requests/CR-0014-price-instrument-position-pnl-spine.yaml",
+    " M development/change_requests/CR-0020-context-control-agent-harness-cleanup.yaml",
+    " M docs/developer/native_workflow.md",
+    " M docs/developer/release_process.md",
+    " M src/pga_workbench/agent_runtime/context_audit.py",
     " M src/pga_workbench/agent_runtime/release_workflow.py",
-    " M src/pga_workbench/agent_runtime/work_item_loader.py",
-    " M src/pga_workbench/cli.py",
-    " M work/backlog/pjm_workbench_mvp_backlog.yaml",
-    "?? development/change_requests/CR-0015-native-validation-runner.yaml",
-    "?? development/change_requests/CR-0016-release-readiness-native-validation.yaml",
-    "?? development/regression_reports/REGRESSION_REPORT_T-0030.md",
-    "?? development/validation_reports/",
-    "?? docs/developer/local_agent_loop.md",
-    "?? docs/developer/native_workflow.md",
-    "?? src/pga_workbench/agent_runtime/native_loop.py",
-    "?? src/pga_workbench/validation/",
-    "?? tests/test_cli_validation_commands.py",
-    "?? tests/test_docs_native_workflow.py",
-    "?? tests/test_native_agent_loop.py",
-    "?? tests/test_native_validation_runner.py",
-    "?? tests/test_release_readiness_native_validation.py",
-    "?? tests/test_validation_report_artifacts.py",
-    "?? tests/test_work_cli.py",
-    "?? tests/test_work_item_lifecycle.py",
-    "?? work/epics/E-NATIVE-WORKFLOW.yaml",
-    "?? work/sprints/S-001-native-workflow-hardening.yaml",
-    "?? work/tickets/T-0030-native-validation-runner.yaml",
-    "?? work/tickets/T-0031-validation-report-bridge.yaml",
-    "?? work/tickets/T-0032-release-readiness-native-validation.yaml",
-    "?? work/tickets/T-0033-native-ticket-lifecycle.yaml",
-    "?? work/tickets/T-0034-native-local-agent-loop.yaml",
-    "?? work/tickets/T-0035-native-setup-docs.yaml",
-    "?? work/tickets/T-0040-fundamental-metric-registry-and-schema.yaml"
+    " M src/pga_workbench/registry.py",
+    " M tests/test_context_audit.py",
+    " M tests/test_release_readiness_native_validation.py",
+    " M work/tickets/T-0018-artemis-core-abstraction.yaml",
+    " M work/tickets/T-0019-consolidate-artemis-architecture.yaml",
+    " M work/tickets/T-0020-foundation-architecture-cleanup.yaml",
+    " M work/tickets/T-0021-architecture-authority-consolidation.yaml",
+    " M work/tickets/T-0022-pjm-wh-rt-peak-forward-fundamental-mapping.yaml",
+    " M work/tickets/T-0023-pjm-hub-contract-grid-price-storage-semantics.yaml",
+    " M work/tickets/T-0024-ice-gas-contract-index-mapping.yaml",
+    " M work/tickets/T-0025-artemis-runtime-hardening-and-setup.yaml",
+    " M work/tickets/T-0026-price-instrument-position-pnl-spine.yaml",
+    " M work/tickets/T-0040-fundamental-metric-registry-and-schema.yaml",
+    "?? development/change_requests/CR-0021-fundamental-metric-registry.yaml",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0018.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0019.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0020.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0021.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0022.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0023.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0024.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0025.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0026.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0040.md",
+    "?? development/validation_reports/T-0018/",
+    "?? development/validation_reports/T-0019/",
+    "?? development/validation_reports/T-0020/",
+    "?? development/validation_reports/T-0021/",
+    "?? development/validation_reports/T-0022/",
+    "?? development/validation_reports/T-0023/",
+    "?? development/validation_reports/T-0024/",
+    "?? development/validation_reports/T-0025/",
+    "?? development/validation_reports/T-0026/",
+    "?? development/validation_reports/T-0036/",
+    "?? development/validation_reports/T-0037/",
+    "?? development/validation_reports/T-0038/",
+    "?? development/validation_reports/T-0040/",
+    "?? development/validation_reports/T-context-audit/",
+    "?? development/validation_reports/T-context-profiles/",
+    "?? development/validation_reports/T-context-tool-integrity/",
+    "?? development/validation_reports/T-skill-surface-validation/",
+    "?? development/validation_reports/T-tool-spec-v2/",
+    "?? development/validation_reports/T-validation-release-consolidation/",
+    "?? development/validation_reports/T-wrapper-shim-cleanup/",
+    "?? registries/fundamental_metrics.yaml",
+    "?? schemas/fundamental_metric.schema.json",
+    "?? tests/test_fundamentals_registries.py"
   ],
   "checks": [
     {
@@ -202,7 +229,7 @@
       "details": {
         "returncode": 0
       },
-      "duration_seconds": 4.580915,
+      "duration_seconds": 8.076895,
       "label": "pytest",
       "required": true,
       "status": "passed",
@@ -211,13 +238,14 @@
     {
       "check_id": "registries",
       "details": {
-        "checked_records": 157,
+        "checked_records": 160,
         "registry_dir": "/Users/zachfisher/Documents/Power Agent/registries",
         "validated_files": [
           "data_sources.yaml",
           "delivery_window_policies.yaml",
           "exchange_contracts.yaml",
           "forward_fundamental_mappings.yaml",
+          "fundamental_metrics.yaml",
           "gas_locations.yaml",
           "market_indices.yaml",
           "market_regions.yaml",
@@ -233,7 +261,7 @@
         ],
         "warnings": []
       },
-      "duration_seconds": 0.12326,
+      "duration_seconds": 0.132373,
       "label": "registry validation",
       "required": true,
       "status": "passed",
@@ -247,6 +275,7 @@
           "/Users/zachfisher/Documents/Power Agent/work/epics/E-NATIVE-WORKFLOW.yaml",
           "/Users/zachfisher/Documents/Power Agent/work/sprints/S-0001-merge-vcs-governance-local-agent.yaml",
           "/Users/zachfisher/Documents/Power Agent/work/sprints/S-001-native-workflow-hardening.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/sprints/S-002-context-control-agent-harness-cleanup.yaml",
           "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0001-merge-existing-branch.yaml",
           "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0002-add-vcs-policy.yaml",
           "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0003-add-work-item-schemas.yaml",
@@ -279,10 +308,20 @@
           "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0033-native-ticket-lifecycle.yaml",
           "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0034-native-local-agent-loop.yaml",
           "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0035-native-setup-docs.yaml",
-          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0040-fundamental-metric-registry-and-schema.yaml"
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0036-native-policy-release-gates.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0037-affected-file-snapshot-staleness.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0038-change-request-enforcement.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0040-fundamental-metric-registry-and-schema.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-context-audit.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-context-profiles.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-context-tool-integrity.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-skill-surface-validation.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-tool-spec-v2.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-validation-release-consolidation.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-wrapper-shim-cleanup.yaml"
         ]
       },
-      "duration_seconds": 0.101455,
+      "duration_seconds": 0.134272,
       "label": "work-item validation",
       "required": true,
       "status": "passed",
@@ -294,7 +333,7 @@
         "entries": 4,
         "manifest": "/Users/zachfisher/Documents/Power Agent/knowledge_base/MANIFEST.yaml"
       },
-      "duration_seconds": 0.000992,
+      "duration_seconds": 0.001,
       "label": "knowledge-base validation",
       "required": true,
       "status": "passed",
@@ -305,7 +344,7 @@
       "details": {
         "name": "artemis"
       },
-      "duration_seconds": 0.005741,
+      "duration_seconds": 0.014831,
       "label": "artemis config validation",
       "required": true,
       "status": "passed",
@@ -315,6 +354,20 @@
       "check_id": "skills",
       "details": {
         "manifest": "/Users/zachfisher/Documents/Power Agent/skills/manifest.yaml",
+        "procedural_manifest": "/Users/zachfisher/Documents/Power Agent/skills/procedural_manifest.yaml",
+        "procedural_skills": 10,
+        "procedural_validated": [
+          "/Users/zachfisher/Documents/Power Agent/skills/market_index_normalization/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/period_parsing/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/spread_basis_decomposition/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/atc_strip_decomposition/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/position_normalization/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/price_surface_normalization/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/vol_surface_normalization/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/pnl_bridge/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/exception_diagnosis/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/dashboard_narrative/SKILL.md"
+        ],
         "skills": 7,
         "validated": [
           "/Users/zachfisher/Documents/Power Agent/skills/analyst/build_current_day_view.yaml",
@@ -326,7 +379,7 @@
           "/Users/zachfisher/Documents/Power Agent/skills/analyst/build_eastern_power_view.yaml"
         ]
       },
-      "duration_seconds": 0.008771,
+      "duration_seconds": 0.01743,
       "label": "skill manifest validation",
       "required": true,
       "status": "passed",
@@ -346,7 +399,7 @@
           "/Users/zachfisher/Documents/Power Agent/views/templates/forecast_actual_delta.yaml"
         ]
       },
-      "duration_seconds": 0.004532,
+      "duration_seconds": 0.004661,
       "label": "view manifest validation",
       "required": true,
       "status": "passed",
@@ -415,7 +468,7 @@
         },
         "version": "0.1.0"
       },
-      "duration_seconds": 0.001853,
+      "duration_seconds": 0.001866,
       "label": "data-source descriptor validation",
       "required": true,
       "status": "passed",
@@ -426,28 +479,36 @@
       "details": {
         "recommended_mode": "opencode_external_model"
       },
-      "duration_seconds": 0.011501,
+      "duration_seconds": 0.025809,
       "label": "capability validation",
       "required": true,
       "status": "passed",
       "summary": "capabilities passed"
     },
     {
+      "check_id": "context_audit",
+      "details": {
+        "counts": {
+          "blockers": 0,
+          "findings": 0
+        },
+        "findings": [],
+        "passed": true
+      },
+      "duration_seconds": 0.011557,
+      "label": "context surface audit",
+      "required": true,
+      "status": "passed",
+      "summary": "context audit passed"
+    },
+    {
       "check_id": "release_sanity",
       "details": {
         "validation_commands": [
-          "python -m pytest -q",
-          "pga validate-registries",
-          "pga validate-work-items",
-          "pga validate-kb",
-          "artemis config validate",
-          "artemis skill validate",
-          "artemis views validate",
-          "artemis data-sources validate",
-          "artemis capabilities"
+          "artemis validate --strict"
         ]
       },
-      "duration_seconds": 0.005233,
+      "duration_seconds": 0.014162,
       "label": "release-readiness sanity",
       "required": true,
       "status": "passed",
@@ -457,19 +518,19 @@
   "command_results": [
     {
       "command": "python -m pytest -q",
-      "duration_seconds": 4.580915,
+      "duration_seconds": 8.076895,
       "returncode": 0,
       "status": "passed",
       "stderr": "",
-      "stdout": "........................................................................ [ 32%]\n........................................................................ [ 65%]\n........................................................................ [ 98%]\n....                                                                     [100%]\n220 passed in 4.46s\n"
+      "stdout": "........................................................................ [ 28%]\n........................................................................ [ 57%]\n........................................................................ [ 86%]\n...................................                                      [100%]\n251 passed in 7.93s\n"
     }
   ],
-  "commit": "73bcb22f4df4194967ca8e9f0c20ff8bc0a90cad",
+  "commit": "434beb0d5b538aa2778dcd72b504fe557f5a8ef2",
   "errors": [],
-  "generated_at": "2026-06-05T15:33:27Z",
+  "generated_at": "2026-06-05T21:58:30Z",
   "overall_status": "passed",
   "repo_root": "/Users/zachfisher/Documents/Power Agent",
-  "report_id": "validation.T-0030.20260605T153327Z",
+  "report_id": "validation.T-0030.20260605T215830Z",
   "skipped": false,
   "strict": true,
   "ticket_id": "T-0030",

@@ -1,12 +1,12 @@
 # Regression Report: T-0030
 
-Generated At: 2026-06-05T15:33:27Z
+Generated At: 2026-06-05T21:58:30Z
 Validation Status: passed
 Strict Mode: True
 Ticket: T-0030
 Commit / Branch Snapshot:
-- Branch: codex/sprint-1-native-workflow
-- Commit: 73bcb22f4df4194967ca8e9f0c20ff8bc0a90cad
+- Branch: main
+- Commit: 434beb0d5b538aa2778dcd72b504fe557f5a8ef2
 
 Checks:
 - pytest: passed (pytest passed)
@@ -18,7 +18,11 @@ Checks:
 - views: passed (view manifest passed)
 - data_sources: passed (data sources passed)
 - capabilities: passed (capabilities passed)
+- context_audit: passed (context audit passed)
 - release_sanity: passed (native release sanity checks passed)
+
+Command Results:
+- python -m pytest -q: passed - 251 passed
 
 Warnings:
 - none

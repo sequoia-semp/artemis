@@ -1,0 +1,67 @@
+PJM.LOAD.ACTUAL.HOURLY_MW:
+  display_name: PJM hourly actual load
+  commodity: power
+  market: PJM
+  metric_family: load
+  metric_class: actual
+  value_unit: MW
+  granularity: hourly
+  delivery_time_contract: interval_ending
+  source_contract: iso_load
+  source_status: registry_only
+  verification_status: candidate
+  status: candidate
+  description: PJM actual load metric identity for future file or API-backed observations.
+  lineage_requirements:
+    - source_name
+    - source_timestamp_utc
+    - delivery_start_utc
+    - delivery_end_utc
+
+PJM.LOAD.FORECAST.DAY_AHEAD.HOURLY_MW:
+  display_name: PJM day-ahead hourly load forecast
+  commodity: power
+  market: PJM
+  metric_family: load
+  metric_class: forecast
+  value_unit: MW
+  granularity: hourly
+  delivery_time_contract: interval_ending
+  source_contract: iso_load
+  source_status: registry_only
+  verification_status: candidate
+  status: candidate
+  description: PJM day-ahead load forecast metric identity for future latest-curve and revision-history products.
+  lineage_requirements:
+    - source_name
+    - forecast_issued_at_utc
+    - delivery_start_utc
+    - delivery_end_utc
+  forecast:
+    horizon: day_ahead
+    vintage_policy: latest_curve
+
+PJM.LOAD.FORECAST_ERROR.DAY_AHEAD.HOURLY_MW:
+  display_name: PJM day-ahead hourly load forecast error
+  commodity: power
+  market: PJM
+  metric_family: load
+  metric_class: derived
+  value_unit: MW
+  granularity: hourly
+  delivery_time_contract: interval_ending
+  source_contract: derived
+  source_status: registry_only
+  verification_status: candidate
+  status: candidate
+  description: Deterministic actual-minus-forecast load error metric identity; no calculation service is introduced by this registry.
+  lineage_requirements:
+    - input_metric_ids
+    - calculation_run_id
+    - delivery_start_utc
+    - delivery_end_utc
+  formula:
+    formula_type: ACTUAL_MINUS_FORECAST
+    input_metric_ids:
+      - PJM.LOAD.ACTUAL.HOURLY_MW
+      - PJM.LOAD.FORECAST.DAY_AHEAD.HOURLY_MW

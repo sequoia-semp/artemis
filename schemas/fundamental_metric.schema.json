@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FundamentalMetric",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "metric_id": {"type": "string", "pattern": "^[A-Z0-9_.]+$"},
+    "display_name": {"type": "string"},
+    "commodity": {"enum": ["power", "gas"]},
+    "market": {"type": "string"},
+    "metric_family": {"type": "string"},
+    "metric_class": {"enum": ["actual", "forecast", "derived"]},
+    "value_unit": {"type": "string"},
+    "granularity": {"enum": ["hourly", "daily", "monthly"]},
+    "delivery_time_contract": {"enum": ["interval_start", "interval_ending", "gas_day", "month"]},
+    "source_contract": {"type": "string"},
+    "source_status": {"enum": ["registry_only", "file_drop_supported", "api_supported"]},
+    "verification_status": {"enum": ["candidate", "approved_core"]},
+    "status": {"enum": ["candidate", "approved_core"]},
+    "description": {"type": "string"},
+    "lineage_requirements": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "forecast": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["horizon", "vintage_policy"],
+      "properties": {
+        "horizon": {"type": "string"},
+        "vintage_policy": {"enum": ["latest_curve", "revision_history"]}
+      }
+    },
+    "formula": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["formula_type", "input_metric_ids"],
+      "properties": {
+        "formula_type": {"enum": ["ACTUAL_MINUS_FORECAST"]},
+        "input_metric_ids": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 2
+        }
+      }
+    }
+  },
+  "required": [
+    "metric_id",
+    "display_name",
+    "commodity",
+    "market",
+    "metric_family",
+    "metric_class",
+    "value_unit",
+    "granularity",
+    "delivery_time_contract",
+    "source_contract",
+    "source_status",
+    "verification_status",
+    "status",
+    "description",
+    "lineage_requirements"
+  ],
+  "allOf": [
+    {
+      "if": {"properties": {"metric_class": {"const": "forecast"}}, "required": ["metric_class"]},
+      "then": {"required": ["forecast"]}
+    },
+    {
+      "if": {"properties": {"metric_class": {"const": "derived"}}, "required": ["metric_class"]},
+      "then": {"required": ["formula"]}
+    }
+  ]
+}

@@ -1,57 +1,72 @@
 id: T-0026
 type: ticket
-status: active
+status: validated
 title: Price instrument, option contract, position metadata, and PnL spine
 owner: user
 risk: medium
-created_at: "2026-06-05"
-updated_at: "2026-06-05"
+created_at: '2026-06-05'
+updated_at: '2026-06-05T21:50:34Z'
 epic: E-0001
 sprint: S-0001
 layer:
-  - docs
-  - schema
-  - registry
-  - valuation
-  - agent_runtime
-  - skills
-  - tests
+- docs
+- schema
+- registry
+- valuation
+- agent_runtime
+- skills
+- tests
 branch: codex/T-0026-price-instrument-position-pnl-spine
-problem: >
-  Price-centric analytics need registered option contracts, typed position lots,
-  valuation-ready exposures, grouping metadata, and PnL/Greek outputs that align
+context_profile: behavioral
+problem: 'Price-centric analytics need registered option contracts, typed position
+  lots, valuation-ready exposures, grouping metadata, and PnL/Greek outputs that align
   with a lean ETRM/CTRM contract and position model.
+
+  '
 tasks:
-  - Document the price instrument, position, exposure, PnL, and Greeks spine.
-  - Add ICE-sourced option contract records for PMI, P1X, and PHE.
-  - Add schemas and registry validation for option contracts and position lots.
-  - Preserve optional book, strategy, portfolio, sleeve, tag, and metadata fields through positions, exposures, and PnL.
-  - Resolve registered option contract descriptors in Black76 Greek outputs.
-  - Add read/workspace-write agent tool descriptors for price, position, PnL, and Greeks workflows.
-  - Add regression tests for option contracts, metadata propagation, exposure records, PnL grouping, and registered Greeks.
+- Document the price instrument, position, exposure, PnL, and Greeks spine.
+- Add ICE-sourced option contract records for PMI, P1X, and PHE.
+- Add schemas and registry validation for option contracts and position lots.
+- Preserve optional book, strategy, portfolio, sleeve, tag, and metadata fields through
+  positions, exposures, and PnL.
+- Resolve registered option contract descriptors in Black76 Greek outputs.
+- Add read/workspace-write agent tool descriptors for price, position, PnL, and Greeks
+  workflows.
+- Add regression tests for option contracts, metadata propagation, exposure records,
+  PnL grouping, and registered Greeks.
 acceptance_criteria:
-  - Registry validation accepts option_contracts.yaml with no warnings.
-  - ICE PMI, P1X, and PHE option contract descriptors retain official contract metadata and source documents.
-  - Position normalization emits a position_lot and exposure records with optional grouping metadata.
-  - PnL attribution exposes group rollups by book, strategy, portfolio, sleeve, and tags.
-  - Registered option Greek rows include option contract metadata and flag American-style PMI as screening-only.
-  - Unknown products and unsupported vol locations continue to fail closed.
+- Registry validation accepts option_contracts.yaml with no warnings.
+- ICE PMI, P1X, and PHE option contract descriptors retain official contract metadata
+  and source documents.
+- Position normalization emits a position_lot and exposure records with optional grouping
+  metadata.
+- PnL attribution exposes group rollups by book, strategy, portfolio, sleeve, and
+  tags.
+- Registered option Greek rows include option contract metadata and flag American-style
+  PMI as screening-only.
+- Unknown products and unsupported vol locations continue to fail closed.
 required_tests:
-  - .venv/bin/python -m pytest tests/test_price_instrument_spine.py tests/test_workbench_mvp.py tests/test_forward_fundamental_mapping.py -q
-  - make validate
+- .venv/bin/python -m pytest tests/test_price_instrument_spine.py tests/test_workbench_mvp.py
+  tests/test_forward_fundamental_mapping.py -q
+- make validate
 affected_files:
-  - domain/price_instrument_model.md
-  - development/change_requests/CR-0014-price-instrument-position-pnl-spine.yaml
-  - registries/option_contracts.yaml
-  - registries/tools.yaml
-  - schemas/option_contract.schema.json
-  - schemas/position_lot.schema.json
-  - src/pga_workbench/models.py
-  - src/pga_workbench/registry.py
-  - src/pga_workbench/registry_access.py
-  - src/pga_workbench/services/normalization.py
-  - src/pga_workbench/services/greeks.py
-  - src/pga_workbench/services/pnl.py
-  - tests/test_price_instrument_spine.py
+- domain/price_instrument_model.md
+- development/change_requests/CR-0014-price-instrument-position-pnl-spine.yaml
+- registries/option_contracts.yaml
+- registries/tools.yaml
+- schemas/option_contract.schema.json
+- schemas/position_lot.schema.json
+- src/pga_workbench/models.py
+- src/pga_workbench/registry.py
+- src/pga_workbench/registry_access.py
+- src/pga_workbench/services/normalization.py
+- src/pga_workbench/services/greeks.py
+- src/pga_workbench/services/pnl.py
+- tests/test_price_instrument_spine.py
 change_request_required: true
 change_id: CR-0014
+implemented_at: '2026-06-05T21:50:34Z'
+implementation_summary: Implementation completed; validation pending.
+validated_at: '2026-06-05T21:50:34Z'
+validation_report: development/validation_reports/T-0026/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0026.md

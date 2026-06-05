@@ -1,71 +1,84 @@
 id: T-0025
 type: ticket
-status: active
+status: validated
 title: Artemis runtime hardening and setup guide
 owner: user
 risk: high
-created_at: "2026-06-05"
-updated_at: "2026-06-05"
+created_at: '2026-06-05'
+updated_at: '2026-06-05T21:50:34Z'
 epic: E-0001
 sprint: S-0001
 layer:
-  - docs
-  - schema
-  - agent_runtime
-  - local_llm
-  - release
-  - tests
+- docs
+- schema
+- agent_runtime
+- local_llm
+- release
+- tests
 branch: codex/T-0025-artemis-runtime-hardening-and-setup
-problem: >
-  A code review identified remaining drift between the Artemis architecture
-  contract and runtime behavior. The repo also needs one clear setup guide for
-  installation, local OpenCode/Ollama routing, environment variables, and local
-  file-source roots for marks, positions, and internal source drops.
+problem: 'A code review identified remaining drift between the Artemis architecture
+  contract and runtime behavior. The repo also needs one clear setup guide for installation,
+  local OpenCode/Ollama routing, environment variables, and local file-source roots
+  for marks, positions, and internal source drops.
+
+  '
 tasks:
-  - Split the Artemis console surface from the lower-level PGA command surface.
-  - Make stale local config shapes fail closed and update local Artemis examples.
-  - Add optional .env loading and file-source root environment contracts.
-  - Make skipped release validation visibly non-ready while retaining dry-run usability.
-  - Harden state-pack validation for UTC timestamps, manifest identity, and delivery windows.
-  - Add optional HotState-backed inputs for Analyst view builds.
-  - Add a deterministic forward-price heatmap service with 1d, 5d, 10d, and 30d history.
-  - Wire policy file paths through artemis.yaml validation.
-  - Add a setup/quickstart documentation page and link it from primary navigation.
-  - Add regression tests for each hardened contract.
+- Split the Artemis console surface from the lower-level PGA command surface.
+- Make stale local config shapes fail closed and update local Artemis examples.
+- Add optional .env loading and file-source root environment contracts.
+- Make skipped release validation visibly non-ready while retaining dry-run usability.
+- Harden state-pack validation for UTC timestamps, manifest identity, and delivery
+  windows.
+- Add optional HotState-backed inputs for Analyst view builds.
+- Add a deterministic forward-price heatmap service with 1d, 5d, 10d, and 30d history.
+- Wire policy file paths through artemis.yaml validation.
+- Add a setup/quickstart documentation page and link it from primary navigation.
+- Add regression tests for each hardened contract.
 acceptance_criteria:
-  - "'artemis build-state-pack --publish' is not available through the Artemis console script."
-  - Copied local config examples use the active providers.profiles and backend shape consumed by Artemis.
-  - Env files and local file-source root variables are documented and discoverable through capabilities.
-  - Release checks with skipped validation do not report true release readiness.
-  - State packs reject non-UTC timestamps, mismatched manifests, and invalid delivery windows.
-  - Analyst views can merge accepted HotState artifacts into supplied view payloads.
-  - Forward price heatmap output includes current prices and 1d, 5d, 10d, and 30d deltas.
-  - Artemis config validation verifies policy file references.
-  - Setup documentation covers install, validation, OpenCode/Ollama, env vars, and file roots.
+- '''artemis build-state-pack --publish'' is not available through the Artemis console
+  script.'
+- Copied local config examples use the active providers.profiles and backend shape
+  consumed by Artemis.
+- Env files and local file-source root variables are documented and discoverable through
+  capabilities.
+- Release checks with skipped validation do not report true release readiness.
+- State packs reject non-UTC timestamps, mismatched manifests, and invalid delivery
+  windows.
+- Analyst views can merge accepted HotState artifacts into supplied view payloads.
+- Forward price heatmap output includes current prices and 1d, 5d, 10d, and 30d deltas.
+- Artemis config validation verifies policy file references.
+- Setup documentation covers install, validation, OpenCode/Ollama, env vars, and file
+  roots.
 required_tests:
-  - python -m pytest tests/test_artemis_cli.py tests/test_artemis_config.py tests/test_release_workflow.py tests/test_workbench_mvp.py -q
-  - python -m pytest -q
-  - make validate
-  - artemis release check --ticket T-0025
+- python -m pytest tests/test_artemis_cli.py tests/test_artemis_config.py tests/test_release_workflow.py
+  tests/test_workbench_mvp.py -q
+- python -m pytest -q
+- make validate
+- artemis release check --ticket T-0025
 affected_files:
-  - pyproject.toml
-  - artemis.yaml
-  - local/artemis.local.example.yaml
-  - local/.env.example
-  - docs/user/setup.md
-  - docs/README.md
-  - README.md
-  - src/pga_workbench/cli.py
-  - src/pga_workbench/agent/runtime.py
-  - src/pga_workbench/dev/patch_context.py
-  - src/pga_workbench/agent_runtime/release_workflow.py
-  - src/pga_workbench/dev/release.py
-  - src/pga_workbench/analyst/view_engine.py
-  - src/pga_workbench/services/heatmap.py
-  - schemas/forward_price_heatmap.schema.json
-  - src/pga_workbench/state/packs.py
-  - src/pga_workbench/cache/hot_state.py
-  - schemas/artemis_config.schema.json
-  - schemas/state_pack.schema.json
-  - tests/
+- pyproject.toml
+- artemis.yaml
+- local/artemis.local.example.yaml
+- local/.env.example
+- docs/user/setup.md
+- docs/README.md
+- README.md
+- src/pga_workbench/cli.py
+- src/pga_workbench/agent/runtime.py
+- src/pga_workbench/dev/patch_context.py
+- src/pga_workbench/agent_runtime/release_workflow.py
+- src/pga_workbench/dev/release.py
+- src/pga_workbench/analyst/view_engine.py
+- src/pga_workbench/services/heatmap.py
+- schemas/forward_price_heatmap.schema.json
+- src/pga_workbench/state/packs.py
+- src/pga_workbench/cache/hot_state.py
+- schemas/artemis_config.schema.json
+- schemas/state_pack.schema.json
+- tests/
 change_request_required: true
+implemented_at: '2026-06-05T21:50:34Z'
+implementation_summary: Implementation completed; validation pending.
+validated_at: '2026-06-05T21:50:34Z'
+validation_report: development/validation_reports/T-0025/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0025.md
