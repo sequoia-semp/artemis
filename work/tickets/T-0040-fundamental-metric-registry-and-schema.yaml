@@ -1,0 +1,33 @@
+id: T-0040
+type: ticket
+status: active
+title: Fundamental metric registry and schema
+owner: user
+risk: medium
+created_at: "2026-06-05"
+updated_at: "2026-06-05"
+epic: E-PJM-FUNDAMENTALS
+sprint: S-002
+layer:
+  - registry
+  - schema
+  - tests
+branch: codex/T-0040-fundamental-metric-registry-and-schema
+problem: >
+  Sprint 2 should start with schema-backed PJM fundamentals metric semantics
+  before file ingestion, live APIs, or computed views.
+tasks:
+  - Add fundamental metric schema.
+  - Add initial PJM fundamentals metric registry.
+  - Add registry validation tests.
+acceptance_criteria:
+  - Fundamental metric registry validates.
+  - Initial actual, forecast, and derived metric IDs are represented.
+  - No live PJM API is introduced.
+required_tests:
+  - python -m pytest tests/test_fundamentals_registries.py -q
+affected_files:
+  - registries/fundamental_metrics.yaml
+  - schemas/fundamental_metric.schema.json
+  - tests/test_fundamentals_registries.py
+change_request_required: false

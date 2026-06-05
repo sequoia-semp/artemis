@@ -40,7 +40,8 @@ capabilities: bootstrap
 
 validate-artemis: validate-config validate-skills validate-views validate-data-sources capabilities
 
-validate: test validate-registries validate-work-items validate-kb validate-artemis
+validate: bootstrap
+	$(ARTEMIS) validate
 
 work-context: bootstrap
 	$(PGA) work-context --ticket $(TICKET) --output $(CONTEXT_OUT)

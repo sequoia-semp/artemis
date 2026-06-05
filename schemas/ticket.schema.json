@@ -13,6 +13,11 @@
           "items": {
             "enum": [
               "vcs",
+              "cli",
+              "validation",
+              "work",
+              "agent",
+              "config",
               "docs",
               "work_management",
               "schema",

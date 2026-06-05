@@ -1,0 +1,22 @@
+id: S-001
+type: sprint
+status: closed
+title: Native Workflow Hardening
+owner: user
+risk: high
+created_at: "2026-06-05"
+updated_at: "2026-06-05"
+epic: E-NATIVE-WORKFLOW
+tickets:
+  - T-0030
+  - T-0031
+  - T-0032
+  - T-0033
+  - T-0034
+  - T-0035
+acceptance_criteria:
+  - artemis validate --strict runs native repository validation.
+  - artemis work validate enforces ticket lifecycle structure.
+  - artemis dev loop supports manual dry-run for an active ticket.
+  - artemis release check is tied to native validation reports.
+  - No GitHub workflow feature is required for readiness.

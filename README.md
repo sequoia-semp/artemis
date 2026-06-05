@@ -39,7 +39,8 @@ registries, or tests. Domain convention details live in `domain/`,
 
 ```bash
 make bootstrap
-make validate
+artemis validate
+artemis validate --strict
 
 artemis config validate
 artemis capabilities
@@ -58,9 +59,14 @@ Development Mode:
 
 ```bash
 artemis dev context --ticket T-0019 --output /tmp/T-0019_context.json
+artemis dev loop --ticket T-0019 --backend manual --dry-run
 artemis dev plan --ticket T-0019
 artemis release check --ticket T-0019
 ```
+
+GitHub is a plain Git remote for Artemis. Native commands own validation,
+ticket lifecycle, regression evidence, local-agent loops, and release readiness;
+do not use GitHub Actions, Issues, Projects, or PR checks as workflow authority.
 
 Compatibility:
 

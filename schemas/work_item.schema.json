@@ -6,7 +6,22 @@
   "properties": {
     "id": {"type": "string"},
     "type": {"enum": ["epic", "sprint", "ticket"]},
-    "status": {"enum": ["planned", "ready", "active", "blocked", "review", "done", "rejected"]},
+    "status": {
+      "enum": [
+        "planned",
+        "ready",
+        "proposed",
+        "active",
+        "implemented",
+        "validated",
+        "closed",
+        "blocked",
+        "superseded",
+        "review",
+        "done",
+        "rejected"
+      ]
+    },
     "title": {"type": "string"},
     "owner": {"type": ["string", "null"]},
     "risk": {"enum": ["low", "medium", "high", "critical"]},

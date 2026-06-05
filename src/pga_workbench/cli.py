@@ -26,11 +26,14 @@ from .services.risk import read_historical_returns, run_historical_var
 from .cache.hot_state import HotState
 from .state.packs import build_candidate_state_pack, publish_candidate_state_pack
 from .agent_runtime.capabilities import collect_agent_capabilities, collect_agent_doctor
+from .agent_runtime.native_loop import run_native_agent_loop
 from .agent_runtime.kb_validator import validate_knowledge_base
 from .agent_runtime.release_workflow import collect_release_readiness
 from .agent_runtime.vcs_workflow import collect_vcs_readiness
-from .agent_runtime.work_item_loader import validate_work_items
+from .agent_runtime.work_item_loader import list_tickets, load_ticket, transition_ticket, validate_work_items
 from .skills.validator import validate_skill_manifest
+from .validation.reports import read_validation_report, render_regression_markdown, summarize_validation_report, write_validation_report
+from .validation.runner import run_validation
 
 
 def _cmd_validate_registries(args: argparse.Namespace) -> int:
@@ -195,7 +198,12 @@ def _cmd_vcs_ready(args: argparse.Namespace) -> int:
 
 
 def _cmd_release_check(args: argparse.Namespace) -> int:
-    result = collect_release_readiness(Path(args.repo_root), ticket_id=args.ticket, skip_tests=args.skip_tests)
+    result = collect_release_readiness(
+        Path(args.repo_root),
+        ticket_id=args.ticket,
+        skip_tests=args.skip_tests,
+        validation_report=Path(args.validation_report) if getattr(args, "validation_report", None) else None,
+    )
     if args.json:
         print(json.dumps(result, indent=2, sort_keys=True))
     else:
@@ -205,6 +213,8 @@ def _cmd_release_check(args: argparse.Namespace) -> int:
         print(f"validation_skipped: {result['validation_skipped']}")
         print(f"validation_passed: {result['validation_passed']}")
         print(f"ready_for_release_prep: {result['ready_for_release_prep']}")
+        for blocker in result.get("blockers") or []:
+            print(f"blocker: {blocker}")
         print("validation_commands:")
         for item in result.get("validation_results") or []:
             status = "skipped" if item.get("skipped") else "passed" if item.get("passed") else "failed"
@@ -218,6 +228,119 @@ def _cmd_release_check(args: argparse.Namespace) -> int:
         for field in result["required_release_note_fields"]:
             print(f"- {field}")
     return 0 if args.skip_tests or result["ready_for_release_prep"] else 1
+
+
+def _default_validation_outputs(repo_root: Path, ticket_id: str | None, generated_at: str) -> list[Path]:
+    stamp = generated_at.replace(":", "").replace("-", "")
+    if ticket_id:
+        root = repo_root / "development" / "validation_reports" / ticket_id
+        return [root / "latest.json", root / f"{stamp}_validation.json"]
+    root = repo_root / "development" / "validation_reports"
+    return [root / "latest.json", root / f"{stamp}_validation.json"]
+
+
+def _cmd_validate(args: argparse.Namespace) -> int:
+    repo_root = Path(args.repo_root)
+    report = run_validation(repo_root, ticket_id=args.ticket, strict=args.strict)
+    if args.output:
+        write_validation_report(report, Path(args.output))
+    else:
+        for path in _default_validation_outputs(repo_root, args.ticket, report.generated_at):
+            write_validation_report(report, path)
+    if args.json:
+        print(json.dumps(report.to_dict(), indent=2, sort_keys=True))
+    else:
+        print(f"validation_status: {report.overall_status}")
+        print(f"strict: {report.strict}")
+        for check in report.checks:
+            print(f"- {check.check_id}: {check.status}")
+        for warning in report.warnings:
+            print(f"warning: {warning}")
+        for error in report.errors:
+            print(f"error: {error}")
+    return 0 if report.overall_status == "passed" else 1
+
+
+def _cmd_validate_report(args: argparse.Namespace) -> int:
+    report = read_validation_report(Path(args.input))
+    if args.markdown:
+        Path(args.markdown).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.markdown).write_text(render_regression_markdown(report), encoding="utf-8")
+        print(f"wrote regression report to {args.markdown}")
+    elif args.json:
+        print(json.dumps(summarize_validation_report(report), indent=2, sort_keys=True))
+    else:
+        summary = summarize_validation_report(report)
+        print(f"report_id: {summary['report_id']}")
+        print(f"validation_status: {summary['overall_status']}")
+        for check in summary["checks"]:
+            print(f"- {check['check_id']}: {check['status']}")
+    return 0 if report.overall_status == "passed" else 1
+
+
+def _cmd_work_list(args: argparse.Namespace) -> int:
+    tickets = list_tickets(Path(args.work_root))
+    if args.json:
+        print(json.dumps(tickets, indent=2, sort_keys=True))
+    else:
+        for ticket in tickets:
+            print(f"{ticket['id']}: {ticket['status']} - {ticket['title']}")
+    return 0
+
+
+def _cmd_work_show(args: argparse.Namespace) -> int:
+    ticket = load_ticket(Path(args.work_root), args.ticket)
+    if args.json:
+        print(json.dumps(ticket, indent=2, sort_keys=True))
+    else:
+        print(yaml.safe_dump(ticket, sort_keys=False))
+    return 0
+
+
+def _cmd_work_validate(args: argparse.Namespace) -> int:
+    validated = validate_work_items(Path(args.work_root), Path(args.schemas))
+    print(f"validated {len(validated)} work items")
+    return 0
+
+
+def _cmd_work_transition(args: argparse.Namespace) -> int:
+    ticket = transition_ticket(
+        Path(args.work_root),
+        args.ticket,
+        args.status,
+        timestamp=utc_now_iso(),
+        validation_report=args.validation_report,
+        regression_report=args.regression_report,
+        reviewed_by=args.reviewed_by,
+        review_summary=args.review_summary,
+        blocked_reason=args.blocked_reason,
+        superseded_by=args.superseded_by,
+    )
+    print(f"{ticket['id']}: {ticket['status']}")
+    return 0
+
+
+def _cmd_dev_loop(args: argparse.Namespace) -> int:
+    report = run_native_agent_loop(
+        Path(args.repo_root),
+        args.ticket,
+        backend=args.backend,
+        instruction=args.instruction,
+        dry_run=args.dry_run,
+        run_backend=args.run_backend,
+        output=Path(args.output) if args.output else None,
+    )
+    if args.json:
+        print(json.dumps(report, indent=2, sort_keys=True))
+    else:
+        print(f"ticket: {report['ticket_id']}")
+        print(f"backend: {report['backend']}")
+        print(f"context_path: {report['context_path']}")
+        print(f"backend_command: {report.get('backend_command') or 'manual'}")
+        print(f"backend_ran: {report['backend_ran']}")
+        if report.get("validation_report"):
+            print(f"validation_report: {report['validation_report']}")
+    return 0 if not report.get("errors") else 1
 
 
 def _cmd_artemis_config_show(args: argparse.Namespace) -> int:
@@ -344,6 +467,20 @@ def build_parser(prog: str | None = None) -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog=prog or Path(sys.argv[0]).name or "artemis")
     sub = parser.add_subparsers(dest="command", required=True)
 
+    p = sub.add_parser("validate")
+    p.add_argument("--repo-root", default=".")
+    p.add_argument("--strict", action="store_true")
+    p.add_argument("--ticket")
+    p.add_argument("--output")
+    p.add_argument("--json", action="store_true")
+    validate_sub = p.add_subparsers(dest="validate_command")
+    vr = validate_sub.add_parser("report")
+    vr.add_argument("--input", required=True)
+    vr.add_argument("--markdown")
+    vr.add_argument("--json", action="store_true")
+    vr.set_defaults(func=_cmd_validate_report)
+    p.set_defaults(func=_cmd_validate)
+
     p = sub.add_parser("validate-registries")
     p.add_argument("--registries", default="registries")
     p.add_argument("--schemas", default="schemas")
@@ -416,6 +553,33 @@ def build_parser(prog: str | None = None) -> argparse.ArgumentParser:
     p.add_argument("--schemas", default="schemas")
     p.set_defaults(func=_cmd_validate_work_items)
 
+    p = sub.add_parser("work")
+    work_sub = p.add_subparsers(dest="work_command", required=True)
+    w = work_sub.add_parser("list")
+    w.add_argument("--work-root", default="work")
+    w.add_argument("--json", action="store_true")
+    w.set_defaults(func=_cmd_work_list)
+    w = work_sub.add_parser("show")
+    w.add_argument("ticket")
+    w.add_argument("--work-root", default="work")
+    w.add_argument("--json", action="store_true")
+    w.set_defaults(func=_cmd_work_show)
+    w = work_sub.add_parser("validate")
+    w.add_argument("--work-root", default="work")
+    w.add_argument("--schemas", default="schemas")
+    w.set_defaults(func=_cmd_work_validate)
+    w = work_sub.add_parser("transition")
+    w.add_argument("ticket")
+    w.add_argument("status", choices=["active", "implemented", "validated", "closed", "blocked", "superseded"])
+    w.add_argument("--work-root", default="work")
+    w.add_argument("--validation-report")
+    w.add_argument("--regression-report")
+    w.add_argument("--reviewed-by")
+    w.add_argument("--review-summary")
+    w.add_argument("--blocked-reason")
+    w.add_argument("--superseded-by")
+    w.set_defaults(func=_cmd_work_transition)
+
     p = sub.add_parser("validate-kb")
     p.add_argument("--kb-root", default="knowledge_base")
     p.add_argument("--schemas", default="schemas")
@@ -446,6 +610,7 @@ def build_parser(prog: str | None = None) -> argparse.ArgumentParser:
     p = sub.add_parser("release-check")
     p.add_argument("--ticket")
     p.add_argument("--repo-root", default=".")
+    p.add_argument("--validation-report")
     p.add_argument("--skip-tests", action="store_true")
     p.add_argument("--json", action="store_true")
     p.set_defaults(func=_cmd_release_check)
@@ -536,12 +701,23 @@ def build_parser(prog: str | None = None) -> argparse.ArgumentParser:
     d.add_argument("--backend", default="human")
     d.add_argument("--repo-root", default=".")
     d.set_defaults(func=_cmd_dev_propose)
+    d = dev_sub.add_parser("loop")
+    d.add_argument("--ticket", required=True)
+    d.add_argument("--backend", default="manual")
+    d.add_argument("--instruction")
+    d.add_argument("--repo-root", default=".")
+    d.add_argument("--dry-run", action="store_true")
+    d.add_argument("--run-backend", action="store_true")
+    d.add_argument("--output")
+    d.add_argument("--json", action="store_true")
+    d.set_defaults(func=_cmd_dev_loop)
 
     p = sub.add_parser("release")
     release_sub = p.add_subparsers(dest="release_command", required=True)
     r = release_sub.add_parser("check")
     r.add_argument("--ticket")
     r.add_argument("--repo-root", default=".")
+    r.add_argument("--validation-report")
     r.add_argument("--skip-tests", action="store_true")
     r.add_argument("--json", action="store_true")
     r.set_defaults(func=_cmd_release_check)
@@ -558,6 +734,20 @@ def build_parser(prog: str | None = None) -> argparse.ArgumentParser:
 def build_artemis_parser(prog: str | None = None) -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog=prog or "artemis")
     sub = parser.add_subparsers(dest="command", required=True)
+
+    p = sub.add_parser("validate")
+    p.add_argument("--repo-root", default=".")
+    p.add_argument("--strict", action="store_true")
+    p.add_argument("--ticket")
+    p.add_argument("--output")
+    p.add_argument("--json", action="store_true")
+    validate_sub = p.add_subparsers(dest="validate_command")
+    vr = validate_sub.add_parser("report")
+    vr.add_argument("--input", required=True)
+    vr.add_argument("--markdown")
+    vr.add_argument("--json", action="store_true")
+    vr.set_defaults(func=_cmd_validate_report)
+    p.set_defaults(func=_cmd_validate)
 
     p = sub.add_parser("parse-period")
     p.add_argument("label")
@@ -632,6 +822,33 @@ def build_artemis_parser(prog: str | None = None) -> argparse.ArgumentParser:
     v.add_argument("--schemas", default="schemas")
     v.set_defaults(func=_cmd_views_validate)
 
+    p = sub.add_parser("work")
+    work_sub = p.add_subparsers(dest="work_command", required=True)
+    w = work_sub.add_parser("list")
+    w.add_argument("--work-root", default="work")
+    w.add_argument("--json", action="store_true")
+    w.set_defaults(func=_cmd_work_list)
+    w = work_sub.add_parser("show")
+    w.add_argument("ticket")
+    w.add_argument("--work-root", default="work")
+    w.add_argument("--json", action="store_true")
+    w.set_defaults(func=_cmd_work_show)
+    w = work_sub.add_parser("validate")
+    w.add_argument("--work-root", default="work")
+    w.add_argument("--schemas", default="schemas")
+    w.set_defaults(func=_cmd_work_validate)
+    w = work_sub.add_parser("transition")
+    w.add_argument("ticket")
+    w.add_argument("status", choices=["active", "implemented", "validated", "closed", "blocked", "superseded"])
+    w.add_argument("--work-root", default="work")
+    w.add_argument("--validation-report")
+    w.add_argument("--regression-report")
+    w.add_argument("--reviewed-by")
+    w.add_argument("--review-summary")
+    w.add_argument("--blocked-reason")
+    w.add_argument("--superseded-by")
+    w.set_defaults(func=_cmd_work_transition)
+
     p = sub.add_parser("dev")
     dev_sub = p.add_subparsers(dest="dev_command", required=True)
     d = dev_sub.add_parser("context")
@@ -650,12 +867,23 @@ def build_artemis_parser(prog: str | None = None) -> argparse.ArgumentParser:
     d.add_argument("--backend", default="human")
     d.add_argument("--repo-root", default=".")
     d.set_defaults(func=_cmd_dev_propose)
+    d = dev_sub.add_parser("loop")
+    d.add_argument("--ticket", required=True)
+    d.add_argument("--backend", default="manual")
+    d.add_argument("--instruction")
+    d.add_argument("--repo-root", default=".")
+    d.add_argument("--dry-run", action="store_true")
+    d.add_argument("--run-backend", action="store_true")
+    d.add_argument("--output")
+    d.add_argument("--json", action="store_true")
+    d.set_defaults(func=_cmd_dev_loop)
 
     p = sub.add_parser("release")
     release_sub = p.add_subparsers(dest="release_command", required=True)
     r = release_sub.add_parser("check")
     r.add_argument("--ticket")
     r.add_argument("--repo-root", default=".")
+    r.add_argument("--validation-report")
     r.add_argument("--skip-tests", action="store_true")
     r.add_argument("--json", action="store_true")
     r.set_defaults(func=_cmd_release_check)

@@ -19,6 +19,8 @@ Use this file as the docs entrypoint.
 ## Developer Docs
 
 - `docs/developer/architecture.md`
+- `docs/developer/native_workflow.md`
+- `docs/developer/local_agent_loop.md`
 - `docs/developer/self_development.md`
 - `docs/developer/release_process.md`
 

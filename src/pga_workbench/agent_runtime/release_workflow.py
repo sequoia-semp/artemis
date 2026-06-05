@@ -16,6 +16,7 @@ else:  # pragma: no cover - package metadata now requires Python 3.11+.
 from .capabilities import collect_agent_doctor
 from .work_item_loader import load_ticket
 from ..registry import load_yaml_unique
+from ..validation.reports import read_validation_report
 
 
 def _load_pyproject(repo_root: Path) -> dict[str, Any]:
@@ -25,8 +26,8 @@ def _load_pyproject(repo_root: Path) -> dict[str, Any]:
         return tomllib.load(handle)
 
 
-def _regression_report_summary(repo_root: Path) -> dict[str, Any]:
-    report = repo_root / "development" / "regression_reports" / "REGRESSION_REPORT_v0.1.md"
+def _regression_report_summary(repo_root: Path, path: str | None = None) -> dict[str, Any]:
+    report = repo_root / (path or "development/regression_reports/REGRESSION_REPORT_v0.1.md")
     if not report.exists():
         return {"path": str(report), "exists": False, "test_count": None}
     text = report.read_text(encoding="utf-8")
@@ -86,8 +87,88 @@ def _run_release_validation_commands(repo_root: Path, commands: list[str], skip_
     return results
 
 
-def collect_release_readiness(repo_root: Path, ticket_id: str | None = None, skip_tests: bool = False) -> dict[str, Any]:
-    repo_root = Path(repo_root)
+def _file_sha256(path: Path) -> str | None:
+    import hashlib
+
+    if not path.exists() or not path.is_file():
+        return None
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _approved_change_request(repo_root: Path, ticket_id: str) -> dict[str, Any] | None:
+    for path in sorted((repo_root / "development" / "change_requests").glob("*.yaml")):
+        payload = load_yaml_unique(path)
+        if not isinstance(payload, dict):
+            continue
+        ticket_ids = {str(item) for item in payload.get("tickets") or []}
+        text = "\n".join(str(payload.get(field) or "") for field in ["change_id", "title", "problem_statement"])
+        if ticket_id not in ticket_ids and ticket_id not in text:
+            continue
+        approval = payload.get("approval") or {}
+        if approval.get("status") == "approved":
+            return {"path": str(path.relative_to(repo_root)), "change_id": payload.get("change_id"), "approval": approval}
+    return None
+
+
+def _default_validation_report_path(repo_root: Path, ticket_id: str | None, ticket: dict[str, Any] | None) -> Path | None:
+    if ticket and ticket.get("validation_report"):
+        return repo_root / str(ticket["validation_report"])
+    if ticket_id:
+        return repo_root / "development" / "validation_reports" / ticket_id / "latest.json"
+    return repo_root / "development" / "validation_reports" / "latest.json"
+
+
+def _native_validation_summary(repo_root: Path, ticket_id: str | None, ticket: dict[str, Any] | None, validation_report_path: Path | None) -> dict[str, Any]:
+    blockers: list[str] = []
+    warnings: list[str] = []
+    report_payload: dict[str, Any] | None = None
+    report_path = validation_report_path or _default_validation_report_path(repo_root, ticket_id, ticket)
+    if report_path is None:
+        blockers.append("validation report path is unavailable")
+        return {"path": None, "exists": False, "report": None, "blockers": blockers, "warnings": warnings}
+    report_path = Path(report_path)
+    if not report_path.is_absolute():
+        report_path = repo_root / report_path
+    if not report_path.exists():
+        blockers.append(f"validation report missing: {report_path}")
+        return {"path": str(report_path.relative_to(repo_root) if report_path.is_relative_to(repo_root) else report_path), "exists": False, "report": None, "blockers": blockers, "warnings": warnings}
+
+    report = read_validation_report(report_path)
+    report_payload = report.to_dict()
+    if ticket_id and report.ticket_id != ticket_id:
+        blockers.append(f"validation report ticket mismatch: expected {ticket_id}, found {report.ticket_id}")
+    if report.overall_status != "passed":
+        blockers.append(f"validation report did not pass: {report.overall_status}")
+    if report.skipped:
+        blockers.append("validation report includes skipped checks")
+    for check in report.checks:
+        if check.required and check.status in {"skipped", "failed", "error"}:
+            blockers.append(f"required validation check {check.check_id} is {check.status}")
+    if ticket_id and not report.affected_files_snapshot:
+        blockers.append("validation report lacks affected file snapshot")
+    for item in report.affected_files_snapshot:
+        path = repo_root / str(item.get("path"))
+        if bool(item.get("exists")) != path.exists():
+            blockers.append(f"affected file existence changed after validation: {item.get('path')}")
+            continue
+        if path.exists() and item.get("sha256") != _file_sha256(path):
+            blockers.append(f"affected file changed after validation: {item.get('path')}")
+    return {
+        "path": str(report_path.relative_to(repo_root) if report_path.is_relative_to(repo_root) else report_path),
+        "exists": True,
+        "report": report_payload,
+        "blockers": blockers,
+        "warnings": warnings,
+    }
+
+
+def collect_release_readiness(
+    repo_root: Path,
+    ticket_id: str | None = None,
+    skip_tests: bool = False,
+    validation_report: Path | None = None,
+) -> dict[str, Any]:
+    repo_root = Path(repo_root).resolve()
     pyproject = _load_pyproject(repo_root)
     project = pyproject.get("project") or {}
     doctor = collect_agent_doctor(repo_root, skip_tests=True)
@@ -98,6 +179,7 @@ def collect_release_readiness(repo_root: Path, ticket_id: str | None = None, ski
         "work/backlog/pjm_workbench_mvp_backlog.yaml": (repo_root / "work/backlog/pjm_workbench_mvp_backlog.yaml").exists(),
     }
     ticket = load_ticket(repo_root / "work", ticket_id) if ticket_id else None
+    native_validation = _native_validation_summary(repo_root, ticket_id, ticket, validation_report)
     required_note_fields = [
         "package version",
         "convention version or unchanged statement",
@@ -108,7 +190,29 @@ def collect_release_readiness(repo_root: Path, ticket_id: str | None = None, ski
     ]
     validation_skipped = any(result.get("skipped") for result in validation_results)
     validation_passed = all(result.get("passed") for result in validation_results) and not validation_skipped
-    ready = bool(doctor.get("passed")) and validation_passed and all(planning_bridge.values())
+    blockers: list[str] = list(native_validation.get("blockers") or [])
+    warnings: list[str] = list(native_validation.get("warnings") or [])
+    ticket_status = str((ticket or {}).get("status") or "")
+    if ticket_id and ticket_status not in {"validated", "closed", "done"}:
+        blockers.append(f"ticket lifecycle state is not validated or closed: {ticket_status}")
+    if ticket and ticket.get("change_request_required"):
+        change_request = _approved_change_request(repo_root, ticket_id or "")
+        if change_request is None:
+            blockers.append("approved change request is missing")
+    else:
+        change_request = None
+    regression = _regression_report_summary(repo_root, str(ticket.get("regression_report")) if ticket and ticket.get("regression_report") else None)
+    if ticket and ticket.get("regression_report") and not regression.get("exists"):
+        blockers.append(f"regression report missing: {ticket.get('regression_report')}")
+    if skip_tests:
+        blockers.append("--skip-tests is a dry-run path and cannot be release-ready")
+    if not all(planning_bridge.values()):
+        blockers.append("planning bridge files are missing")
+    if not doctor.get("passed"):
+        blockers.append("agent doctor checks did not pass")
+    if not validation_passed:
+        warnings.append("compatibility validation commands did not all pass")
+    ready = not blockers
 
     return {
         "package": {
@@ -118,7 +222,11 @@ def collect_release_readiness(repo_root: Path, ticket_id: str | None = None, ski
         },
         "ticket": ticket,
         "planning_bridge": planning_bridge,
-        "regression_report": _regression_report_summary(repo_root),
+        "regression_report": regression,
+        "native_validation": native_validation,
+        "change_request": change_request,
+        "blockers": blockers,
+        "warnings": warnings,
         "required_release_note_fields": required_note_fields,
         "validation_commands": validation_commands,
         "validation_results": validation_results,

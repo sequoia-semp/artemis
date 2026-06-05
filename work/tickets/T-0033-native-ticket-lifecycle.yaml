@@ -1,0 +1,40 @@
+id: T-0033
+type: ticket
+status: closed
+title: Native work-item lifecycle enforcement
+owner: user
+risk: high
+created_at: "2026-06-05"
+updated_at: "2026-06-05"
+epic: E-NATIVE-WORKFLOW
+sprint: S-001
+layer:
+  - work
+  - schema
+  - cli
+  - tests
+branch: codex/sprint-1-native-workflow
+problem: >
+  Work item YAML validated structurally, but lifecycle semantics were too weak
+  for release readiness.
+tasks:
+  - Add proposed/implemented/validated/closed/superseded lifecycle states.
+  - Enforce status-specific required fields.
+  - Add work list/show/validate/transition CLI commands.
+acceptance_criteria:
+  - Invalid lifecycle states fail closed.
+  - Invalid transitions fail.
+  - Active tickets cannot be release-ready.
+required_tests:
+  - python -m pytest tests/test_work_item_lifecycle.py tests/test_work_cli.py -q
+affected_files:
+  - schemas/work_item.schema.json
+  - schemas/ticket.schema.json
+  - src/pga_workbench/agent_runtime/work_item_loader.py
+  - src/pga_workbench/cli.py
+  - tests/test_work_item_lifecycle.py
+  - tests/test_work_cli.py
+change_request_required: false
+closed_at: "2026-06-05T00:00:00Z"
+reviewed_by: user_request
+review_summary: Implemented as part of Sprint 1 native workflow hardening.

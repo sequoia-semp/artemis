@@ -1,0 +1,40 @@
+id: T-0034
+type: ticket
+status: closed
+title: Native local-agent loop wrapper
+owner: user
+risk: medium
+created_at: "2026-06-05"
+updated_at: "2026-06-05"
+epic: E-NATIVE-WORKFLOW
+sprint: S-001
+layer:
+  - agent
+  - cli
+  - docs
+  - tests
+branch: codex/sprint-1-native-workflow
+problem: >
+  Artemis needed a coherent local-agent workflow instead of manually combining
+  setup docs, context commands, backend descriptors, validation, and release
+  checks.
+tasks:
+  - Add native manual/opencode loop wrapper.
+  - Generate context and agent-run reports.
+  - Keep backend execution explicit and block forbidden commands.
+acceptance_criteria:
+  - Manual dry-run works without an LLM backend.
+  - Missing opencode blocks non-dry opencode loops.
+  - Forbidden backend commands are rejected.
+  - Non-active tickets are refused.
+required_tests:
+  - python -m pytest tests/test_native_agent_loop.py -q
+affected_files:
+  - src/pga_workbench/agent_runtime/native_loop.py
+  - src/pga_workbench/cli.py
+  - docs/developer/local_agent_loop.md
+  - tests/test_native_agent_loop.py
+change_request_required: false
+closed_at: "2026-06-05T00:00:00Z"
+reviewed_by: user_request
+review_summary: Implemented as part of Sprint 1 native workflow hardening.

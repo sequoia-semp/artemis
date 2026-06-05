@@ -19,3 +19,6 @@ data/run_manifests/*
 !data/normalized/.gitkeep
 !data/raw/.gitkeep
 !data/run_manifests/.gitkeep
+development/agent_runs/
+development/validation_reports/latest.json
+development/validation_reports/*_validation.json

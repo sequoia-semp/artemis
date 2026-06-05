@@ -1,0 +1,39 @@
+id: T-0035
+type: ticket
+status: closed
+title: Native setup docs and GitHub-as-remote policy
+owner: user
+risk: low
+created_at: "2026-06-05"
+updated_at: "2026-06-05"
+epic: E-NATIVE-WORKFLOW
+sprint: S-001
+layer:
+  - docs
+  - config
+  - tests
+branch: codex/sprint-1-native-workflow
+problem: >
+  Setup and developer docs needed to state that GitHub is only a remote and
+  native Artemis commands own workflow state.
+tasks:
+  - Update README and docs index.
+  - Add native workflow and local-agent loop docs.
+  - Add docs tests for the native workflow policy.
+acceptance_criteria:
+  - README points to native validation and workflow commands.
+  - Docs explicitly prohibit GitHub-native workflow authority.
+  - Docs include manual backend and optional local LLM paths.
+required_tests:
+  - python -m pytest tests/test_docs_native_workflow.py -q
+affected_files:
+  - README.md
+  - docs/README.md
+  - docs/user/setup.md
+  - docs/developer/native_workflow.md
+  - docs/developer/local_agent_loop.md
+  - tests/test_docs_native_workflow.py
+change_request_required: false
+closed_at: "2026-06-05T00:00:00Z"
+reviewed_by: user_request
+review_summary: Implemented as part of Sprint 1 native workflow hardening.

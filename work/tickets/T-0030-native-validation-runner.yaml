@@ -1,0 +1,65 @@
+id: T-0030
+type: ticket
+status: validated
+title: Native Artemis validation runner
+owner: user
+risk: high
+created_at: "2026-06-05"
+updated_at: "2026-06-05"
+epic: E-NATIVE-WORKFLOW
+sprint: S-001
+layer:
+  - cli
+  - validation
+  - tests
+branch: codex/sprint-1-native-workflow
+problem: >
+  Validation was spread across make targets, config command lists, individual
+  CLI commands, and regression prose. Artemis needs a native validation runner
+  and report model.
+tasks:
+  - Add validation models, runner, and report helpers.
+  - Add artemis validate and artemis validate report.
+  - Write deterministic JSON validation artifacts.
+  - Cover runner, report, and CLI behavior with tests.
+acceptance_criteria:
+  - artemis validate exits zero only when required checks pass.
+  - artemis validate --strict rejects skipped or schema-handler-only validation gaps.
+  - Reports include checks, command results, warnings, errors, and affected file snapshots.
+  - Validation runner does not depend on GitHub features.
+required_tests:
+  - python -m pytest tests/test_native_validation_runner.py tests/test_validation_report_artifacts.py tests/test_cli_validation_commands.py -q
+  - artemis validate --strict --ticket T-0030
+affected_files:
+  - .gitignore
+  - Makefile
+  - README.md
+  - docs/README.md
+  - docs/user/setup.md
+  - docs/developer/native_workflow.md
+  - docs/developer/local_agent_loop.md
+  - schemas/work_item.schema.json
+  - schemas/ticket.schema.json
+  - src/pga_workbench/agent_runtime/native_loop.py
+  - src/pga_workbench/agent_runtime/release_workflow.py
+  - src/pga_workbench/agent_runtime/work_item_loader.py
+  - src/pga_workbench/validation/__init__.py
+  - src/pga_workbench/validation/models.py
+  - src/pga_workbench/validation/reports.py
+  - src/pga_workbench/validation/runner.py
+  - src/pga_workbench/cli.py
+  - work/backlog/pjm_workbench_mvp_backlog.yaml
+  - tests/test_native_validation_runner.py
+  - tests/test_validation_report_artifacts.py
+  - tests/test_cli_validation_commands.py
+  - tests/test_release_readiness_native_validation.py
+  - tests/test_work_item_lifecycle.py
+  - tests/test_work_cli.py
+  - tests/test_native_agent_loop.py
+  - tests/test_docs_native_workflow.py
+change_request_required: true
+implemented_at: "2026-06-05T00:00:00Z"
+implementation_summary: Native validation runner and report artifact bridge implemented.
+validated_at: "2026-06-05T00:00:00Z"
+validation_report: development/validation_reports/T-0030/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0030.md

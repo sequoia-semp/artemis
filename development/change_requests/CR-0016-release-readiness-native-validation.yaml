@@ -1,0 +1,28 @@
+change_id: CR-0016
+title: Release readiness native validation gate
+created_at: 2026-06-05T00:00:00Z
+change_class: 7
+severity: high
+tickets:
+  - T-0032
+problem_statement: >
+  Release readiness must not pass with skipped, missing, stale, failed, or
+  ticket-mismatched validation evidence.
+root_cause: >
+  Release checks previously ran compatibility validation command lists and could
+  be inspected in skip-tests mode without a native evidence gate.
+affected_files:
+  - src/pga_workbench/agent_runtime/release_workflow.py
+  - src/pga_workbench/dev/release.py
+  - src/pga_workbench/cli.py
+  - tests/
+tests_required:
+  - python -m pytest -q
+  - artemis release check --ticket T-0030
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-05T00:00:00Z
+rollback_plan: >
+  Restore compatibility command-list release readiness while preserving explicit
+  skipped-validation non-readiness if the native report gate must be reworked.

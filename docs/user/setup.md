@@ -9,9 +9,12 @@ Use the repo-local bootstrap command so the package, console scripts, and test
 dependencies live in `.venv`:
 
 ```bash
+git clone https://github.com/sequoia-semp/artemis.git
+cd artemis
+
 make bootstrap
 . ./scripts/dev_env.sh
-make validate
+artemis validate
 ```
 
 The validation gate installs `pga-workbench` in editable mode, runs pytest, and
@@ -21,14 +24,23 @@ views, data-source descriptors, and capabilities.
 ## Core Commands
 
 ```bash
+artemis validate --strict
+artemis work validate
 artemis config validate
 artemis capabilities
 artemis capabilities --check-network
 artemis dev context --ticket T-0025 --output /tmp/T-0025_context.json
+artemis dev loop --ticket T-0040 --backend manual --dry-run
+artemis release check --ticket T-0030
 ```
 
 `artemis` is the product/mode CLI. Lower-level deterministic commands remain
 under `pga`, including normalization, risk, and state-pack commands.
+
+GitHub is a plain remote only. Do not rely on GitHub Actions, Issues, Projects,
+labels, or PR checks as workflow authority; native Artemis commands own
+validation, work lifecycle, regression evidence, agent loops, and release
+readiness.
 
 ## Local Configuration
 
@@ -99,6 +111,7 @@ Then generate context for the backend:
 
 ```bash
 artemis dev context --ticket T-0025 --output /tmp/T-0025_context.json
+artemis dev loop --ticket T-0040 --backend opencode --dry-run
 ```
 
 ## Environment Variables
@@ -136,8 +149,10 @@ They are local file-source bindings, not authoritative market conventions.
 Before handing work to another agent or backend:
 
 ```bash
-make validate
-artemis release check --ticket T-0025
+artemis validate --strict
+artemis validate report --input development/validation_reports/latest.json
+artemis work validate
+artemis release check --ticket T-0030
 ```
 
 Use `--skip-tests` only for a dry-run inspection. Skipped validation does not

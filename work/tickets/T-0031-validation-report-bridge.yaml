@@ -1,0 +1,37 @@
+id: T-0031
+type: ticket
+status: closed
+title: Native validation report artifacts and regression report bridge
+owner: user
+risk: medium
+created_at: "2026-06-05"
+updated_at: "2026-06-05"
+epic: E-NATIVE-WORKFLOW
+sprint: S-001
+layer:
+  - validation
+  - release
+  - docs
+  - tests
+branch: codex/sprint-1-native-workflow
+problem: >
+  Human-readable regression reports need a deterministic bridge from native
+  machine-readable validation evidence.
+tasks:
+  - Add report read/write helpers.
+  - Add validation summary and Markdown rendering.
+  - Add artemis validate report CLI command.
+acceptance_criteria:
+  - JSON reports round-trip deterministically.
+  - Markdown reports include status, checks, warnings, errors, and limitations.
+  - Skipped checks render as skipped, not passed.
+required_tests:
+  - python -m pytest tests/test_validation_report_artifacts.py -q
+affected_files:
+  - src/pga_workbench/validation/reports.py
+  - src/pga_workbench/cli.py
+  - tests/test_validation_report_artifacts.py
+change_request_required: false
+closed_at: "2026-06-05T00:00:00Z"
+reviewed_by: user_request
+review_summary: Implemented as part of Sprint 1 native workflow hardening.

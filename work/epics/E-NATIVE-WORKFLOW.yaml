@@ -1,0 +1,18 @@
+id: E-NATIVE-WORKFLOW
+type: epic
+status: closed
+title: Native workflow authority
+owner: user
+risk: high
+created_at: "2026-06-05"
+updated_at: "2026-06-05"
+problem: >
+  Artemis needs to own validation, ticket lifecycle, local-agent orchestration,
+  regression evidence, and release readiness natively instead of delegating
+  workflow authority to GitHub-native features or ad hoc command lists.
+success_criteria:
+  - Native validation reports are deterministic and machine-readable.
+  - Release readiness rejects skipped, stale, missing, or ticket-mismatched validation.
+  - Work items have enforceable lifecycle states.
+  - Local-agent loops are wrapped by Artemis commands.
+  - Docs state that GitHub is a remote host only.

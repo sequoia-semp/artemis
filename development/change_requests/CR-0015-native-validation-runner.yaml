@@ -1,0 +1,27 @@
+change_id: CR-0015
+title: Native Artemis validation runner
+created_at: 2026-06-05T00:00:00Z
+change_class: 7
+severity: high
+tickets:
+  - T-0030
+problem_statement: >
+  Artemis validation needs to become a deterministic native subsystem with
+  machine-readable reports and strict-mode failure semantics.
+root_cause: >
+  Earlier validation was distributed across make targets and command lists,
+  leaving release readiness disconnected from a stable report contract.
+affected_files:
+  - src/pga_workbench/validation/
+  - src/pga_workbench/cli.py
+  - tests/
+tests_required:
+  - python -m pytest -q
+  - artemis validate --strict --ticket T-0030
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-05T00:00:00Z
+rollback_plan: >
+  Remove the validation package and restore make-target-only validation if the
+  native report contract blocks development unexpectedly.

@@ -1,0 +1,38 @@
+id: T-0032
+type: ticket
+status: closed
+title: Release readiness rejects skipped, stale, or missing validation
+owner: user
+risk: high
+created_at: "2026-06-05"
+updated_at: "2026-06-05"
+epic: E-NATIVE-WORKFLOW
+sprint: S-001
+layer:
+  - release
+  - validation
+  - tests
+branch: codex/sprint-1-native-workflow
+problem: >
+  Release readiness must be based on native validation evidence and must not
+  pass because tests were skipped or old reports still exist.
+tasks:
+  - Tie release check to native validation reports.
+  - Reject missing, skipped, failed, stale, or ticket-mismatched reports.
+  - Check ticket lifecycle and approved change requests.
+acceptance_criteria:
+  - Missing validation reports block readiness.
+  - Skipped validation reports block readiness.
+  - Stale affected file snapshots block readiness.
+  - Ticket mismatch blocks readiness.
+required_tests:
+  - python -m pytest tests/test_release_readiness_native_validation.py -q
+affected_files:
+  - src/pga_workbench/agent_runtime/release_workflow.py
+  - src/pga_workbench/dev/release.py
+  - src/pga_workbench/cli.py
+  - tests/test_release_readiness_native_validation.py
+change_request_required: true
+closed_at: "2026-06-05T00:00:00Z"
+reviewed_by: user_request
+review_summary: Implemented as part of Sprint 1 native workflow hardening.
