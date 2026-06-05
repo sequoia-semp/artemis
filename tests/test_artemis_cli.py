@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from datetime import date
 
 import pytest
 
@@ -38,3 +39,21 @@ def test_artemis_parser_excludes_lower_level_state_publish_commands():
     parser = build_artemis_parser()
     with pytest.raises(SystemExit):
         parser.parse_args(["build-state-pack", "--publish"])
+
+
+def test_artemis_release_check_json_serializes_yaml_dates(monkeypatch, capsys):
+    monkeypatch.setattr(
+        "pga_workbench.cli.collect_release_readiness",
+        lambda *args, **kwargs: {
+            "package": {"name": "pga-workbench", "version": "0.2.0", "requires_python": ">=3.11"},
+            "ticket": {"id": "T-0036", "created_at": date(2026, 6, 5)},
+            "ready_for_release_prep": False,
+            "blockers": ["dry_run"],
+            "warnings": [],
+            "validation_skipped": True,
+            "validation_passed": False,
+        },
+    )
+
+    assert artemis_main(["release", "check", "--ticket", "T-0036", "--json"]) == 1
+    assert '"created_at": "2026-06-05"' in capsys.readouterr().out

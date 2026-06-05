@@ -1,0 +1,31 @@
+change_id: CR-0019
+title: Change-request enforcement for release readiness
+created_at: 2026-06-05T00:00:00Z
+change_class: 7
+severity: high
+tickets:
+  - T-0038
+problem_statement: >
+  Release readiness must fail closed when CR-required or locked-convention
+  changes lack complete approved change-request evidence.
+root_cause: >
+  Prior checks could confirm that an approved CR existed, but did not fully
+  validate affected file coverage, required tests, or rollback evidence.
+affected_files:
+  - docs/developer/native_workflow.md
+  - docs/developer/release_process.md
+  - src/pga_workbench/agent_runtime/release_workflow.py
+  - src/pga_workbench/tools/permissions.py
+  - tests/test_release_readiness_native_validation.py
+  - tests/test_tool_permissions.py
+  - work/tickets/T-0038-change-request-enforcement.yaml
+tests_required:
+  - python -m pytest tests/test_release_readiness_native_validation.py tests/test_tool_permissions.py -q
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-05T00:00:00Z
+rollback_plan: >
+  Restore the prior release readiness behavior that only required an approved CR
+  reference for CR-required tickets, while keeping skipped and stale validation
+  blockers intact.

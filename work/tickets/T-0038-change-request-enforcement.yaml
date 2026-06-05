@@ -1,0 +1,46 @@
+id: T-0038
+type: ticket
+status: validated
+title: Change-request enforcement for release readiness
+owner: user
+risk: high
+created_at: "2026-06-05"
+updated_at: "2026-06-05"
+epic: E-NATIVE-WORKFLOW
+sprint: S-001
+layer:
+  - release
+  - agent_runtime
+  - tests
+  - docs
+branch: codex/sprint-1-native-workflow
+problem: >
+  Change requests must be executable release evidence, not documentation-only
+  records, especially for locked convention or explicitly CR-required tickets.
+tasks:
+  - Require approved change requests for CR-required tickets.
+  - Require approved change requests for locked convention affected files.
+  - Verify approved change requests include affected files, required tests, and rollback plan.
+  - Block release readiness when ticket affected files do not overlap approved CR affected files.
+acceptance_criteria:
+  - CR-required tickets cannot be release-ready without approved CR evidence.
+  - Locked convention file changes require change_request_required=true.
+  - Incomplete approved CR metadata blocks release readiness.
+  - Non-overlapping ticket and CR affected files block release readiness.
+required_tests:
+  - python -m pytest tests/test_release_readiness_native_validation.py tests/test_tool_permissions.py -q
+affected_files:
+  - docs/developer/native_workflow.md
+  - docs/developer/release_process.md
+  - src/pga_workbench/agent_runtime/release_workflow.py
+  - src/pga_workbench/tools/permissions.py
+  - tests/test_release_readiness_native_validation.py
+  - tests/test_tool_permissions.py
+  - work/backlog/pjm_workbench_mvp_backlog.yaml
+  - work/tickets/T-0038-change-request-enforcement.yaml
+change_request_required: true
+implemented_at: "2026-06-05T00:00:00Z"
+implementation_summary: Release readiness and runtime policy now enforce approved change-request evidence.
+validated_at: "2026-06-05T00:00:00Z"
+validation_report: development/validation_reports/T-0038/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0038.md

@@ -1,0 +1,38 @@
+change_id: CR-0017
+title: Native policy and release evidence gates
+created_at: 2026-06-05T00:00:00Z
+change_class: 7
+severity: high
+tickets:
+  - T-0036
+problem_statement: >
+  Native workflow authority requires executable mode/tool policy checks and
+  release checks that reject weak validation and incomplete change-request
+  evidence.
+root_cause: >
+  Existing permission and release subsystems classified risks and consumed
+  validation reports, but they did not expose a central runtime assertion
+  function or require strict validation and complete approved change-request
+  metadata.
+affected_files:
+  - .gitignore
+  - docs/developer/native_workflow.md
+  - docs/developer/release_process.md
+  - src/pga_workbench/agent_runtime/release_workflow.py
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/serialization.py
+  - src/pga_workbench/tools/permissions.py
+  - tests/test_artemis_cli.py
+  - tests/test_release_readiness_native_validation.py
+  - tests/test_tool_permissions.py
+  - work/tickets/T-0036-native-policy-release-gates.yaml
+tests_required:
+  - python -m pytest tests/test_tool_permissions.py tests/test_release_readiness_native_validation.py -q
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-05T00:00:00Z
+rollback_plan: >
+  Remove assert_tool_allowed, restore release readiness to the prior native
+  validation report checks, remove the added regression tests, and keep existing
+  T-0030 through T-0035 workflow behavior unchanged.

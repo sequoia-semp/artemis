@@ -9,6 +9,7 @@ from jsonschema import Draft202012Validator
 from ..agent.modes import normalize_mode
 from ..exceptions import WorkbenchException
 from ..registry import load_yaml_unique
+from .registry import load_tool_registry
 
 TOOL_PERMISSION_ERROR = "TOOL_PERMISSION_ERROR"
 
@@ -78,6 +79,34 @@ def classify_tool(
         requires_ticket=requires_ticket,
         reason=reason,
     )
+
+
+def assert_tool_allowed(
+    tool_id: str,
+    mode: str,
+    ticket_id: str | None = None,
+    approval_context: dict[str, Any] | None = None,
+    *,
+    repo_root: Path | None = None,
+    tools: dict[str, Any] | None = None,
+    permissions: dict[str, Any] | None = None,
+) -> ToolPolicyDecision:
+    """Fail closed when a tool is not executable in the requested mode."""
+    root = Path(repo_root or ".")
+    registry = tools or load_tool_registry(root / "registries" / "tools.yaml", root / "schemas")
+    policy = permissions or load_tool_permissions(root / "registries" / "tool_permissions.yaml", root / "schemas")
+    decision = classify_tool(tool_id, registry, policy, mode, ticket=ticket_id)
+    if not decision.allowed:
+        raise WorkbenchException(TOOL_PERMISSION_ERROR, decision.reason)
+
+    context = approval_context or {}
+    if decision.can_modify_repo and not ticket_id:
+        raise WorkbenchException(TOOL_PERMISSION_ERROR, f"{tool_id} requires a ticket before repo mutation")
+    if decision.risk == "release_candidate" and not context.get("validation_passed"):
+        raise WorkbenchException(TOOL_PERMISSION_ERROR, f"{tool_id} requires passed native validation")
+    if context.get("convention_change") and not context.get("approved_change_request"):
+        raise WorkbenchException(TOOL_PERMISSION_ERROR, f"{tool_id} requires an approved change request for convention changes")
+    return decision
 
 
 def summarize_tool_policy(tools: dict[str, Any], permissions: dict[str, Any]) -> dict[str, Any]:

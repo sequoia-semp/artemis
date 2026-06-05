@@ -18,6 +18,11 @@ from .work_item_loader import load_ticket
 from ..registry import load_yaml_unique
 from ..validation.reports import read_validation_report
 
+LOCKED_CONVENTION_PREFIXES = (
+    "domain/",
+    "docs/CONVENTIONS_LOCKED_v0.1.md",
+)
+
 
 def _load_pyproject(repo_root: Path) -> dict[str, Any]:
     if tomllib is None:
@@ -106,8 +111,45 @@ def _approved_change_request(repo_root: Path, ticket_id: str) -> dict[str, Any] 
             continue
         approval = payload.get("approval") or {}
         if approval.get("status") == "approved":
-            return {"path": str(path.relative_to(repo_root)), "change_id": payload.get("change_id"), "approval": approval}
+            return {
+                "path": str(path.relative_to(repo_root)),
+                "change_id": payload.get("change_id"),
+                "approval": approval,
+                "affected_files": list(payload.get("affected_files") or []),
+                "tests_required": list(payload.get("tests_required") or []),
+                "rollback_plan": payload.get("rollback_plan"),
+            }
     return None
+
+
+def _locked_convention_files(ticket: dict[str, Any] | None) -> list[str]:
+    locked = []
+    for item in (ticket or {}).get("affected_files") or []:
+        path = str(item)
+        if path.startswith(LOCKED_CONVENTION_PREFIXES):
+            locked.append(path)
+    return locked
+
+
+def _change_request_blockers(ticket: dict[str, Any] | None, change_request: dict[str, Any] | None) -> list[str]:
+    if not ticket:
+        return []
+    blockers = []
+    if change_request is None:
+        return ["approved change request is missing"]
+
+    cr_files = {str(item).rstrip("/") for item in change_request.get("affected_files") or []}
+    ticket_files = {str(item) for item in ticket.get("affected_files") or []}
+    if not cr_files:
+        blockers.append("approved change request lacks affected_files")
+    elif not any(any(ticket_file == cr_file or ticket_file.startswith(f"{cr_file}/") for cr_file in cr_files) for ticket_file in ticket_files):
+        blockers.append("approved change request affected_files do not overlap ticket affected_files")
+
+    if not change_request.get("tests_required"):
+        blockers.append("approved change request lacks tests_required")
+    if not change_request.get("rollback_plan"):
+        blockers.append("approved change request lacks rollback_plan")
+    return blockers
 
 
 def _default_validation_report_path(repo_root: Path, ticket_id: str | None, ticket: dict[str, Any] | None) -> Path | None:
@@ -139,6 +181,8 @@ def _native_validation_summary(repo_root: Path, ticket_id: str | None, ticket: d
         blockers.append(f"validation report ticket mismatch: expected {ticket_id}, found {report.ticket_id}")
     if report.overall_status != "passed":
         blockers.append(f"validation report did not pass: {report.overall_status}")
+    if not report.strict:
+        blockers.append("validation report was not strict")
     if report.skipped:
         blockers.append("validation report includes skipped checks")
     for check in report.checks:
@@ -195,12 +239,14 @@ def collect_release_readiness(
     ticket_status = str((ticket or {}).get("status") or "")
     if ticket_id and ticket_status not in {"validated", "closed", "done"}:
         blockers.append(f"ticket lifecycle state is not validated or closed: {ticket_status}")
-    if ticket and ticket.get("change_request_required"):
+    locked_convention_files = _locked_convention_files(ticket)
+    if ticket and (ticket.get("change_request_required") or locked_convention_files):
         change_request = _approved_change_request(repo_root, ticket_id or "")
-        if change_request is None:
-            blockers.append("approved change request is missing")
+        blockers.extend(_change_request_blockers(ticket, change_request))
     else:
         change_request = None
+    if locked_convention_files and not (ticket or {}).get("change_request_required"):
+        blockers.append("locked convention files require change_request_required=true")
     regression = _regression_report_summary(repo_root, str(ticket.get("regression_report")) if ticket and ticket.get("regression_report") else None)
     if ticket and ticket.get("regression_report") and not regression.get("exists"):
         blockers.append(f"regression report missing: {ticket.get('regression_report')}")
@@ -225,6 +271,7 @@ def collect_release_readiness(
         "regression_report": regression,
         "native_validation": native_validation,
         "change_request": change_request,
+        "locked_convention_files": locked_convention_files,
         "blockers": blockers,
         "warnings": warnings,
         "required_release_note_fields": required_note_fields,

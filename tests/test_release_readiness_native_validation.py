@@ -28,7 +28,7 @@ def _snapshot_for_ticket(ticket_id: str) -> list[dict[str, object]]:
     return snapshot
 
 
-def _write_report(tmp_path: Path, *, ticket_id: str = "T-0030", skipped: bool = False, stale: bool = False) -> Path:
+def _write_report(tmp_path: Path, *, ticket_id: str = "T-0030", skipped: bool = False, stale: bool = False, strict: bool = True) -> Path:
     snapshot = _snapshot_for_ticket("T-0030")
     if stale and snapshot:
         snapshot[0]["sha256"] = "stale"
@@ -37,7 +37,7 @@ def _write_report(tmp_path: Path, *, ticket_id: str = "T-0030", skipped: bool = 
         generated_at="2026-06-05T00:00:00Z",
         repo_root=str(ROOT),
         ticket_id=ticket_id,
-        strict=True,
+        strict=strict,
         overall_status="passed",
         skipped=skipped,
         checks=[
@@ -84,3 +84,24 @@ def test_stale_snapshot_blocks_readiness(tmp_path: Path):
 
     assert result["ready_for_release_prep"] is False
     assert any("changed after validation" in blocker for blocker in result["blockers"])
+
+
+def test_non_strict_validation_report_blocks_readiness(tmp_path: Path):
+    result = collect_release_readiness(ROOT, ticket_id="T-0030", validation_report=_write_report(tmp_path, strict=False), skip_tests=True)
+
+    assert result["ready_for_release_prep"] is False
+    assert "validation report was not strict" in result["blockers"]
+
+
+def test_incomplete_approved_change_request_blocks_readiness(monkeypatch, tmp_path: Path):
+    monkeypatch.setattr(
+        "pga_workbench.agent_runtime.release_workflow._approved_change_request",
+        lambda repo_root, ticket_id: {"path": "development/change_requests/CR-INCOMPLETE.yaml", "change_id": "CR-INCOMPLETE", "approval": {"status": "approved"}},
+    )
+
+    result = collect_release_readiness(ROOT, ticket_id="T-0030", validation_report=_write_report(tmp_path), skip_tests=True)
+
+    assert result["ready_for_release_prep"] is False
+    assert "approved change request lacks affected_files" in result["blockers"]
+    assert "approved change request lacks tests_required" in result["blockers"]
+    assert "approved change request lacks rollback_plan" in result["blockers"]

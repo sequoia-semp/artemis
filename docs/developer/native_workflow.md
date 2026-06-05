@@ -22,5 +22,10 @@ artemis release check --ticket T-0030
 validation evidence into curated regression reports.
 
 Release readiness must fail when validation is skipped, stale, missing, tied to
-the wrong ticket, or disconnected from ticket lifecycle state. Coding backends
-may propose patches, but deterministic Artemis checks decide readiness.
+the wrong ticket, non-strict, or disconnected from ticket lifecycle state. Coding
+backends may propose patches, but deterministic Artemis checks decide readiness.
+
+Runtime tools must pass executable mode policy before they run. Analyst mode is
+limited to read-only and workspace-output actions. Development repo writes
+require a ticket, release-candidate tools require passed native validation
+context, and convention-changing actions require approved change-request context.

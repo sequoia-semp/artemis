@@ -162,7 +162,7 @@ def _cmd_agent_capabilities(args: argparse.Namespace) -> int:
 def _cmd_agent_doctor(args: argparse.Namespace) -> int:
     result = collect_agent_doctor(Path(args.repo_root), check_network=args.check_network, skip_tests=args.skip_tests)
     if args.json:
-        print(json.dumps(result, indent=2, sort_keys=True))
+        print(json.dumps(to_plain(result), indent=2, sort_keys=True))
     else:
         for check in result["checks"]:
             status = "skipped" if check.get("skipped") else "passed" if check.get("passed") else "failed"
@@ -180,7 +180,7 @@ def _cmd_vcs_ready(args: argparse.Namespace) -> int:
         skip_tests=args.skip_tests,
     )
     if args.json:
-        print(json.dumps(result, indent=2, sort_keys=True))
+        print(json.dumps(to_plain(result), indent=2, sort_keys=True))
     else:
         print(f"ticket: {result['ticket_id']} ({result['ticket_status']})")
         print(f"branch: {result['current_branch']}")
@@ -205,7 +205,7 @@ def _cmd_release_check(args: argparse.Namespace) -> int:
         validation_report=Path(args.validation_report) if getattr(args, "validation_report", None) else None,
     )
     if args.json:
-        print(json.dumps(result, indent=2, sort_keys=True))
+        print(json.dumps(to_plain(result), indent=2, sort_keys=True))
     else:
         package = result["package"]
         print(f"package: {package.get('name')} {package.get('version')}")

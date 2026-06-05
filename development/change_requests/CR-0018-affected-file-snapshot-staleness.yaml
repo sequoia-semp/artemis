@@ -1,0 +1,29 @@
+change_id: CR-0018
+title: Affected-file snapshot and stale validation detection
+created_at: 2026-06-05T00:00:00Z
+change_class: 7
+severity: high
+tickets:
+  - T-0037
+problem_statement: >
+  Release readiness needs deterministic proof that native validation covered the
+  current affected files and not an earlier version.
+root_cause: >
+  Validation reports without affected-file snapshots can become stale when code
+  or workflow metadata changes after validation.
+affected_files:
+  - src/pga_workbench/validation/models.py
+  - src/pga_workbench/validation/runner.py
+  - src/pga_workbench/agent_runtime/release_workflow.py
+  - tests/test_native_validation_runner.py
+  - tests/test_release_readiness_native_validation.py
+  - work/tickets/T-0037-affected-file-snapshot-staleness.yaml
+tests_required:
+  - python -m pytest tests/test_native_validation_runner.py tests/test_release_readiness_native_validation.py -q
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-05T00:00:00Z
+rollback_plan: >
+  Remove affected-file snapshot comparison from release readiness and return to
+  status-only native validation report checks.

@@ -1,0 +1,44 @@
+id: T-0037
+type: ticket
+status: validated
+title: Affected-file snapshot and stale validation detection
+owner: user
+risk: high
+created_at: "2026-06-05"
+updated_at: "2026-06-05"
+epic: E-NATIVE-WORKFLOW
+sprint: S-001
+layer:
+  - validation
+  - release
+  - tests
+branch: codex/sprint-1-native-workflow
+problem: >
+  Native validation evidence must be tied to the files it covered so release
+  readiness can reject stale reports after affected files change.
+tasks:
+  - Snapshot ticket affected files in native validation reports.
+  - Include path, existence, sha256, and modified timestamp for each affected file.
+  - Compare current affected files against report snapshots during release checks.
+  - Block release readiness when affected files change after validation.
+acceptance_criteria:
+  - Ticket-scoped validation reports include affected_files_snapshot.
+  - Release readiness rejects missing affected-file snapshots for ticketed validation.
+  - Release readiness rejects changed file hashes after validation.
+  - Release readiness rejects file existence changes after validation.
+required_tests:
+  - python -m pytest tests/test_native_validation_runner.py tests/test_release_readiness_native_validation.py -q
+affected_files:
+  - src/pga_workbench/validation/models.py
+  - src/pga_workbench/validation/runner.py
+  - src/pga_workbench/agent_runtime/release_workflow.py
+  - tests/test_native_validation_runner.py
+  - tests/test_release_readiness_native_validation.py
+  - work/backlog/pjm_workbench_mvp_backlog.yaml
+  - work/tickets/T-0037-affected-file-snapshot-staleness.yaml
+change_request_required: true
+implemented_at: "2026-06-05T00:00:00Z"
+implementation_summary: Affected-file snapshotting and stale validation release blockers are implemented.
+validated_at: "2026-06-05T00:00:00Z"
+validation_report: development/validation_reports/T-0037/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0037.md

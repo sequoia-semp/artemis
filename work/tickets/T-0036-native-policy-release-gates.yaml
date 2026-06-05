@@ -1,0 +1,56 @@
+id: T-0036
+type: ticket
+status: validated
+title: Native policy and release evidence gates
+owner: user
+risk: high
+created_at: "2026-06-05"
+updated_at: "2026-06-05"
+epic: E-NATIVE-WORKFLOW
+sprint: S-001
+layer:
+  - agent_runtime
+  - release
+  - validation
+  - tests
+  - docs
+branch: codex/sprint-1-native-workflow
+problem: >
+  Step 1 native workflow hardening still needed executable tool/mode policy
+  checks and stricter release evidence checks for native validation reports and
+  approved change requests.
+tasks:
+  - Add a central assert_tool_allowed runtime policy helper.
+  - Reject release readiness when native validation reports are non-strict.
+  - Validate approved change requests include affected files, tests, and rollback plans.
+  - Treat locked convention file changes as requiring change-request gating.
+  - Add local ignore rules for nested validation report artifacts.
+acceptance_criteria:
+  - Analyst mode cannot execute release-candidate or repo-mutating tools.
+  - Development repo mutation requires ticket context.
+  - Release-candidate tools require passed native validation context.
+  - Convention-changing tools require approved change-request context.
+  - Release readiness rejects non-strict native validation reports.
+  - Release readiness rejects incomplete approved change request metadata.
+required_tests:
+  - python -m pytest tests/test_tool_permissions.py tests/test_release_readiness_native_validation.py -q
+affected_files:
+  - .gitignore
+  - docs/developer/native_workflow.md
+  - docs/developer/release_process.md
+  - development/change_requests/CR-0017-native-policy-release-gates.yaml
+  - src/pga_workbench/agent_runtime/release_workflow.py
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/serialization.py
+  - src/pga_workbench/tools/permissions.py
+  - tests/test_artemis_cli.py
+  - tests/test_release_readiness_native_validation.py
+  - tests/test_tool_permissions.py
+  - work/backlog/pjm_workbench_mvp_backlog.yaml
+  - work/tickets/T-0036-native-policy-release-gates.yaml
+change_request_required: true
+implemented_at: "2026-06-05T00:00:00Z"
+implementation_summary: Native tool policy assertions and stricter release evidence gates implemented.
+validated_at: "2026-06-05T00:00:00Z"
+validation_report: development/validation_reports/T-0036/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0036.md

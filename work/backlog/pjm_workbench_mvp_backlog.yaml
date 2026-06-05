@@ -17,6 +17,9 @@ tracks:
       - T-0033
       - T-0034
       - T-0035
+      - T-0036
+      - T-0037
+      - T-0038
     next:
       - maintain native validation as release authority
   artemis_core:

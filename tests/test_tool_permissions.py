@@ -2,7 +2,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from pga_workbench.tools.permissions import classify_tool, load_tool_permissions
+import pytest
+
+from pga_workbench.exceptions import WorkbenchException
+from pga_workbench.tools.permissions import assert_tool_allowed, classify_tool, load_tool_permissions
 from pga_workbench.tools.registry import load_tool_registry
 
 
@@ -28,3 +31,32 @@ def test_development_repo_write_requires_ticket():
     assert missing_ticket.allowed is False
     assert missing_ticket.requires_ticket is True
     assert with_ticket.allowed is True
+
+
+def test_assert_tool_allowed_enforces_runtime_boundaries():
+    with pytest.raises(WorkbenchException) as exc:
+        assert_tool_allowed("release_candidate", "analyst", ticket_id="T-0018", repo_root=ROOT, approval_context={"validation_passed": True})
+    assert "not allowed" in exc.value.message
+
+    with pytest.raises(WorkbenchException) as exc:
+        assert_tool_allowed("repo_patch", "development", repo_root=ROOT)
+    assert "requires a ticket" in exc.value.message
+
+    with pytest.raises(WorkbenchException) as exc:
+        assert_tool_allowed("release_candidate", "development", ticket_id="T-0018", repo_root=ROOT)
+    assert "requires passed native validation" in exc.value.message
+
+    decision = assert_tool_allowed("release_candidate", "development", ticket_id="T-0018", repo_root=ROOT, approval_context={"validation_passed": True})
+    assert decision.allowed is True
+
+
+def test_convention_change_requires_approved_change_request_context():
+    with pytest.raises(WorkbenchException) as exc:
+        assert_tool_allowed(
+            "repo_patch",
+            "development",
+            ticket_id="T-0022",
+            repo_root=ROOT,
+            approval_context={"convention_change": True},
+        )
+    assert "approved change request" in exc.value.message
