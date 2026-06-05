@@ -22,6 +22,8 @@ class RegistryCatalog:
     gas_aliases: dict[str, str]
     approved_spreads: dict[str, dict[str, Any]]
     forbidden_spreads: frozenset[str]
+    exchange_contracts: dict[str, dict[str, Any]]
+    forward_fundamental_mappings: dict[str, dict[str, Any]]
 
 
 def compact_label(value: str) -> str:
@@ -58,6 +60,8 @@ def load_registry_catalog(registry_dir: str | Path = DEFAULT_REGISTRY_DIR) -> Re
     power_locations = _read_mapping(root, "power_locations.yaml")
     gas_locations = _read_mapping(root, "gas_locations.yaml")
     quoted_spreads = _read_mapping(root, "quoted_spreads.yaml")
+    exchange_contracts = _read_mapping(root, "exchange_contracts.yaml")
+    forward_fundamental_mappings = _read_mapping(root, "forward_fundamental_mappings.yaml")
 
     forbidden = frozenset(str(item).strip().upper().replace(" ", "") for item in quoted_spreads.get("FORBIDDEN_BY_DEFAULT", []))
     approved = {
@@ -73,6 +77,8 @@ def load_registry_catalog(registry_dir: str | Path = DEFAULT_REGISTRY_DIR) -> Re
         gas_aliases=_build_gas_aliases({str(key).upper(): dict(value) for key, value in gas_locations.items()}),
         approved_spreads=approved,
         forbidden_spreads=forbidden,
+        exchange_contracts={str(key).upper(): dict(value) for key, value in exchange_contracts.items()},
+        forward_fundamental_mappings={str(key).upper(): dict(value) for key, value in forward_fundamental_mappings.items()},
     )
 
 
@@ -103,3 +109,33 @@ def gas_index_keywords(catalog: RegistryCatalog | None = None) -> dict[str, str]
     catalog = catalog or load_registry_catalog()
     rules = ((catalog.market_rules.get("gas") or {}).get("index_family_keywords") or {})
     return {str(key).upper(): str(value).upper() for key, value in rules.items()}
+
+
+def _mapping_candidates(mapping_id: str, mapping: dict[str, Any]) -> set[str]:
+    values = {
+        mapping_id,
+        str(mapping.get("source_contract_id") or ""),
+        str(mapping.get("contract_symbol") or ""),
+    }
+    values.update(str(alias) for alias in mapping.get("aliases") or [])
+    return {compact_label(value) for value in values if compact_label(value)}
+
+
+def lookup_forward_fundamental_mapping(raw: str, catalog: RegistryCatalog | None = None) -> dict[str, Any] | None:
+    catalog = catalog or load_registry_catalog()
+    raw_compact = compact_label(raw)
+    raw_tokens = {compact_label(token) for token in re.split(r"\s+", raw.upper()) if compact_label(token)}
+    for mapping_id, mapping in catalog.forward_fundamental_mappings.items():
+        candidates = _mapping_candidates(mapping_id, mapping)
+        if raw_compact in candidates or bool(raw_tokens & candidates):
+            record = dict(mapping)
+            record.setdefault("mapping_id", mapping_id)
+            return record
+    return None
+
+
+def find_forward_fundamental_mapping(raw: str, catalog: RegistryCatalog | None = None) -> dict[str, Any]:
+    mapping = lookup_forward_fundamental_mapping(raw, catalog)
+    if mapping is None:
+        raise WorkbenchException(UNKNOWN_PRODUCT, f"Unknown forward/fundamental mapping for {raw}")
+    return mapping

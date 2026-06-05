@@ -7,6 +7,10 @@ WH:
   default_price_component: FULL_LMP
   supported_market_runs: [DA, RT]
   supported_shapes: [PEAK, OFFPEAK, ATC]
+  pjm_pnode_id: 51288
+  pjm_pnode_name: WESTERN HUB
+  pjm_pnode_type: HUB
+  pnode_source_status: user_approved_pending_pjm_export_fixture
   status: approved_core
 
 AD:
@@ -18,6 +22,10 @@ AD:
   default_price_component: FULL_LMP
   supported_market_runs: [DA, RT]
   supported_shapes: [PEAK, OFFPEAK, ATC]
+  pjm_pnode_id: 34497127
+  pjm_pnode_name: AEP-DAYTON HUB
+  pjm_pnode_type: HUB
+  pnode_source_status: public_gridstatus_example_pending_pjm_export_fixture
   status: approved_core
 
 NI:
@@ -29,4 +37,8 @@ NI:
   default_price_component: FULL_LMP
   supported_market_runs: [DA, RT]
   supported_shapes: [PEAK, OFFPEAK, ATC]
+  pjm_pnode_id: 33092315
+  pjm_pnode_name: N ILLINOIS HUB
+  pjm_pnode_type: HUB
+  pnode_source_status: public_gridstatus_example_pending_pjm_export_fixture
   status: approved_core

@@ -1,0 +1,34 @@
+change_id: CR-0011
+title: PJM hub contract grid and price storage semantics
+created_at: 2026-06-05T00:00:00Z
+change_class: 6
+severity: medium
+problem_statement: >
+  The core semantics need to expand from a Western Hub RT peak demo to a compact
+  but auditable PJM hub contract grid covering Western Hub, AEP-Dayton Hub, and
+  Northern Illinois Hub across day-ahead/real-time and peak/offpeak monthly ICE
+  contracts.
+root_cause: >
+  Price normalization needs a durable separation between compact market indices,
+  verbose exchange contract metadata, deterministic forward-to-fundamental
+  mappings, and source-specific price observations.
+affected_files:
+  - domain/forward_fundamental_mapping.md
+  - docs/OFFICIAL_SOURCE_REGISTER.md
+  - registries/exchange_contracts.yaml
+  - registries/forward_fundamental_mappings.yaml
+  - registries/power_locations.yaml
+  - registries/product_master.yaml
+  - tests/test_forward_fundamental_mapping.py
+  - work/tickets/T-0023-pjm-hub-contract-grid-price-storage-semantics.yaml
+tests_required:
+  - .venv/bin/python -m pytest tests/test_forward_fundamental_mapping.py tests/test_registry_driven_normalization.py tests/test_indices.py -q
+  - make validate
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-05T00:00:00Z
+rollback_plan: >
+  Remove the expanded WH/AD/NI monthly contract records and mapping records,
+  restore the forward mapping docs to the narrower Western Hub RT peak demo, and
+  keep the original PMI/PDP tests intact.

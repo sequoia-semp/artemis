@@ -1,0 +1,40 @@
+change_id: CR-0010
+title: PJM Western Hub RT peak forward-to-fundamental mapping
+created_at: 2026-06-05T00:00:00Z
+change_class: 6
+severity: medium
+problem_statement: >
+  Artemis needs a durable core-semantics demo that maps ICE PJM Western Hub
+  real-time peak forward contracts to the PJM Western Hub real-time LMP index
+  used by fundamentals and price history workflows.
+root_cause: >
+  Current product and data-source registries contain seed descriptors, but no
+  first-class exchange contract registry or deterministic forward-to-fundamental
+  mapping contract for ICE power products.
+affected_files:
+  - domain/forward_fundamental_mapping.md
+  - docs/OFFICIAL_SOURCE_REGISTER.md
+  - registries/exchange_contracts.yaml
+  - registries/forward_fundamental_mappings.yaml
+  - registries/power_locations.yaml
+  - registries/product_master.yaml
+  - schemas/exchange_contract.schema.json
+  - schemas/forward_fundamental_mapping.schema.json
+  - schemas/market_index.schema.json
+  - src/pga_workbench/indices.py
+  - src/pga_workbench/registry.py
+  - src/pga_workbench/registry_access.py
+  - src/pga_workbench/services/normalization.py
+  - tests/test_forward_fundamental_mapping.py
+  - work/tickets/T-0022-pjm-wh-rt-peak-forward-fundamental-mapping.yaml
+tests_required:
+  - .venv/bin/python -m pytest tests/test_forward_fundamental_mapping.py tests/test_registry_driven_normalization.py tests/test_indices.py -q
+  - make validate
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-05T00:00:00Z
+rollback_plan: >
+  Remove the new exchange contract and forward-fundamental mapping registries,
+  schema handlers, normalization lookup path, and regression tests. Existing
+  WH/AD/NI and gas normalization behavior should remain unchanged.

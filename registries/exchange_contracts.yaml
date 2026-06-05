@@ -1,0 +1,1578 @@
+ICE_PMI_PJM_WH_RT_PEAK_1MW:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590369"
+  product_name: PJM Western Hub Real-Time Peak (1 MW) Fixed Price Future
+  contract_symbol: PMI
+  commodity: power
+  location_id: WH
+  market_run: RT
+  price_component: FULL_LMP
+  shape: PEAK
+  quote_unit: USD_per_MWh
+  settlement_method: Cash settlement
+  contract_size:
+    value: 1
+    unit: MW
+  contract_period: monthly
+  listing_cycle: Up to 110 consecutive monthly Contract Periods
+  last_trading_day_rule: The last Business Day of the Contract Period
+  final_settlement: Average of Reference Price A Prices
+  reference_price:
+    id: ELECTRICITY-PJM-WESTERN-HUB-REAL-TIME
+    publisher: PJM
+    published_heading: "Daily Real-Time LMP: Daily Real-Time Locational Marginal Pricing Files: WESTERN HUB"
+    pricing_date_rule: Each Monday through Friday, excluding NERC holidays, that prices are reported for the Delivery Date
+    specified_price_rule: Average of LMPs for all hours ending 0800-2300 EPT
+    pricing_calendar: PJM
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590369/PJM-Western-Hub-Real-Time-Peak-1-MW-Fixed-Price-Future
+      notes: Official ICE product page for PMI contract metadata and Reference Price A.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/6590369/pdf
+      notes: Official ICE PDF spec retrieved during CR-0010 implementation.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_PDP_PJM_WH_RT_PEAK_DAILY:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590472"
+  product_name: PJM Western Hub Real-Time Peak Daily Fixed Price Future
+  contract_symbol: PDP
+  commodity: power
+  location_id: WH
+  market_run: RT
+  price_component: FULL_LMP
+  shape: PEAK
+  quote_unit: USD_per_MWh
+  settlement_method: Cash settlement
+  contract_size:
+    value: 800
+    unit: MWh
+  contract_period: daily
+  listing_cycle: Up to 365 consecutive daily Contract Periods, or as otherwise determined by the Exchange
+  last_trading_day_rule: Daily product-specific last trading day rule per ICE product specification
+  final_settlement: Reference Price A
+  reference_price:
+    id: ELECTRICITY-PJM-WESTERN-HUB-REAL-TIME
+    publisher: PJM
+    published_heading: "Daily Real-Time LMP: Daily Real-Time Locational Marginal Pricing Files: WESTERN HUB"
+    pricing_date_rule: Each day that prices are reported for the Delivery Date
+    specified_price_rule: Average of LMPs for all hours ending 0800-2300 EPT
+    pricing_calendar: PJM
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590472/PJM-Western-Hub-Real-Time-Peak-Daily-Fixed-Price-Future/specs
+      notes: Official ICE product page for PDP contract metadata and Reference Price A.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_PJC_PJM_WH_DA_PEAK_1MW:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590366"
+  product_name: PJM Western Hub Day-Ahead Peak Fixed Price Future
+  contract_symbol: PJC
+  commodity: power
+  location_id: WH
+  market_run: DA
+  price_component: FULL_LMP
+  shape: PEAK
+  quote_unit: USD_per_MWh
+  settlement_method: Cash settlement
+  contract_size:
+    value: 1
+    unit: MW
+  contract_period: monthly
+  listing_cycle: Up to 50 consecutive monthly Contract Periods
+  last_trading_day_rule: The last Business Day of the Contract Period
+  final_settlement: Average of Reference Price A Prices
+  reference_price:
+    id: ELECTRICITY-PJM-WESTERN-HUB-DAY-AHEAD
+    publisher: PJM
+    published_heading: "Daily Day-Ahead Locational Marginal Pricing (LMP): LMP Day-Ahead Data: WESTERN HUB"
+    pricing_date_rule: Each Monday through Friday, excluding NERC holidays, that prices are reported for the Delivery Date
+    specified_price_rule: Average of LMPs for all hours ending 0800-2300 EPT
+    pricing_calendar: PJM
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590366/PJM-Western-Hub-Day-Ahead-Peak-Fixed-Price-Future
+      notes: Official ICE product page for Western Hub DA peak monthly contract.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_PJD_PJM_WH_DA_OFFPEAK_1MW:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590428"
+  product_name: PJM Western Hub Day-Ahead Off-Peak Fixed Price Future
+  contract_symbol: PJD
+  commodity: power
+  location_id: WH
+  market_run: DA
+  price_component: FULL_LMP
+  shape: OFFPEAK
+  quote_unit: USD_per_MWh
+  settlement_method: Cash settlement
+  contract_size:
+    value: 1
+    unit: MW
+  contract_period: monthly
+  listing_cycle: Up to 50 consecutive monthly Contract Periods
+  last_trading_day_rule: The last Business Day of the Contract Period
+  final_settlement: Average of Reference Price A prices
+  reference_price:
+    id: ELECTRICITY-PJM-WESTERN-HUB-DAY-AHEAD
+    publisher: PJM
+    published_heading: "Daily Day-Ahead Locational Marginal Pricing (LMP): LMP Day-Ahead Data: WESTERN HUB"
+    pricing_date_rule: Each day that prices are reported for the Delivery Date
+    specified_price_rule: Weekday non-holiday average of LMPs for hours ending 0100-0700 and 2400 EPT; Saturday, Sunday, and NERC holiday average of hours ending 0100-2400 EPT
+    pricing_calendar: PJM
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590428/PJM-Western-Hub-Day-Ahead-Off-Peak-Fixed-Price-Future
+      notes: Official ICE product page for Western Hub DA offpeak monthly contract.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_OPJ_PJM_WH_RT_OFFPEAK_1MW:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590424"
+  product_name: PJM Western Hub Real-Time Off-Peak Fixed Price Future
+  contract_symbol: OPJ
+  commodity: power
+  location_id: WH
+  market_run: RT
+  price_component: FULL_LMP
+  shape: OFFPEAK
+  quote_unit: USD_per_MWh
+  settlement_method: Cash settlement
+  contract_size:
+    value: 1
+    unit: MW
+  contract_period: monthly
+  listing_cycle: Up to 86 consecutive monthly Contract Periods
+  last_trading_day_rule: The last Business Day of the Contract Period
+  final_settlement: Average of Reference Price A prices
+  reference_price:
+    id: ELECTRICITY-PJM-WESTERN-HUB-REAL-TIME
+    publisher: PJM
+    published_heading: "Daily Real-Time LMP: Daily Real-Time Locational Marginal Pricing Files: WESTERN HUB"
+    pricing_date_rule: Each day that prices are reported for the Delivery Date
+    specified_price_rule: Weekday non-holiday average of LMPs for hours ending 0100-0700 and 2400 EPT; Saturday, Sunday, and NERC holiday average of hours ending 0100-2400 EPT
+    pricing_calendar: PJM
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590424/PJM-Western-Hub-Real-Time-Off-Peak-Fixed-Price-Future
+      notes: Official ICE product page for Western Hub RT offpeak monthly contract; OPJ is the PJM WH RT offpeak symbol.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_ADB_PJM_AD_DA_PEAK_1MW:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590327"
+  product_name: PJM AEP Dayton Hub Day-Ahead Peak Fixed Price Future
+  contract_symbol: ADB
+  commodity: power
+  location_id: AD
+  market_run: DA
+  price_component: FULL_LMP
+  shape: PEAK
+  quote_unit: USD_per_MWh
+  settlement_method: Cash settlement
+  contract_size:
+    value: 1
+    unit: MW
+  contract_period: monthly
+  listing_cycle: Up to 50 consecutive monthly Contract Periods
+  last_trading_day_rule: The last Business Day of the Contract Period
+  final_settlement: Average of Reference Price A Prices
+  reference_price:
+    id: ELECTRICITY-PJM-AEP-DAYTON-HUB-DAY-AHEAD
+    publisher: PJM
+    published_heading: "Daily Day-Ahead Locational Marginal Pricing (LMP): LMP Day-Ahead Data: AEP-DAYTON HUB"
+    pricing_date_rule: Each Monday through Friday, excluding NERC holidays, that prices are reported for the Delivery Date
+    specified_price_rule: Average of LMPs for all hours ending 0800-2300 EPT
+    pricing_calendar: PJM
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590327/PJM-AEP-Dayton-Hub-Day-Ahead-Peak-Fixed-Price-Future
+      notes: Official ICE product page for AD Hub DA peak monthly contract.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_ADD_PJM_AD_DA_OFFPEAK_1MW:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590388"
+  product_name: PJM AEP Dayton Hub Day-Ahead Off-Peak Fixed Price Future
+  contract_symbol: ADD
+  commodity: power
+  location_id: AD
+  market_run: DA
+  price_component: FULL_LMP
+  shape: OFFPEAK
+  quote_unit: USD_per_MWh
+  settlement_method: Cash settlement
+  contract_size:
+    value: 1
+    unit: MW
+  contract_period: monthly
+  listing_cycle: Up to 50 consecutive monthly Contract Periods
+  last_trading_day_rule: The last Business Day of the Contract Period
+  final_settlement: Average of Reference Price A prices
+  reference_price:
+    id: ELECTRICITY-PJM-AEP-DAYTON-HUB-DAY-AHEAD
+    publisher: PJM
+    published_heading: "Daily Day-Ahead Locational Marginal Pricing (LMP): LMP Day-Ahead Data: AEP-DAYTON HUB"
+    pricing_date_rule: Each day that prices are reported for the Delivery Date
+    specified_price_rule: Weekday non-holiday average of LMPs for hours ending 0100-0700 and 2400 EPT; Saturday, Sunday, and NERC holiday average of hours ending 0100-2400 EPT
+    pricing_calendar: PJM
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590388/PJM-AEP-Dayton-Hub-Day-Ahead-Off-Peak-Fixed-Price-Future
+      notes: Official ICE product page for AD Hub DA offpeak monthly contract.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_MSO_PJM_AD_RT_PEAK_1MW:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590354"
+  product_name: PJM AEP Dayton Hub Real-Time Peak Fixed Price Future
+  contract_symbol: MSO
+  commodity: power
+  location_id: AD
+  market_run: RT
+  price_component: FULL_LMP
+  shape: PEAK
+  quote_unit: USD_per_MWh
+  settlement_method: Cash settlement
+  contract_size:
+    value: 1
+    unit: MW
+  contract_period: monthly
+  listing_cycle: Up to 86 consecutive monthly Contract Periods
+  last_trading_day_rule: The last Business Day of the Contract Period
+  final_settlement: Average of Reference Price A Prices
+  reference_price:
+    id: ELECTRICITY-PJM-AEP-DAYTON-HUB-REAL-TIME
+    publisher: PJM
+    published_heading: "Daily Real-Time LMP: Daily Real-Time Locational Marginal Pricing Files: AEP-DAYTON HUB"
+    pricing_date_rule: Each Monday through Friday, excluding NERC holidays, that prices are reported for the Delivery Date
+    specified_price_rule: Average of LMPs for all hours ending 0800-2300 EPT
+    pricing_calendar: PJM
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590354/PJM-AEP-Dayton-Hub-Real-Time-Peak-Fixed-Price-Future
+      notes: Official ICE product page for AD Hub RT peak monthly contract.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_AOD_PJM_AD_RT_OFFPEAK_1MW:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590389"
+  product_name: PJM AEP Dayton Hub Real-Time Off-Peak Fixed Price Future
+  contract_symbol: AOD
+  commodity: power
+  location_id: AD
+  market_run: RT
+  price_component: FULL_LMP
+  shape: OFFPEAK
+  quote_unit: USD_per_MWh
+  settlement_method: Cash settlement
+  contract_size:
+    value: 1
+    unit: MW
+  contract_period: monthly
+  listing_cycle: Up to 86 consecutive monthly Contract Periods
+  last_trading_day_rule: The last Business Day of the Contract Period
+  final_settlement: Average of Reference Price A prices
+  reference_price:
+    id: ELECTRICITY-PJM-AEP-DAYTON-HUB-REAL-TIME
+    publisher: PJM
+    published_heading: "Daily Real-Time LMP: Daily Real-Time Locational Marginal Pricing Files: AEP-DAYTON HUB"
+    pricing_date_rule: Each day that prices are reported for the Delivery Date
+    specified_price_rule: Weekday non-holiday average of LMPs for hours ending 0100-0700 and 2400 EPT; Saturday, Sunday, and NERC holiday average of hours ending 0100-2400 EPT
+    pricing_calendar: PJM
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590389/PJM-AEP-Dayton-Hub-Real-Time-Off-Peak-Fixed-Price-Future
+      notes: Official ICE product page for AD Hub RT offpeak monthly contract.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_NIB_PJM_NI_DA_PEAK_1MW:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590360"
+  product_name: PJM NI Hub Day-Ahead Peak Fixed Price Future
+  contract_symbol: NIB
+  commodity: power
+  location_id: NI
+  market_run: DA
+  price_component: FULL_LMP
+  shape: PEAK
+  quote_unit: USD_per_MWh
+  settlement_method: Cash settlement
+  contract_size:
+    value: 1
+    unit: MW
+  contract_period: monthly
+  listing_cycle: Up to 50 consecutive monthly Contract Periods
+  last_trading_day_rule: The last Business Day of the Contract Period
+  final_settlement: Average of Reference Price A Prices
+  reference_price:
+    id: ELECTRICITY-PJM-NORTHERN-ILLINOIS-HUB-DAY-AHEAD
+    publisher: PJM
+    published_heading: "Daily Day-Ahead Locational Marginal Pricing (LMP): LMP Day-Ahead Data: N ILLINOIS HUB"
+    pricing_date_rule: Each Monday through Friday, excluding NERC holidays, that prices are reported for the Delivery Date
+    specified_price_rule: Average of LMPs for all hours ending 0800-2300 EPT
+    pricing_calendar: PJM
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590360/PJM-NI-Hub-Day-Ahead-Peak-Fixed-Price-Future
+      notes: Official ICE product page for NI Hub DA peak monthly contract.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_NID_PJM_NI_DA_OFFPEAK_1MW:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590409"
+  product_name: PJM NI Hub Day-Ahead Off-Peak Fixed Price Future
+  contract_symbol: NID
+  commodity: power
+  location_id: NI
+  market_run: DA
+  price_component: FULL_LMP
+  shape: OFFPEAK
+  quote_unit: USD_per_MWh
+  settlement_method: Cash settlement
+  contract_size:
+    value: 1
+    unit: MW
+  contract_period: monthly
+  listing_cycle: Up to 50 consecutive monthly Contract Periods
+  last_trading_day_rule: The last Business Day of the Contract Period
+  final_settlement: Average of Reference Price A prices
+  reference_price:
+    id: ELECTRICITY-PJM-NORTHERN-ILLINOIS-HUB-DAY-AHEAD
+    publisher: PJM
+    published_heading: "Daily Day-Ahead Locational Marginal Pricing (LMP): LMP Day-Ahead Data: N ILLINOIS HUB"
+    pricing_date_rule: Each day that prices are reported for the Delivery Date
+    specified_price_rule: Weekday non-holiday average of LMPs for hours ending 0100-0700 and 2400 EPT; Saturday, Sunday, and NERC holiday average of hours ending 0100-2400 EPT
+    pricing_calendar: PJM
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590409/PJM-NI-Hub-Day-Ahead-Off-Peak-Fixed-Price-Future
+      notes: Official ICE product page for NI Hub DA offpeak monthly contract.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_PNL_PJM_NI_RT_PEAK_1MW:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590371"
+  product_name: PJM NI Hub Real-Time Peak Fixed Price Future
+  contract_symbol: PNL
+  commodity: power
+  location_id: NI
+  market_run: RT
+  price_component: FULL_LMP
+  shape: PEAK
+  quote_unit: USD_per_MWh
+  settlement_method: Cash settlement
+  contract_size:
+    value: 1
+    unit: MW
+  contract_period: monthly
+  listing_cycle: Up to 86 consecutive monthly Contract Periods
+  last_trading_day_rule: The last Business Day of the Contract Period
+  final_settlement: Average of Reference Price A Prices
+  reference_price:
+    id: ELECTRICITY-PJM-NORTHERN-ILLINOIS-HUB-REAL-TIME
+    publisher: PJM
+    published_heading: "Daily Real-Time LMP: Daily Real-Time Locational Marginal Pricing Files: N ILLINOIS HUB"
+    pricing_date_rule: Each Monday through Friday, excluding NERC holidays, that prices are reported for the Delivery Date
+    specified_price_rule: Average of LMPs for all hours ending 0800-2300 EPT
+    pricing_calendar: PJM
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590371/PJM-NI-Hub-Real-Time-Peak-Fixed-Price-Future
+      notes: Official ICE product page for NI Hub RT peak monthly contract.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_NIO_PJM_NI_RT_OFFPEAK_1MW:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590410"
+  product_name: PJM NI Hub Real-Time Off-Peak Fixed Price Future
+  contract_symbol: NIO
+  commodity: power
+  location_id: NI
+  market_run: RT
+  price_component: FULL_LMP
+  shape: OFFPEAK
+  quote_unit: USD_per_MWh
+  settlement_method: Cash settlement
+  contract_size:
+    value: 1
+    unit: MW
+  contract_period: monthly
+  listing_cycle: Up to 86 consecutive monthly Contract Periods
+  last_trading_day_rule: The last Business Day of the Contract Period
+  final_settlement: Average of Reference Price A prices
+  reference_price:
+    id: ELECTRICITY-PJM-NORTHERN-ILLINOIS-HUB-REAL-TIME
+    publisher: PJM
+    published_heading: "Daily Real-Time LMP: Daily Real-Time Locational Marginal Pricing Files: N ILLINOIS HUB"
+    pricing_date_rule: Each day that prices are reported for the Delivery Date
+    specified_price_rule: Weekday non-holiday average of LMPs for hours ending 0100-0700 and 2400 EPT; Saturday, Sunday, and NERC holiday average of hours ending 0100-2400 EPT
+    pricing_calendar: PJM
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590410/PJM-NI-Hub-Real-Time-Off-Peak-Fixed-Price-Future
+      notes: Official ICE product page for NI Hub RT offpeak monthly contract.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_H_HENRY_LD1_FIXED_PRICE_FUTURE:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590258"
+  product_name: Henry LD1 Fixed Price Future
+  contract_symbol: H
+  commodity: gas
+  location_id: HH
+  index_family: LD1
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size:
+    value: 2500
+    unit: MMBtu
+  contract_period: monthly
+  listing_cycle: Up to 156 consecutive monthly Contract Periods
+  last_trading_day_rule: Three Business Days prior to the first calendar day of the Contract Period
+  final_settlement: Reference Price A
+  reference_price:
+    id: NATURAL_GAS_NYMEX
+    publisher: NYMEX
+    published_heading: Henry Hub Natural Gas Futures Contract settlement price
+    pricing_date_rule: Last scheduled trading day of the NYMEX Henry Hub Natural Gas Futures Contract for the Delivery Date
+    specified_price_rule: Settlement price
+    pricing_calendar: NYMEX
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590258/Henry-LD1-Fixed-Price-Future
+      notes: Official ICE product page for Henry LD1 contract metadata and Reference Price A.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/6590258/pdf
+      notes: Official ICE PDF spec for contract symbol H and NATURAL GAS-NYMEX Reference Price A.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_TZ6_TRANSCO_Z6_NY_FIXED_PRICE:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "83048644"
+  product_name: Transco Zone 6 (NY) Fixed Price
+  contract_symbol: TZ6
+  commodity: gas
+  location_id: TRANSCO_Z6_NY
+  index_family: IFERC
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size:
+    value: 2500
+    unit: MMBtu
+  contract_period: monthly
+  listing_cycle: Up to 60 consecutive monthly Contract Periods, or as otherwise determined by the Exchange
+  last_trading_day_rule: The last Business Day prior to the first calendar day of the Contract Period
+  final_settlement: Reference Price A
+  reference_price:
+    id: NATURAL_GAS_NORTHEAST_TRANSCO_ZONE_6_NY_INSIDE_FERC
+    publisher: Inside FERC
+    published_heading: "Monthly Bidweek Spot Gas Prices ($/MMBtu): Northeast: Transco, Zone 6 N.Y.: Index"
+    pricing_date_rule: First publication date of the Contract Period
+    specified_price_rule: Index
+    pricing_calendar: Inside FERC
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/83048644/Transco-Zone-6-%28NY%29-Fixed-Price
+      notes: Official ICE product page for Transco Z6 NY fixed price IFERC contract metadata.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/83048644/pdf
+      notes: Official ICE PDF spec for contract symbol TZ6 and Inside FERC Reference Price A.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_ZSS_TRANSCO_Z6_NY_SWING_FUTURE:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590257"
+  product_name: Transco Zone 6 (NY) Swing Future
+  contract_symbol: ZSS
+  commodity: gas
+  location_id: TRANSCO_Z6_NY
+  index_family: GDD
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size:
+    value: 2500
+    unit: MMBtu
+  contract_period: daily
+  listing_cycle: Up to 65 consecutive daily Contract Periods
+  last_trading_day_rule: The Business Day prior to the Contract Period
+  final_settlement: Reference Price A
+  reference_price:
+    id: NATURAL_GAS_CITYGATES_TRANSCO_ZONE_6_NY_GAS_DAILY
+    publisher: Gas Daily
+    published_heading: "Daily Price Survey ($/MMBtu): Northeast: Transco, zone 6 N.Y.: Midpoint"
+    pricing_date_rule: Each day that prices are reported for the Delivery Date
+    specified_price_rule: Midpoint
+    pricing_calendar: Gas Daily
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590257/Transco-Zone-6-NY-Swing-Future/specs
+      notes: Official ICE product page for Transco Z6 NY daily Gas Daily swing future.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/6590257/pdf
+      notes: Official ICE PDF spec for contract symbol ZSS and Gas Daily Reference Price A.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_TZS_TRANSCO_Z6_NY_BASIS_FUTURE:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590169"
+  product_name: Transco Zone 6 (NY) Basis Future
+  contract_symbol: TZS
+  commodity: gas
+  location_id: TRANSCO_Z6_NY
+  index_family: BASIS_TO_LD1
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size:
+    value: 2500
+    unit: MMBtu
+  contract_period: monthly
+  listing_cycle: Up to 120 consecutive monthly Contract Periods, or as otherwise determined by the Exchange
+  last_trading_day_rule: The last Business Day prior to the first calendar day of the Contract Period
+  final_settlement: Reference Price A minus Reference Price B
+  reference_prices:
+    - leg: A
+      id: NATURAL_GAS_NORTHEAST_TRANSCO_ZONE_6_NY_INSIDE_FERC
+      publisher: Inside FERC
+      published_heading: "Monthly Bidweek Spot Gas Prices ($/MMBtu): Northeast: Transco, zone 6 N.Y. : Index"
+      pricing_date_rule: First publication date of Contract Period
+      specified_price_rule: Index
+      pricing_calendar: Inside FERC
+      delivery_date_rule: Contract Period
+    - leg: B
+      id: NATURAL_GAS_NYMEX
+      publisher: NYMEX
+      published_heading: Henry Hub Natural Gas Futures Contract settlement price
+      pricing_date_rule: Last scheduled trading day of the NYMEX Henry Hub Natural Gas Futures Contract for the Delivery Date
+      specified_price_rule: Settlement price
+      pricing_calendar: NYMEX
+      delivery_date_rule: Contract Period
+  settlement_formula:
+    formula_type: REFERENCE_PRICE_A_MINUS_B
+    description: Inside FERC Transco Z6 NY monthly index minus NYMEX Henry Hub natural gas settlement.
+    legs:
+      - leg: A
+        operation: add
+        index_family: IFERC
+      - leg: B
+        operation: subtract
+        index_family: LD1
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590169/Transco-Zone-6-NY-Basis-Future
+      notes: Official ICE product page for Transco Z6 NY basis future.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/6590169/pdf
+      notes: Official ICE PDF spec for contract symbol TZS and A-minus-B formula.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_TMT_TETCO_M3_BASIS_FUTURE:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590161"
+  product_name: TETCO M3 Basis Future
+  contract_symbol: TMT
+  commodity: gas
+  location_id: TETCO_M3
+  index_family: BASIS_TO_LD1
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size:
+    value: 2500
+    unit: MMBtu
+  contract_period: monthly
+  listing_cycle: Up to 120 consecutive monthly Contract Periods, or as otherwise determined by the Exchange
+  last_trading_day_rule: The last Business Day prior to the first calendar day of the Contract Period
+  final_settlement: Reference Price A minus Reference Price B
+  reference_prices:
+    - leg: A
+      id: NATURAL_GAS_NORTHEAST_TEXAS_EASTERN_ZONE_M3_INSIDE_FERC
+      publisher: Inside FERC
+      published_heading: "Monthly Bidweek Spot Gas Prices ($/MMBtu): Northeast: Texas Eastern, M-3 : Index"
+      pricing_date_rule: First publication date of Contract Period
+      specified_price_rule: Index
+      pricing_calendar: Inside FERC
+      delivery_date_rule: Contract Period
+    - leg: B
+      id: NATURAL_GAS_NYMEX
+      publisher: NYMEX
+      published_heading: Henry Hub Natural Gas Futures Contract settlement price
+      pricing_date_rule: Last scheduled trading day of the NYMEX Henry Hub Natural Gas Futures Contract for the Delivery Date
+      specified_price_rule: Settlement price
+      pricing_calendar: NYMEX
+      delivery_date_rule: Contract Period
+  settlement_formula:
+    formula_type: REFERENCE_PRICE_A_MINUS_B
+    description: Inside FERC TETCO M3 monthly index minus NYMEX Henry Hub natural gas settlement.
+    legs:
+      - leg: A
+        operation: add
+        index_family: IFERC
+      - leg: B
+        operation: subtract
+        index_family: LD1
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590161/TETCO-M3-Basis-Future
+      notes: Official ICE product page for TETCO M3 basis future.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/6590161/pdf
+      notes: Official ICE PDF spec for contract symbol TMT and A-minus-B formula.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_MTI_TETCO_M3_INDEX_FUTURE:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590207"
+  product_name: TETCO M3 Index Future
+  contract_symbol: MTI
+  commodity: gas
+  location_id: TETCO_M3
+  index_family: GDD_INDEX_TO_IFERC
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size:
+    value: 2500
+    unit: MMBtu
+  contract_period: monthly
+  listing_cycle: Up to 120 consecutive monthly Contract Periods
+  last_trading_day_rule: The last Business Day prior to the first calendar day of the Contract Period
+  final_settlement: Average of the Reference Price A prices minus Reference Price B
+  reference_prices:
+    - leg: A
+      id: NATURAL_GAS_CITYGATES_TEXAS_EASTERN_ZONE_M3_GAS_DAILY
+      publisher: Gas Daily
+      published_heading: "Daily Price Survey ($/MMBtu): Northeast: Tx. Eastern, M-3: Midpoint"
+      pricing_date_rule: Each day that prices are reported for the Delivery Date
+      specified_price_rule: Midpoint
+      pricing_calendar: Gas Daily
+      delivery_date_rule: Each calendar day in the Contract Period
+    - leg: B
+      id: NATURAL_GAS_NORTHEAST_TEXAS_EASTERN_ZONE_M3_INSIDE_FERC
+      publisher: Inside FERC
+      published_heading: "Monthly Bidweek Spot Gas Prices ($/MMBtu): Northeast: Texas Eastern, M-3 : Index"
+      pricing_date_rule: First publication date of the Contract Period
+      specified_price_rule: Index
+      pricing_calendar: Inside FERC
+      delivery_date_rule: Contract Period
+  settlement_formula:
+    formula_type: AVERAGE_REFERENCE_PRICE_A_MINUS_B
+    description: Average Gas Daily TETCO M3 midpoint across the contract period minus Inside FERC TETCO M3 monthly index.
+    legs:
+      - leg: A
+        operation: add
+        index_family: GDD
+      - leg: B
+        operation: subtract
+        index_family: IFERC
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590207/TETCO-M3-Index-Future
+      notes: Official ICE product page for TETCO M3 index future.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/6590207/pdf
+      notes: Official ICE PDF spec for contract symbol MTI and average-Gas-Daily-minus-IFERC formula.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_DOM_EASTERN_GAS_SOUTH_BASIS_FUTURE:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590133"
+  product_name: Eastern Gas South Basis Future
+  contract_symbol: DOM
+  commodity: gas
+  location_id: EASTERN_GAS_SOUTH
+  index_family: BASIS_TO_LD1
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size:
+    value: 2500
+    unit: MMBtu
+  contract_period: monthly
+  listing_cycle: Up to 120 consecutive monthly Contract Periods, or as otherwise determined by the Exchange
+  last_trading_day_rule: The last Business Day prior to the first calendar day of the Contract Period
+  final_settlement: Reference Price A minus Reference Price B
+  reference_prices:
+    - leg: A
+      id: NATURAL_GAS_APPALACHIA_EASTERN_GAS_APPALACHIA_INSIDE_FERC
+      publisher: Inside FERC
+      published_heading: "Monthly Bidweek Spot Gas Prices ($/MMBtu): Appalachia: Eastern Gas, Appalachia : Index"
+      pricing_date_rule: First publication date of Contract Period
+      specified_price_rule: Index
+      pricing_calendar: Inside FERC
+      delivery_date_rule: Contract Period
+    - leg: B
+      id: NATURAL_GAS_NYMEX
+      publisher: NYMEX
+      published_heading: Henry Hub Natural Gas Futures Contract settlement price
+      pricing_date_rule: Last scheduled trading day of the NYMEX Henry Hub Natural Gas Futures Contract for the Delivery Date
+      specified_price_rule: Settlement price
+      pricing_calendar: NYMEX
+      delivery_date_rule: Contract Period
+  settlement_formula:
+    formula_type: REFERENCE_PRICE_A_MINUS_B
+    description: Inside FERC Eastern Gas Appalachia monthly index minus NYMEX Henry Hub natural gas settlement.
+    legs:
+      - leg: A
+        operation: add
+        index_family: IFERC
+      - leg: B
+        operation: subtract
+        index_family: LD1
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590133/Eastern-Gas-South-Basis-Future
+      notes: Official ICE product page for Eastern Gas South basis future.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/6590133/pdf
+      notes: Official ICE PDF spec for contract symbol DOM and A-minus-B formula.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_DIS_EASTERN_GAS_SOUTH_INDEX_FUTURE:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590181"
+  product_name: Eastern Gas South Index Future
+  contract_symbol: DIS
+  commodity: gas
+  location_id: EASTERN_GAS_SOUTH
+  index_family: GDD_INDEX_TO_IFERC
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size:
+    value: 2500
+    unit: MMBtu
+  contract_period: monthly
+  listing_cycle: Up to 120 consecutive monthly Contract Periods
+  last_trading_day_rule: The last Business Day prior to the first calendar day of the Contract Period
+  final_settlement: Average of the Reference Price A prices minus Reference Price B
+  reference_prices:
+    - leg: A
+      id: NATURAL_GAS_APPALACHIA_EASTERN_GAS_SOUTH_GAS_DAILY
+      publisher: Gas Daily
+      published_heading: "Daily Price Survey ($/MMBtu): Appalachia: Eastern Gas, South: Midpoint"
+      pricing_date_rule: Each day that prices are reported for the Delivery Date
+      specified_price_rule: Midpoint
+      pricing_calendar: Gas Daily
+      delivery_date_rule: Each calendar day in the Contract Period
+    - leg: B
+      id: NATURAL_GAS_APPALACHIA_EASTERN_GAS_APPALACHIA_INSIDE_FERC
+      publisher: Inside FERC
+      published_heading: "Monthly Bidweek Spot Gas Prices ($/MMBtu): Appalachia: Eastern Gas, Appalachia : Index"
+      pricing_date_rule: First publication date of the Contract Period
+      specified_price_rule: Index
+      pricing_calendar: Inside FERC
+      delivery_date_rule: Contract Period
+  settlement_formula:
+    formula_type: AVERAGE_REFERENCE_PRICE_A_MINUS_B
+    description: Average Gas Daily Eastern Gas South midpoint across the contract period minus Inside FERC Eastern Gas Appalachia monthly index.
+    legs:
+      - leg: A
+        operation: add
+        index_family: GDD
+      - leg: B
+        operation: subtract
+        index_family: IFERC
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590181/Eastern-Gas-South-Index-Future
+      notes: Official ICE product page for Eastern Gas South index future.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/6590181/pdf
+      notes: Official ICE PDF spec for contract symbol DIS and average-Gas-Daily-minus-IFERC formula.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_BM1_TETCO_M2_FIXED_PRICE_RECEIPTS:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "83048597"
+  product_name: TETCO M2 Fixed Price Future (Receipts)
+  contract_symbol: BM1
+  commodity: gas
+  location_id: TETCO_M2
+  index_family: IFERC
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size: {value: 2500, unit: MMBtu}
+  contract_period: monthly
+  listing_cycle: Up to 60 consecutive monthly Contract Periods, or as otherwise determined by the Exchange
+  last_trading_day_rule: The last Business Day prior to the first calendar day of the Contract Period
+  final_settlement: Reference Price A
+  reference_price:
+    id: NATURAL_GAS_TEXAS_EASTERN_TRANSMISSION_CORP_M2_RECEIPTS_INSIDE_FERC
+    publisher: Inside FERC
+    published_heading: "Monthly Bidweek Spot Gas Prices ($/MMBtu): Appalachia: Texas Eastern, M-2 Receipts: Index"
+    pricing_date_rule: First publication date of the Contract Period
+    specified_price_rule: Index
+    pricing_calendar: Inside FERC
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/83048597/TETCO-M2-Fixed-Price-Future-Receipts
+      notes: Official ICE product page for TETCO M2 fixed price IFERC contract metadata.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/83048597/pdf
+      notes: Official ICE PDF spec for contract symbol BM1 and Inside FERC Reference Price A.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_BM2_TETCO_M2_BASIS_RECEIPTS:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "37042680"
+  product_name: TETCO M2 Basis Future (Receipts)
+  contract_symbol: BM2
+  commodity: gas
+  location_id: TETCO_M2
+  index_family: BASIS_TO_LD1
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size: {value: 2500, unit: MMBtu}
+  contract_period: monthly
+  listing_cycle: Up to 120 consecutive monthly Contract Periods, or as otherwise determined by the Exchange
+  last_trading_day_rule: The last Business Day prior to the first calendar day of the Contract Period
+  final_settlement: Reference Price A minus Reference Price B
+  reference_prices:
+    - leg: A
+      id: NATURAL_GAS_TEXAS_EASTERN_TRANSMISSION_CORP_M2_RECEIPTS_INSIDE_FERC
+      publisher: Inside FERC
+      published_heading: "Monthly Bidweek Spot Gas Prices ($/MMBtu): Appalachia: Texas Eastern, M-2 receipts : Index"
+      pricing_date_rule: First publication date of Contract Period
+      specified_price_rule: Index
+      pricing_calendar: Inside FERC
+      delivery_date_rule: Contract Period
+    - leg: B
+      id: NATURAL_GAS_NYMEX
+      publisher: NYMEX
+      published_heading: Henry Hub Natural Gas Futures Contract settlement price
+      pricing_date_rule: Last scheduled trading day of the NYMEX Henry Hub Natural Gas Futures Contract for the Delivery Date
+      specified_price_rule: Settlement price
+      pricing_calendar: NYMEX
+      delivery_date_rule: Contract Period
+  settlement_formula:
+    formula_type: REFERENCE_PRICE_A_MINUS_B
+    description: Inside FERC TETCO M2 receipts monthly index minus NYMEX Henry Hub natural gas settlement.
+    legs:
+      - {leg: A, operation: add, index_family: IFERC}
+      - {leg: B, operation: subtract, index_family: LD1}
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/37042680/TETCO-M2-Basis-Future-Receipts
+      notes: Official ICE product page for TETCO M2 basis future.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/37042680/pdf
+      notes: Official ICE PDF spec for contract symbol BM2 and A-minus-B formula.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_BM3_TETCO_M2_SWING_RECEIPTS:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "42944095"
+  product_name: TETCO M2 Swing Future (Receipts)
+  contract_symbol: BM3
+  commodity: gas
+  location_id: TETCO_M2
+  index_family: GDD
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size: {value: 2500, unit: MMBtu}
+  contract_period: daily
+  listing_cycle: Up to 65 consecutive daily Contract Periods
+  last_trading_day_rule: The Business Day prior to the Contract Period
+  final_settlement: Reference Price A
+  reference_price:
+    id: NATURAL_GAS_APPALACHIA_TEXAS_EASTERN_M2_RECEIPTS_GAS_DAILY
+    publisher: Gas Daily
+    published_heading: "Daily price survey ($/MMBtu): Appalachia: Texas Eastern: M-2 receipts: Midpoint"
+    pricing_date_rule: Each day that prices are reported for the Delivery Date
+    specified_price_rule: Midpoint
+    pricing_calendar: Gas Daily
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/42944095/TETCO-M2-Swing-Future-Receipts
+      notes: Official ICE product page for TETCO M2 Gas Daily swing future.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/42944095/pdf
+      notes: Official ICE PDF spec for contract symbol BM3 and Gas Daily Reference Price A.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_MB4_TETCO_M2_INDEX_RECEIPTS:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "42944096"
+  product_name: TETCO M2 Index Future (Receipts)
+  contract_symbol: MB4
+  commodity: gas
+  location_id: TETCO_M2
+  index_family: GDD_INDEX_TO_IFERC
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size: {value: 2500, unit: MMBtu}
+  contract_period: monthly
+  listing_cycle: Up to 120 consecutive monthly Contract Periods
+  last_trading_day_rule: The Business Day prior to the Contract Period
+  final_settlement: Average of the Reference Price A prices minus Reference Price B
+  reference_prices:
+    - leg: A
+      id: NATURAL_GAS_APPALACHIA_TEXAS_EASTERN_M2_RECEIPTS_GAS_DAILY
+      publisher: Gas Daily
+      published_heading: "Daily Price Survey ($/MMBtu): Appalachia: Texas Eastern, M-2 receipts: Midpoint"
+      pricing_date_rule: Each day that prices are reported for the Delivery Date
+      specified_price_rule: Midpoint
+      pricing_calendar: Gas Daily
+      delivery_date_rule: Contract Period
+    - leg: B
+      id: NATURAL_GAS_TEXAS_EASTERN_TRANSMISSION_CORP_M2_RECEIPTS_INSIDE_FERC
+      publisher: Inside FERC
+      published_heading: "Monthly Bidweek Spot Gas Prices ($/MMBtu): Appalachia: Texas Eastern, M-2 receipts : Index"
+      pricing_date_rule: First publication date of Contract Period
+      specified_price_rule: Index
+      pricing_calendar: Inside FERC
+      delivery_date_rule: Contract Period
+  settlement_formula:
+    formula_type: AVERAGE_REFERENCE_PRICE_A_MINUS_B
+    description: Average Gas Daily TETCO M2 receipts midpoint across the contract period minus Inside FERC TETCO M2 receipts monthly index.
+    legs:
+      - {leg: A, operation: add, index_family: GDD}
+      - {leg: B, operation: subtract, index_family: IFERC}
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/42944096/TETCO-M2-Index-Future-Receipts
+      notes: Official ICE product page for TETCO M2 index future.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/42944096/pdf
+      notes: Official ICE PDF defines Reference Price B and the product description as Gas Daily minus IFERC; the final-settlement caption states Reference Price A.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_TPH_TRANSCO_Z6_NNY_FIXED_PRICE:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "71085641"
+  product_name: Transco Zone 6 (non NY) Fixed Price Future
+  contract_symbol: TPH
+  commodity: gas
+  location_id: TRANSCO_Z6_NNY
+  index_family: IFERC
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size: {value: 2500, unit: MMBtu}
+  contract_period: monthly
+  listing_cycle: Up to 60 consecutive monthly Contract Periods, or as otherwise determined by the Exchange
+  last_trading_day_rule: The last Business Day prior to the first calendar day of the Contract Period
+  final_settlement: Reference Price A
+  reference_price:
+    id: NATURAL_GAS_NORTHEAST_TRANSCO_ZONE_6_NON_NY_INSIDE_FERC
+    publisher: Inside FERC
+    published_heading: "Monthly Bidweek Spot Gas Prices ($/MMBtu): Northeast: Transco, zone 6 non-N.Y.: Index"
+    pricing_date_rule: First publication date of the Contract Period
+    specified_price_rule: Index
+    pricing_calendar: Inside FERC
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/71085641/Transco-Zone-6-non-NY-Fixed-Price-Future
+      notes: Official ICE product page for Transco Z6 non-NY fixed price IFERC contract metadata.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/71085641/pdf
+      notes: Official ICE PDF spec for contract symbol TPH and Inside FERC Reference Price A.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_TPB_TRANSCO_Z6_NNY_BASIS_FUTURE:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590163"
+  product_name: Transco Zone 6 (non NY) Basis Future
+  contract_symbol: TPB
+  commodity: gas
+  location_id: TRANSCO_Z6_NNY
+  index_family: BASIS_TO_LD1
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size: {value: 2500, unit: MMBtu}
+  contract_period: monthly
+  listing_cycle: Up to 120 consecutive monthly Contract Periods, or as otherwise determined by the Exchange
+  last_trading_day_rule: The last Business Day prior to the first calendar day of the Contract Period
+  final_settlement: Reference Price A minus Reference Price B
+  reference_prices:
+    - leg: A
+      id: NATURAL_GAS_NORTHEAST_TRANSCO_ZONE_6_NON_NY_INSIDE_FERC
+      publisher: Inside FERC
+      published_heading: "Monthly Bidweek Spot Gas Prices ($/MMBtu): Northeast: Transco, zone 6 non-N.Y. : Index"
+      pricing_date_rule: First publication date of Contract Period
+      specified_price_rule: Index
+      pricing_calendar: Inside FERC
+      delivery_date_rule: Contract Period
+    - leg: B
+      id: NATURAL_GAS_NYMEX
+      publisher: NYMEX
+      published_heading: Henry Hub Natural Gas Futures Contract settlement price
+      pricing_date_rule: Last scheduled trading day of the NYMEX Henry Hub Natural Gas Futures Contract for the Delivery Date
+      specified_price_rule: Settlement price
+      pricing_calendar: NYMEX
+      delivery_date_rule: Contract Period
+  settlement_formula:
+    formula_type: REFERENCE_PRICE_A_MINUS_B
+    description: Inside FERC Transco Z6 non-NY monthly index minus NYMEX Henry Hub natural gas settlement.
+    legs:
+      - {leg: A, operation: add, index_family: IFERC}
+      - {leg: B, operation: subtract, index_family: LD1}
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590163/Transco-Zone-6-non-NY-Basis-Future
+      notes: Official ICE product page for Transco Z6 non-NY basis future.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/6590163/pdf
+      notes: Official ICE PDF spec for contract symbol TPB and A-minus-B formula.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_TPS_TRANSCO_Z6_NNY_SWING_FUTURE:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590251"
+  product_name: Transco Zone 6 (non NY) Swing Future
+  contract_symbol: TPS
+  commodity: gas
+  location_id: TRANSCO_Z6_NNY
+  index_family: GDD
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size: {value: 2500, unit: MMBtu}
+  contract_period: daily
+  listing_cycle: Up to 65 consecutive daily Contract Periods
+  last_trading_day_rule: The Business Day prior to the Contract Period
+  final_settlement: Reference Price A
+  reference_price:
+    id: NATURAL_GAS_CITYGATES_TRANSCO_ZONE_6_NON_NY_GAS_DAILY
+    publisher: Gas Daily
+    published_heading: "Daily Price Survey ($/MMBtu): Northeast: Transco, zone 6 non-N.Y.: Midpoint"
+    pricing_date_rule: Each day that prices are reported for the Delivery Date
+    specified_price_rule: Midpoint
+    pricing_calendar: Gas Daily
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590251/Transco-Zone-6-non-NY-Swing-Future/specs
+      notes: Official ICE product page for Transco Z6 non-NY Gas Daily swing future.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/6590251/pdf
+      notes: Official ICE PDF spec for contract symbol TPS and Gas Daily Reference Price A.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_TPI_TRANSCO_Z6_NNY_INDEX_FUTURE:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "6590214"
+  product_name: Transco Zone 6 (non NY) Index Future
+  contract_symbol: TPI
+  commodity: gas
+  location_id: TRANSCO_Z6_NNY
+  index_family: GDD_INDEX_TO_IFERC
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size: {value: 2500, unit: MMBtu}
+  contract_period: monthly
+  listing_cycle: Up to 120 consecutive monthly Contract Periods
+  last_trading_day_rule: The last Business Day prior to the first calendar day of the Contract Period
+  final_settlement: Average of the Reference Price A prices minus Reference Price B
+  reference_prices:
+    - leg: A
+      id: NATURAL_GAS_CITYGATES_TRANSCO_ZONE_6_NON_NY_GAS_DAILY
+      publisher: Gas Daily
+      published_heading: "Daily Price Survey ($/MMBtu): Northeast: Transco, zone 6 non-N.Y.: Midpoint"
+      pricing_date_rule: Each day that prices are reported for the Delivery Date
+      specified_price_rule: Midpoint
+      pricing_calendar: Gas Daily
+      delivery_date_rule: Each calendar day in the Contract Period
+    - leg: B
+      id: NATURAL_GAS_NORTHEAST_TRANSCO_ZONE_6_NON_NY_INSIDE_FERC
+      publisher: Inside FERC
+      published_heading: "Monthly Bidweek Spot Gas Prices ($/MMBtu): Northeast: Transco, zone 6 non-N.Y. : Index"
+      pricing_date_rule: First publication date of the Contract Period
+      specified_price_rule: Index
+      pricing_calendar: Inside FERC
+      delivery_date_rule: Contract Period
+  settlement_formula:
+    formula_type: AVERAGE_REFERENCE_PRICE_A_MINUS_B
+    description: Average Gas Daily Transco Z6 non-NY midpoint across the contract period minus Inside FERC Transco Z6 non-NY monthly index.
+    legs:
+      - {leg: A, operation: add, index_family: GDD}
+      - {leg: B, operation: subtract, index_family: IFERC}
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590214/Transco-Zone-6-non-NY-Index-Future
+      notes: Official ICE product page for Transco Z6 non-NY index future.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/6590214/pdf
+      notes: Official ICE PDF spec for contract symbol TPI and average-Gas-Daily-minus-IFERC formula.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_TZ5_TRANSCO_Z5_FIXED_PRICE:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "83048643"
+  product_name: Transco Zone 5 Fixed Price
+  contract_symbol: TZ5
+  commodity: gas
+  location_id: TRANSCO_Z5
+  index_family: IFERC
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size: {value: 2500, unit: MMBtu}
+  contract_period: monthly
+  listing_cycle: Up to 60 consecutive monthly Contract Periods, or as otherwise determined by the Exchange
+  last_trading_day_rule: The last Business Day prior to the first calendar day of the Contract Period
+  final_settlement: Reference Price A
+  reference_price:
+    id: NATURAL_GAS_TRANSCONTINENTAL_GAS_PIPELINE_ZONE_5_DELIVERED_INSIDE_FERC
+    publisher: Inside FERC
+    published_heading: "Monthly Bidweek Spot Gas Prices ($/MMBtu): Northeast: Transco, zone 5 del.: Index"
+    pricing_date_rule: First publication date of the Contract Period
+    specified_price_rule: Index
+    pricing_calendar: Inside FERC
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/83048643/Transco-Zone-5-Fixed-Price
+      notes: Official ICE product page for Transco Z5 fixed price IFERC contract metadata.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/83048643/pdf
+      notes: Official ICE PDF spec for contract symbol TZ5 and Inside FERC Reference Price A.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_DKR_TRANSCO_Z5_BASIS_FUTURE:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "42944091"
+  product_name: Transco Zone 5 Basis Future
+  contract_symbol: DKR
+  commodity: gas
+  location_id: TRANSCO_Z5
+  index_family: BASIS_TO_LD1
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size: {value: 2500, unit: MMBtu}
+  contract_period: monthly
+  listing_cycle: Up to 120 consecutive monthly Contract Periods
+  last_trading_day_rule: The last Business Day prior to the first calendar day of the Contract Period
+  final_settlement: Reference Price A minus Reference Price B
+  reference_prices:
+    - leg: A
+      id: NATURAL_GAS_TRANSCONTINENTAL_GAS_PIPELINE_ZONE_5_DELIVERED_INSIDE_FERC
+      publisher: Inside FERC
+      published_heading: "Monthly Bidweek Spot Gas Prices ($/MMBtu): Northeast: Transco, zone 5 del. : Index"
+      pricing_date_rule: First publication date of Contract Period
+      specified_price_rule: Index
+      pricing_calendar: Inside FERC
+      delivery_date_rule: Contract Period
+    - leg: B
+      id: NATURAL_GAS_NYMEX
+      publisher: NYMEX
+      published_heading: Henry Hub Natural Gas Futures Contract settlement price
+      pricing_date_rule: Last scheduled trading day of the NYMEX Henry Hub Natural Gas Futures Contract for the Delivery Date
+      specified_price_rule: Settlement price
+      pricing_calendar: NYMEX
+      delivery_date_rule: Contract Period
+  settlement_formula:
+    formula_type: REFERENCE_PRICE_A_MINUS_B
+    description: Inside FERC Transco Z5 delivered monthly index minus NYMEX Henry Hub natural gas settlement.
+    legs:
+      - {leg: A, operation: add, index_family: IFERC}
+      - {leg: B, operation: subtract, index_family: LD1}
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/42944091/Transco-Zone-5-Basis-Future
+      notes: Official ICE product page for Transco Z5 basis future.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/42944091/pdf
+      notes: Official ICE PDF spec for contract symbol DKR and A-minus-B formula.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_DKS_TRANSCO_Z5_SWING_FUTURE:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "42944092"
+  product_name: Transco Zone 5 Swing Future
+  contract_symbol: DKS
+  commodity: gas
+  location_id: TRANSCO_Z5
+  index_family: GDD
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size: {value: 2500, unit: MMBtu}
+  contract_period: daily
+  listing_cycle: Up to 65 consecutive daily Contract Periods
+  last_trading_day_rule: The Business Day prior to the Contract Period
+  final_settlement: Reference Price A
+  reference_price:
+    id: NATURAL_GAS_CITYGATES_TRANSCO_ZONE_5_DELIVERED_GAS_DAILY
+    publisher: Gas Daily
+    published_heading: "Daily Price Survey ($/MMBtu): Northeast: Transco, zone 5 del.: Midpoint"
+    pricing_date_rule: Each day that prices are reported for the Delivery Date
+    specified_price_rule: Midpoint
+    pricing_calendar: Gas Daily
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/42944092/Transco-Zone-5-Swing-Future
+      notes: Official ICE product page for Transco Z5 Gas Daily swing future.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/42944092/pdf
+      notes: Official ICE PDF spec for contract symbol DKS and Gas Daily Reference Price A.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_DKT_TRANSCO_Z5_INDEX_FUTURE:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "42944093"
+  product_name: Transco Zone 5 Index Future
+  contract_symbol: DKT
+  commodity: gas
+  location_id: TRANSCO_Z5
+  index_family: GDD_INDEX_TO_IFERC
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size: {value: 2500, unit: MMBtu}
+  contract_period: monthly
+  listing_cycle: Up to 120 consecutive monthly Contract Periods
+  last_trading_day_rule: The Business Day prior to the Contract Period
+  final_settlement: Average of the Reference Price A prices minus Reference Price B
+  reference_prices:
+    - leg: A
+      id: NATURAL_GAS_CITYGATES_TRANSCO_ZONE_5_DELIVERED_GAS_DAILY
+      publisher: Gas Daily
+      published_heading: "Daily Price Survey ($/MMBtu): Northeast: Transco, zone 5 del.: Midpoint"
+      pricing_date_rule: Each day that prices are reported for the Delivery Date
+      specified_price_rule: Midpoint
+      pricing_calendar: Gas Daily
+      delivery_date_rule: Contract Period
+    - leg: B
+      id: NATURAL_GAS_TRANSCONTINENTAL_GAS_PIPELINE_ZONE_5_DELIVERED_INSIDE_FERC
+      publisher: Inside FERC
+      published_heading: "Monthly Bidweek Spot Gas Prices ($/MMBtu): Northeast: Transco, zone 5 del. : Index"
+      pricing_date_rule: First publication date of Contract Period
+      specified_price_rule: Index
+      pricing_calendar: Inside FERC
+      delivery_date_rule: Contract Period
+  settlement_formula:
+    formula_type: AVERAGE_REFERENCE_PRICE_A_MINUS_B
+    description: Average Gas Daily Transco Z5 delivered midpoint across the contract period minus Inside FERC Transco Z5 delivered monthly index.
+    legs:
+      - {leg: A, operation: add, index_family: GDD}
+      - {leg: B, operation: subtract, index_family: IFERC}
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/42944093/Transco-Zone-5-Index-Future
+      notes: Official ICE product page for Transco Z5 index future.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/42944093/pdf
+      notes: Official ICE PDF defines Reference Price B and the product description as Gas Daily minus IFERC; the final-settlement caption states Reference Price A.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_T5Z_TRANSCO_Z5_SOUTH_FIXED_PRICE:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "83048616"
+  product_name: Transco Zone 5 South Fixed Price
+  contract_symbol: T5Z
+  commodity: gas
+  location_id: TRANSCO_Z5_SOUTH
+  index_family: IFERC
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size: {value: 2500, unit: MMBtu}
+  contract_period: monthly
+  listing_cycle: Up to 60 consecutive monthly Contract Periods, or as otherwise determined by the Exchange
+  last_trading_day_rule: The last Business Day prior to the first calendar day of the Contract Period
+  final_settlement: Reference Price A
+  reference_price:
+    id: NATURAL_GAS_TRANSCONTINENTAL_ZONE_5_DELIVERED_SOUTH_INSIDE_FERC
+    publisher: Inside FERC
+    published_heading: "Monthly Bidweek Spot Gas Prices ($/MMBtu): Northeast: Transco, zone 5 del. South: Index"
+    pricing_date_rule: First publication date of the Contract Period
+    specified_price_rule: Index
+    pricing_calendar: Inside FERC
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/83048616/Transco-Zone-5-South-Fixed-Price
+      notes: Official ICE product page for Transco Z5 South fixed price IFERC contract metadata.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/83048616/pdf
+      notes: Official ICE PDF spec for contract symbol T5Z and Inside FERC Reference Price A.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_T5B_TRANSCO_Z5_SOUTH_BASIS_FUTURE:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "82270888"
+  product_name: Transco Zone 5 South Basis Future
+  contract_symbol: T5B
+  commodity: gas
+  location_id: TRANSCO_Z5_SOUTH
+  index_family: BASIS_TO_LD1
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size: {value: 2500, unit: MMBtu}
+  contract_period: monthly
+  listing_cycle: Up to 120 consecutive monthly Contract Periods, or as otherwise determined by the Exchange
+  last_trading_day_rule: The last Business Day prior to the first calendar day of the Contract Period
+  final_settlement: Reference Price A minus Reference Price B
+  reference_prices:
+    - leg: A
+      id: NATURAL_GAS_TRANSCONTINENTAL_ZONE_5_DELIVERED_SOUTH_INSIDE_FERC
+      publisher: Inside FERC
+      published_heading: "Monthly Bidweek Spot Gas Prices ($/MMBtu): Northeast: Transco, zone 5 del. South: Index"
+      pricing_date_rule: First publication date of the Contract Period
+      specified_price_rule: Index
+      pricing_calendar: Inside FERC
+      delivery_date_rule: Contract Period
+    - leg: B
+      id: NATURAL_GAS_NYMEX
+      publisher: NYMEX
+      published_heading: Henry Hub Natural Gas Futures Contract settlement price
+      pricing_date_rule: Last scheduled trading day of the NYMEX Henry Hub Natural Gas Futures Contract for the Delivery Date
+      specified_price_rule: Settlement price
+      pricing_calendar: NYMEX
+      delivery_date_rule: Contract Period
+  settlement_formula:
+    formula_type: REFERENCE_PRICE_A_MINUS_B
+    description: Inside FERC Transco Z5 South monthly index minus NYMEX Henry Hub natural gas settlement.
+    legs:
+      - {leg: A, operation: add, index_family: IFERC}
+      - {leg: B, operation: subtract, index_family: LD1}
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/82270888/Transco-Zone-5-South-Basis-Future
+      notes: Official ICE product page for Transco Z5 South basis future.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/82270888/pdf
+      notes: Official ICE PDF defines Reference Price B and the product description as A-minus-B; the final-settlement caption states Reference Price A.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_T5C_TRANSCO_Z5_SOUTH_SWING_FUTURE:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "82270890"
+  product_name: Transco Zone 5 South Swing Future
+  contract_symbol: T5C
+  commodity: gas
+  location_id: TRANSCO_Z5_SOUTH
+  index_family: GDD
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size: {value: 2500, unit: MMBtu}
+  contract_period: daily
+  listing_cycle: Up to 65 consecutive monthly Contract Periods, or as otherwise determined by the Exchange
+  last_trading_day_rule: The Business Day prior to the Contract Period
+  final_settlement: Reference Price A
+  reference_price:
+    id: NATURAL_GAS_TRANSCONTINENTAL_ZONE_5_DELIVERED_SOUTH_GAS_DAILY
+    publisher: Gas Daily
+    published_heading: "Final Daily Gas Indices ($/MMBtu): Northeast: Transco, zone 5 del. South: Midpoint"
+    pricing_date_rule: Each day that prices are reported for the Delivery Date
+    specified_price_rule: Midpoint
+    pricing_calendar: Gas Daily
+    delivery_date_rule: Contract Period
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/82270890/Transco-Zone-5-South-Swing-Future
+      notes: Official ICE product page for Transco Z5 South Gas Daily swing future.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/82270890/pdf
+      notes: Official ICE PDF spec for contract symbol T5C and Gas Daily Reference Price A.
+  verification_status: official_exchange_spec_verified
+  status: approved_core
+
+ICE_T5I_TRANSCO_Z5_SOUTH_INDEX_FUTURE:
+  source_class: OFFICIAL_EXCHANGE_SPEC
+  exchange: ICE Futures U.S.
+  clearing_venue: ICEU
+  mic_code: IFED
+  product_guide_id: "82270889"
+  product_name: Transco Zone 5 South Index Future
+  contract_symbol: T5I
+  commodity: gas
+  location_id: TRANSCO_Z5_SOUTH
+  index_family: GDD_INDEX_TO_IFERC
+  quote_unit: USD_per_MMBtu
+  settlement_method: Cash settlement
+  contract_size: {value: 2500, unit: MMBtu}
+  contract_period: monthly
+  listing_cycle: Up to 120 consecutive monthly Contract Periods, or as otherwise determined by the Exchange
+  last_trading_day_rule: The last Business Day prior to the first calendar day of the Contract Period
+  final_settlement: Average of the Reference Price A prices minus Reference Price B
+  reference_prices:
+    - leg: A
+      id: NATURAL_GAS_TRANSCONTINENTAL_ZONE_5_DELIVERED_SOUTH_GAS_DAILY
+      publisher: Gas Daily
+      published_heading: "Final Daily Gas Indices ($/MMBtu): Northeast: Transco, zone 5 del. South: Midpoint"
+      pricing_date_rule: Each day that prices are reported for the Delivery Date
+      specified_price_rule: Midpoint
+      pricing_calendar: Gas Daily
+      delivery_date_rule: Each calendar day in the Contract Period
+    - leg: B
+      id: NATURAL_GAS_TRANSCONTINENTAL_ZONE_5_DELIVERED_SOUTH_INSIDE_FERC
+      publisher: Inside FERC
+      published_heading: "Monthly Bidweek Spot Gas Prices ($/MMBtu): Northeast: Transco, zone 5 del. South: Index"
+      pricing_date_rule: First publication date of Contract Period
+      specified_price_rule: Index
+      pricing_calendar: Inside FERC
+      delivery_date_rule: Contract Period
+  settlement_formula:
+    formula_type: AVERAGE_REFERENCE_PRICE_A_MINUS_B
+    description: Average Gas Daily Transco Z5 South midpoint across the contract period minus Inside FERC Transco Z5 South monthly index.
+    legs:
+      - {leg: A, operation: add, index_family: GDD}
+      - {leg: B, operation: subtract, index_family: IFERC}
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/82270889/Transco-Zone-5-South-Index-Future
+      notes: Official ICE product page for Transco Z5 South index future.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/82270889/pdf
+      notes: Official ICE PDF spec for contract symbol T5I and average-Gas-Daily-minus-IFERC formula.
+  verification_status: official_exchange_spec_verified
+  status: approved_core

@@ -130,6 +130,14 @@ def _validate_product_master(data: dict[str, Any], schema: dict[str, Any]) -> in
     return count
 
 
+def _validate_keyed_mapping(data: dict[str, Any], schema: dict[str, Any], label: str, id_field: str) -> int:
+    count = 0
+    for item_id, value in data.items():
+        _validate(schema, _registry_record(item_id, value, id_field), f"{label}:{item_id}")
+        count += 1
+    return count
+
+
 def _validate_vol_surface_universe(data: dict[str, Any], schema: dict[str, Any]) -> int:
     count = 0
     for universe_id, value in data.items():
@@ -155,6 +163,8 @@ def validate_registries(registry_dir: Path, schema_dir: Path) -> RegistryValidat
         "market_indices.yaml": lambda data: _validate_mapping(data, _load_schema(schema_dir, "market_index_rules.schema.json"), "market_indices"),
         "period_aliases.yaml": lambda data: _validate_mapping(data, _load_schema(schema_dir, "period_aliases.schema.json"), "period_aliases"),
         "product_master.yaml": lambda data: _validate_product_master(data, _load_schema(schema_dir, "product_master_entry.schema.json")),
+        "exchange_contracts.yaml": lambda data: _validate_keyed_mapping(data, _load_schema(schema_dir, "exchange_contract.schema.json"), "exchange_contracts", "contract_id"),
+        "forward_fundamental_mappings.yaml": lambda data: _validate_keyed_mapping(data, _load_schema(schema_dir, "forward_fundamental_mapping.schema.json"), "forward_fundamental_mappings", "mapping_id"),
         "quoted_spreads.yaml": lambda data: _validate_quoted_spreads(data, _load_schema(schema_dir, "quoted_spread.schema.json")),
         "quantity_conventions.yaml": _validate_gas_quantity_convention,
         "vol_surface_universe.yaml": lambda data: _validate_vol_surface_universe(data, _load_schema(schema_dir, "vol_surface_universe_entry.schema.json")),

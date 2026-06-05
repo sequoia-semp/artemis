@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ForwardFundamentalMapping",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "mapping_id": {"type": "string"},
+    "source_contract_id": {"type": "string"},
+    "contract_symbol": {"type": "string"},
+    "aliases": {"type": "array", "items": {"type": "string"}},
+    "mapping_type": {
+      "enum": [
+        "forward_contract_to_fundamental_lmp",
+        "gas_contract_to_index",
+        "gas_basis_contract_to_formula",
+        "gas_index_contract_to_formula"
+      ]
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "index_id": {"type": "string"},
+        "commodity": {"enum": ["power", "gas"]},
+        "location_id": {"type": "string"},
+        "market_run": {"enum": ["DA", "RT"]},
+        "price_component": {"const": "FULL_LMP"},
+        "shape": {"enum": ["PEAK", "OFFPEAK", "ATC"]},
+        "index_family": {
+          "enum": ["GDD", "LD1", "IFERC", "BASIS_TO_LD1", "GDD_INDEX_TO_IFERC", "GDD_SWING", "CUSTOM"]
+        },
+        "quote_unit": {"type": "string"},
+        "pnode_id": {"type": "integer"},
+        "pnode_name": {"type": "string"},
+        "pnode_type": {"type": "string"},
+        "pjm_lmp_feed": {"type": "string"},
+        "pjm_pnode_feed": {"type": "string"},
+        "formula": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["formula_type", "description", "legs"],
+          "properties": {
+            "formula_type": {"enum": ["REFERENCE_PRICE_A", "REFERENCE_PRICE_A_MINUS_B", "AVERAGE_REFERENCE_PRICE_A_MINUS_B"]},
+            "description": {"type": "string"},
+            "legs": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["leg", "operation", "index_id", "index_family"],
+                "properties": {
+                  "leg": {"type": "string"},
+                  "operation": {"enum": ["add", "subtract"]},
+                  "index_id": {"type": "string"},
+                  "index_family": {
+                    "enum": ["GDD", "LD1", "IFERC", "BASIS_TO_LD1", "GDD_INDEX_TO_IFERC", "GDD_SWING", "CUSTOM"]
+                  },
+                  "aggregation": {"type": "string"}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "aggregation_rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rule_id", "description", "calendar"],
+      "properties": {
+        "rule_id": {"type": "string"},
+        "description": {"type": "string"},
+        "hours_ending_ept": {"type": "array", "items": {"type": "integer"}, "minItems": 1},
+        "calendar": {"type": "string"}
+      }
+    },
+    "source_authority": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "source_documents": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["authority", "url", "notes"],
+        "properties": {
+          "authority": {"type": "string"},
+          "url": {"type": "string"},
+          "notes": {"type": "string"}
+        }
+      }
+    },
+    "verification_status": {
+      "enum": [
+        "official_exchange_verified_user_pnode_approved",
+        "official_exchange_verified",
+        "candidate"
+      ]
+    },
+    "status": {"enum": ["approved_core", "candidate"]}
+  },
+  "required": [
+    "mapping_id",
+    "source_contract_id",
+    "contract_symbol",
+    "mapping_type",
+    "target",
+    "aggregation_rule",
+    "source_authority",
+    "source_documents",
+    "verification_status",
+    "status"
+  ],
+  "allOf": [
+    {
+      "if": {"properties": {"mapping_type": {"const": "forward_contract_to_fundamental_lmp"}}, "required": ["mapping_type"]},
+      "then": {
+        "properties": {
+          "target": {
+            "required": [
+              "index_id",
+              "commodity",
+              "location_id",
+              "market_run",
+              "price_component",
+              "shape",
+              "quote_unit",
+              "pnode_id",
+              "pnode_name",
+              "pnode_type",
+              "pjm_lmp_feed",
+              "pjm_pnode_feed"
+            ],
+            "properties": {"commodity": {"const": "power"}}
+          },
+          "aggregation_rule": {"required": ["hours_ending_ept"]}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "mapping_type": {
+            "enum": ["gas_contract_to_index", "gas_basis_contract_to_formula", "gas_index_contract_to_formula"]
+          }
+        },
+        "required": ["mapping_type"]
+      },
+      "then": {
+        "properties": {
+          "target": {
+            "required": ["index_id", "commodity", "location_id", "index_family", "quote_unit"],
+            "properties": {"commodity": {"const": "gas"}}
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "mapping_type": {"enum": ["gas_basis_contract_to_formula", "gas_index_contract_to_formula"]}
+        },
+        "required": ["mapping_type"]
+      },
+      "then": {
+        "properties": {
+          "target": {"required": ["formula"]}
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,1035 @@
+ICE_PMI_TO_PJM_WH_RT_LMP_51288:
+  source_contract_id: ICE_PMI_PJM_WH_RT_PEAK_1MW
+  contract_symbol: PMI
+  aliases:
+    - ICE PMI
+    - PJM WH RT PMI
+    - PJM Western Hub Real-Time Peak (1 MW)
+  mapping_type: forward_contract_to_fundamental_lmp
+  target:
+    index_id: PJM.WH.RT.FULL_LMP.PEAK
+    commodity: power
+    location_id: WH
+    market_run: RT
+    price_component: FULL_LMP
+    shape: PEAK
+    quote_unit: USD_per_MWh
+    pnode_id: 51288
+    pnode_name: WESTERN HUB
+    pnode_type: HUB
+    pjm_lmp_feed: rt_hrl_lmps
+    pjm_pnode_feed: pnode
+  aggregation_rule:
+    rule_id: PJM_RT_PEAK_HE_0800_2300_EPT
+    description: ICE Reference Price A average of PJM Western Hub real-time LMPs for hours ending 0800-2300 EPT.
+    hours_ending_ept: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+    calendar: PJM_WEEKDAYS_EXCLUDING_NERC_HOLIDAYS
+  source_authority:
+    - OFFICIAL_EXCHANGE_SPEC
+    - USER_APPROVED_CONVENTION
+    - OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590369/PJM-Western-Hub-Real-Time-Peak-1-MW-Fixed-Price-Future
+      notes: Defines PMI Reference Price A as PJM Western Hub real-time peak LMP average.
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents PJM Data Miner pnode and real-time LMP feeds; exact 51288 pnode mapping remains user-approved in this slice.
+  verification_status: official_exchange_verified_user_pnode_approved
+  status: approved_core
+
+ICE_PDP_TO_PJM_WH_RT_LMP_51288:
+  source_contract_id: ICE_PDP_PJM_WH_RT_PEAK_DAILY
+  contract_symbol: PDP
+  aliases:
+    - ICE PDP
+    - PJM WH RT PDP
+    - PJM Western Hub Real-Time Peak Daily
+  mapping_type: forward_contract_to_fundamental_lmp
+  target:
+    index_id: PJM.WH.RT.FULL_LMP.PEAK
+    commodity: power
+    location_id: WH
+    market_run: RT
+    price_component: FULL_LMP
+    shape: PEAK
+    quote_unit: USD_per_MWh
+    pnode_id: 51288
+    pnode_name: WESTERN HUB
+    pnode_type: HUB
+    pjm_lmp_feed: rt_hrl_lmps
+    pjm_pnode_feed: pnode
+  aggregation_rule:
+    rule_id: PJM_RT_PEAK_HE_0800_2300_EPT
+    description: ICE Reference Price A average of PJM Western Hub real-time LMPs for hours ending 0800-2300 EPT.
+    hours_ending_ept: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+    calendar: PJM_DAILY_REPORTED_PRICES
+  source_authority:
+    - OFFICIAL_EXCHANGE_SPEC
+    - USER_APPROVED_CONVENTION
+    - OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590472/PJM-Western-Hub-Real-Time-Peak-Daily-Fixed-Price-Future/specs
+      notes: Defines PDP Reference Price A as PJM Western Hub real-time peak LMP average.
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents PJM Data Miner pnode and real-time LMP feeds; exact 51288 pnode mapping remains user-approved in this slice.
+  verification_status: official_exchange_verified_user_pnode_approved
+  status: approved_core
+
+ICE_PJC_TO_PJM_WH_DA_LMP_51288:
+  source_contract_id: ICE_PJC_PJM_WH_DA_PEAK_1MW
+  contract_symbol: PJC
+  aliases: [ICE PJC, PJM WH DA PJC, PJM Western Hub Day-Ahead Peak]
+  mapping_type: forward_contract_to_fundamental_lmp
+  target:
+    index_id: PJM.WH.DA.FULL_LMP.PEAK
+    commodity: power
+    location_id: WH
+    market_run: DA
+    price_component: FULL_LMP
+    shape: PEAK
+    quote_unit: USD_per_MWh
+    pnode_id: 51288
+    pnode_name: WESTERN HUB
+    pnode_type: HUB
+    pjm_lmp_feed: da_hrl_lmps
+    pjm_pnode_feed: pnode
+  aggregation_rule:
+    rule_id: PJM_PEAK_HE_0800_2300_EPT
+    description: ICE Reference Price A average of PJM day-ahead LMPs for hours ending 0800-2300 EPT.
+    hours_ending_ept: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+    calendar: PJM_WEEKDAYS_EXCLUDING_NERC_HOLIDAYS
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590366/PJM-Western-Hub-Day-Ahead-Peak-Fixed-Price-Future
+      notes: Defines PJC Reference Price A as PJM Western Hub day-ahead peak LMP average.
+    - authority: GridStatus PJM LMP example
+      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
+      notes: Public example showing Western Hub pnode 51288 in PJM hub LMP data.
+  verification_status: official_exchange_verified_user_pnode_approved
+  status: approved_core
+
+ICE_PJD_TO_PJM_WH_DA_LMP_51288:
+  source_contract_id: ICE_PJD_PJM_WH_DA_OFFPEAK_1MW
+  contract_symbol: PJD
+  aliases: [ICE PJD, PJM WH DA Off-Peak, PJM Western Hub Day-Ahead Off-Peak]
+  mapping_type: forward_contract_to_fundamental_lmp
+  target:
+    index_id: PJM.WH.DA.FULL_LMP.OFFPEAK
+    commodity: power
+    location_id: WH
+    market_run: DA
+    price_component: FULL_LMP
+    shape: OFFPEAK
+    quote_unit: USD_per_MWh
+    pnode_id: 51288
+    pnode_name: WESTERN HUB
+    pnode_type: HUB
+    pjm_lmp_feed: da_hrl_lmps
+    pjm_pnode_feed: pnode
+  aggregation_rule:
+    rule_id: PJM_OFFPEAK_5X8_2X24_EPT
+    description: ICE offpeak average using weekday HE 0100-0700 and 2400 EPT plus all 24 hours on weekends and NERC holidays.
+    hours_ending_ept: [1, 2, 3, 4, 5, 6, 7, 24]
+    calendar: PJM_OFFPEAK_WITH_WEEKEND_AND_NERC_HOLIDAY_FULL_DAY
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590428/PJM-Western-Hub-Day-Ahead-Off-Peak-Fixed-Price-Future
+      notes: Defines PJD Reference Price A as PJM Western Hub day-ahead offpeak LMP average.
+    - authority: GridStatus PJM LMP example
+      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
+      notes: Public example showing Western Hub pnode 51288 in PJM hub LMP data.
+  verification_status: official_exchange_verified_user_pnode_approved
+  status: approved_core
+
+ICE_OPJ_TO_PJM_WH_RT_LMP_51288:
+  source_contract_id: ICE_OPJ_PJM_WH_RT_OFFPEAK_1MW
+  contract_symbol: OPJ
+  aliases: [ICE OPJ, PJM WH RT Off-Peak, PJM Western Hub Real-Time Off-Peak]
+  mapping_type: forward_contract_to_fundamental_lmp
+  target:
+    index_id: PJM.WH.RT.FULL_LMP.OFFPEAK
+    commodity: power
+    location_id: WH
+    market_run: RT
+    price_component: FULL_LMP
+    shape: OFFPEAK
+    quote_unit: USD_per_MWh
+    pnode_id: 51288
+    pnode_name: WESTERN HUB
+    pnode_type: HUB
+    pjm_lmp_feed: rt_hrl_lmps
+    pjm_pnode_feed: pnode
+  aggregation_rule:
+    rule_id: PJM_OFFPEAK_5X8_2X24_EPT
+    description: ICE offpeak average using weekday HE 0100-0700 and 2400 EPT plus all 24 hours on weekends and NERC holidays.
+    hours_ending_ept: [1, 2, 3, 4, 5, 6, 7, 24]
+    calendar: PJM_OFFPEAK_WITH_WEEKEND_AND_NERC_HOLIDAY_FULL_DAY
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590424/PJM-Western-Hub-Real-Time-Off-Peak-Fixed-Price-Future
+      notes: Defines OPJ Reference Price A as PJM Western Hub real-time offpeak LMP average.
+    - authority: GridStatus PJM LMP example
+      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
+      notes: Public example showing Western Hub pnode 51288 in PJM hub LMP data.
+  verification_status: official_exchange_verified_user_pnode_approved
+  status: approved_core
+
+ICE_ADB_TO_PJM_AD_DA_LMP_34497127:
+  source_contract_id: ICE_ADB_PJM_AD_DA_PEAK_1MW
+  contract_symbol: ADB
+  aliases: [ICE ADB, PJM AD DA, AEP Dayton Day-Ahead Peak]
+  mapping_type: forward_contract_to_fundamental_lmp
+  target:
+    index_id: PJM.AD.DA.FULL_LMP.PEAK
+    commodity: power
+    location_id: AD
+    market_run: DA
+    price_component: FULL_LMP
+    shape: PEAK
+    quote_unit: USD_per_MWh
+    pnode_id: 34497127
+    pnode_name: AEP-DAYTON HUB
+    pnode_type: HUB
+    pjm_lmp_feed: da_hrl_lmps
+    pjm_pnode_feed: pnode
+  aggregation_rule:
+    rule_id: PJM_PEAK_HE_0800_2300_EPT
+    description: ICE Reference Price A average of PJM day-ahead LMPs for hours ending 0800-2300 EPT.
+    hours_ending_ept: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+    calendar: PJM_WEEKDAYS_EXCLUDING_NERC_HOLIDAYS
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590327/PJM-AEP-Dayton-Hub-Day-Ahead-Peak-Fixed-Price-Future
+      notes: Defines ADB Reference Price A as AEP-Dayton Hub day-ahead peak LMP average.
+    - authority: GridStatus PJM LMP example
+      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
+      notes: Public example showing AEP-DAYTON HUB pnode 34497127 in PJM hub LMP data.
+  verification_status: official_exchange_verified_user_pnode_approved
+  status: approved_core
+
+ICE_ADD_TO_PJM_AD_DA_LMP_34497127:
+  source_contract_id: ICE_ADD_PJM_AD_DA_OFFPEAK_1MW
+  contract_symbol: ADD
+  aliases: [ICE ADD, PJM AD DA Off-Peak, AEP Dayton Day-Ahead Off-Peak]
+  mapping_type: forward_contract_to_fundamental_lmp
+  target:
+    index_id: PJM.AD.DA.FULL_LMP.OFFPEAK
+    commodity: power
+    location_id: AD
+    market_run: DA
+    price_component: FULL_LMP
+    shape: OFFPEAK
+    quote_unit: USD_per_MWh
+    pnode_id: 34497127
+    pnode_name: AEP-DAYTON HUB
+    pnode_type: HUB
+    pjm_lmp_feed: da_hrl_lmps
+    pjm_pnode_feed: pnode
+  aggregation_rule:
+    rule_id: PJM_OFFPEAK_5X8_2X24_EPT
+    description: ICE offpeak average using weekday HE 0100-0700 and 2400 EPT plus all 24 hours on weekends and NERC holidays.
+    hours_ending_ept: [1, 2, 3, 4, 5, 6, 7, 24]
+    calendar: PJM_OFFPEAK_WITH_WEEKEND_AND_NERC_HOLIDAY_FULL_DAY
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590388/PJM-AEP-Dayton-Hub-Day-Ahead-Off-Peak-Fixed-Price-Future
+      notes: Defines ADD Reference Price A as AEP-Dayton Hub day-ahead offpeak LMP average.
+    - authority: GridStatus PJM LMP example
+      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
+      notes: Public example showing AEP-DAYTON HUB pnode 34497127 in PJM hub LMP data.
+  verification_status: official_exchange_verified_user_pnode_approved
+  status: approved_core
+
+ICE_MSO_TO_PJM_AD_RT_LMP_34497127:
+  source_contract_id: ICE_MSO_PJM_AD_RT_PEAK_1MW
+  contract_symbol: MSO
+  aliases: [ICE MSO, PJM AD RT, AEP Dayton Real-Time Peak]
+  mapping_type: forward_contract_to_fundamental_lmp
+  target:
+    index_id: PJM.AD.RT.FULL_LMP.PEAK
+    commodity: power
+    location_id: AD
+    market_run: RT
+    price_component: FULL_LMP
+    shape: PEAK
+    quote_unit: USD_per_MWh
+    pnode_id: 34497127
+    pnode_name: AEP-DAYTON HUB
+    pnode_type: HUB
+    pjm_lmp_feed: rt_hrl_lmps
+    pjm_pnode_feed: pnode
+  aggregation_rule:
+    rule_id: PJM_PEAK_HE_0800_2300_EPT
+    description: ICE Reference Price A average of PJM real-time LMPs for hours ending 0800-2300 EPT.
+    hours_ending_ept: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+    calendar: PJM_WEEKDAYS_EXCLUDING_NERC_HOLIDAYS
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590354/PJM-AEP-Dayton-Hub-Real-Time-Peak-Fixed-Price-Future
+      notes: Defines MSO Reference Price A as AEP-Dayton Hub real-time peak LMP average.
+    - authority: GridStatus PJM LMP example
+      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
+      notes: Public example showing AEP-DAYTON HUB pnode 34497127 in PJM hub LMP data.
+  verification_status: official_exchange_verified_user_pnode_approved
+  status: approved_core
+
+ICE_AOD_TO_PJM_AD_RT_LMP_34497127:
+  source_contract_id: ICE_AOD_PJM_AD_RT_OFFPEAK_1MW
+  contract_symbol: AOD
+  aliases: [ICE AOD, PJM AD RT Off-Peak, AEP Dayton Real-Time Off-Peak]
+  mapping_type: forward_contract_to_fundamental_lmp
+  target:
+    index_id: PJM.AD.RT.FULL_LMP.OFFPEAK
+    commodity: power
+    location_id: AD
+    market_run: RT
+    price_component: FULL_LMP
+    shape: OFFPEAK
+    quote_unit: USD_per_MWh
+    pnode_id: 34497127
+    pnode_name: AEP-DAYTON HUB
+    pnode_type: HUB
+    pjm_lmp_feed: rt_hrl_lmps
+    pjm_pnode_feed: pnode
+  aggregation_rule:
+    rule_id: PJM_OFFPEAK_5X8_2X24_EPT
+    description: ICE offpeak average using weekday HE 0100-0700 and 2400 EPT plus all 24 hours on weekends and NERC holidays.
+    hours_ending_ept: [1, 2, 3, 4, 5, 6, 7, 24]
+    calendar: PJM_OFFPEAK_WITH_WEEKEND_AND_NERC_HOLIDAY_FULL_DAY
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590389/PJM-AEP-Dayton-Hub-Real-Time-Off-Peak-Fixed-Price-Future
+      notes: Defines AOD Reference Price A as AEP-Dayton Hub real-time offpeak LMP average.
+    - authority: GridStatus PJM LMP example
+      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
+      notes: Public example showing AEP-DAYTON HUB pnode 34497127 in PJM hub LMP data.
+  verification_status: official_exchange_verified_user_pnode_approved
+  status: approved_core
+
+ICE_NIB_TO_PJM_NI_DA_LMP_33092315:
+  source_contract_id: ICE_NIB_PJM_NI_DA_PEAK_1MW
+  contract_symbol: NIB
+  aliases: [ICE NIB, PJM NI DA, Northern Illinois Day-Ahead Peak]
+  mapping_type: forward_contract_to_fundamental_lmp
+  target:
+    index_id: PJM.NI.DA.FULL_LMP.PEAK
+    commodity: power
+    location_id: NI
+    market_run: DA
+    price_component: FULL_LMP
+    shape: PEAK
+    quote_unit: USD_per_MWh
+    pnode_id: 33092315
+    pnode_name: N ILLINOIS HUB
+    pnode_type: HUB
+    pjm_lmp_feed: da_hrl_lmps
+    pjm_pnode_feed: pnode
+  aggregation_rule:
+    rule_id: PJM_PEAK_HE_0800_2300_EPT
+    description: ICE Reference Price A average of PJM day-ahead LMPs for hours ending 0800-2300 EPT.
+    hours_ending_ept: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+    calendar: PJM_WEEKDAYS_EXCLUDING_NERC_HOLIDAYS
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590360/PJM-NI-Hub-Day-Ahead-Peak-Fixed-Price-Future
+      notes: Defines NIB Reference Price A as NI Hub day-ahead peak LMP average.
+    - authority: GridStatus PJM LMP example
+      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
+      notes: Public example and linked data show N ILLINOIS HUB pnode 33092315 in PJM hub LMP data.
+  verification_status: official_exchange_verified_user_pnode_approved
+  status: approved_core
+
+ICE_NID_TO_PJM_NI_DA_LMP_33092315:
+  source_contract_id: ICE_NID_PJM_NI_DA_OFFPEAK_1MW
+  contract_symbol: NID
+  aliases: [ICE NID, PJM NI DA Off-Peak, Northern Illinois Day-Ahead Off-Peak]
+  mapping_type: forward_contract_to_fundamental_lmp
+  target:
+    index_id: PJM.NI.DA.FULL_LMP.OFFPEAK
+    commodity: power
+    location_id: NI
+    market_run: DA
+    price_component: FULL_LMP
+    shape: OFFPEAK
+    quote_unit: USD_per_MWh
+    pnode_id: 33092315
+    pnode_name: N ILLINOIS HUB
+    pnode_type: HUB
+    pjm_lmp_feed: da_hrl_lmps
+    pjm_pnode_feed: pnode
+  aggregation_rule:
+    rule_id: PJM_OFFPEAK_5X8_2X24_EPT
+    description: ICE offpeak average using weekday HE 0100-0700 and 2400 EPT plus all 24 hours on weekends and NERC holidays.
+    hours_ending_ept: [1, 2, 3, 4, 5, 6, 7, 24]
+    calendar: PJM_OFFPEAK_WITH_WEEKEND_AND_NERC_HOLIDAY_FULL_DAY
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590409/PJM-NI-Hub-Day-Ahead-Off-Peak-Fixed-Price-Future
+      notes: Defines NID Reference Price A as NI Hub day-ahead offpeak LMP average.
+    - authority: GridStatus PJM LMP example
+      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
+      notes: Public example and linked data show N ILLINOIS HUB pnode 33092315 in PJM hub LMP data.
+  verification_status: official_exchange_verified_user_pnode_approved
+  status: approved_core
+
+ICE_PNL_TO_PJM_NI_RT_LMP_33092315:
+  source_contract_id: ICE_PNL_PJM_NI_RT_PEAK_1MW
+  contract_symbol: PNL
+  aliases: [ICE PNL, PJM NI RT, Northern Illinois Real-Time Peak]
+  mapping_type: forward_contract_to_fundamental_lmp
+  target:
+    index_id: PJM.NI.RT.FULL_LMP.PEAK
+    commodity: power
+    location_id: NI
+    market_run: RT
+    price_component: FULL_LMP
+    shape: PEAK
+    quote_unit: USD_per_MWh
+    pnode_id: 33092315
+    pnode_name: N ILLINOIS HUB
+    pnode_type: HUB
+    pjm_lmp_feed: rt_hrl_lmps
+    pjm_pnode_feed: pnode
+  aggregation_rule:
+    rule_id: PJM_PEAK_HE_0800_2300_EPT
+    description: ICE Reference Price A average of PJM real-time LMPs for hours ending 0800-2300 EPT.
+    hours_ending_ept: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+    calendar: PJM_WEEKDAYS_EXCLUDING_NERC_HOLIDAYS
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590371/PJM-NI-Hub-Real-Time-Peak-Fixed-Price-Future
+      notes: Defines PNL Reference Price A as NI Hub real-time peak LMP average.
+    - authority: GridStatus PJM LMP example
+      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
+      notes: Public example and linked data show N ILLINOIS HUB pnode 33092315 in PJM hub LMP data.
+  verification_status: official_exchange_verified_user_pnode_approved
+  status: approved_core
+
+ICE_NIO_TO_PJM_NI_RT_LMP_33092315:
+  source_contract_id: ICE_NIO_PJM_NI_RT_OFFPEAK_1MW
+  contract_symbol: NIO
+  aliases: [ICE NIO, PJM NI RT Off-Peak, Northern Illinois Real-Time Off-Peak]
+  mapping_type: forward_contract_to_fundamental_lmp
+  target:
+    index_id: PJM.NI.RT.FULL_LMP.OFFPEAK
+    commodity: power
+    location_id: NI
+    market_run: RT
+    price_component: FULL_LMP
+    shape: OFFPEAK
+    quote_unit: USD_per_MWh
+    pnode_id: 33092315
+    pnode_name: N ILLINOIS HUB
+    pnode_type: HUB
+    pjm_lmp_feed: rt_hrl_lmps
+    pjm_pnode_feed: pnode
+  aggregation_rule:
+    rule_id: PJM_OFFPEAK_5X8_2X24_EPT
+    description: ICE offpeak average using weekday HE 0100-0700 and 2400 EPT plus all 24 hours on weekends and NERC holidays.
+    hours_ending_ept: [1, 2, 3, 4, 5, 6, 7, 24]
+    calendar: PJM_OFFPEAK_WITH_WEEKEND_AND_NERC_HOLIDAY_FULL_DAY
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590410/PJM-NI-Hub-Real-Time-Off-Peak-Fixed-Price-Future
+      notes: Defines NIO Reference Price A as NI Hub real-time offpeak LMP average.
+    - authority: GridStatus PJM LMP example
+      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
+      notes: Public example and linked data show N ILLINOIS HUB pnode 33092315 in PJM hub LMP data.
+  verification_status: official_exchange_verified_user_pnode_approved
+  status: approved_core
+
+ICE_H_TO_GAS_HH_LD1:
+  source_contract_id: ICE_H_HENRY_LD1_FIXED_PRICE_FUTURE
+  contract_symbol: H
+  aliases: [ICE H, ICE H LD1, Henry LD1 Fixed Price Future, NG LD1 Futures Henry]
+  mapping_type: gas_contract_to_index
+  target:
+    index_id: GAS.HH.LD1
+    commodity: gas
+    location_id: HH
+    index_family: LD1
+    quote_unit: USD_per_MMBtu
+  aggregation_rule:
+    rule_id: GAS_NYMEX_HENRY_LD1_SETTLEMENT
+    description: NYMEX Henry Hub Natural Gas Futures settlement price for the Contract Period.
+    calendar: NYMEX
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590258/Henry-LD1-Fixed-Price-Future
+      notes: Defines Henry LD1 Reference Price A as NATURAL GAS-NYMEX settlement price.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/6590258/pdf
+      notes: Defines contract symbol H and monthly Henry LD1 settlement mechanics.
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_TZ6_TO_GAS_TRANSCO_Z6_NY_IFERC:
+  source_contract_id: ICE_TZ6_TRANSCO_Z6_NY_FIXED_PRICE
+  contract_symbol: TZ6
+  aliases: [ICE TZ6, Transco Z6 NY Fixed Price, Transco Zone 6 NY IFERC]
+  mapping_type: gas_contract_to_index
+  target:
+    index_id: GAS.TRANSCO_Z6_NY.IFERC
+    commodity: gas
+    location_id: TRANSCO_Z6_NY
+    index_family: IFERC
+    quote_unit: USD_per_MMBtu
+  aggregation_rule:
+    rule_id: GAS_INSIDE_FERC_MONTHLY_INDEX
+    description: Inside FERC monthly bidweek index for the Contract Period.
+    calendar: Inside FERC
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/83048644/Transco-Zone-6-%28NY%29-Fixed-Price
+      notes: Defines Transco Z6 NY Fixed Price Reference Price A as Inside FERC monthly index.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/83048644/pdf
+      notes: Defines contract symbol TZ6 and Transco Z6 NY IFERC mechanics.
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_ZSS_TO_GAS_TRANSCO_Z6_NY_GDD:
+  source_contract_id: ICE_ZSS_TRANSCO_Z6_NY_SWING_FUTURE
+  contract_symbol: ZSS
+  aliases: [ICE ZSS, Transco Z6 NY Swing, Transco Zone 6 NY Gas Daily]
+  mapping_type: gas_contract_to_index
+  target:
+    index_id: GAS.TRANSCO_Z6_NY.GDD
+    commodity: gas
+    location_id: TRANSCO_Z6_NY
+    index_family: GDD
+    quote_unit: USD_per_MMBtu
+  aggregation_rule:
+    rule_id: GAS_DAILY_MIDPOINT_BY_DELIVERY_DATE
+    description: Gas Daily midpoint for each reported Delivery Date in the Contract Period.
+    calendar: Gas Daily
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590257/Transco-Zone-6-NY-Swing-Future/specs
+      notes: Defines Transco Z6 NY Swing Reference Price A as Gas Daily midpoint.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/6590257/pdf
+      notes: Defines contract symbol ZSS and daily Gas Daily settlement mechanics.
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_TZS_TO_GAS_TRANSCO_Z6_NY_BASIS_TO_LD1:
+  source_contract_id: ICE_TZS_TRANSCO_Z6_NY_BASIS_FUTURE
+  contract_symbol: TZS
+  aliases: [ICE TZS, Transco Z6 NY Basis, Transco Zone 6 NY Basis]
+  mapping_type: gas_basis_contract_to_formula
+  target:
+    index_id: GAS.TRANSCO_Z6_NY.BASIS_TO_LD1
+    commodity: gas
+    location_id: TRANSCO_Z6_NY
+    index_family: BASIS_TO_LD1
+    quote_unit: USD_per_MMBtu
+    formula:
+      formula_type: REFERENCE_PRICE_A_MINUS_B
+      description: Inside FERC Transco Z6 NY monthly index minus NYMEX Henry Hub natural gas settlement.
+      legs:
+        - leg: A
+          operation: add
+          index_id: GAS.TRANSCO_Z6_NY.IFERC
+          index_family: IFERC
+        - leg: B
+          operation: subtract
+          index_id: GAS.HH.LD1
+          index_family: LD1
+  aggregation_rule:
+    rule_id: GAS_IFERC_MINUS_HENRY_LD1
+    description: Regional Inside FERC monthly index minus Henry LD1 settlement.
+    calendar: Inside FERC and NYMEX
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590169/Transco-Zone-6-NY-Basis-Future
+      notes: Defines Transco Z6 NY basis final settlement as Reference Price A minus Reference Price B.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/6590169/pdf
+      notes: Defines contract symbol TZS and official A-minus-B legs.
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_TMT_TO_GAS_TETCO_M3_BASIS_TO_LD1:
+  source_contract_id: ICE_TMT_TETCO_M3_BASIS_FUTURE
+  contract_symbol: TMT
+  aliases: [ICE TMT, TETCO M3 Basis, Texas Eastern M-3 Basis]
+  mapping_type: gas_basis_contract_to_formula
+  target:
+    index_id: GAS.TETCO_M3.BASIS_TO_LD1
+    commodity: gas
+    location_id: TETCO_M3
+    index_family: BASIS_TO_LD1
+    quote_unit: USD_per_MMBtu
+    formula:
+      formula_type: REFERENCE_PRICE_A_MINUS_B
+      description: Inside FERC TETCO M3 monthly index minus NYMEX Henry Hub natural gas settlement.
+      legs:
+        - leg: A
+          operation: add
+          index_id: GAS.TETCO_M3.IFERC
+          index_family: IFERC
+        - leg: B
+          operation: subtract
+          index_id: GAS.HH.LD1
+          index_family: LD1
+  aggregation_rule:
+    rule_id: GAS_IFERC_MINUS_HENRY_LD1
+    description: Regional Inside FERC monthly index minus Henry LD1 settlement.
+    calendar: Inside FERC and NYMEX
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590161/TETCO-M3-Basis-Future
+      notes: Defines TETCO M3 basis final settlement as Reference Price A minus Reference Price B.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/6590161/pdf
+      notes: Defines contract symbol TMT and official A-minus-B legs.
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_MTI_TO_GAS_TETCO_M3_GDD_INDEX_TO_IFERC:
+  source_contract_id: ICE_MTI_TETCO_M3_INDEX_FUTURE
+  contract_symbol: MTI
+  aliases: [ICE MTI, TETCO M3 Index, Texas Eastern M-3 Index]
+  mapping_type: gas_index_contract_to_formula
+  target:
+    index_id: GAS.TETCO_M3.GDD_INDEX_TO_IFERC
+    commodity: gas
+    location_id: TETCO_M3
+    index_family: GDD_INDEX_TO_IFERC
+    quote_unit: USD_per_MMBtu
+    formula:
+      formula_type: AVERAGE_REFERENCE_PRICE_A_MINUS_B
+      description: Average TETCO M3 Gas Daily midpoint across the contract period minus TETCO M3 Inside FERC monthly index.
+      legs:
+        - leg: A
+          operation: add
+          index_id: GAS.TETCO_M3.GDD
+          index_family: GDD
+          aggregation: average_over_contract_period
+        - leg: B
+          operation: subtract
+          index_id: GAS.TETCO_M3.IFERC
+          index_family: IFERC
+  aggregation_rule:
+    rule_id: GAS_AVERAGE_GDD_MINUS_IFERC
+    description: Average Gas Daily midpoint across the contract period minus regional Inside FERC monthly index.
+    calendar: Gas Daily and Inside FERC
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590207/TETCO-M3-Index-Future
+      notes: Defines TETCO M3 index final settlement as average Reference Price A prices minus Reference Price B.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/6590207/pdf
+      notes: Defines contract symbol MTI and official Gas-Daily-minus-IFERC legs.
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_DOM_TO_GAS_EASTERN_GAS_SOUTH_BASIS_TO_LD1:
+  source_contract_id: ICE_DOM_EASTERN_GAS_SOUTH_BASIS_FUTURE
+  contract_symbol: DOM
+  aliases: [ICE DOM, Eastern Gas South Basis, Dominion South Basis]
+  mapping_type: gas_basis_contract_to_formula
+  target:
+    index_id: GAS.EASTERN_GAS_SOUTH.BASIS_TO_LD1
+    commodity: gas
+    location_id: EASTERN_GAS_SOUTH
+    index_family: BASIS_TO_LD1
+    quote_unit: USD_per_MMBtu
+    formula:
+      formula_type: REFERENCE_PRICE_A_MINUS_B
+      description: Inside FERC Eastern Gas Appalachia monthly index minus NYMEX Henry Hub natural gas settlement.
+      legs:
+        - leg: A
+          operation: add
+          index_id: GAS.EASTERN_GAS_SOUTH.IFERC
+          index_family: IFERC
+        - leg: B
+          operation: subtract
+          index_id: GAS.HH.LD1
+          index_family: LD1
+  aggregation_rule:
+    rule_id: GAS_IFERC_MINUS_HENRY_LD1
+    description: Regional Inside FERC monthly index minus Henry LD1 settlement.
+    calendar: Inside FERC and NYMEX
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590133/Eastern-Gas-South-Basis-Future
+      notes: Defines Eastern Gas South basis final settlement as Reference Price A minus Reference Price B.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/6590133/pdf
+      notes: Defines contract symbol DOM and official A-minus-B legs.
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_DIS_TO_GAS_EASTERN_GAS_SOUTH_GDD_INDEX_TO_IFERC:
+  source_contract_id: ICE_DIS_EASTERN_GAS_SOUTH_INDEX_FUTURE
+  contract_symbol: DIS
+  aliases: [ICE DIS, Eastern Gas South Index, Dominion South Index]
+  mapping_type: gas_index_contract_to_formula
+  target:
+    index_id: GAS.EASTERN_GAS_SOUTH.GDD_INDEX_TO_IFERC
+    commodity: gas
+    location_id: EASTERN_GAS_SOUTH
+    index_family: GDD_INDEX_TO_IFERC
+    quote_unit: USD_per_MMBtu
+    formula:
+      formula_type: AVERAGE_REFERENCE_PRICE_A_MINUS_B
+      description: Average Eastern Gas South Gas Daily midpoint across the contract period minus Eastern Gas Appalachia Inside FERC monthly index.
+      legs:
+        - leg: A
+          operation: add
+          index_id: GAS.EASTERN_GAS_SOUTH.GDD
+          index_family: GDD
+          aggregation: average_over_contract_period
+        - leg: B
+          operation: subtract
+          index_id: GAS.EASTERN_GAS_SOUTH.IFERC
+          index_family: IFERC
+  aggregation_rule:
+    rule_id: GAS_AVERAGE_GDD_MINUS_IFERC
+    description: Average Gas Daily midpoint across the contract period minus regional Inside FERC monthly index.
+    calendar: Gas Daily and Inside FERC
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590181/Eastern-Gas-South-Index-Future
+      notes: Defines Eastern Gas South index final settlement as average Reference Price A prices minus Reference Price B.
+    - authority: ICE product specification PDF
+      url: https://www.ice.com/api/productguide/spec/6590181/pdf
+      notes: Defines contract symbol DIS and official Gas-Daily-minus-IFERC legs.
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_BM1_TO_GAS_TETCO_M2_IFERC:
+  source_contract_id: ICE_BM1_TETCO_M2_FIXED_PRICE_RECEIPTS
+  contract_symbol: BM1
+  aliases: [ICE BM1, TETCO M2 Fixed Price, TETCO M2 Receipts IFERC]
+  mapping_type: gas_contract_to_index
+  target: {index_id: GAS.TETCO_M2.IFERC, commodity: gas, location_id: TETCO_M2, index_family: IFERC, quote_unit: USD_per_MMBtu}
+  aggregation_rule: {rule_id: GAS_INSIDE_FERC_MONTHLY_INDEX, description: Inside FERC monthly bidweek index for the Contract Period., calendar: Inside FERC}
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - {authority: ICE product specification, url: "https://www.ice.com/products/83048597/TETCO-M2-Fixed-Price-Future-Receipts", notes: Defines BM1 Reference Price A as TETCO M2 receipts Inside FERC monthly index.}
+    - {authority: ICE product specification PDF, url: "https://www.ice.com/api/productguide/spec/83048597/pdf", notes: Defines contract symbol BM1 and IFERC mechanics.}
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_BM2_TO_GAS_TETCO_M2_BASIS_TO_LD1:
+  source_contract_id: ICE_BM2_TETCO_M2_BASIS_RECEIPTS
+  contract_symbol: BM2
+  aliases: [ICE BM2, TETCO M2 Basis, TETCO M2 Receipts Basis]
+  mapping_type: gas_basis_contract_to_formula
+  target:
+    index_id: GAS.TETCO_M2.BASIS_TO_LD1
+    commodity: gas
+    location_id: TETCO_M2
+    index_family: BASIS_TO_LD1
+    quote_unit: USD_per_MMBtu
+    formula:
+      formula_type: REFERENCE_PRICE_A_MINUS_B
+      description: Inside FERC TETCO M2 receipts monthly index minus NYMEX Henry Hub natural gas settlement.
+      legs:
+        - {leg: A, operation: add, index_id: GAS.TETCO_M2.IFERC, index_family: IFERC}
+        - {leg: B, operation: subtract, index_id: GAS.HH.LD1, index_family: LD1}
+  aggregation_rule: {rule_id: GAS_IFERC_MINUS_HENRY_LD1, description: Regional Inside FERC monthly index minus Henry LD1 settlement., calendar: Inside FERC and NYMEX}
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - {authority: ICE product specification, url: "https://www.ice.com/products/37042680/TETCO-M2-Basis-Future-Receipts", notes: Defines BM2 final settlement as Reference Price A minus Reference Price B.}
+    - {authority: ICE product specification PDF, url: "https://www.ice.com/api/productguide/spec/37042680/pdf", notes: Defines contract symbol BM2 and official A-minus-B legs.}
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_BM3_TO_GAS_TETCO_M2_GDD:
+  source_contract_id: ICE_BM3_TETCO_M2_SWING_RECEIPTS
+  contract_symbol: BM3
+  aliases: [ICE BM3, TETCO M2 Swing, TETCO M2 Receipts Gas Daily]
+  mapping_type: gas_contract_to_index
+  target: {index_id: GAS.TETCO_M2.GDD, commodity: gas, location_id: TETCO_M2, index_family: GDD, quote_unit: USD_per_MMBtu}
+  aggregation_rule: {rule_id: GAS_DAILY_MIDPOINT_BY_DELIVERY_DATE, description: Gas Daily midpoint for each reported Delivery Date in the Contract Period., calendar: Gas Daily}
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - {authority: ICE product specification, url: "https://www.ice.com/products/42944095/TETCO-M2-Swing-Future-Receipts", notes: Defines BM3 Reference Price A as TETCO M2 receipts Gas Daily midpoint.}
+    - {authority: ICE product specification PDF, url: "https://www.ice.com/api/productguide/spec/42944095/pdf", notes: Defines contract symbol BM3 and daily Gas Daily mechanics.}
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_MB4_TO_GAS_TETCO_M2_GDD_INDEX_TO_IFERC:
+  source_contract_id: ICE_MB4_TETCO_M2_INDEX_RECEIPTS
+  contract_symbol: MB4
+  aliases: [ICE MB4, TETCO M2 Index, TETCO M2 Receipts Index]
+  mapping_type: gas_index_contract_to_formula
+  target:
+    index_id: GAS.TETCO_M2.GDD_INDEX_TO_IFERC
+    commodity: gas
+    location_id: TETCO_M2
+    index_family: GDD_INDEX_TO_IFERC
+    quote_unit: USD_per_MMBtu
+    formula:
+      formula_type: AVERAGE_REFERENCE_PRICE_A_MINUS_B
+      description: Average TETCO M2 receipts Gas Daily midpoint across the contract period minus TETCO M2 receipts Inside FERC monthly index.
+      legs:
+        - {leg: A, operation: add, index_id: GAS.TETCO_M2.GDD, index_family: GDD, aggregation: average_over_contract_period}
+        - {leg: B, operation: subtract, index_id: GAS.TETCO_M2.IFERC, index_family: IFERC}
+  aggregation_rule: {rule_id: GAS_AVERAGE_GDD_MINUS_IFERC, description: Average Gas Daily midpoint across the contract period minus regional Inside FERC monthly index., calendar: Gas Daily and Inside FERC}
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - {authority: ICE product specification, url: "https://www.ice.com/products/42944096/TETCO-M2-Index-Future-Receipts", notes: Defines MB4 as a TETCO M2 Gas-Daily-minus-IFERC index future.}
+    - {authority: ICE product specification PDF, url: "https://www.ice.com/api/productguide/spec/42944096/pdf", notes: Defines Reference Price B and product description as Gas Daily minus IFERC; final-settlement caption states Reference Price A.}
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_TPH_TO_GAS_TRANSCO_Z6_NNY_IFERC:
+  source_contract_id: ICE_TPH_TRANSCO_Z6_NNY_FIXED_PRICE
+  contract_symbol: TPH
+  aliases: [ICE TPH, Transco Z6 non NY Fixed Price, Transco Z6 NNY IFERC]
+  mapping_type: gas_contract_to_index
+  target: {index_id: GAS.TRANSCO_Z6_NNY.IFERC, commodity: gas, location_id: TRANSCO_Z6_NNY, index_family: IFERC, quote_unit: USD_per_MMBtu}
+  aggregation_rule: {rule_id: GAS_INSIDE_FERC_MONTHLY_INDEX, description: Inside FERC monthly bidweek index for the Contract Period., calendar: Inside FERC}
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - {authority: ICE product specification, url: "https://www.ice.com/products/71085641/Transco-Zone-6-non-NY-Fixed-Price-Future", notes: Defines TPH Reference Price A as Transco Z6 non-NY Inside FERC monthly index.}
+    - {authority: ICE product specification PDF, url: "https://www.ice.com/api/productguide/spec/71085641/pdf", notes: Defines contract symbol TPH and IFERC mechanics.}
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_TPB_TO_GAS_TRANSCO_Z6_NNY_BASIS_TO_LD1:
+  source_contract_id: ICE_TPB_TRANSCO_Z6_NNY_BASIS_FUTURE
+  contract_symbol: TPB
+  aliases: [ICE TPB, Transco Z6 non NY Basis, Transco Z6 NNY Basis]
+  mapping_type: gas_basis_contract_to_formula
+  target:
+    index_id: GAS.TRANSCO_Z6_NNY.BASIS_TO_LD1
+    commodity: gas
+    location_id: TRANSCO_Z6_NNY
+    index_family: BASIS_TO_LD1
+    quote_unit: USD_per_MMBtu
+    formula:
+      formula_type: REFERENCE_PRICE_A_MINUS_B
+      description: Inside FERC Transco Z6 non-NY monthly index minus NYMEX Henry Hub natural gas settlement.
+      legs:
+        - {leg: A, operation: add, index_id: GAS.TRANSCO_Z6_NNY.IFERC, index_family: IFERC}
+        - {leg: B, operation: subtract, index_id: GAS.HH.LD1, index_family: LD1}
+  aggregation_rule: {rule_id: GAS_IFERC_MINUS_HENRY_LD1, description: Regional Inside FERC monthly index minus Henry LD1 settlement., calendar: Inside FERC and NYMEX}
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - {authority: ICE product specification, url: "https://www.ice.com/products/6590163/Transco-Zone-6-non-NY-Basis-Future", notes: Defines TPB final settlement as Reference Price A minus Reference Price B.}
+    - {authority: ICE product specification PDF, url: "https://www.ice.com/api/productguide/spec/6590163/pdf", notes: Defines contract symbol TPB and official A-minus-B legs.}
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_TPS_TO_GAS_TRANSCO_Z6_NNY_GDD:
+  source_contract_id: ICE_TPS_TRANSCO_Z6_NNY_SWING_FUTURE
+  contract_symbol: TPS
+  aliases: [ICE TPS, Transco Z6 non NY Swing, Transco Z6 NNY Gas Daily]
+  mapping_type: gas_contract_to_index
+  target: {index_id: GAS.TRANSCO_Z6_NNY.GDD, commodity: gas, location_id: TRANSCO_Z6_NNY, index_family: GDD, quote_unit: USD_per_MMBtu}
+  aggregation_rule: {rule_id: GAS_DAILY_MIDPOINT_BY_DELIVERY_DATE, description: Gas Daily midpoint for each reported Delivery Date in the Contract Period., calendar: Gas Daily}
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - {authority: ICE product specification, url: "https://www.ice.com/products/6590251/Transco-Zone-6-non-NY-Swing-Future/specs", notes: Defines TPS Reference Price A as Transco Z6 non-NY Gas Daily midpoint.}
+    - {authority: ICE product specification PDF, url: "https://www.ice.com/api/productguide/spec/6590251/pdf", notes: Defines contract symbol TPS and daily Gas Daily mechanics.}
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_TPI_TO_GAS_TRANSCO_Z6_NNY_GDD_INDEX_TO_IFERC:
+  source_contract_id: ICE_TPI_TRANSCO_Z6_NNY_INDEX_FUTURE
+  contract_symbol: TPI
+  aliases: [ICE TPI, Transco Z6 non NY Index, Transco Z6 NNY Index]
+  mapping_type: gas_index_contract_to_formula
+  target:
+    index_id: GAS.TRANSCO_Z6_NNY.GDD_INDEX_TO_IFERC
+    commodity: gas
+    location_id: TRANSCO_Z6_NNY
+    index_family: GDD_INDEX_TO_IFERC
+    quote_unit: USD_per_MMBtu
+    formula:
+      formula_type: AVERAGE_REFERENCE_PRICE_A_MINUS_B
+      description: Average Transco Z6 non-NY Gas Daily midpoint across the contract period minus Transco Z6 non-NY Inside FERC monthly index.
+      legs:
+        - {leg: A, operation: add, index_id: GAS.TRANSCO_Z6_NNY.GDD, index_family: GDD, aggregation: average_over_contract_period}
+        - {leg: B, operation: subtract, index_id: GAS.TRANSCO_Z6_NNY.IFERC, index_family: IFERC}
+  aggregation_rule: {rule_id: GAS_AVERAGE_GDD_MINUS_IFERC, description: Average Gas Daily midpoint across the contract period minus regional Inside FERC monthly index., calendar: Gas Daily and Inside FERC}
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - {authority: ICE product specification, url: "https://www.ice.com/products/6590214/Transco-Zone-6-non-NY-Index-Future", notes: Defines TPI final settlement as average Reference Price A prices minus Reference Price B.}
+    - {authority: ICE product specification PDF, url: "https://www.ice.com/api/productguide/spec/6590214/pdf", notes: Defines contract symbol TPI and official Gas-Daily-minus-IFERC legs.}
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_TZ5_TO_GAS_TRANSCO_Z5_IFERC:
+  source_contract_id: ICE_TZ5_TRANSCO_Z5_FIXED_PRICE
+  contract_symbol: TZ5
+  aliases: [ICE TZ5, Transco Z5 Fixed Price, Transco Zone 5 IFERC]
+  mapping_type: gas_contract_to_index
+  target: {index_id: GAS.TRANSCO_Z5.IFERC, commodity: gas, location_id: TRANSCO_Z5, index_family: IFERC, quote_unit: USD_per_MMBtu}
+  aggregation_rule: {rule_id: GAS_INSIDE_FERC_MONTHLY_INDEX, description: Inside FERC monthly bidweek index for the Contract Period., calendar: Inside FERC}
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - {authority: ICE product specification, url: "https://www.ice.com/products/83048643/Transco-Zone-5-Fixed-Price", notes: Defines TZ5 Reference Price A as Transco Z5 Inside FERC monthly index.}
+    - {authority: ICE product specification PDF, url: "https://www.ice.com/api/productguide/spec/83048643/pdf", notes: Defines contract symbol TZ5 and IFERC mechanics.}
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_DKR_TO_GAS_TRANSCO_Z5_BASIS_TO_LD1:
+  source_contract_id: ICE_DKR_TRANSCO_Z5_BASIS_FUTURE
+  contract_symbol: DKR
+  aliases: [ICE DKR, Transco Z5 Basis, Transco Zone 5 Basis]
+  mapping_type: gas_basis_contract_to_formula
+  target:
+    index_id: GAS.TRANSCO_Z5.BASIS_TO_LD1
+    commodity: gas
+    location_id: TRANSCO_Z5
+    index_family: BASIS_TO_LD1
+    quote_unit: USD_per_MMBtu
+    formula:
+      formula_type: REFERENCE_PRICE_A_MINUS_B
+      description: Inside FERC Transco Z5 delivered monthly index minus NYMEX Henry Hub natural gas settlement.
+      legs:
+        - {leg: A, operation: add, index_id: GAS.TRANSCO_Z5.IFERC, index_family: IFERC}
+        - {leg: B, operation: subtract, index_id: GAS.HH.LD1, index_family: LD1}
+  aggregation_rule: {rule_id: GAS_IFERC_MINUS_HENRY_LD1, description: Regional Inside FERC monthly index minus Henry LD1 settlement., calendar: Inside FERC and NYMEX}
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - {authority: ICE product specification, url: "https://www.ice.com/products/42944091/Transco-Zone-5-Basis-Future", notes: Defines DKR final settlement as Reference Price A minus Reference Price B.}
+    - {authority: ICE product specification PDF, url: "https://www.ice.com/api/productguide/spec/42944091/pdf", notes: Defines contract symbol DKR and official A-minus-B legs.}
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_DKS_TO_GAS_TRANSCO_Z5_GDD:
+  source_contract_id: ICE_DKS_TRANSCO_Z5_SWING_FUTURE
+  contract_symbol: DKS
+  aliases: [ICE DKS, Transco Z5 Swing, Transco Zone 5 Gas Daily]
+  mapping_type: gas_contract_to_index
+  target: {index_id: GAS.TRANSCO_Z5.GDD, commodity: gas, location_id: TRANSCO_Z5, index_family: GDD, quote_unit: USD_per_MMBtu}
+  aggregation_rule: {rule_id: GAS_DAILY_MIDPOINT_BY_DELIVERY_DATE, description: Gas Daily midpoint for each reported Delivery Date in the Contract Period., calendar: Gas Daily}
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - {authority: ICE product specification, url: "https://www.ice.com/products/42944092/Transco-Zone-5-Swing-Future", notes: Defines DKS Reference Price A as Transco Z5 Gas Daily midpoint.}
+    - {authority: ICE product specification PDF, url: "https://www.ice.com/api/productguide/spec/42944092/pdf", notes: Defines contract symbol DKS and daily Gas Daily mechanics.}
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_DKT_TO_GAS_TRANSCO_Z5_GDD_INDEX_TO_IFERC:
+  source_contract_id: ICE_DKT_TRANSCO_Z5_INDEX_FUTURE
+  contract_symbol: DKT
+  aliases: [ICE DKT, Transco Z5 Index, Transco Zone 5 Index]
+  mapping_type: gas_index_contract_to_formula
+  target:
+    index_id: GAS.TRANSCO_Z5.GDD_INDEX_TO_IFERC
+    commodity: gas
+    location_id: TRANSCO_Z5
+    index_family: GDD_INDEX_TO_IFERC
+    quote_unit: USD_per_MMBtu
+    formula:
+      formula_type: AVERAGE_REFERENCE_PRICE_A_MINUS_B
+      description: Average Transco Z5 Gas Daily midpoint across the contract period minus Transco Z5 Inside FERC monthly index.
+      legs:
+        - {leg: A, operation: add, index_id: GAS.TRANSCO_Z5.GDD, index_family: GDD, aggregation: average_over_contract_period}
+        - {leg: B, operation: subtract, index_id: GAS.TRANSCO_Z5.IFERC, index_family: IFERC}
+  aggregation_rule: {rule_id: GAS_AVERAGE_GDD_MINUS_IFERC, description: Average Gas Daily midpoint across the contract period minus regional Inside FERC monthly index., calendar: Gas Daily and Inside FERC}
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - {authority: ICE product specification, url: "https://www.ice.com/products/42944093/Transco-Zone-5-Index-Future", notes: Defines DKT as a Transco Z5 Gas-Daily-minus-IFERC index future.}
+    - {authority: ICE product specification PDF, url: "https://www.ice.com/api/productguide/spec/42944093/pdf", notes: Defines Reference Price B and product description as Gas Daily minus IFERC; final-settlement caption states Reference Price A.}
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_T5Z_TO_GAS_TRANSCO_Z5_SOUTH_IFERC:
+  source_contract_id: ICE_T5Z_TRANSCO_Z5_SOUTH_FIXED_PRICE
+  contract_symbol: T5Z
+  aliases: [ICE T5Z, Transco Z5 South Fixed Price, Transco Zone 5 South IFERC]
+  mapping_type: gas_contract_to_index
+  target: {index_id: GAS.TRANSCO_Z5_SOUTH.IFERC, commodity: gas, location_id: TRANSCO_Z5_SOUTH, index_family: IFERC, quote_unit: USD_per_MMBtu}
+  aggregation_rule: {rule_id: GAS_INSIDE_FERC_MONTHLY_INDEX, description: Inside FERC monthly bidweek index for the Contract Period., calendar: Inside FERC}
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - {authority: ICE product specification, url: "https://www.ice.com/products/83048616/Transco-Zone-5-South-Fixed-Price", notes: Defines T5Z Reference Price A as Transco Z5 South Inside FERC monthly index.}
+    - {authority: ICE product specification PDF, url: "https://www.ice.com/api/productguide/spec/83048616/pdf", notes: Defines contract symbol T5Z and IFERC mechanics.}
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_T5B_TO_GAS_TRANSCO_Z5_SOUTH_BASIS_TO_LD1:
+  source_contract_id: ICE_T5B_TRANSCO_Z5_SOUTH_BASIS_FUTURE
+  contract_symbol: T5B
+  aliases: [ICE T5B, Transco Z5 South Basis, Transco Zone 5 South Basis]
+  mapping_type: gas_basis_contract_to_formula
+  target:
+    index_id: GAS.TRANSCO_Z5_SOUTH.BASIS_TO_LD1
+    commodity: gas
+    location_id: TRANSCO_Z5_SOUTH
+    index_family: BASIS_TO_LD1
+    quote_unit: USD_per_MMBtu
+    formula:
+      formula_type: REFERENCE_PRICE_A_MINUS_B
+      description: Inside FERC Transco Z5 South monthly index minus NYMEX Henry Hub natural gas settlement.
+      legs:
+        - {leg: A, operation: add, index_id: GAS.TRANSCO_Z5_SOUTH.IFERC, index_family: IFERC}
+        - {leg: B, operation: subtract, index_id: GAS.HH.LD1, index_family: LD1}
+  aggregation_rule: {rule_id: GAS_IFERC_MINUS_HENRY_LD1, description: Regional Inside FERC monthly index minus Henry LD1 settlement., calendar: Inside FERC and NYMEX}
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - {authority: ICE product specification, url: "https://www.ice.com/products/82270888/Transco-Zone-5-South-Basis-Future", notes: Defines T5B as a Transco Z5 South basis future.}
+    - {authority: ICE product specification PDF, url: "https://www.ice.com/api/productguide/spec/82270888/pdf", notes: Defines Reference Price B and product description as A-minus-B; final-settlement caption states Reference Price A.}
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_T5C_TO_GAS_TRANSCO_Z5_SOUTH_GDD:
+  source_contract_id: ICE_T5C_TRANSCO_Z5_SOUTH_SWING_FUTURE
+  contract_symbol: T5C
+  aliases: [ICE T5C, Transco Z5 South Swing, Transco Zone 5 South Gas Daily]
+  mapping_type: gas_contract_to_index
+  target: {index_id: GAS.TRANSCO_Z5_SOUTH.GDD, commodity: gas, location_id: TRANSCO_Z5_SOUTH, index_family: GDD, quote_unit: USD_per_MMBtu}
+  aggregation_rule: {rule_id: GAS_DAILY_MIDPOINT_BY_DELIVERY_DATE, description: Gas Daily midpoint for each reported Delivery Date in the Contract Period., calendar: Gas Daily}
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - {authority: ICE product specification, url: "https://www.ice.com/products/82270890/Transco-Zone-5-South-Swing-Future", notes: Defines T5C Reference Price A as Transco Z5 South Gas Daily midpoint.}
+    - {authority: ICE product specification PDF, url: "https://www.ice.com/api/productguide/spec/82270890/pdf", notes: Defines contract symbol T5C and daily Gas Daily mechanics.}
+  verification_status: official_exchange_verified
+  status: approved_core
+
+ICE_T5I_TO_GAS_TRANSCO_Z5_SOUTH_GDD_INDEX_TO_IFERC:
+  source_contract_id: ICE_T5I_TRANSCO_Z5_SOUTH_INDEX_FUTURE
+  contract_symbol: T5I
+  aliases: [ICE T5I, Transco Z5 South Index, Transco Zone 5 South Index]
+  mapping_type: gas_index_contract_to_formula
+  target:
+    index_id: GAS.TRANSCO_Z5_SOUTH.GDD_INDEX_TO_IFERC
+    commodity: gas
+    location_id: TRANSCO_Z5_SOUTH
+    index_family: GDD_INDEX_TO_IFERC
+    quote_unit: USD_per_MMBtu
+    formula:
+      formula_type: AVERAGE_REFERENCE_PRICE_A_MINUS_B
+      description: Average Transco Z5 South Gas Daily midpoint across the contract period minus Transco Z5 South Inside FERC monthly index.
+      legs:
+        - {leg: A, operation: add, index_id: GAS.TRANSCO_Z5_SOUTH.GDD, index_family: GDD, aggregation: average_over_contract_period}
+        - {leg: B, operation: subtract, index_id: GAS.TRANSCO_Z5_SOUTH.IFERC, index_family: IFERC}
+  aggregation_rule: {rule_id: GAS_AVERAGE_GDD_MINUS_IFERC, description: Average Gas Daily midpoint across the contract period minus regional Inside FERC monthly index., calendar: Gas Daily and Inside FERC}
+  source_authority: [OFFICIAL_EXCHANGE_SPEC]
+  source_documents:
+    - {authority: ICE product specification, url: "https://www.ice.com/products/82270889/Transco-Zone-5-South-Index-Future", notes: Defines T5I final settlement as average Reference Price A prices minus Reference Price B.}
+    - {authority: ICE product specification PDF, url: "https://www.ice.com/api/productguide/spec/82270889/pdf", notes: Defines contract symbol T5I and official Gas-Daily-minus-IFERC legs.}
+  verification_status: official_exchange_verified
+  status: approved_core

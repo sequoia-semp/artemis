@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Any
 
 from ..exceptions import WorkbenchException, UNKNOWN_PRODUCT
-from ..indices import MarketIndex, normalize_gas_index, normalize_power_index
+from ..indices import MarketIndex, normalize_exchange_contract_index, normalize_gas_index, normalize_power_index
 from ..models import NormalizedPosition, PriceSurfacePoint, RawMark, RawPosition
 from ..periods import parse_period
 from ..quantities import gas_contracts_to_total_mmbtu, power_mw_to_mwh
@@ -33,6 +33,11 @@ def market_index_from_raw(raw_product: str) -> MarketIndex:
     compact = raw_product.strip().upper()
     if "/" in compact:
         raise WorkbenchException(UNKNOWN_PRODUCT, "Spreads are positions, not price surface indexes")
+    try:
+        return normalize_exchange_contract_index(raw_product)
+    except WorkbenchException as exc:
+        if exc.code != UNKNOWN_PRODUCT:
+            raise
     power_tokens = set(compact.replace("-", " ").split())
     if power_tokens & {"WH", "AD", "NI"}:
         return normalize_power_index(raw_product)
@@ -70,6 +75,8 @@ def normalize_mark(mark: RawMark) -> PriceSurfacePoint:
             "raw_row_id": mark.raw_row_id,
             "defaulted": idx.is_defaulted,
             "default_reason": idx.default_reason,
+            "source_contract_id": idx.source_contract_id,
+            "mapping_id": idx.mapping_id,
         },
     )
 

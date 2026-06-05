@@ -54,6 +54,18 @@
         "null"
       ]
     },
+    "source_contract_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "mapping_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "verification_status": {
       "type": "string"
     }

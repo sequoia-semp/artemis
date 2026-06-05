@@ -17,6 +17,175 @@ PJM_WH_DA_FULL_LMP_ATC:
   shape: ATC
   status: user_approved_internal_index
 
+ICE_PMI_PJM_WH_RT_PEAK_1MW:
+  commodity: power
+  location_id: WH
+  market_run: RT
+  price_component: FULL_LMP
+  shape: PEAK
+  exchange: ICE Futures U.S.
+  contract_symbol: PMI
+  exchange_contract_ref: ICE_PMI_PJM_WH_RT_PEAK_1MW
+  forward_fundamental_mapping_ref: ICE_PMI_TO_PJM_WH_RT_LMP_51288
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_PDP_PJM_WH_RT_PEAK_DAILY:
+  commodity: power
+  location_id: WH
+  market_run: RT
+  price_component: FULL_LMP
+  shape: PEAK
+  exchange: ICE Futures U.S.
+  contract_symbol: PDP
+  exchange_contract_ref: ICE_PDP_PJM_WH_RT_PEAK_DAILY
+  forward_fundamental_mapping_ref: ICE_PDP_TO_PJM_WH_RT_LMP_51288
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_PJC_PJM_WH_DA_PEAK_1MW:
+  commodity: power
+  location_id: WH
+  market_run: DA
+  price_component: FULL_LMP
+  shape: PEAK
+  exchange: ICE Futures U.S.
+  contract_symbol: PJC
+  exchange_contract_ref: ICE_PJC_PJM_WH_DA_PEAK_1MW
+  forward_fundamental_mapping_ref: ICE_PJC_TO_PJM_WH_DA_LMP_51288
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_PJD_PJM_WH_DA_OFFPEAK_1MW:
+  commodity: power
+  location_id: WH
+  market_run: DA
+  price_component: FULL_LMP
+  shape: OFFPEAK
+  exchange: ICE Futures U.S.
+  contract_symbol: PJD
+  exchange_contract_ref: ICE_PJD_PJM_WH_DA_OFFPEAK_1MW
+  forward_fundamental_mapping_ref: ICE_PJD_TO_PJM_WH_DA_LMP_51288
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_OPJ_PJM_WH_RT_OFFPEAK_1MW:
+  commodity: power
+  location_id: WH
+  market_run: RT
+  price_component: FULL_LMP
+  shape: OFFPEAK
+  exchange: ICE Futures U.S.
+  contract_symbol: OPJ
+  exchange_contract_ref: ICE_OPJ_PJM_WH_RT_OFFPEAK_1MW
+  forward_fundamental_mapping_ref: ICE_OPJ_TO_PJM_WH_RT_LMP_51288
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_ADB_PJM_AD_DA_PEAK_1MW:
+  commodity: power
+  location_id: AD
+  market_run: DA
+  price_component: FULL_LMP
+  shape: PEAK
+  exchange: ICE Futures U.S.
+  contract_symbol: ADB
+  exchange_contract_ref: ICE_ADB_PJM_AD_DA_PEAK_1MW
+  forward_fundamental_mapping_ref: ICE_ADB_TO_PJM_AD_DA_LMP_34497127
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_ADD_PJM_AD_DA_OFFPEAK_1MW:
+  commodity: power
+  location_id: AD
+  market_run: DA
+  price_component: FULL_LMP
+  shape: OFFPEAK
+  exchange: ICE Futures U.S.
+  contract_symbol: ADD
+  exchange_contract_ref: ICE_ADD_PJM_AD_DA_OFFPEAK_1MW
+  forward_fundamental_mapping_ref: ICE_ADD_TO_PJM_AD_DA_LMP_34497127
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_MSO_PJM_AD_RT_PEAK_1MW:
+  commodity: power
+  location_id: AD
+  market_run: RT
+  price_component: FULL_LMP
+  shape: PEAK
+  exchange: ICE Futures U.S.
+  contract_symbol: MSO
+  exchange_contract_ref: ICE_MSO_PJM_AD_RT_PEAK_1MW
+  forward_fundamental_mapping_ref: ICE_MSO_TO_PJM_AD_RT_LMP_34497127
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_AOD_PJM_AD_RT_OFFPEAK_1MW:
+  commodity: power
+  location_id: AD
+  market_run: RT
+  price_component: FULL_LMP
+  shape: OFFPEAK
+  exchange: ICE Futures U.S.
+  contract_symbol: AOD
+  exchange_contract_ref: ICE_AOD_PJM_AD_RT_OFFPEAK_1MW
+  forward_fundamental_mapping_ref: ICE_AOD_TO_PJM_AD_RT_LMP_34497127
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_NIB_PJM_NI_DA_PEAK_1MW:
+  commodity: power
+  location_id: NI
+  market_run: DA
+  price_component: FULL_LMP
+  shape: PEAK
+  exchange: ICE Futures U.S.
+  contract_symbol: NIB
+  exchange_contract_ref: ICE_NIB_PJM_NI_DA_PEAK_1MW
+  forward_fundamental_mapping_ref: ICE_NIB_TO_PJM_NI_DA_LMP_33092315
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_NID_PJM_NI_DA_OFFPEAK_1MW:
+  commodity: power
+  location_id: NI
+  market_run: DA
+  price_component: FULL_LMP
+  shape: OFFPEAK
+  exchange: ICE Futures U.S.
+  contract_symbol: NID
+  exchange_contract_ref: ICE_NID_PJM_NI_DA_OFFPEAK_1MW
+  forward_fundamental_mapping_ref: ICE_NID_TO_PJM_NI_DA_LMP_33092315
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_PNL_PJM_NI_RT_PEAK_1MW:
+  commodity: power
+  location_id: NI
+  market_run: RT
+  price_component: FULL_LMP
+  shape: PEAK
+  exchange: ICE Futures U.S.
+  contract_symbol: PNL
+  exchange_contract_ref: ICE_PNL_PJM_NI_RT_PEAK_1MW
+  forward_fundamental_mapping_ref: ICE_PNL_TO_PJM_NI_RT_LMP_33092315
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_NIO_PJM_NI_RT_OFFPEAK_1MW:
+  commodity: power
+  location_id: NI
+  market_run: RT
+  price_component: FULL_LMP
+  shape: OFFPEAK
+  exchange: ICE Futures U.S.
+  contract_symbol: NIO
+  exchange_contract_ref: ICE_NIO_PJM_NI_RT_OFFPEAK_1MW
+  forward_fundamental_mapping_ref: ICE_NIO_TO_PJM_NI_RT_LMP_33092315
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
 GAS_HH_GDD:
   commodity: gas
   location_id: HH
@@ -42,3 +211,267 @@ GAS_TRANSCO_Z6_NNY_GDD:
   index_family: GDD
   status: user_approved_high_priority
   official_spec_status: needs_ingestion
+
+ICE_H_HENRY_LD1_FIXED_PRICE_FUTURE:
+  commodity: gas
+  location_id: HH
+  index_family: LD1
+  exchange: ICE Futures U.S.
+  contract_symbol: H
+  exchange_contract_ref: ICE_H_HENRY_LD1_FIXED_PRICE_FUTURE
+  forward_fundamental_mapping_ref: ICE_H_TO_GAS_HH_LD1
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_TZ6_TRANSCO_Z6_NY_FIXED_PRICE:
+  commodity: gas
+  location_id: TRANSCO_Z6_NY
+  index_family: IFERC
+  exchange: ICE Futures U.S.
+  contract_symbol: TZ6
+  exchange_contract_ref: ICE_TZ6_TRANSCO_Z6_NY_FIXED_PRICE
+  forward_fundamental_mapping_ref: ICE_TZ6_TO_GAS_TRANSCO_Z6_NY_IFERC
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_ZSS_TRANSCO_Z6_NY_SWING_FUTURE:
+  commodity: gas
+  location_id: TRANSCO_Z6_NY
+  index_family: GDD
+  exchange: ICE Futures U.S.
+  contract_symbol: ZSS
+  exchange_contract_ref: ICE_ZSS_TRANSCO_Z6_NY_SWING_FUTURE
+  forward_fundamental_mapping_ref: ICE_ZSS_TO_GAS_TRANSCO_Z6_NY_GDD
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_TZS_TRANSCO_Z6_NY_BASIS_FUTURE:
+  commodity: gas
+  location_id: TRANSCO_Z6_NY
+  index_family: BASIS_TO_LD1
+  exchange: ICE Futures U.S.
+  contract_symbol: TZS
+  exchange_contract_ref: ICE_TZS_TRANSCO_Z6_NY_BASIS_FUTURE
+  forward_fundamental_mapping_ref: ICE_TZS_TO_GAS_TRANSCO_Z6_NY_BASIS_TO_LD1
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_TMT_TETCO_M3_BASIS_FUTURE:
+  commodity: gas
+  location_id: TETCO_M3
+  index_family: BASIS_TO_LD1
+  exchange: ICE Futures U.S.
+  contract_symbol: TMT
+  exchange_contract_ref: ICE_TMT_TETCO_M3_BASIS_FUTURE
+  forward_fundamental_mapping_ref: ICE_TMT_TO_GAS_TETCO_M3_BASIS_TO_LD1
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_MTI_TETCO_M3_INDEX_FUTURE:
+  commodity: gas
+  location_id: TETCO_M3
+  index_family: GDD_INDEX_TO_IFERC
+  exchange: ICE Futures U.S.
+  contract_symbol: MTI
+  exchange_contract_ref: ICE_MTI_TETCO_M3_INDEX_FUTURE
+  forward_fundamental_mapping_ref: ICE_MTI_TO_GAS_TETCO_M3_GDD_INDEX_TO_IFERC
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_DOM_EASTERN_GAS_SOUTH_BASIS_FUTURE:
+  commodity: gas
+  location_id: EASTERN_GAS_SOUTH
+  index_family: BASIS_TO_LD1
+  exchange: ICE Futures U.S.
+  contract_symbol: DOM
+  exchange_contract_ref: ICE_DOM_EASTERN_GAS_SOUTH_BASIS_FUTURE
+  forward_fundamental_mapping_ref: ICE_DOM_TO_GAS_EASTERN_GAS_SOUTH_BASIS_TO_LD1
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_DIS_EASTERN_GAS_SOUTH_INDEX_FUTURE:
+  commodity: gas
+  location_id: EASTERN_GAS_SOUTH
+  index_family: GDD_INDEX_TO_IFERC
+  exchange: ICE Futures U.S.
+  contract_symbol: DIS
+  exchange_contract_ref: ICE_DIS_EASTERN_GAS_SOUTH_INDEX_FUTURE
+  forward_fundamental_mapping_ref: ICE_DIS_TO_GAS_EASTERN_GAS_SOUTH_GDD_INDEX_TO_IFERC
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_BM1_TETCO_M2_FIXED_PRICE_RECEIPTS:
+  commodity: gas
+  location_id: TETCO_M2
+  index_family: IFERC
+  exchange: ICE Futures U.S.
+  contract_symbol: BM1
+  exchange_contract_ref: ICE_BM1_TETCO_M2_FIXED_PRICE_RECEIPTS
+  forward_fundamental_mapping_ref: ICE_BM1_TO_GAS_TETCO_M2_IFERC
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_BM2_TETCO_M2_BASIS_RECEIPTS:
+  commodity: gas
+  location_id: TETCO_M2
+  index_family: BASIS_TO_LD1
+  exchange: ICE Futures U.S.
+  contract_symbol: BM2
+  exchange_contract_ref: ICE_BM2_TETCO_M2_BASIS_RECEIPTS
+  forward_fundamental_mapping_ref: ICE_BM2_TO_GAS_TETCO_M2_BASIS_TO_LD1
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_BM3_TETCO_M2_SWING_RECEIPTS:
+  commodity: gas
+  location_id: TETCO_M2
+  index_family: GDD
+  exchange: ICE Futures U.S.
+  contract_symbol: BM3
+  exchange_contract_ref: ICE_BM3_TETCO_M2_SWING_RECEIPTS
+  forward_fundamental_mapping_ref: ICE_BM3_TO_GAS_TETCO_M2_GDD
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_MB4_TETCO_M2_INDEX_RECEIPTS:
+  commodity: gas
+  location_id: TETCO_M2
+  index_family: GDD_INDEX_TO_IFERC
+  exchange: ICE Futures U.S.
+  contract_symbol: MB4
+  exchange_contract_ref: ICE_MB4_TETCO_M2_INDEX_RECEIPTS
+  forward_fundamental_mapping_ref: ICE_MB4_TO_GAS_TETCO_M2_GDD_INDEX_TO_IFERC
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_TPH_TRANSCO_Z6_NNY_FIXED_PRICE:
+  commodity: gas
+  location_id: TRANSCO_Z6_NNY
+  index_family: IFERC
+  exchange: ICE Futures U.S.
+  contract_symbol: TPH
+  exchange_contract_ref: ICE_TPH_TRANSCO_Z6_NNY_FIXED_PRICE
+  forward_fundamental_mapping_ref: ICE_TPH_TO_GAS_TRANSCO_Z6_NNY_IFERC
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_TPB_TRANSCO_Z6_NNY_BASIS_FUTURE:
+  commodity: gas
+  location_id: TRANSCO_Z6_NNY
+  index_family: BASIS_TO_LD1
+  exchange: ICE Futures U.S.
+  contract_symbol: TPB
+  exchange_contract_ref: ICE_TPB_TRANSCO_Z6_NNY_BASIS_FUTURE
+  forward_fundamental_mapping_ref: ICE_TPB_TO_GAS_TRANSCO_Z6_NNY_BASIS_TO_LD1
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_TPS_TRANSCO_Z6_NNY_SWING_FUTURE:
+  commodity: gas
+  location_id: TRANSCO_Z6_NNY
+  index_family: GDD
+  exchange: ICE Futures U.S.
+  contract_symbol: TPS
+  exchange_contract_ref: ICE_TPS_TRANSCO_Z6_NNY_SWING_FUTURE
+  forward_fundamental_mapping_ref: ICE_TPS_TO_GAS_TRANSCO_Z6_NNY_GDD
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_TPI_TRANSCO_Z6_NNY_INDEX_FUTURE:
+  commodity: gas
+  location_id: TRANSCO_Z6_NNY
+  index_family: GDD_INDEX_TO_IFERC
+  exchange: ICE Futures U.S.
+  contract_symbol: TPI
+  exchange_contract_ref: ICE_TPI_TRANSCO_Z6_NNY_INDEX_FUTURE
+  forward_fundamental_mapping_ref: ICE_TPI_TO_GAS_TRANSCO_Z6_NNY_GDD_INDEX_TO_IFERC
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_TZ5_TRANSCO_Z5_FIXED_PRICE:
+  commodity: gas
+  location_id: TRANSCO_Z5
+  index_family: IFERC
+  exchange: ICE Futures U.S.
+  contract_symbol: TZ5
+  exchange_contract_ref: ICE_TZ5_TRANSCO_Z5_FIXED_PRICE
+  forward_fundamental_mapping_ref: ICE_TZ5_TO_GAS_TRANSCO_Z5_IFERC
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_DKR_TRANSCO_Z5_BASIS_FUTURE:
+  commodity: gas
+  location_id: TRANSCO_Z5
+  index_family: BASIS_TO_LD1
+  exchange: ICE Futures U.S.
+  contract_symbol: DKR
+  exchange_contract_ref: ICE_DKR_TRANSCO_Z5_BASIS_FUTURE
+  forward_fundamental_mapping_ref: ICE_DKR_TO_GAS_TRANSCO_Z5_BASIS_TO_LD1
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_DKS_TRANSCO_Z5_SWING_FUTURE:
+  commodity: gas
+  location_id: TRANSCO_Z5
+  index_family: GDD
+  exchange: ICE Futures U.S.
+  contract_symbol: DKS
+  exchange_contract_ref: ICE_DKS_TRANSCO_Z5_SWING_FUTURE
+  forward_fundamental_mapping_ref: ICE_DKS_TO_GAS_TRANSCO_Z5_GDD
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_DKT_TRANSCO_Z5_INDEX_FUTURE:
+  commodity: gas
+  location_id: TRANSCO_Z5
+  index_family: GDD_INDEX_TO_IFERC
+  exchange: ICE Futures U.S.
+  contract_symbol: DKT
+  exchange_contract_ref: ICE_DKT_TRANSCO_Z5_INDEX_FUTURE
+  forward_fundamental_mapping_ref: ICE_DKT_TO_GAS_TRANSCO_Z5_GDD_INDEX_TO_IFERC
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_T5Z_TRANSCO_Z5_SOUTH_FIXED_PRICE:
+  commodity: gas
+  location_id: TRANSCO_Z5_SOUTH
+  index_family: IFERC
+  exchange: ICE Futures U.S.
+  contract_symbol: T5Z
+  exchange_contract_ref: ICE_T5Z_TRANSCO_Z5_SOUTH_FIXED_PRICE
+  forward_fundamental_mapping_ref: ICE_T5Z_TO_GAS_TRANSCO_Z5_SOUTH_IFERC
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_T5B_TRANSCO_Z5_SOUTH_BASIS_FUTURE:
+  commodity: gas
+  location_id: TRANSCO_Z5_SOUTH
+  index_family: BASIS_TO_LD1
+  exchange: ICE Futures U.S.
+  contract_symbol: T5B
+  exchange_contract_ref: ICE_T5B_TRANSCO_Z5_SOUTH_BASIS_FUTURE
+  forward_fundamental_mapping_ref: ICE_T5B_TO_GAS_TRANSCO_Z5_SOUTH_BASIS_TO_LD1
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_T5C_TRANSCO_Z5_SOUTH_SWING_FUTURE:
+  commodity: gas
+  location_id: TRANSCO_Z5_SOUTH
+  index_family: GDD
+  exchange: ICE Futures U.S.
+  contract_symbol: T5C
+  exchange_contract_ref: ICE_T5C_TRANSCO_Z5_SOUTH_SWING_FUTURE
+  forward_fundamental_mapping_ref: ICE_T5C_TO_GAS_TRANSCO_Z5_SOUTH_GDD
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified
+
+ICE_T5I_TRANSCO_Z5_SOUTH_INDEX_FUTURE:
+  commodity: gas
+  location_id: TRANSCO_Z5_SOUTH
+  index_family: GDD_INDEX_TO_IFERC
+  exchange: ICE Futures U.S.
+  contract_symbol: T5I
+  exchange_contract_ref: ICE_T5I_TRANSCO_Z5_SOUTH_INDEX_FUTURE
+  forward_fundamental_mapping_ref: ICE_T5I_TO_GAS_TRANSCO_Z5_SOUTH_GDD_INDEX_TO_IFERC
+  status: approved_core
+  official_spec_status: official_exchange_spec_verified

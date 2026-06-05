@@ -17,7 +17,7 @@ TETCO_M3:
   location_type: pipeline_zone_or_index_point
   default_index_family: GDD
   status: approved_high_priority
-  official_spec_status: needs_ingestion
+  official_spec_status: official_exchange_spec_verified
 
 TETCO_M2:
   display_name: TETCO M2
@@ -28,6 +28,7 @@ TETCO_M2:
   location_type: pipeline_zone_or_index_point
   default_index_family: GDD
   status: approved_core
+  official_spec_status: official_exchange_spec_verified
 
 TRANSCO_Z6_NNY:
   display_name: Transco Zone 6 NNY
@@ -38,7 +39,7 @@ TRANSCO_Z6_NNY:
   location_type: pipeline_zone_or_citygate
   default_index_family: GDD
   status: approved_high_priority
-  official_spec_status: needs_ingestion
+  official_spec_status: official_exchange_spec_verified
 
 TRANSCO_Z6_NY:
   display_name: Transco Zone 6 NY
@@ -49,6 +50,7 @@ TRANSCO_Z6_NY:
   location_type: pipeline_zone_or_citygate
   default_index_family: GDD
   status: approved_core
+  official_spec_status: official_exchange_spec_verified
 
 TRANSCO_Z5:
   display_name: Transco Zone 5
@@ -59,6 +61,7 @@ TRANSCO_Z5:
   location_type: pipeline_zone_or_index_point
   default_index_family: GDD
   status: approved_core
+  official_spec_status: official_exchange_spec_verified
 
 TRANSCO_Z5_SOUTH:
   display_name: Transco Zone 5 South
@@ -69,6 +72,7 @@ TRANSCO_Z5_SOUTH:
   location_type: pipeline_zone_or_index_point
   default_index_family: GDD
   status: approved_core
+  official_spec_status: official_exchange_spec_verified
 
 EASTERN_GAS_SOUTH:
   display_name: Eastern Gas South
