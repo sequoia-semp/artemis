@@ -29,6 +29,8 @@
           "position_gamma": 1.9465371375466392,
           "position_vega": 2.0864444943078038,
           "position_theta": -1.4605111460154625,
+          "analytics_scope": "screening_only",
+          "vol_input_scope": "single_point_black76_input",
           "model_scope": "standard_european_option_on_future_screening_greeks"
         }
       ]

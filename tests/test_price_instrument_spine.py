@@ -179,11 +179,14 @@ def test_registered_option_greeks_include_contract_metadata_and_model_scope():
     assert pmi["option_contract_id"] == "ICE_PMI_OPTION_PJM_WH_RT_PEAK_1MW"
     assert pmi["contract_symbol"] == "PMI"
     assert pmi["option_style"] == "American"
+    assert pmi["analytics_scope"] == "screening_only"
+    assert pmi["vol_input_scope"] == "single_point_black76_input"
     assert pmi["model_scope"] == "screening_greeks_only_american_exercise_not_modeled"
     assert pmi["position_delta"] > 1.0
     assert phe["option_contract_id"] == "ICE_PHE_OPTION_HENRY_PENULTIMATE_FIXED_PRICE"
     assert phe["underlying_index_id"] == "GAS.HH.NYMEX_PENULTIMATE"
     assert phe["premium_quote_unit"] == "USD_per_MMBtu"
+    assert report.lineage["analytics_scope"] == "screening_only"
     assert report.lineage["exceptions"][0]["code"] == "OPTION_STYLE_APPROXIMATION"
 
 

@@ -9,6 +9,9 @@ from ..models import GreeksReport
 from ..registry_access import find_option_contract
 from ..vol import validate_vol_location
 
+GREEKS_ANALYTICS_SCOPE = "screening_only"
+GREEKS_VOL_INPUT_SCOPE = "single_point_black76_input"
+
 
 def read_option_rows(path: Path) -> list[dict[str, str]]:
     with Path(path).open("r", encoding="utf-8", newline="") as handle:
@@ -92,6 +95,8 @@ def run_black76_greeks(rows: list[dict[str, Any]], run_id: str = "greeks-run") -
             "position_gamma": base["gamma"] * position,
             "position_vega": base["vega"] * position,
             "position_theta": base["theta"] * position,
+            "analytics_scope": GREEKS_ANALYTICS_SCOPE,
+            "vol_input_scope": GREEKS_VOL_INPUT_SCOPE,
             "model_scope": "unregistered_row_input" if contract is None else contract["model_scope"],
         }
         if contract is not None and contract["option_style"] != "European":
@@ -109,5 +114,10 @@ def run_black76_greeks(rows: list[dict[str, Any]], run_id: str = "greeks-run") -
         as_of=str(rows[0]["as_of"]) if rows else "",
         model_convention="Black76",
         greeks=greeks,
-        lineage={"vol_scope": "WH_HH_only", "exceptions": exceptions},
+        lineage={
+            "analytics_scope": GREEKS_ANALYTICS_SCOPE,
+            "vol_input_scope": GREEKS_VOL_INPUT_SCOPE,
+            "vol_scope": "WH_HH_only",
+            "exceptions": exceptions,
+        },
     )
