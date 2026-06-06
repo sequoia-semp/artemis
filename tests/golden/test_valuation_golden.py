@@ -28,53 +28,57 @@ def _assert_float_map(actual: dict, expected: dict, *, abs_tol: float) -> None:
             assert actual_value == pytest.approx(expected_value, abs=abs_tol)
 
 
-def test_flat_single_leg_golden_pnl_var_and_greeks():
-    scenario = _scenario("flat_single_leg.json")
+@pytest.mark.parametrize("scenario_path", sorted(SCENARIO_DIR.glob("*.json")))
+def test_golden_valuation_scenarios(scenario_path: Path):
+    scenario = json.loads(scenario_path.read_text(encoding="utf-8"))
     abs_tol = float(scenario["tolerances"]["absolute"])
     greeks_abs_tol = float(scenario["tolerances"]["greeks_absolute"])
 
-    pnl = scenario["pnl"]
-    pnl_report = run_pnl_attribution(
-        normalize_positions(pnl["prior_positions"]),
-        normalize_positions(pnl["current_positions"]),
-        run_id=scenario["scenario_id"],
-    )
-    _assert_float_map(
-        {
-            "price_move_effect": pnl_report.price_move_effect,
-            "position_change_effect": pnl_report.position_change_effect,
-            "basis_move_effect": pnl_report.basis_move_effect,
-            "strip_weight_effect": pnl_report.strip_weight_effect,
-            "atc_component_effect": pnl_report.atc_component_effect,
-            "mark_adjustment_effect": pnl_report.mark_adjustment_effect,
-            "unexplained_residual": pnl_report.unexplained_residual,
-            "bridge_sums": pnl_report.bridge_sums,
-        },
-        pnl["expected"],
-        abs_tol=abs_tol,
-    )
-
-    var = scenario["var"]
-    var_report = run_historical_var(
-        normalize_positions(var["positions"]),
-        var["historical_returns"],
-        as_of="2026-06-04T12:00:00Z",
-        run_id=scenario["scenario_id"],
-    )
-    _assert_float_map(var_report.var_by_confidence, var["expected"]["var_by_confidence"], abs_tol=abs_tol)
-    for actual, expected in zip(var_report.scenario_pnl, var["expected"]["scenario_pnl"], strict=True):
-        assert actual["date"] == expected["date"]
-        assert actual["pnl"] == pytest.approx(expected["pnl"], abs=abs_tol)
-
-    greeks = scenario["greeks"]
-    greeks_report = run_black76_greeks(greeks["rows"], run_id=scenario["scenario_id"])
-    assert greeks_report.model_convention == greeks["expected"]["model_convention"]
-    for actual, expected in zip(greeks_report.greeks, greeks["expected"]["greeks"], strict=True):
-        _assert_float_map(
-            {key: actual[key] for key in expected},
-            expected,
-            abs_tol=greeks_abs_tol,
+    if "pnl" in scenario:
+        pnl = scenario["pnl"]
+        pnl_report = run_pnl_attribution(
+            normalize_positions(pnl["prior_positions"]),
+            normalize_positions(pnl["current_positions"]),
+            run_id=scenario["scenario_id"],
         )
+        _assert_float_map(
+            {
+                "price_move_effect": pnl_report.price_move_effect,
+                "position_change_effect": pnl_report.position_change_effect,
+                "basis_move_effect": pnl_report.basis_move_effect,
+                "strip_weight_effect": pnl_report.strip_weight_effect,
+                "atc_component_effect": pnl_report.atc_component_effect,
+                "mark_adjustment_effect": pnl_report.mark_adjustment_effect,
+                "unexplained_residual": pnl_report.unexplained_residual,
+                "bridge_sums": pnl_report.bridge_sums,
+            },
+            pnl["expected"],
+            abs_tol=abs_tol,
+        )
+
+    if "var" in scenario:
+        var = scenario["var"]
+        var_report = run_historical_var(
+            normalize_positions(var["positions"]),
+            var["historical_returns"],
+            as_of="2026-06-04T12:00:00Z",
+            run_id=scenario["scenario_id"],
+        )
+        _assert_float_map(var_report.var_by_confidence, var["expected"]["var_by_confidence"], abs_tol=abs_tol)
+        for actual, expected in zip(var_report.scenario_pnl, var["expected"]["scenario_pnl"], strict=True):
+            assert actual["date"] == expected["date"]
+            assert actual["pnl"] == pytest.approx(expected["pnl"], abs=abs_tol)
+
+    if "greeks" in scenario:
+        greeks = scenario["greeks"]
+        greeks_report = run_black76_greeks(greeks["rows"], run_id=scenario["scenario_id"])
+        assert greeks_report.model_convention == greeks["expected"]["model_convention"]
+        for actual, expected in zip(greeks_report.greeks, greeks["expected"]["greeks"], strict=True):
+            _assert_float_map(
+                {key: actual[key] for key in expected},
+                expected,
+                abs_tol=greeks_abs_tol,
+            )
 
 
 def test_historical_var_missing_factor_fails_closed():

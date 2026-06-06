@@ -1,0 +1,40 @@
+{
+  "scenario_id": "option_position_black76",
+  "description": "Registered ICE PHE European put option with hand-derived Black-76 screening Greeks.",
+  "tolerances": {
+    "absolute": 1e-9,
+    "greeks_absolute": 1e-9
+  },
+  "greeks": {
+    "rows": [
+      {
+        "as_of": "2026-06-04T12:00:00Z",
+        "option_symbol": "PHE",
+        "option_id": "PHE-P-3.50-N26",
+        "delivery_period_id": "N26",
+        "option_type": "put",
+        "position": "3",
+        "forward": "3.5",
+        "strike": "3.5",
+        "volatility": "0.35",
+        "time_to_expiry_years": "0.25"
+      }
+    ],
+    "expected": {
+      "model_convention": "Black76",
+      "greeks": [
+        {
+          "model_price": 0.2440407009860075,
+          "position_delta": -1.395411128148854,
+          "position_gamma": 1.9465371375466392,
+          "position_vega": 2.0864444943078038,
+          "position_theta": -1.4605111460154625,
+          "model_scope": "standard_european_option_on_future_screening_greeks"
+        }
+      ]
+    }
+  },
+  "derivation": {
+    "greeks": "Black-76 European put with F=3.5, K=3.5, sigma=0.35, T=0.25, df=1 gives price 0.2440407009860075, delta -0.46513704271628464, gamma 0.6488457125155463, vega 0.6954814981026012, theta -0.4868370486718208. Position is 3 contracts, so position Greeks are multiplied by 3."
+  }
+}

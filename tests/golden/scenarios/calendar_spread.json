@@ -1,0 +1,144 @@
+{
+  "scenario_id": "calendar_spread_power",
+  "description": "Two-leg Western Hub calendar spread represented as long prompt and short deferred outright legs.",
+  "tolerances": {
+    "absolute": 1e-9,
+    "greeks_absolute": 1e-9
+  },
+  "pnl": {
+    "prior_positions": [
+      {
+        "as_of": "2026-06-03T12:00:00Z",
+        "position_id": "WH-N26",
+        "raw_product": "WH",
+        "raw_period": "N26",
+        "raw_quantity": "10",
+        "quantity_unit": "MW",
+        "reference_hours": "10",
+        "raw_mark": "50"
+      },
+      {
+        "as_of": "2026-06-03T12:00:00Z",
+        "position_id": "WH-Q126",
+        "raw_product": "WH",
+        "raw_period": "Q126",
+        "raw_quantity": "-10",
+        "quantity_unit": "MW",
+        "reference_hours": "10",
+        "raw_mark": "45"
+      }
+    ],
+    "current_positions": [
+      {
+        "as_of": "2026-06-04T12:00:00Z",
+        "position_id": "WH-N26",
+        "raw_product": "WH",
+        "raw_period": "N26",
+        "raw_quantity": "10",
+        "quantity_unit": "MW",
+        "reference_hours": "10",
+        "raw_mark": "55"
+      },
+      {
+        "as_of": "2026-06-04T12:00:00Z",
+        "position_id": "WH-Q126",
+        "raw_product": "WH",
+        "raw_period": "Q126",
+        "raw_quantity": "-10",
+        "quantity_unit": "MW",
+        "reference_hours": "10",
+        "raw_mark": "43"
+      }
+    ],
+    "expected": {
+      "price_move_effect": 700.0,
+      "position_change_effect": 0.0,
+      "basis_move_effect": 0.0,
+      "strip_weight_effect": 0.0,
+      "atc_component_effect": 0.0,
+      "mark_adjustment_effect": 0.0,
+      "unexplained_residual": 0.0,
+      "bridge_sums": true
+    }
+  },
+  "var": {
+    "positions": [
+      {
+        "as_of": "2026-06-04T12:00:00Z",
+        "position_id": "WH-N26",
+        "raw_product": "WH",
+        "raw_period": "N26",
+        "raw_quantity": "10",
+        "quantity_unit": "MW",
+        "reference_hours": "10",
+        "raw_mark": "55"
+      },
+      {
+        "as_of": "2026-06-04T12:00:00Z",
+        "position_id": "WH-Q126",
+        "raw_product": "WH",
+        "raw_period": "Q126",
+        "raw_quantity": "-10",
+        "quantity_unit": "MW",
+        "reference_hours": "10",
+        "raw_mark": "43"
+      }
+    ],
+    "historical_returns": [
+      {
+        "date": "d1",
+        "risk_factor": "PJM.WH.RT.FULL_LMP.ATC.N26",
+        "return": -0.01
+      },
+      {
+        "date": "d1",
+        "risk_factor": "PJM.WH.RT.FULL_LMP.ATC.Q126",
+        "return": 0.02
+      },
+      {
+        "date": "d2",
+        "risk_factor": "PJM.WH.RT.FULL_LMP.ATC.N26",
+        "return": 0.02
+      },
+      {
+        "date": "d2",
+        "risk_factor": "PJM.WH.RT.FULL_LMP.ATC.Q126",
+        "return": -0.01
+      },
+      {
+        "date": "d3",
+        "risk_factor": "PJM.WH.RT.FULL_LMP.ATC.N26",
+        "return": -0.05
+      },
+      {
+        "date": "d3",
+        "risk_factor": "PJM.WH.RT.FULL_LMP.ATC.Q126",
+        "return": 0.03
+      }
+    ],
+    "expected": {
+      "var_by_confidence": {
+        "95": 404.0,
+        "99": 404.0
+      },
+      "scenario_pnl": [
+        {
+          "date": "d1",
+          "pnl": -141.0
+        },
+        {
+          "date": "d2",
+          "pnl": 153.0
+        },
+        {
+          "date": "d3",
+          "pnl": -404.0
+        }
+      ]
+    }
+  },
+  "derivation": {
+    "pnl": "N26 leg is 100 MWh long. Prior MTM is 100 * 50 = 5000; current MTM is 100 * 55 = 5500; price move is 500. Q126 leg is -100 MWh. Prior MTM is -100 * 45 = -4500; current MTM is -100 * 43 = -4300; price move is (-100) * (43 - 45) = 200. Net total PnL and price effect are 700 with no position-change effect.",
+    "var": "Current N26 exposure is 100 * 55 = 5500. Current Q126 exposure is -100 * 43 = -4300. Scenario d1 is 5500 * -0.01 + -4300 * 0.02 = -141. d2 is 5500 * 0.02 + -4300 * -0.01 = 153. d3 is 5500 * -0.05 + -4300 * 0.03 = -404. The current quantile policy selects the worst loss for 95 and 99 confidence with three observations."
+  }
+}
