@@ -22,10 +22,17 @@ PJM_DATAMINER_CONNECTION_LIMITS_PER_MINUTE = {
     "non_member": 6,
     "member": 600,
 }
+PJM_DATAMINER_DEFAULT_MAX_RETRY_ATTEMPTS = 3
 
 HttpGet = Callable[[str, dict[str, str], float], dict[str, Any]]
 Clock = Callable[[], float]
 Sleep = Callable[[float], None]
+
+
+class PjmDataMinerRetryAfter(Exception):
+    def __init__(self, retry_after_seconds: float, message: str = "PJM Data Miner throttled request") -> None:
+        super().__init__(message)
+        self.retry_after_seconds = float(retry_after_seconds)
 
 
 class PjmDataMinerTokenBucket:
@@ -94,6 +101,9 @@ def _default_http_get(url: str, headers: dict[str, str], timeout: float) -> dict
         with urlopen(request, timeout=timeout) as response:
             raw = response.read().decode("utf-8")
     except HTTPError as exc:
+        if exc.code == 429:
+            retry_after = _retry_after_seconds(exc.headers.get("Retry-After") if exc.headers else None)
+            raise PjmDataMinerRetryAfter(retry_after, f"PJM Data Miner HTTP 429: retry after {retry_after:g} seconds") from exc
         raw_error = exc.read().decode("utf-8", errors="replace")
         try:
             payload = json.loads(raw_error)
@@ -147,6 +157,8 @@ class PjmDataMinerConnector(DataConnector):
         max_row_count: int = PJM_DATAMINER_MAX_ROW_COUNT,
         default_max_pages: int = PJM_DATAMINER_DEFAULT_MAX_PAGES,
         rate_limiter: PjmDataMinerTokenBucket | None = None,
+        retry_sleep: Sleep | None = None,
+        max_retry_attempts: int = PJM_DATAMINER_DEFAULT_MAX_RETRY_ATTEMPTS,
     ) -> None:
         super().__init__(id="pjm_dataminer", kind="iso_api")
         uses_default_http_get = http_get is None
@@ -164,6 +176,10 @@ class PjmDataMinerConnector(DataConnector):
         self.rate_limiter = rate_limiter
         if self.rate_limiter is None and uses_default_http_get:
             self.rate_limiter = shared_pjm_dataminer_rate_limiter(self.account_class, self._connection_limit())
+        self.retry_sleep = retry_sleep or time.sleep
+        self.max_retry_attempts = int(max_retry_attempts)
+        if self.max_retry_attempts < 0:
+            raise WorkbenchException(PJM_DATAMINER_POLICY_ERROR, "PJM Data Miner max retry attempts must not be negative")
 
     def available(self) -> bool:
         return bool(self.api_key)
@@ -189,8 +205,7 @@ class PjmDataMinerConnector(DataConnector):
         return f"{self.base_url}/{feed}/metadata"
 
     def fetch_definition(self, feed: str) -> dict[str, Any]:
-        self._acquire_rate_limit()
-        payload = self.http_get(self.metadata_url(feed), self._headers(), self.timeout_seconds)
+        payload = self._request_json(self.metadata_url(feed))
         if payload.get("errors") or (payload.get("code") and payload.get("message")):
             message = str(payload.get("message") or "PJM Data Miner returned a definition error payload")
             raise WorkbenchException(PJM_DATAMINER_ERROR, message)
@@ -211,6 +226,22 @@ class PjmDataMinerConnector(DataConnector):
         if self.rate_limiter is None:
             return 0.0
         return self.rate_limiter.acquire()
+
+    def _request_json(self, url: str) -> dict[str, Any]:
+        attempt = 0
+        while True:
+            self._acquire_rate_limit()
+            try:
+                return self.http_get(url, self._headers(), self.timeout_seconds)
+            except PjmDataMinerRetryAfter as exc:
+                if attempt >= self.max_retry_attempts:
+                    raise WorkbenchException(
+                        PJM_DATAMINER_ERROR,
+                        f"PJM Data Miner throttled request exceeded retry budget after {attempt} retries",
+                    ) from exc
+                delay = exc.retry_after_seconds * (2**attempt)
+                self.retry_sleep(delay)
+                attempt += 1
 
     def _planned_max_pages(self, parameters: dict[str, Any], paginate: bool) -> int:
         raw = parameters.get("max_pages")
@@ -246,8 +277,7 @@ class PjmDataMinerConnector(DataConnector):
         while True:
             page_count += 1
             query["startRow"] = start_row
-            self._acquire_rate_limit()
-            payload = self.http_get(self._url(feed, query), self._headers(), self.timeout_seconds)
+            payload = self._request_json(self._url(feed, query))
             page = _records_from_payload(payload)
             records.extend(page)
             total_rows = _total_rows(payload) if total_rows is None else total_rows
@@ -274,6 +304,7 @@ class PjmDataMinerConnector(DataConnector):
                 "account_class": self.account_class,
                 "max_connections_per_minute": self._connection_limit(),
                 "runtime_rate_limiter_enabled": self.rate_limiter is not None,
+                "max_retry_attempts": self.max_retry_attempts,
                 "max_row_count": self.max_row_count,
             },
         )
@@ -296,3 +327,13 @@ def _query_int(query: dict[str, Any], primary: str, alternate: str, default: int
     if value is None:
         value = default
     return int(value)
+
+
+def _retry_after_seconds(value: Any) -> float:
+    if value in (None, ""):
+        return 1.0
+    try:
+        parsed = float(value)
+    except (TypeError, ValueError):
+        return 1.0
+    return max(0.0, parsed)
