@@ -9,6 +9,7 @@ from pga_workbench.data.connectors.pjm_dataminer import (
     PJM_DATAMINER_ERROR,
     PJM_DATAMINER_POLICY_ERROR,
     PjmDataMinerConnector,
+    PjmDataMinerRetryAfter,
     PjmDataMinerTokenBucket,
     shared_pjm_dataminer_rate_limiter,
 )
@@ -193,6 +194,52 @@ def test_pjm_dataminer_token_bucket_sleeps_on_burst(monkeypatch):
     assert len(calls) == 3
     assert sleeps == [pytest.approx(30.0)]
     assert result.lineage["runtime_rate_limiter_enabled"] is True
+
+
+def test_pjm_dataminer_connector_honors_retry_after_then_succeeds(monkeypatch):
+    monkeypatch.delenv("ARTEMIS_PJM_API_KEY", raising=False)
+    calls = []
+    sleeps = []
+
+    def fake_get(url, headers, timeout):
+        calls.append(url)
+        if len(calls) == 1:
+            raise PjmDataMinerRetryAfter(2.0)
+        return {"items": [{"row": 1}], "totalRows": 1}
+
+    result = PjmDataMinerConnector(api_key="test-key", http_get=fake_get, retry_sleep=sleeps.append).fetch(
+        DataRequest(
+            contract="load_frcstd_7_day",
+            parameters={"feed": "load_frcstd_7_day", "query": {"rowCount": 1}, "paginate": False},
+        )
+    )
+
+    assert result.records == [{"row": 1}]
+    assert len(calls) == 2
+    assert sleeps == [2.0]
+    assert result.lineage["max_retry_attempts"] == 3
+
+
+def test_pjm_dataminer_connector_rejects_retry_after_when_budget_exhausted(monkeypatch):
+    monkeypatch.delenv("ARTEMIS_PJM_API_KEY", raising=False)
+    sleeps = []
+
+    def fake_get(url, headers, timeout):
+        raise PjmDataMinerRetryAfter(1.0)
+
+    connector = PjmDataMinerConnector(api_key="test-key", http_get=fake_get, retry_sleep=sleeps.append, max_retry_attempts=1)
+
+    with pytest.raises(WorkbenchException) as exc:
+        connector.fetch(
+            DataRequest(
+                contract="load_frcstd_7_day",
+                parameters={"feed": "load_frcstd_7_day", "query": {"rowCount": 1}, "paginate": False},
+            )
+        )
+
+    assert exc.value.code == PJM_DATAMINER_ERROR
+    assert "retry budget" in exc.value.message
+    assert sleeps == [1.0]
 
 
 def test_pjm_dataminer_shared_limiter_is_process_shared():
