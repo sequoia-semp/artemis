@@ -1,7 +1,7 @@
 id: T-0116
 type: ticket
 title: Hand-derived valuation scenarios
-status: planned
+status: validated
 owner: user
 risk: high
 created_at: '2026-06-06'
@@ -30,3 +30,13 @@ change_request_required: true
 change_id: CR-0096
 dependencies:
   - T-0115
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added calendar_spread and option_position_black76 golden scenarios alongside
+  the existing flat_single_leg scenario. Each fixture includes expected outputs
+  and hand-derived calculation notes.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0116/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0116.md
+validation_summary: >
+  .venv/bin/python -m pytest tests/golden -q passed.
