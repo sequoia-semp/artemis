@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import json
 import os
+import threading
+import time
 from typing import Any, Callable
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
@@ -22,6 +24,63 @@ PJM_DATAMINER_CONNECTION_LIMITS_PER_MINUTE = {
 }
 
 HttpGet = Callable[[str, dict[str, str], float], dict[str, Any]]
+Clock = Callable[[], float]
+Sleep = Callable[[float], None]
+
+
+class PjmDataMinerTokenBucket:
+    def __init__(
+        self,
+        max_connections_per_minute: int,
+        *,
+        clock: Clock | None = None,
+        sleep: Sleep | None = None,
+        capacity: int | None = None,
+    ) -> None:
+        if max_connections_per_minute < 1:
+            raise WorkbenchException(PJM_DATAMINER_POLICY_ERROR, "PJM Data Miner token bucket limit must be positive")
+        self.max_connections_per_minute = int(max_connections_per_minute)
+        self.capacity = int(capacity or max_connections_per_minute)
+        if self.capacity < 1:
+            raise WorkbenchException(PJM_DATAMINER_POLICY_ERROR, "PJM Data Miner token bucket capacity must be positive")
+        self._clock = clock or time.monotonic
+        self._sleep = sleep or time.sleep
+        self._lock = threading.Lock()
+        self._tokens = float(self.capacity)
+        self._last_refill = self._clock()
+
+    @property
+    def refill_rate_per_second(self) -> float:
+        return self.max_connections_per_minute / 60.0
+
+    def acquire(self) -> float:
+        total_slept = 0.0
+        while True:
+            with self._lock:
+                now = self._clock()
+                elapsed = max(0.0, now - self._last_refill)
+                self._tokens = min(float(self.capacity), self._tokens + elapsed * self.refill_rate_per_second)
+                self._last_refill = now
+                if self._tokens >= 1.0:
+                    self._tokens -= 1.0
+                    return total_slept
+                wait_seconds = (1.0 - self._tokens) / self.refill_rate_per_second
+            self._sleep(wait_seconds)
+            total_slept += wait_seconds
+
+
+_SHARED_RATE_LIMITERS: dict[tuple[str, int], PjmDataMinerTokenBucket] = {}
+_SHARED_RATE_LIMITERS_LOCK = threading.Lock()
+
+
+def shared_pjm_dataminer_rate_limiter(account_class: str, max_connections_per_minute: int) -> PjmDataMinerTokenBucket:
+    key = (str(account_class), int(max_connections_per_minute))
+    with _SHARED_RATE_LIMITERS_LOCK:
+        limiter = _SHARED_RATE_LIMITERS.get(key)
+        if limiter is None:
+            limiter = PjmDataMinerTokenBucket(max_connections_per_minute)
+            _SHARED_RATE_LIMITERS[key] = limiter
+        return limiter
 
 
 def _default_http_get(url: str, headers: dict[str, str], timeout: float) -> dict[str, Any]:
@@ -87,8 +146,10 @@ class PjmDataMinerConnector(DataConnector):
         max_connections_per_minute: int | None = None,
         max_row_count: int = PJM_DATAMINER_MAX_ROW_COUNT,
         default_max_pages: int = PJM_DATAMINER_DEFAULT_MAX_PAGES,
+        rate_limiter: PjmDataMinerTokenBucket | None = None,
     ) -> None:
         super().__init__(id="pjm_dataminer", kind="iso_api")
+        uses_default_http_get = http_get is None
         self.api_key = api_key or os.environ.get("ARTEMIS_PJM_API_KEY")
         self.base_url = (base_url or os.environ.get("ARTEMIS_PJM_API_BASE_URL") or "https://api.pjm.com/api/v1").rstrip("/")
         self.definition_base_url = (
@@ -100,6 +161,9 @@ class PjmDataMinerConnector(DataConnector):
         self.max_connections_per_minute = max_connections_per_minute or _env_positive_int("ARTEMIS_PJM_MAX_CONNECTIONS_PER_MINUTE")
         self.max_row_count = int(max_row_count)
         self.default_max_pages = int(default_max_pages)
+        self.rate_limiter = rate_limiter
+        if self.rate_limiter is None and uses_default_http_get:
+            self.rate_limiter = shared_pjm_dataminer_rate_limiter(self.account_class, self._connection_limit())
 
     def available(self) -> bool:
         return bool(self.api_key)
@@ -125,6 +189,7 @@ class PjmDataMinerConnector(DataConnector):
         return f"{self.base_url}/{feed}/metadata"
 
     def fetch_definition(self, feed: str) -> dict[str, Any]:
+        self._acquire_rate_limit()
         payload = self.http_get(self.metadata_url(feed), self._headers(), self.timeout_seconds)
         if payload.get("errors") or (payload.get("code") and payload.get("message")):
             message = str(payload.get("message") or "PJM Data Miner returned a definition error payload")
@@ -141,6 +206,11 @@ class PjmDataMinerConnector(DataConnector):
         except KeyError as exc:
             allowed = ", ".join(sorted(PJM_DATAMINER_CONNECTION_LIMITS_PER_MINUTE))
             raise WorkbenchException(PJM_DATAMINER_POLICY_ERROR, f"Unknown PJM account class {self.account_class!r}; expected one of {allowed}") from exc
+
+    def _acquire_rate_limit(self) -> float:
+        if self.rate_limiter is None:
+            return 0.0
+        return self.rate_limiter.acquire()
 
     def _planned_max_pages(self, parameters: dict[str, Any], paginate: bool) -> int:
         raw = parameters.get("max_pages")
@@ -176,6 +246,7 @@ class PjmDataMinerConnector(DataConnector):
         while True:
             page_count += 1
             query["startRow"] = start_row
+            self._acquire_rate_limit()
             payload = self.http_get(self._url(feed, query), self._headers(), self.timeout_seconds)
             page = _records_from_payload(payload)
             records.extend(page)
@@ -202,6 +273,7 @@ class PjmDataMinerConnector(DataConnector):
                 "truncated_by_max_pages": truncated_by_max_pages,
                 "account_class": self.account_class,
                 "max_connections_per_minute": self._connection_limit(),
+                "runtime_rate_limiter_enabled": self.rate_limiter is not None,
                 "max_row_count": self.max_row_count,
             },
         )

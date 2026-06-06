@@ -9,6 +9,8 @@ from pga_workbench.data.connectors.pjm_dataminer import (
     PJM_DATAMINER_ERROR,
     PJM_DATAMINER_POLICY_ERROR,
     PjmDataMinerConnector,
+    PjmDataMinerTokenBucket,
+    shared_pjm_dataminer_rate_limiter,
 )
 from pga_workbench.data.contracts import DataRequest
 from pga_workbench.exceptions import WorkbenchException
@@ -159,6 +161,47 @@ def test_pjm_dataminer_connector_rejects_planned_pages_over_connection_budget(mo
 
     assert exc.value.code == PJM_DATAMINER_POLICY_ERROR
     assert "connection budget" in exc.value.message
+
+
+def test_pjm_dataminer_token_bucket_sleeps_on_burst(monkeypatch):
+    monkeypatch.delenv("ARTEMIS_PJM_API_KEY", raising=False)
+    now = [0.0]
+    sleeps = []
+    calls = []
+
+    def fake_sleep(seconds):
+        sleeps.append(seconds)
+        now[0] += seconds
+
+    def fake_get(url, headers, timeout):
+        calls.append(url)
+        if "startRow=1" in url:
+            return {"items": [{"row": 1}], "totalRows": 3}
+        if "startRow=2" in url:
+            return {"items": [{"row": 2}], "totalRows": 3}
+        return {"items": [{"row": 3}], "totalRows": 3}
+
+    limiter = PjmDataMinerTokenBucket(2, clock=lambda: now[0], sleep=fake_sleep)
+    result = PjmDataMinerConnector(api_key="test-key", http_get=fake_get, rate_limiter=limiter).fetch(
+        DataRequest(
+            contract="load_frcstd_7_day",
+            parameters={"feed": "load_frcstd_7_day", "query": {"rowCount": 1}, "max_pages": 3},
+        )
+    )
+
+    assert [record["row"] for record in result.records] == [1, 2, 3]
+    assert len(calls) == 3
+    assert sleeps == [pytest.approx(30.0)]
+    assert result.lineage["runtime_rate_limiter_enabled"] is True
+
+
+def test_pjm_dataminer_shared_limiter_is_process_shared():
+    first = shared_pjm_dataminer_rate_limiter("non_member", 6)
+    second = shared_pjm_dataminer_rate_limiter("non_member", 6)
+    different_budget = shared_pjm_dataminer_rate_limiter("non_member", 600)
+
+    assert first is second
+    assert first is not different_budget
 
 
 def test_pjm_dataminer_member_policy_allows_larger_bounded_page_plan(monkeypatch):
