@@ -1,0 +1,40 @@
+change_id: CR-0028
+title: PJM Data Miner source access policy guardrails
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: high
+tickets:
+  - T-0047
+problem_statement: >
+  Direct PJM live source ingestion had source terms captured in documentation
+  and the source catalog, but the Data Miner connector still allowed unbounded
+  pagination and did not enforce row-count, start-row, or account-class
+  connection-budget guardrails.
+root_cause: >
+  The first PJM connector pass focused on authenticated fixture-backed source
+  pulls and left executable access-policy enforcement for a later hardening
+  slice.
+affected_files:
+  - domain/power_system_source_catalog.md
+  - docs/user/setup.md
+  - local/.env.example
+  - registries/power_system_source_access_policies.yaml
+  - schemas/power_system_source_access_policy.schema.json
+  - src/pga_workbench/registry.py
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/data/connectors/pjm_dataminer.py
+  - src/pga_workbench/services/source_access_policies.py
+  - tests/test_pjm_dataminer_connector.py
+  - tests/test_source_access_policies.py
+tests_required:
+  - .venv/bin/pytest tests/test_pjm_dataminer_connector.py tests/test_source_access_policies.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0047
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the source access policy registry/schema/helper and revert PJM Data
+  Miner connector pagination behavior, CLI max-pages defaults, documentation,
+  and access-policy tests to the prior authenticated connector behavior.

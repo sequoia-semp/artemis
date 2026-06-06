@@ -1,0 +1,119 @@
+hrl_load_metered:
+  display_name: PJM hourly metered load
+  source: PJM Data Miner
+  market: PJM
+  commodity: power
+  feed_class: actual
+  data_miner_feed: hrl_load_metered
+  retention_product: source_observation
+  granularity: hourly
+  value_unit: MW
+  source_contract: iso_load
+  time_columns:
+    delivery_start_utc: datetime_beginning_utc
+    delivery_end_utc: null
+    issued_at_utc: null
+    delivery_start_ept: datetime_beginning_ept
+    delivery_end_ept: datetime_ending_ept
+    issued_at_ept: null
+  value_columns: [mw]
+  area_columns: [load_area, zone, area]
+  default_area_filter: RTO
+  supported_metric_ids:
+    - PJM.LOAD.ACTUAL.METERED.HOURLY_MW
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents Hourly Load Metered as a Data Miner feed; exact field names are enforced by fixture and metadata tests.
+  verification_status: candidate
+  status: candidate
+
+hrl_load_prelim:
+  display_name: PJM hourly preliminary load
+  source: PJM Data Miner
+  market: PJM
+  commodity: power
+  feed_class: preliminary_actual
+  data_miner_feed: hrl_load_prelim
+  retention_product: source_observation
+  granularity: hourly
+  value_unit: MW
+  source_contract: iso_load
+  time_columns:
+    delivery_start_utc: datetime_beginning_utc
+    delivery_end_utc: datetime_ending_utc
+    issued_at_utc: null
+    delivery_start_ept: datetime_beginning_ept
+    delivery_end_ept: datetime_ending_ept
+    issued_at_ept: null
+  value_columns: [prelim_load_avg_hourly]
+  area_columns: [load_area]
+  default_area_filter: null
+  supported_metric_ids:
+    - PJM.LOAD.ACTUAL.PRELIMINARY.HOURLY_MW
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents Hourly Load Preliminary as a Data Miner feed; live metadata exposes load_area and does not expose zone/area alternates. Live feed rows are zonal, so no RTO default area filter is applied.
+  verification_status: candidate
+  status: candidate
+
+load_frcstd_7_day:
+  display_name: PJM seven-day load forecast
+  source: PJM Data Miner
+  market: PJM
+  commodity: power
+  feed_class: latest_forecast
+  data_miner_feed: load_frcstd_7_day
+  retention_product: latest_curve
+  granularity: hourly
+  value_unit: MW
+  source_contract: iso_load
+  time_columns:
+    delivery_start_utc: forecast_datetime_beginning_utc
+    delivery_end_utc: forecast_datetime_ending_utc
+    issued_at_utc: evaluated_at_datetime_utc
+    delivery_start_ept: forecast_datetime_beginning_ept
+    delivery_end_ept: forecast_datetime_ending_ept
+    issued_at_ept: evaluated_at_datetime_ept
+  value_columns: [forecast_load_mw]
+  area_columns: [forecast_area]
+  default_area_filter: RTO_COMBINED
+  supported_metric_ids:
+    - PJM.LOAD.FORECAST.SEVEN_DAY.LATEST.HOURLY_MW
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents load_frcstd_7_day fields including evaluated_at, forecast datetime, forecast_area, and forecast_load_mw.
+  verification_status: official_pjm_documented
+  status: approved_core
+
+load_frcstd_hist:
+  display_name: PJM historical load forecasts
+  source: PJM Data Miner
+  market: PJM
+  commodity: power
+  feed_class: revision_history
+  data_miner_feed: load_frcstd_hist
+  retention_product: revision_history
+  granularity: hourly
+  value_unit: MW
+  source_contract: iso_load
+  time_columns:
+    delivery_start_utc: forecast_hour_beginning_utc
+    delivery_end_utc: null
+    issued_at_utc: evaluated_at_utc
+    delivery_start_ept: forecast_hour_beginning_ept
+    delivery_end_ept: null
+    issued_at_ept: evaluated_at_ept
+  value_columns: [forecast_load_mw]
+  area_columns: [forecast_area]
+  default_area_filter: RTO
+  supported_metric_ids:
+    - PJM.LOAD.FORECAST.SEVEN_DAY.REVISION.HOURLY_MW
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents load_frcstd_hist fields including evaluated_at, forecast hour beginning, forecast_area, and forecast_load_mw.
+  verification_status: official_pjm_documented
+  status: approved_core

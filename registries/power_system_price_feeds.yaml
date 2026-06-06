@@ -1,0 +1,217 @@
+PJM_PNODE:
+  display_name: PJM Pricing Nodes
+  source: PJM Data Miner
+  market: PJM
+  commodity: power
+  source_system: iso_rto_api
+  product_type: pricing_node_master
+  price_class: metadata
+  market_run: null
+  data_miner_feed: pnode
+  granularity: effective_dated
+  value_unit: null
+  time_columns:
+    effective_start: effective_date
+    effective_end: termination_date
+  pnode_columns:
+    pnode_id: pnode_id
+    pnode_name: pnode_name
+    pnode_type: pnode_type
+    pnode_subtype: pnode_subtype
+    zone: zone
+    voltage: voltage_level
+  required_filters:
+    termination_date: 12/31/9999 exact
+  supported_price_components:
+    - FULL_LMP
+  source_components: []
+  source_product_contract:
+    observation_role: metadata
+    delivery_window_policy: effective_dated_metadata
+    pnode_identity_policy: official_pnode_master
+    component_policy: not_applicable
+    version_policy: effective_dated
+    canonical_promotion_policy: metadata_verification_only
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents Data Miner feed access and filtering for pricing-node master data.
+  verification_status: official_pjm_documented
+  status: approved_core
+
+PJM_DA_HOURLY_LMP:
+  display_name: PJM Day-Ahead Hourly LMPs
+  source: PJM Data Miner
+  market: PJM
+  commodity: power
+  source_system: iso_rto_api
+  product_type: locational_marginal_price
+  price_class: day_ahead_lmp
+  market_run: DA
+  data_miner_feed: da_hrl_lmps
+  granularity: hourly
+  value_unit: USD_per_MWh
+  time_columns:
+    delivery_start_utc: datetime_beginning_utc
+    delivery_start_ept: datetime_beginning_ept
+  pnode_columns:
+    pnode_id: pnode_id
+    pnode_name: pnode_name
+    pnode_type: type
+    pnode_subtype: null
+    zone: zone
+    voltage: voltage
+  value_columns:
+    full_lmp: total_lmp_da
+    congestion: congestion_price_da
+    marginal_loss: marginal_loss_price_da
+    system_energy: system_energy_price_da
+  version_columns:
+    row_is_current: row_is_current
+    version_nbr: version_nbr
+  required_filters:
+    row_is_current: 1
+  supported_price_components:
+    - FULL_LMP
+    - CONGESTION
+    - MARGINAL_LOSS
+    - SYSTEM_ENERGY
+  source_components:
+    - FULL_LMP
+    - CONGESTION
+    - MARGINAL_LOSS
+    - SYSTEM_ENERGY
+  source_product_contract:
+    observation_role: source_price_observation
+    delivery_window_policy: utc_hourly_delivery_windows_required
+    pnode_identity_policy: approved_location_pnode_required
+    component_policy: full_lmp_and_source_components_required
+    version_policy: current_row_filter_required
+    canonical_promotion_policy: approved_pnode_and_components_required
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents da_hrl_lmps query filters, pnode_id, hourly timestamps, and LMP component fields.
+    - authority: PJM Energy Market
+      url: https://www.pjm.com/markets-and-operations/energy
+      notes: Establishes PJM day-ahead energy-market publication context for hourly LMPs.
+  verification_status: official_pjm_documented
+  status: approved_core
+
+PJM_RT_HOURLY_LMP:
+  display_name: PJM Real-Time Hourly LMPs
+  source: PJM Data Miner
+  market: PJM
+  commodity: power
+  source_system: iso_rto_api
+  product_type: locational_marginal_price
+  price_class: real_time_lmp
+  market_run: RT
+  data_miner_feed: rt_hrl_lmps
+  granularity: hourly
+  value_unit: USD_per_MWh
+  time_columns:
+    delivery_start_utc: datetime_beginning_utc
+    delivery_start_ept: datetime_beginning_ept
+  pnode_columns:
+    pnode_id: pnode_id
+    pnode_name: pnode_name
+    pnode_type: type
+    pnode_subtype: null
+    zone: zone
+    voltage: voltage
+  value_columns:
+    full_lmp: total_lmp_rt
+    congestion: congestion_price_rt
+    marginal_loss: marginal_loss_price_rt
+    system_energy: system_energy_price_rt
+  version_columns:
+    row_is_current: row_is_current
+    version_nbr: version_nbr
+  required_filters:
+    row_is_current: 1
+  supported_price_components:
+    - FULL_LMP
+    - CONGESTION
+    - MARGINAL_LOSS
+    - SYSTEM_ENERGY
+  source_components:
+    - FULL_LMP
+    - CONGESTION
+    - MARGINAL_LOSS
+    - SYSTEM_ENERGY
+  source_product_contract:
+    observation_role: source_price_observation
+    delivery_window_policy: utc_hourly_delivery_windows_required
+    pnode_identity_policy: approved_location_pnode_required
+    component_policy: full_lmp_and_source_components_required
+    version_policy: current_row_filter_required
+    canonical_promotion_policy: approved_pnode_and_components_required
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents rt_hrl_lmps query filters, pnode_id, hourly timestamps, and LMP component fields.
+    - authority: PJM Energy Market
+      url: https://www.pjm.com/markets-and-operations/energy
+      notes: Establishes PJM real-time energy-market publication context for hourly LMPs.
+  verification_status: official_pjm_documented
+  status: approved_core
+
+PJM_RT_FIVE_MINUTE_LMP:
+  display_name: PJM Five-Minute Real-Time LMPs
+  source: PJM Data Miner
+  market: PJM
+  commodity: power
+  source_system: iso_rto_api
+  product_type: locational_marginal_price
+  price_class: five_minute_real_time_lmp
+  market_run: RT
+  data_miner_feed: rt_fivemin_hrl_lmps
+  granularity: five_minute
+  value_unit: USD_per_MWh
+  time_columns:
+    delivery_start_utc: datetime_beginning_utc
+    delivery_start_ept: datetime_beginning_ept
+  pnode_columns:
+    pnode_id: pnode_id
+    pnode_name: pnode_name
+    pnode_type: type
+    pnode_subtype: null
+    zone: zone
+    voltage: voltage
+  value_columns:
+    full_lmp: total_lmp_rt
+    congestion: congestion_price_rt
+    marginal_loss: marginal_loss_price_rt
+    system_energy: system_energy_price_rt
+  version_columns:
+    row_is_current: row_is_current
+    version_nbr: version_nbr
+  required_filters:
+    row_is_current: 1
+  supported_price_components:
+    - FULL_LMP
+    - CONGESTION
+    - MARGINAL_LOSS
+    - SYSTEM_ENERGY
+  source_components:
+    - FULL_LMP
+    - CONGESTION
+    - MARGINAL_LOSS
+    - SYSTEM_ENERGY
+  source_product_contract:
+    observation_role: source_price_observation
+    delivery_window_policy: source_specific_pending
+    pnode_identity_policy: approved_location_pnode_required
+    component_policy: source_specific_pending
+    version_policy: source_specific_pending
+    canonical_promotion_policy: candidate_not_promotable
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Lists rt_fivemin_hrl_lmps as a Data Miner feed; interval, version, and canonical promotion semantics remain candidate pending.
+    - authority: PJM Energy Market
+      url: https://www.pjm.com/markets-and-operations/energy
+      notes: Establishes PJM real-time energy-market publication context; five-minute canonical artifact semantics are not approved in this pass.
+  verification_status: candidate
+  status: candidate

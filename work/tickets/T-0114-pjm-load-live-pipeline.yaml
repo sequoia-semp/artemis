@@ -1,0 +1,59 @@
+id: T-0114
+type: ticket
+title: PJM load live pipeline
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-DIRECT-SOURCE
+sprint: S-002
+layer:
+  - cli
+  - registry
+  - docs
+  - tests
+  - validation
+branch: codex/T-0114-pjm-load-live-pipeline
+context_profile: trading_domain
+problem: >
+  The workbench could fetch PJM load artifacts and could stage broader morning
+  bundles, but it did not have a narrow live-load pipeline that proves one
+  approved PJM feed can move through source readiness, artifact bundling,
+  candidate staging, publishing, and HotState consumption.
+tasks:
+  - Add a load-only live pipeline command for approved PJM load forecast data.
+  - Default the pipeline to the approved load_frcstd_7_day feed.
+  - Embed metadata verification, source readiness, raw source fetch, and source
+    publication evidence in the bundle.
+  - Stage the bundle as a candidate state pack and support optional publish.
+  - Add regression coverage through HotState.
+  - Document the operational command.
+acceptance_criteria:
+  - The command fetches PJM load rows through the Data Miner connector.
+  - The command validates metadata, source-readiness, raw-fetch, and
+    fundamental-state artifacts before staging.
+  - Production publish succeeds only for approved feeds with matching evidence.
+  - Published state can be read through HotState fundamental helpers.
+  - Candidate actual-load feeds are not made default or silently promoted.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_state.py tests/test_pjm_fundamentals_semantic_core.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0114
+affected_files:
+  - docs/architecture/direct_pjm_authoritative_sources.md
+  - docs/user/setup.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/state/packs.py
+  - tests/test_power_system_state.py
+change_request_required: true
+change_id: CR-0095
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added a publishable load-only PJM live pipeline for the approved
+  load_frcstd_7_day feed, including metadata verification, source-readiness
+  evidence, raw fetch evidence, source-publication gating, candidate staging,
+  optional publish, and HotState regression coverage.
+validated_at: '2026-06-06T22:00:49Z'
+validation_report: development/validation_reports/T-0114/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0114.md

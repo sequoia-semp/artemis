@@ -1,0 +1,48 @@
+change_id: CR-0022
+title: PJM fundamentals semantic core and Data Miner load spine
+created_at: 2026-06-06T00:00:00Z
+change_class: 7
+severity: high
+tickets:
+  - T-0041
+problem_statement: >
+  The PJM MVP needs source-backed semantic knowledge for load actuals,
+  forecasts, forecast revisions, deterministic forecast errors, and view-ready
+  state artifacts before analyst workflows can rely on live PJM Data Miner data.
+root_cause: >
+  The existing fundamentals registry identifies a few metric IDs, but it does
+  not describe PJM Data Miner feed semantics, load areas, source-specific versus
+  best-series products, forecast-retention separation, or a normalized
+  fundamental-state artifact contract.
+affected_files:
+  - domain/pjm_fundamentals.md
+  - registries/pjm_fundamental_feeds.yaml
+  - registries/pjm_load_areas.yaml
+  - registries/fundamental_metrics.yaml
+  - registries/data_sources.yaml
+  - registries/tools.yaml
+  - schemas/pjm_fundamental_feed.schema.json
+  - schemas/pjm_load_area.schema.json
+  - schemas/fundamental_state.schema.json
+  - schemas/fundamental_metric.schema.json
+  - schemas/data_contracts/fundamentals.schema.json
+  - schemas/data_contracts/iso_load.schema.json
+  - src/pga_workbench/data/connectors/pjm_dataminer.py
+  - src/pga_workbench/services/fundamentals.py
+  - src/pga_workbench/models.py
+  - src/pga_workbench/cli.py
+  - tests/test_pjm_fundamentals_semantic_core.py
+  - tests/test_pjm_dataminer_connector.py
+tests_required:
+  - .venv/bin/python -m pytest tests/test_fundamentals_registries.py tests/test_pjm_fundamentals_semantic_core.py tests/test_pjm_dataminer_connector.py tests/test_analyst_views.py tests/test_data_sources.py -q
+  - .venv/bin/python -m pytest -q
+  - .venv/bin/artemis validate --strict --ticket T-0041
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the PJM feed and load-area registries, their schemas and registry
+  handlers, the Data Miner connector, fundamentals service, CLI command, metric
+  extensions, docs, and tests added by T-0041. Existing state-pack and HotState
+  behavior can remain unchanged.

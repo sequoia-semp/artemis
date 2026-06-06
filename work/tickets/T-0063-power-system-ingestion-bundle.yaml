@@ -1,0 +1,54 @@
+id: T-0063
+type: ticket
+title: Power system ingestion bundle
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - docs
+  - validation
+  - tests
+branch: codex/T-0063-power-system-ingestion-bundle
+context_profile: trading_domain
+problem: >
+  Direct PJM fundamentals and price source artifacts are built separately, but
+  the workbench needs a deterministic power-system bundle workflow that assembles
+  the approved morning artifact set without bypassing state-pack controls.
+tasks:
+  - Add a generic power-system artifact bundle service.
+  - Add a PJM morning bundle CLI command that builds load, generation mix, LMP, and price shape artifacts.
+  - Support fixture-backed deterministic builds and opt-in live PJM Data Miner builds.
+  - Expose the bundle through the Artemis analyst command surface.
+  - Document bundle behavior and state-pack boundary.
+acceptance_criteria:
+  - Bundle metadata records operator, source system, data environment, payload count, and composition product keys.
+  - PJM morning bundle includes load fundamentals, generation mix, hourly LMP prices, and price shape rollups.
+  - Fixture-backed bundle command writes a composed workspace JSON artifact.
+  - Live bundle path reuses bounded PJM source fetchers and does not add a publish side effect.
+  - Existing state-pack build/publish commands remain the only state publish path.
+  - No new feed, pnode, price component, or cache contract is approved by the bundle layer.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_ingestion.py tests/test_artifact_composition.py tests/test_artemis_cli.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0063
+affected_files:
+  - domain/power_system_ingestion.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_ingestion.py
+  - tests/test_power_system_ingestion.py
+change_request_required: true
+change_id: CR-0044
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added a generic power-system artifact bundle service and a PJM morning bundle
+  CLI workflow that builds load fundamentals, generation mix, hourly LMP prices,
+  and deterministic price-shape rollups from fixtures or opt-in live PJM Data
+  Miner fetches, then writes a composed workspace JSON artifact without
+  publishing state.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0063/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0063.md

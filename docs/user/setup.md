@@ -121,6 +121,10 @@ Use `local/.env` or your shell for optional credentials and roots:
 ```bash
 ARTEMIS_VENDOR_API_KEY=
 ARTEMIS_ICE_API_KEY=
+ARTEMIS_PJM_API_KEY=
+ARTEMIS_PJM_API_BASE_URL=https://api.pjm.com/api/v1
+ARTEMIS_PJM_ACCOUNT_CLASS=non_member
+ARTEMIS_RUN_LIVE_PJM_TESTS=0
 OLLAMA_API_KEY=ollama
 ARTEMIS_OPENAI_COMPATIBLE_BASE_URL=http://localhost:11434/v1
 ARTEMIS_OPENAI_COMPATIBLE_MODEL=qwen3-coder:30b
@@ -143,6 +147,74 @@ ARTEMIS_INTERNAL_DB_ROOT=/absolute/path/to/internal_sources
 
 These paths are reported by `artemis capabilities` as configured or missing.
 They are local file-source bindings, not authoritative market conventions.
+
+PJM Data Miner smoke usage:
+
+```bash
+artemis analyst fundamentals build-pjm-load \
+  --live \
+  --feed load_frcstd_7_day \
+  --as-of 2026-06-06 \
+  --start 2026-06-06 \
+  --end 2026-06-06 \
+  --area RTO_COMBINED \
+  --row-count 24 \
+  --max-pages 1 \
+  --output /tmp/pjm_load_fundamentals.json
+```
+
+Publishable PJM load state pipeline:
+
+```bash
+artemis analyst bundle run-pjm-load-pipeline \
+  --live \
+  --as-of 2026-06-06T12:00:00Z \
+  --start 2026-06-06 \
+  --end 2026-06-06 \
+  --row-count 24 \
+  --max-pages 1 \
+  --no-paginate \
+  --output /tmp/pjm_load_bundle.json \
+  --state-root /tmp/pjm_load_state \
+  --state-id pjm-load-20260606 \
+  --pipeline-output /tmp/pjm_load_pipeline.json \
+  --publish
+```
+
+The load pipeline defaults to the approved `load_frcstd_7_day` feed. It fetches
+live Data Miner rows, verifies feed metadata, embeds redacted readiness and raw
+fetch evidence, stages a candidate state pack, and only publishes when the
+source-publication gate passes.
+
+Bounded PJM hourly LMP smoke usage:
+
+```bash
+artemis analyst prices build-pjm-lmp \
+  --live \
+  --location WH \
+  --feed PJM_RT_HOURLY_LMP \
+  --as-of 2026-06-01 \
+  --start 2026-06-01 \
+  --end 2026-06-01 \
+  --row-count 24 \
+  --max-pages 1 \
+  --no-paginate \
+  --output /tmp/pjm_lmp_prices.json
+```
+
+Daily shape rollup from hourly price artifacts:
+
+```bash
+artemis analyst prices rollup-shapes \
+  --input /tmp/pjm_lmp_prices.json \
+  --as-of 2026-06-01 \
+  --output /tmp/pjm_lmp_daily_shapes.json
+```
+
+Live PJM requests default to the non-member Data Miner access policy: one page
+per request plan, `rowCount <= 50000`, and no unbounded pagination. Set
+`ARTEMIS_PJM_ACCOUNT_CLASS=member` only when the local operator has a PJM member
+account. Live PJM tests are skipped unless `ARTEMIS_RUN_LIVE_PJM_TESTS=1` is set.
 
 ## Validation
 

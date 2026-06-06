@@ -37,6 +37,19 @@ data_sources:
       - outages
       - fuel_mix
 
+  pjm_dataminer:
+    kind: iso_api
+    required: false
+    credentials:
+      mode: env
+      required_env:
+        - ARTEMIS_PJM_API_KEY
+    supported_contracts:
+      - fundamentals
+      - iso_load
+      - market_prices
+      - fuel_mix
+
   ice_exchange:
     kind: ice_exchange
     required: false

@@ -1,0 +1,52 @@
+id: T-0052
+type: ticket
+title: Power price shape HotState analyst view context
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-PRICES
+sprint: S-002
+layer:
+  - docs
+  - validation
+  - tests
+branch: codex/T-0052-power-price-shape-hotstate-view
+context_profile: trading_domain
+problem: >
+  Direct PJM price data should be usable by analyst views through accepted
+  state packs and HotState, with derived daily shape prices remaining separate
+  from authoritative hourly source LMP products.
+tasks:
+  - Add deterministic price-shape summary, drivers, current-day view, and evidence fields to the rollup artifact builder.
+  - Keep hourly PJM LMP source products and derived daily shape products physically and semantically separate.
+  - Add tests proving price shape view context publishes through state packs and loads through HotState.
+  - Add tests proving a current-day analyst view consumes price shape context through HotState.
+  - Document that read-path price shape context is derived from accepted artifacts only.
+acceptance_criteria:
+  - Price shape artifacts retain the power_price_shape_rollups product unchanged.
+  - View-ready price shape fields are deterministic and lineage-backed by hourly authoritative source prices.
+  - A published state pack exposes price shape current-day context through HotState.
+  - The analyst current-day view can consume price shape context through HotState merge.
+  - No Textual screen, analyst view builder, or cache reader calls the PJM adapter or re-runs rollup logic directly.
+  - No synthetic prices, inferred shape fills, unapproved monthly/strip products, or cache mutation policy changes are introduced.
+required_tests:
+  - .venv/bin/pytest tests/test_power_price_shape_rollups.py tests/test_analyst_views.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0052
+affected_files:
+  - domain/power_price_shape_rules.md
+  - src/pga_workbench/services/power_price_shapes.py
+  - tests/test_power_price_shape_rollups.py
+change_request_required: true
+change_id: CR-0033
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added deterministic price-shape summary, drivers, current-day view context,
+  evidence, and market scope fields derived from accepted
+  power_price_shape_rollups artifacts and their authoritative hourly source
+  price lineage.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0052/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0052.md

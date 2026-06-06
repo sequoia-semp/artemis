@@ -1,0 +1,53 @@
+id: T-0055
+type: ticket
+title: State artifact composition for multi-source PJM packs
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - docs
+  - cli
+  - validation
+  - tests
+branch: codex/T-0055-state-artifact-composition
+context_profile: trading_domain
+problem: >
+  Direct PJM source products need to compose into a single Morning State Pack
+  artifact mapping without overwriting view fields or merging source-specific
+  products ambiguously.
+tasks:
+  - Add deterministic artifact payload composition for multi-source state inputs.
+  - Add a CLI command to compose artifact JSON files before build-state-pack.
+  - Preserve separate source-specific products and known series lists.
+  - Fail closed on ambiguous artifact key collisions.
+  - Add HotState/view regression coverage for composed load, generation, and price context.
+acceptance_criteria:
+  - Load, generation, and price shape artifacts compose into one mapping with all view sections preserved.
+  - Source lineage, drivers, deltas, evidence, and known series lists concatenate in input order.
+  - Ambiguous source-product key collisions fail closed.
+  - A composed artifact mapping can build/publish through the existing state-pack path and feed a current-day analyst view through HotState.
+  - No accepted state mutation, synthetic value creation, source normalization change, or cache mutation policy is introduced.
+required_tests:
+  - .venv/bin/pytest tests/test_artifact_composition.py tests/test_analyst_views.py tests/test_pjm_fundamentals_semantic_core.py tests/test_generation_mix.py tests/test_power_price_shape_rollups.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0055
+affected_files:
+  - domain/state_artifact_composition.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/artifact_composition.py
+  - tests/test_artifact_composition.py
+change_request_required: true
+change_id: CR-0036
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added deterministic artifact payload composition and a compose-artifacts CLI
+  so load, generation, and price source-product outputs can be assembled into a
+  single state-pack artifact mapping without overwriting shared view fields or
+  ambiguously merging source-specific products.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0055/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0055.md

@@ -1,0 +1,31 @@
+change_id: CR-0047
+title: Preflight evidence on ingestion bundles
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: medium
+tickets:
+  - T-0066
+problem_statement: >
+  PJM ingestion bundles and PJM preflight reports exist separately, but a bundle
+  does not yet carry the redacted readiness evidence that justified its source
+  selections.
+root_cause: >
+  Bundle orchestration and preflight were implemented in separate passes before
+  adding an evidence bridge between them.
+affected_files:
+  - domain/power_system_ingestion.md
+  - domain/power_system_preflight.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_ingestion.py
+  - tests/test_power_system_ingestion.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_ingestion.py tests/test_power_system_preflight.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0066
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove preflight evidence embedding and bundle CLI preflight options. The
+  standalone preflight command and bundle command remain intact.

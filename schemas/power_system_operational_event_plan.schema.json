@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PowerSystemOperationalEventPlan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "operator_id",
+    "source_system",
+    "approval_scope",
+    "approved",
+    "publication_count",
+    "feed_count",
+    "publications",
+    "contains_secret_values"
+  ],
+  "properties": {
+    "operator_id": {"type": "string", "minLength": 1},
+    "source_system": {"type": "string", "minLength": 1},
+    "approval_scope": {"type": "string", "minLength": 1},
+    "approved": {"type": "boolean"},
+    "publication_count": {"type": "integer", "minimum": 0},
+    "feed_count": {"type": "integer", "minimum": 0},
+    "publications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "publication_id",
+          "publication_status",
+          "product_family",
+          "authoritative_use",
+          "feed_ids",
+          "feeds",
+          "approved",
+          "blockers"
+        ],
+        "properties": {
+          "publication_id": {"type": "string", "minLength": 1},
+          "publication_status": {"type": ["string", "null"]},
+          "product_family": {"type": ["string", "null"]},
+          "authoritative_use": {"type": ["string", "null"]},
+          "feed_ids": {
+            "type": "array",
+            "items": {"type": "string"},
+            "uniqueItems": true
+          },
+          "feeds": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "feed_id",
+                "event_family",
+                "event_class",
+                "timestamp_policy",
+                "identifier_policy",
+                "topology_linkage",
+                "normalization_status",
+                "feed_status",
+                "approved",
+                "blockers"
+              ],
+              "properties": {
+                "feed_id": {"type": "string", "minLength": 1},
+                "event_family": {"type": ["string", "null"]},
+                "event_class": {"type": ["string", "null"]},
+                "timestamp_policy": {"type": ["string", "null"]},
+                "identifier_policy": {"type": ["string", "null"]},
+                "topology_linkage": {"type": ["string", "null"]},
+                "normalization_status": {"type": ["string", "null"]},
+                "feed_status": {"type": ["string", "null"]},
+                "approved": {"type": "boolean"},
+                "blockers": {
+                  "type": "array",
+                  "items": {"type": "string"},
+                  "uniqueItems": true
+                }
+              }
+            }
+          },
+          "approved": {"type": "boolean"},
+          "blockers": {
+            "type": "array",
+            "items": {"type": "string"},
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "contains_secret_values": {"const": false}
+  }
+}

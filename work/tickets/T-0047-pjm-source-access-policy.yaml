@@ -1,0 +1,66 @@
+id: T-0047
+type: ticket
+title: PJM Data Miner source access policy guardrails
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-FUNDAMENTALS
+sprint: S-002
+layer:
+  - docs
+  - registry
+  - schema
+  - cli
+  - tests
+branch: codex/T-0047-pjm-source-access-policy
+context_profile: trading_domain
+problem: >
+  Live PJM Data Miner ingestion needs executable source access guardrails so
+  direct authoritative pulls remain bounded, terms-aware, and safe for local
+  operation before broader feed expansion.
+tasks:
+  - Add a generic source access policy schema and registry.
+  - Register the PJM Data Miner public-use policy with member and non-member
+    connection budgets, row-count bounds, pagination defaults, and archive notes.
+  - Enforce PJM Data Miner rowCount, startRow, max-pages, and account-class
+    connection budgets in the connector.
+  - Default live CLI max-pages to one page instead of unbounded pagination.
+  - Add regression tests tying registry policy values to connector guardrails.
+acceptance_criteria:
+  - Source access policy registry validates with schemas and duplicate-key protection.
+  - PJM Data Miner connector rejects rowCount above 50,000 and startRow below 1.
+  - PJM Data Miner connector rejects unbounded pagination and page plans beyond
+    the account-class connection budget.
+  - Live CLI parser defaults are bounded at one page.
+  - Connector lineage reports applied access-policy limits without exposing API keys.
+  - No new source products, pnodes, price components, outage semantics, topology
+    links, or shared-cache publish behavior are approved by this ticket.
+required_tests:
+  - .venv/bin/pytest tests/test_pjm_dataminer_connector.py tests/test_source_access_policies.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0047
+affected_files:
+  - domain/power_system_source_catalog.md
+  - docs/user/setup.md
+  - local/.env.example
+  - registries/power_system_source_access_policies.yaml
+  - schemas/power_system_source_access_policy.schema.json
+  - src/pga_workbench/registry.py
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/data/connectors/pjm_dataminer.py
+  - src/pga_workbench/services/source_access_policies.py
+  - tests/test_pjm_dataminer_connector.py
+  - tests/test_source_access_policies.py
+change_request_required: true
+change_id: CR-0028
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added a validated power-system source access policy registry, registered PJM
+  Data Miner row-count and connection-budget limits, defaulted live CLI page
+  plans to one page, and enforced bounded pagination, rowCount, startRow, and
+  account-class page-budget checks in the connector with policy lineage.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0047/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0047.md

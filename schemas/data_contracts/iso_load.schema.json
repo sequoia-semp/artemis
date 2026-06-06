@@ -1,5 +1,35 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "IsoLoadContract",
-  "$ref": "market_prices.schema.json#/$defs/base"
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "source",
+    "as_of",
+    "ingested_at",
+    "data_environment",
+    "lineage_id",
+    "normalization_version",
+    "iso",
+    "load_area",
+    "delivery_start",
+    "delivery_end",
+    "mw"
+  ],
+  "properties": {
+    "source": {"type": "string"},
+    "as_of": {"type": "string"},
+    "ingested_at": {"type": "string"},
+    "data_environment": {"enum": ["production", "development", "fixture", "test"]},
+    "lineage_id": {"type": "string"},
+    "raw_reference": {"type": "string"},
+    "normalization_version": {"type": "string"},
+    "iso": {"const": "PJM"},
+    "load_area": {"type": "string"},
+    "delivery_start": {"type": "string"},
+    "delivery_end": {"type": "string"},
+    "mw": {"type": "number"},
+    "source_feed": {"type": "string"},
+    "quality": {"type": "string"}
+  }
 }

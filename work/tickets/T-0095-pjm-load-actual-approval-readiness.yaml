@@ -1,0 +1,55 @@
+id: T-0095
+type: ticket
+title: PJM load actual approval readiness
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-DIRECT-SOURCE
+sprint: S-002
+layer:
+  - schema
+  - validation
+  - docs
+  - tests
+branch: codex/T-0095-pjm-load-actual-approval-readiness
+context_profile: trading_domain
+problem: >
+  PJM load actual feeds had candidate descriptors and some metadata evidence,
+  but there was no explicit promotion-readiness report distinguishing metadata
+  verification from source-row evidence and source-publication authority.
+tasks:
+  - Add a generic source feed approval report schema.
+  - Add PJM load actual approval assessment for metered and preliminary load.
+  - Require metadata verification, source-row evidence, approved feed status,
+    and authoritative source publication lifecycle before approval.
+  - Keep current candidate feeds blocked with structured reasons.
+  - Document the load actual approval boundary.
+acceptance_criteria:
+  - Current candidate PJM load actual feeds are not approved by the readiness
+    report even with metadata and row evidence.
+  - Metadata verification and source-row evidence are reported separately.
+  - A patched registry with approved feed and publication statuses can pass the
+    approval report.
+  - Unredacted evidence fails closed.
+  - No registry feed status is promoted in this pass.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_source_approval.py
+  - .venv/bin/pytest tests/test_power_system_source_metadata.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0095
+affected_files:
+  - domain/pjm_fundamentals.md
+  - schemas/power_system_source_feed_approval_report.schema.json
+  - src/pga_workbench/services/power_system_source_approval.py
+  - tests/test_power_system_source_approval.py
+change_request_required: true
+change_id: CR-0076
+implemented_at: '2026-06-06T00:00:00Z'
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0095/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0095.md
+implementation_summary: >
+  Added source-feed approval readiness reports for PJM load actual feeds while
+  keeping candidate feed and publication statuses blocked.

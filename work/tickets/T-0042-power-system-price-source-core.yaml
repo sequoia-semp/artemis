@@ -1,0 +1,74 @@
+id: T-0042
+type: ticket
+title: Power system price source core and PJM hourly LMP spine
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-FUNDAMENTALS
+sprint: S-002
+layer:
+  - docs
+  - registry
+  - schema
+  - cli
+  - tests
+branch: codex/T-0042-power-system-price-source-core
+context_profile: trading_domain
+problem: >
+  Add a generic power-system price source layer and implement PJM Data Miner
+  pnode plus hourly DA/RT LMP normalization into HotState-ready price artifacts.
+tasks:
+  - Add generic power-system price feed registry and schema.
+  - Add PJM pnode and hourly DA/RT LMP source descriptors.
+  - Add typed PJM pnode, PJM LMP observation, and power price state contracts.
+  - Normalize PJM source rows into source products and canonical hourly full-LMP price points.
+  - Wire fixture-first and bounded-live CLI build paths.
+  - Add fixture, registry, connector, normalization, CLI, and state-pack tests.
+acceptance_criteria:
+  - Power-system price feed descriptors validate with schemas and duplicate-key protection.
+  - PJM pnode source rows normalize without relying on GridStatus examples.
+  - PJM DA/RT hourly LMP source rows normalize with UTC delivery windows and row version lineage.
+  - Canonical PriceSurfacePoint output uses explicit DA/RT FULL_LMP hourly products only.
+  - Unsupported pnodes, feed IDs, components, or non-current rows fail closed.
+  - CLI can build PJM hourly LMP artifacts from fixtures and parse bounded live flags.
+  - Optional live smoke remains skipped unless explicitly enabled.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_price_core.py tests/test_pjm_dataminer_connector.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0042
+affected_files:
+  - domain/power_system_prices.md
+  - domain/price_instrument_model.md
+  - docs/OFFICIAL_SOURCE_REGISTER.md
+  - docs/user/setup.md
+  - registries/power_system_price_feeds.yaml
+  - registries/power_locations.yaml
+  - registries/data_sources.yaml
+  - registries/tools.yaml
+  - schemas/power_system_price_feed.schema.json
+  - schemas/power_price_state.schema.json
+  - src/pga_workbench/services/power_prices.py
+  - src/pga_workbench/data/connectors/pjm_dataminer.py
+  - src/pga_workbench/models.py
+  - src/pga_workbench/registry.py
+  - src/pga_workbench/cli.py
+  - tests/fixtures/pjm_lmp_prices_minimal.json
+  - tests/test_power_system_price_core.py
+  - tests/test_pjm_dataminer_connector.py
+change_request_required: true
+change_id: CR-0023
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Implemented generic power-system price feed contracts, PJM pnode and DA/RT
+  hourly LMP descriptors, typed source price state artifacts, fixture-first and
+  bounded-live CLI build paths, HotState-ready price artifacts, and regression
+  tests.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0042/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0042.md
+notes: >
+  This ticket intentionally does not derive monthly, peak/offpeak, ATC, or
+  forward settlement products from hourly LMPs. Those require calendar and
+  settlement-rule services in a follow-up ticket.

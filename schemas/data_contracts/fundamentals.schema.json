@@ -1,5 +1,37 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "FundamentalsContract",
-  "$ref": "market_prices.schema.json#/$defs/base"
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "source",
+    "as_of",
+    "ingested_at",
+    "data_environment",
+    "lineage_id",
+    "normalization_version",
+    "metric_id",
+    "location_id",
+    "delivery_start",
+    "delivery_end",
+    "value",
+    "unit"
+  ],
+  "properties": {
+    "source": {"type": "string"},
+    "as_of": {"type": "string"},
+    "ingested_at": {"type": "string"},
+    "data_environment": {"enum": ["production", "development", "fixture", "test"]},
+    "lineage_id": {"type": "string"},
+    "raw_reference": {"type": "string"},
+    "normalization_version": {"type": "string"},
+    "metric_id": {"type": "string"},
+    "location_id": {"type": "string"},
+    "delivery_start": {"type": "string"},
+    "delivery_end": {"type": "string"},
+    "value": {"type": "number"},
+    "unit": {"type": "string"},
+    "source_feed": {"type": "string"},
+    "quality": {"type": "string"}
+  }
 }

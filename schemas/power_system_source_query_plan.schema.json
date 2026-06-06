@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PowerSystemSourceQueryPlan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "plan_id",
+    "display_name",
+    "access_surface",
+    "publication_id",
+    "access_policy_id",
+    "applies_to_feed_ids",
+    "date_window",
+    "planned_request_budget",
+    "required_query_dimensions",
+    "source_documents",
+    "status"
+  ],
+  "properties": {
+    "plan_id": {"type": "string", "pattern": "^[A-Z0-9_]+$"},
+    "display_name": {"type": "string"},
+    "access_surface": {"enum": ["pjm_data_miner_api", "pjm_public_web"]},
+    "publication_id": {"type": "string"},
+    "access_policy_id": {"type": "string"},
+    "applies_to_feed_ids": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "date_window": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "max_days_per_request", "inclusive_bounds"],
+      "properties": {
+        "mode": {"enum": ["inclusive_day_chunks", "bounded_interval"]},
+        "max_days_per_request": {"type": "integer", "minimum": 1},
+        "inclusive_bounds": {"type": "boolean"}
+      }
+    },
+    "planned_request_budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enforce_account_class_budget", "metadata_requests_per_pnode"],
+      "properties": {
+        "enforce_account_class_budget": {"type": "boolean"},
+        "metadata_requests_per_pnode": {"type": "integer", "minimum": 0}
+      }
+    },
+    "required_query_dimensions": {
+      "type": "array",
+      "items": {"enum": ["pnode_id", "row_is_current", "delivery_date_range", "area_filter", "fuel_type"]},
+      "uniqueItems": true
+    },
+    "source_documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["authority", "url", "notes"],
+        "properties": {
+          "authority": {"type": "string"},
+          "url": {"type": "string"},
+          "notes": {"type": "string"}
+        }
+      },
+      "minItems": 1
+    },
+    "status": {"enum": ["approved_core", "candidate"]}
+  }
+}

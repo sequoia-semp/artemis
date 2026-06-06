@@ -1,0 +1,31 @@
+change_id: CR-0065
+title: Source query plan reference validation
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: high
+tickets:
+  - T-0084
+problem_statement: >
+  The generic power-system query-plan registry needed cross-reference checks so
+  direct PJM ingestion plans cannot point at missing source publications or
+  unsupported feed descriptors while still passing schema validation.
+root_cause: >
+  Registry validation checked query-plan shape but did not link query plans back
+  to the source catalog and feed descriptor registries used by the rest of the
+  PJM-direct ingestion spine.
+affected_files:
+  - src/pga_workbench/services/source_query_plans.py
+  - src/pga_workbench/validation/runner.py
+  - tests/test_source_query_plans.py
+tests_required:
+  - .venv/bin/pytest tests/test_source_query_plans.py tests/test_native_validation_runner.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0084
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove query-plan reference validation from the source-query-plan service and
+  strict validation runner. Query plans would continue to be schema-validated
+  only.

@@ -1,0 +1,29 @@
+change_id: CR-0067
+title: Live LMP approved pnode gate
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: high
+tickets:
+  - T-0086
+problem_statement: >
+  Live PJM LMP fetches needed to reject raw pnode IDs outside the approved
+  power-location universe before source query planning and Data Miner requests.
+root_cause: >
+  Runtime price-surface promotion already rejected unsupported pnodes, but the
+  live fetch argument path still allowed arbitrary raw pnode IDs to enter query
+  planning.
+affected_files:
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_locations.py
+  - tests/test_power_system_price_core.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_price_core.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0086
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the raw pnode approval check from the live LMP CLI helper and return to
+  later rejection during canonical price-surface conversion.

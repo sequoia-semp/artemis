@@ -1,0 +1,50 @@
+id: T-0090
+type: ticket
+title: HotState-only analyst views
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-FUNDAMENTALS
+sprint: S-002
+layer:
+  - cli
+  - docs
+  - tests
+branch: codex/T-0090-hotstate-only-analyst-views
+context_profile: trading_domain
+problem: >
+  Analyst view builds could merge accepted HotState artifacts, but still
+  required an input JSON file. Production analyst views should be able to read
+  accepted state directly without fixture/file input.
+tasks:
+  - Make analyst view input optional when a state root is provided.
+  - Use the accepted state-pack as_of date when no input payload supplies one.
+  - Preserve input-file override behavior when both input and HotState are
+    supplied.
+  - Add regression tests and user documentation.
+acceptance_criteria:
+  - Analyst current-day views can build from accepted HotState artifacts without
+    an input file.
+  - Missing input and missing state root fail closed with a structured
+    exception.
+  - Existing file-plus-HotState merge behavior remains unchanged.
+  - State-pack publish behavior remains unchanged.
+required_tests:
+  - .venv/bin/pytest tests/test_analyst_views.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0090
+affected_files:
+  - docs/user/analyst_mode.md
+  - src/pga_workbench/cli.py
+  - tests/test_analyst_views.py
+change_request_required: true
+change_id: CR-0071
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added HotState-only analyst view builds while preserving existing input-file
+  merge behavior.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0090/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0090.md

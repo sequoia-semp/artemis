@@ -16,6 +16,16 @@ underlyings. It is a contract descriptor, not a single strike/expiry position.
 `PriceSurfacePoint` describes a normalized mark or settle for an index,
 instrument, delivery period, source, and as-of timestamp.
 
+Direct ISO/RTO source prices are source products before they become price
+surfaces. For PJM, hourly Data Miner LMP observations preserve pnode, row
+version, and component fields separately; only full-LMP observations for
+approved pnode mappings may be promoted into canonical `PriceSurfacePoint`
+records.
+
+Daily PEAK, OFFPEAK, and ATC prices derived from hourly source points are
+deterministic rollups. They must preserve the input hourly point IDs, shape-rule
+ID, observed hour count, and any explicit source gaps.
+
 `PositionLot` describes a held lot in a tradeable instrument, including
 position-only grouping metadata.
 

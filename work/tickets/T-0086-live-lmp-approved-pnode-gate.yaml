@@ -1,0 +1,51 @@
+id: T-0086
+type: ticket
+title: Live LMP approved pnode gate
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-PRICES
+sprint: S-002
+layer:
+  - cli
+  - validation
+  - tests
+branch: codex/T-0086-live-lmp-approved-pnode-gate
+context_profile: trading_domain
+problem: >
+  Live PJM LMP fetches accepted raw pnode IDs and relied on later canonical
+  price-surface conversion to reject unsupported pnodes. Direct PJM ingestion
+  should fail before query planning when a requested pnode is not part of the
+  approved power-location universe.
+tasks:
+  - Expose approved PJM pnode IDs from the power-location source identity
+    validator.
+  - Validate raw live `--pnode-id` arguments against approved power locations
+    before building Data Miner request records.
+  - Preserve location shorthand behavior for approved mapped locations.
+  - Add regression tests for approved and unsupported raw pnode IDs.
+acceptance_criteria:
+  - Raw approved PJM pnode IDs can still be used for live LMP fetch planning.
+  - Raw unsupported PJM pnode IDs fail closed before Data Miner request records
+    are built.
+  - Location-based live LMP fetch planning remains unchanged.
+  - State-pack publish behavior and HotState read path remain unchanged.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_price_core.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0086
+affected_files:
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_locations.py
+  - tests/test_power_system_price_core.py
+change_request_required: true
+change_id: CR-0067
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added a live LMP pnode approval gate that rejects raw pnode IDs outside the
+  approved power-location source identity universe.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0086/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0086.md

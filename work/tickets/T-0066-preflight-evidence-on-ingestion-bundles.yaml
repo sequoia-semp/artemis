@@ -1,0 +1,54 @@
+id: T-0066
+type: ticket
+title: Preflight evidence on ingestion bundles
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - docs
+  - validation
+  - tests
+branch: codex/T-0066-preflight-evidence-on-ingestion-bundles
+context_profile: trading_domain
+problem: >
+  Power-system ingestion bundles should carry redacted preflight evidence so
+  direct PJM source bundles preserve readiness context without exposing secrets
+  or changing publish behavior.
+tasks:
+  - Add optional preflight evidence to bundle metadata.
+  - Redact credential evidence and reject unredacted preflight claims.
+  - Allow fixture-backed bundles to attach a preflight report.
+  - Require ready preflight evidence for live PJM bundle fetches.
+  - Document bundle/preflight evidence behavior.
+acceptance_criteria:
+  - Bundle metadata can include redacted preflight evidence.
+  - Embedded preflight evidence never stores raw credential values.
+  - "`--preflight-input` attaches fixture/offline preflight evidence."
+  - "`--require-ready-preflight` blocks fixture bundles with blocked preflight reports."
+  - Live bundles build and require ready preflight before fetching source observations.
+  - No state-pack, cache, source feed, or publish contract is changed.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_ingestion.py tests/test_power_system_preflight.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0066
+affected_files:
+  - domain/power_system_ingestion.md
+  - domain/power_system_preflight.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_ingestion.py
+  - tests/test_power_system_ingestion.py
+change_request_required: true
+change_id: CR-0047
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added redacted preflight evidence to power-system bundle metadata, CLI support
+  for attaching preflight reports to fixture bundles, ready-preflight enforcement
+  for fixture and live PJM bundles, and validation that embedded preflight
+  evidence remains redacted.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0066/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0066.md

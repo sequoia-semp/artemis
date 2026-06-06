@@ -1,0 +1,64 @@
+id: T-0082
+type: ticket
+title: Bounded interval source query records
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-FUNDAMENTALS
+sprint: S-002
+layer:
+  - cli
+  - docs
+  - tests
+branch: codex/T-0082-bounded-interval-source-query-records
+context_profile: trading_domain
+problem: >
+  PJM hourly LMP live pulls used deterministic query execution records, but PJM
+  load and generation live pulls still constructed bounded Data Miner queries in
+  CLI and smoke helpers. Broader power-system source integration needs a shared
+  request-record pattern for simple interval feeds too.
+tasks:
+  - Add bounded interval source query request builders for PJM load and
+    generation-by-fuel surfaces.
+  - Enforce PJM Data Miner row-count and pagination policy for bounded interval
+    request records.
+  - Wire live PJM load and generation fetches to execute planned request
+    records.
+  - Wire live smoke load and generation checks to planned request records.
+  - Add regression tests and update source-catalog documentation.
+acceptance_criteria:
+  - PJM load query requests include registry feed ID, Data Miner feed, date
+    window, area filter when configured, row/page bounds, request ID, and
+    redacted query execution summary.
+  - PJM generation query requests include registry feed ID, Data Miner feed,
+    date window, fuel/value fields, row/page bounds, request ID, and redacted
+    query execution summary.
+  - Bounded interval builders reject row counts outside the source access
+    policy.
+  - Live CLI helpers for PJM load and generation execute request records instead
+    of constructing source queries inline.
+  - State-pack publish behavior and HotState read path remain unchanged.
+required_tests:
+  - .venv/bin/pytest tests/test_source_query_plans.py tests/test_pjm_fundamentals_semantic_core.py tests/test_generation_mix.py tests/test_power_system_live_smoke.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0082
+affected_files:
+  - domain/power_system_source_catalog.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_live_smoke.py
+  - src/pga_workbench/services/source_query_plans.py
+  - tests/test_generation_mix.py
+  - tests/test_pjm_fundamentals_semantic_core.py
+  - tests/test_power_system_live_smoke.py
+  - tests/test_source_query_plans.py
+change_request_required: true
+change_id: CR-0063
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added bounded interval source query request records for PJM load and
+  generation-by-fuel surfaces and wired live fetch helpers to execute them.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0082/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0082.md

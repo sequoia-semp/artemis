@@ -10,7 +10,7 @@ WH:
   pjm_pnode_id: 51288
   pjm_pnode_name: WESTERN HUB
   pjm_pnode_type: HUB
-  pnode_source_status: user_approved_pending_pjm_export_fixture
+  pnode_source_status: official_pjm_data_miner_verified
   status: approved_core
 
 AD:
@@ -25,7 +25,7 @@ AD:
   pjm_pnode_id: 34497127
   pjm_pnode_name: AEP-DAYTON HUB
   pjm_pnode_type: HUB
-  pnode_source_status: public_gridstatus_example_pending_pjm_export_fixture
+  pnode_source_status: official_pjm_data_miner_verified
   status: approved_core
 
 NI:
@@ -40,5 +40,5 @@ NI:
   pjm_pnode_id: 33092315
   pjm_pnode_name: N ILLINOIS HUB
   pjm_pnode_type: HUB
-  pnode_source_status: public_gridstatus_example_pending_pjm_export_fixture
+  pnode_source_status: official_pjm_data_miner_verified
   status: approved_core

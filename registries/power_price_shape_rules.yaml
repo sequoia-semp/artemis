@@ -1,0 +1,68 @@
+PJM_DAILY_PEAK_HE_0800_2300_EPT:
+  display_name: PJM daily peak hours ending 0800-2300 EPT
+  market: PJM
+  commodity: power
+  shape: PEAK
+  calendar: PJM_WEEKDAYS_EXCLUDING_NERC_HOLIDAYS
+  holiday_calendar: NERC_HOLIDAYS
+  granularity: daily
+  hour_basis: hour_ending_ept
+  include_weekdays: true
+  include_weekends: false
+  include_nerc_holidays: false
+  weekday_hours_ending: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+  weekend_hours_ending: []
+  holiday_hours_ending: []
+  aggregation: arithmetic_average
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590369/PJM-Western-Hub-Real-Time-Peak-1-MW-Fixed-Price-Future
+      notes: Defines PJM Western Hub real-time peak settlement as the average of PJM hourly LMPs for hours ending 0800-2300 EPT on weekdays excluding NERC holidays.
+  verification_status: official_exchange_verified
+  status: approved_core
+
+PJM_DAILY_OFFPEAK_5X8_2X24_EPT:
+  display_name: PJM daily off-peak weekday 5x8 plus weekend and holiday 24h
+  market: PJM
+  commodity: power
+  shape: OFFPEAK
+  calendar: PJM_OFFPEAK_WITH_WEEKEND_AND_NERC_HOLIDAY_FULL_DAY
+  holiday_calendar: NERC_HOLIDAYS
+  granularity: daily
+  hour_basis: hour_ending_ept
+  include_weekdays: true
+  include_weekends: true
+  include_nerc_holidays: true
+  weekday_hours_ending: [1, 2, 3, 4, 5, 6, 7, 24]
+  weekend_hours_ending: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+  holiday_hours_ending: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+  aggregation: arithmetic_average
+  source_documents:
+    - authority: ICE product specification
+      url: https://www.ice.com/products/6590424/PJM-Western-Hub-Real-Time-Off-Peak-Fixed-Price-Future
+      notes: Defines PJM off-peak settlement as weekday HE 0100-0700 and 2400 EPT plus all hours on weekends and NERC holidays.
+  verification_status: official_exchange_verified
+  status: approved_core
+
+PJM_DAILY_ATC_24H_EPT:
+  display_name: PJM daily around-the-clock 24h
+  market: PJM
+  commodity: power
+  shape: ATC
+  calendar: PJM_ALL_HOURS
+  holiday_calendar: NERC_HOLIDAYS
+  granularity: daily
+  hour_basis: hour_ending_ept
+  include_weekdays: true
+  include_weekends: true
+  include_nerc_holidays: true
+  weekday_hours_ending: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+  weekend_hours_ending: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+  holiday_hours_ending: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+  aggregation: arithmetic_average
+  source_documents:
+    - authority: User-approved convention
+      url: docs/CONVENTIONS_LOCKED_v0.1.md
+      notes: ATC is the all-hours power shape and remains separate from equal-MW ATC position decomposition.
+  verification_status: official_exchange_verified
+  status: approved_core

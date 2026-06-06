@@ -1,0 +1,58 @@
+id: T-0102
+type: ticket
+title: Operational event plan bundle evidence
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-DIRECT-SOURCE
+sprint: S-002
+layer:
+  - cli
+  - docs
+  - tests
+branch: codex/T-0102-operational-event-plan-bundle-evidence
+context_profile: trading_domain
+problem: >
+  PJM morning source bundles carried preflight, metadata, source-readiness, and
+  source-publication evidence, but did not yet preserve the operational-event
+  candidate plan blockers for outages and constraints.
+tasks:
+  - Add compact operational-event candidate-plan evidence to generic
+    power-system artifact bundle metadata.
+  - Add PJM bundle CLI flags for attaching a generated or prior validated plan.
+  - Add an explicit require-approved gate that fails closed for current
+    candidate-only operational-event feeds.
+  - Document that embedded operational-event evidence does not approve source
+    fetch, normalization, topology, HotState, cache, or publish behavior.
+acceptance_criteria:
+  - Bundles can embed compact operational-event plan evidence with blockers.
+  - Bundle validation rejects operational-event evidence that claims to contain
+    secret values.
+  - PJM morning bundle CLI can include the generated candidate plan.
+  - Required-approved operational-event gating fails for the current PJM
+    candidate-only plan.
+  - Pipeline reports summarize attached operational-event plan evidence when
+    present.
+  - No operational-event source rows are fetched or normalized.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_ingestion.py tests/test_power_system_operational_events.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0102
+affected_files:
+  - domain/power_system_ingestion.md
+  - domain/power_system_operational_events.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_ingestion.py
+  - tests/test_power_system_ingestion.py
+  - tests/test_power_system_state.py
+change_request_required: true
+change_id: CR-0083
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added compact operational-event candidate-plan evidence to power-system
+  bundles with PJM CLI attachment flags and a fail-closed approval gate.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0102/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0102.md

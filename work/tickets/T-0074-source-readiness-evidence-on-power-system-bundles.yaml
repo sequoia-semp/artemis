@@ -1,0 +1,51 @@
+id: T-0074
+type: ticket
+title: Source readiness evidence on power-system bundles
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - validation
+  - docs
+  - tests
+branch: codex/T-0074-source-readiness-evidence-on-power-system-bundles
+context_profile: trading_domain
+problem: >
+  PJM morning bundles should be able to carry compact, redacted source readiness
+  evidence from the generic power-system readiness contract and optionally fail
+  closed when that evidence is missing or blocked.
+tasks:
+  - Add compact source readiness evidence to power-system bundle metadata.
+  - Validate readiness input against the generic source readiness schema before bundle writes.
+  - Add PJM bundle CLI flags for source readiness input and required-ready gating.
+  - Document the bundle/readiness evidence boundary.
+acceptance_criteria:
+  - Bundles can embed compact source readiness evidence without raw rows or credentials.
+  - Bundle validation rejects source readiness evidence that claims to contain secret values.
+  - PJM bundle builds with `--require-ready-source-readiness` fail when readiness input is missing.
+  - PJM bundle builds with `--require-ready-source-readiness` fail when readiness input is blocked.
+  - No accepted-state publish path, shared cache, or source semantic approval is changed.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_ingestion.py tests/test_power_system_live_smoke.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0074
+affected_files:
+  - domain/power_system_ingestion.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_ingestion.py
+  - tests/test_power_system_ingestion.py
+change_request_required: true
+change_id: CR-0055
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added compact source readiness evidence to power-system bundle metadata,
+  validated readiness inputs against the generic source readiness schema, and
+  exposed PJM bundle CLI gates for required ready source readiness before
+  bundle construction.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0074/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0074.md

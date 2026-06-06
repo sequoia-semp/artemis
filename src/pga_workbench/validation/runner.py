@@ -19,6 +19,14 @@ from ..core.time import utc_now_iso
 from ..data.sources import validate_data_sources
 from ..exceptions import WorkbenchException
 from ..registry import validate_registries
+from ..services.power_system_artifact_products import validate_power_system_artifact_product_references
+from ..services.power_system_operators import validate_power_system_operator_references
+from ..services.power_system_locations import validate_power_location_source_identity_references
+from ..services.power_system_retention import validate_power_system_artifact_retention_references
+from ..services.power_system_source_metadata import validate_power_system_source_metadata_references
+from ..services.power_system_sources import validate_power_system_source_catalog_references
+from ..services.source_query_plans import validate_power_system_source_query_plan_references
+from ..services.power_prices import validate_power_system_price_feed_contracts
 from ..skills.validator import validate_skill_manifest
 from .models import CommandResult, ValidationCheckResult, ValidationReport
 
@@ -187,6 +195,22 @@ def run_validation(repo_root: Path, ticket_id: str | None = None, strict: bool =
             _check("artemis config validation", "artemis_config", True, lambda: {"summary": "artemis config passed", "name": validate_artemis_config(repo_root).get("name")}),
             _check("skill manifest validation", "skills", True, lambda: {"summary": "skill manifest passed", **validate_skill_manifest(repo_root, repo_root / "schemas")}),
             _check("view manifest validation", "views", True, lambda: {"summary": "view manifest passed", **validate_view_manifest(repo_root, repo_root / "schemas")}),
+            _check(
+                "power-system reference validation",
+                "power_system_references",
+                True,
+                lambda: {
+                    "summary": "power system references passed",
+                    "artifact_products": validate_power_system_artifact_product_references(repo_root / "registries"),
+                    "artifact_retention": validate_power_system_artifact_retention_references(repo_root / "registries"),
+                    "location_source_identity": validate_power_location_source_identity_references(repo_root / "registries"),
+                    "operators": validate_power_system_operator_references(repo_root / "registries"),
+                    "price_feed_contracts": validate_power_system_price_feed_contracts(repo_root / "registries"),
+                    "source_query_plans": validate_power_system_source_query_plan_references(repo_root / "registries"),
+                    "source_catalog": validate_power_system_source_catalog_references(repo_root / "registries"),
+                    "source_metadata": validate_power_system_source_metadata_references(repo_root / "registries"),
+                },
+            ),
             _check("data-source descriptor validation", "data_sources", True, lambda: {"summary": "data sources passed", **validate_data_sources(repo_root / "registries" / "data_sources.yaml", repo_root / "schemas")}),
             _check("capability validation", "capabilities", True, lambda: {"summary": "capabilities passed", "recommended_mode": collect_artemis_capabilities(repo_root).get("recommended_mode")}),
             _check("context surface audit", "context_audit", True, lambda: _context_audit(repo_root)),

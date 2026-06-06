@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PowerSystemPriceFeed",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "feed_id",
+    "display_name",
+    "source",
+    "market",
+    "commodity",
+    "source_system",
+    "product_type",
+    "price_class",
+    "data_miner_feed",
+    "granularity",
+    "time_columns",
+    "pnode_columns",
+    "supported_price_components",
+    "source_product_contract",
+    "source_documents",
+    "verification_status",
+    "status"
+  ],
+  "properties": {
+    "feed_id": {"type": "string", "pattern": "^[A-Z0-9_]+$"},
+    "display_name": {"type": "string"},
+    "source": {"type": "string"},
+    "market": {"type": "string"},
+    "commodity": {"const": "power"},
+    "source_system": {"enum": ["iso_rto_api"]},
+    "product_type": {"enum": ["pricing_node_master", "locational_marginal_price"]},
+    "price_class": {"enum": ["metadata", "day_ahead_lmp", "real_time_lmp", "five_minute_real_time_lmp"]},
+    "market_run": {"enum": ["DA", "RT", null]},
+    "data_miner_feed": {"type": "string"},
+    "granularity": {"enum": ["hourly", "five_minute", "effective_dated"]},
+    "value_unit": {"enum": ["USD_per_MWh", null]},
+    "time_columns": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "delivery_start_utc": {"type": ["string", "null"]},
+        "delivery_start_ept": {"type": ["string", "null"]},
+        "effective_start": {"type": ["string", "null"]},
+        "effective_end": {"type": ["string", "null"]}
+      }
+    },
+    "pnode_columns": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pnode_id", "pnode_name"],
+      "properties": {
+        "pnode_id": {"type": "string"},
+        "pnode_name": {"type": "string"},
+        "pnode_type": {"type": ["string", "null"]},
+        "pnode_subtype": {"type": ["string", "null"]},
+        "zone": {"type": ["string", "null"]},
+        "voltage": {"type": ["string", "null"]}
+      }
+    },
+    "value_columns": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "full_lmp": {"type": "string"},
+        "congestion": {"type": "string"},
+        "marginal_loss": {"type": "string"},
+        "system_energy": {"type": "string"}
+      }
+    },
+    "version_columns": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "row_is_current": {"type": "string"},
+        "version_nbr": {"type": "string"}
+      }
+    },
+    "required_filters": {
+      "type": "object",
+      "additionalProperties": {
+        "type": ["string", "number", "boolean"]
+      }
+    },
+    "supported_price_components": {
+      "type": "array",
+      "items": {"enum": ["FULL_LMP", "CONGESTION", "MARGINAL_LOSS", "SYSTEM_ENERGY"]},
+      "minItems": 1
+    },
+    "source_components": {
+      "type": "array",
+      "items": {"enum": ["FULL_LMP", "CONGESTION", "MARGINAL_LOSS", "SYSTEM_ENERGY"]}
+    },
+    "source_product_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observation_role",
+        "delivery_window_policy",
+        "pnode_identity_policy",
+        "component_policy",
+        "version_policy",
+        "canonical_promotion_policy"
+      ],
+      "properties": {
+        "observation_role": {
+          "enum": [
+            "metadata",
+            "source_price_observation"
+          ]
+        },
+        "delivery_window_policy": {
+          "enum": [
+            "effective_dated_metadata",
+            "utc_hourly_delivery_windows_required",
+            "source_specific_pending"
+          ]
+        },
+        "pnode_identity_policy": {
+          "enum": [
+            "official_pnode_master",
+            "approved_location_pnode_required"
+          ]
+        },
+        "component_policy": {
+          "enum": [
+            "not_applicable",
+            "full_lmp_and_source_components_required",
+            "source_specific_pending"
+          ]
+        },
+        "version_policy": {
+          "enum": [
+            "effective_dated",
+            "current_row_filter_required",
+            "source_specific_pending"
+          ]
+        },
+        "canonical_promotion_policy": {
+          "enum": [
+            "metadata_verification_only",
+            "approved_pnode_and_components_required",
+            "candidate_not_promotable"
+          ]
+        }
+      }
+    },
+    "source_documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["authority", "url", "notes"],
+        "properties": {
+          "authority": {"type": "string"},
+          "url": {"type": "string"},
+          "notes": {"type": "string"}
+        }
+      },
+      "minItems": 1
+    },
+    "verification_status": {"enum": ["candidate", "official_pjm_documented"]},
+    "status": {"enum": ["candidate", "approved_core"]}
+  }
+}

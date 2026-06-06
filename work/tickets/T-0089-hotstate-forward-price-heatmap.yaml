@@ -1,0 +1,47 @@
+id: T-0089
+type: ticket
+title: HotState forward price heatmap
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-PRICES
+sprint: S-002
+layer:
+  - cli
+  - docs
+  - tests
+branch: codex/T-0089-hotstate-forward-price-heatmap
+context_profile: trading_domain
+problem: >
+  Forward price heatmap builds still required file input even though analyst
+  views should read accepted artifacts through HotState. This left the PJM
+  price heatmap read path short of the state-pack architecture invariant.
+tasks:
+  - Allow heatmap commands to read accepted price_surface_points from HotState.
+  - Keep file input available for local tests and ad hoc analysis.
+  - Fail closed when neither file input nor HotState is supplied.
+  - Add regression tests and documentation.
+acceptance_criteria:
+  - Heatmap CLI commands can build from accepted HotState price_surface_points.
+  - Existing file-input heatmap behavior remains supported.
+  - Missing heatmap input fails closed with a structured exception.
+  - State-pack publish behavior remains unchanged.
+required_tests:
+  - .venv/bin/pytest tests/test_forward_price_heatmap.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0089
+affected_files:
+  - domain/power_system_prices.md
+  - src/pga_workbench/cli.py
+  - tests/test_forward_price_heatmap.py
+change_request_required: true
+change_id: CR-0070
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added HotState-backed forward price heatmap input while preserving fixture
+  file input for local analysis and tests.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0089/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0089.md

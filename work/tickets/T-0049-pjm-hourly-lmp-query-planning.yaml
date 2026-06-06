@@ -1,0 +1,63 @@
+id: T-0049
+type: ticket
+title: Bounded PJM hourly LMP source query planning
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-FUNDAMENTALS
+sprint: S-002
+layer:
+  - registry
+  - schema
+  - cli
+  - tests
+branch: codex/T-0049-pjm-hourly-lmp-query-planning
+context_profile: trading_domain
+problem: >
+  Direct PJM hourly LMP ingestion needs a reusable power-system source query
+  planner so date ranges and total live request counts are explicit before
+  Data Miner calls are made.
+tasks:
+  - Add a generic source query plan schema and registry.
+  - Register a PJM hourly LMP daily chunk plan tied to the existing Data Miner
+    source catalog and access policy.
+  - Add deterministic query-plan helpers for inclusive day windows and account
+    class request budgets.
+  - Route live PJM DA/RT hourly LMP fetches through the planner.
+  - Add tests for registry validation, day chunking, budget rejection, member
+    budget allowance, and CLI query splitting.
+acceptance_criteria:
+  - Source query plan registry validates with schemas and duplicate-key protection.
+  - PJM hourly LMP date ranges are split into daily Data Miner date windows.
+  - Planned request counts include pnode metadata requests and LMP feed windows.
+  - Non-member plans exceeding the registered connection budget fail before any
+    HTTP request is made.
+  - Member account class permits larger bounded plans.
+  - No new source feeds, pnodes, price components, outage semantics, topology
+    links, or shared-cache publish behavior are approved by this ticket.
+required_tests:
+  - .venv/bin/pytest tests/test_source_query_plans.py tests/test_power_system_price_core.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0049
+affected_files:
+  - registries/power_system_source_query_plans.yaml
+  - schemas/power_system_source_query_plan.schema.json
+  - src/pga_workbench/registry.py
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/source_query_plans.py
+  - tests/test_source_query_plans.py
+  - tests/test_power_system_price_core.py
+change_request_required: true
+change_id: CR-0030
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added a generic power-system source query plan registry and schema, registered
+  a PJM hourly LMP daily-chunk plan, implemented deterministic inclusive-day
+  query planning with account-class request-budget enforcement, and routed live
+  PJM DA/RT hourly LMP fetches through the planner before any Data Miner request
+  is made.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0049/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0049.md

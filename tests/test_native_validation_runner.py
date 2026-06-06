@@ -27,6 +27,7 @@ def test_native_runner_reports_expected_checks(monkeypatch):
         "artemis_config",
         "skills",
         "views",
+        "power_system_references",
         "data_sources",
         "capabilities",
         "context_audit",

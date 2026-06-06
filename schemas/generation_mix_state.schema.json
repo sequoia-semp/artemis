@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GenerationMixState",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["run_id", "as_of", "source_products", "observations", "gaps", "lineage"],
+  "properties": {
+    "run_id": {"type": "string"},
+    "as_of": {"type": "string"},
+    "source_products": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {"type": "object"}
+      }
+    },
+    "observations": {
+      "type": "array",
+      "items": {"type": "object"}
+    },
+    "gaps": {
+      "type": "array",
+      "items": {"type": "object"}
+    },
+    "lineage": {"type": "object"}
+  }
+}

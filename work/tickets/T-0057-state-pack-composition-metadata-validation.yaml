@@ -1,0 +1,50 @@
+id: T-0057
+type: ticket
+title: State-pack composition metadata validation
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - docs
+  - validation
+  - tests
+branch: codex/T-0057-state-pack-composition-metadata-validation
+context_profile: trading_domain
+problem: >
+  Candidate Morning State Packs should reject stale or tampered
+  artifact_composition metadata before publish.
+tasks:
+  - Add composition metadata validation helpers.
+  - Invoke composition metadata validation from state-pack validation when metadata is present.
+  - Preserve existing state-pack behavior for non-composed artifacts.
+  - Add regression tests proving stale metadata fails candidate validation.
+  - Document the validation behavior.
+acceptance_criteria:
+  - State packs without artifact_composition metadata continue to validate normally.
+  - State packs with valid artifact_composition metadata validate and publish normally.
+  - State packs with stale composition metadata fail closed before publish.
+  - No source normalization, accepted-state mutation, or cache mutation policy changes are introduced.
+required_tests:
+  - .venv/bin/pytest tests/test_artifact_composition.py tests/test_workbench_mvp.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0057
+affected_files:
+  - domain/state_artifact_composition.md
+  - src/pga_workbench/services/artifact_composition.py
+  - src/pga_workbench/state/packs.py
+  - tests/test_artifact_composition.py
+change_request_required: true
+change_id: CR-0038
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added composition metadata validation helpers and wired optional
+  artifact_composition verification into state-pack validation so stale or
+  tampered composed artifact metadata fails before candidate acceptance or
+  publish.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0057/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0057.md

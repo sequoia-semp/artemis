@@ -1,0 +1,50 @@
+id: T-0091
+type: ticket
+title: PJM preflight query plan components
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-FUNDAMENTALS
+sprint: S-002
+layer:
+  - validation
+  - docs
+  - tests
+branch: codex/T-0091-pjm-preflight-query-plan-components
+context_profile: trading_domain
+problem: >
+  PJM ingestion preflight reported hourly LMP query-plan evidence, but not the
+  bounded interval query plans for load and generation mix. Direct PJM source
+  readiness should expose planned request counts for every selected approved
+  source surface before live fetches.
+tasks:
+  - Add preflight query-plan summaries for selected PJM load feeds.
+  - Add preflight query-plan summaries for PJM generation mix when enabled.
+  - Preserve the legacy hourly LMP `query_plan` field for compatibility while
+    adding a `query_plans` mapping.
+  - Add regression tests and documentation.
+acceptance_criteria:
+  - Preflight reports include load, price, and generation_mix query-plan
+    summaries when all surfaces are selected.
+  - Preflight can omit generation mix and then omits its query-plan component.
+  - Existing hourly LMP `query_plan` behavior remains compatible.
+  - Preflight remains non-mutating and does not fetch source rows.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_preflight.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0091
+affected_files:
+  - domain/power_system_preflight.md
+  - src/pga_workbench/services/power_system_preflight.py
+  - tests/test_power_system_preflight.py
+change_request_required: true
+change_id: CR-0072
+implemented_at: '2026-06-06T00:00:00Z'
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0091/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0091.md
+implementation_summary: >
+  Added non-mutating preflight evidence for load and generation mix bounded
+  query-plan components alongside the existing hourly LMP plan.

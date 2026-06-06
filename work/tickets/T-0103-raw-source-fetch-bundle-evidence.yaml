@@ -1,0 +1,52 @@
+id: T-0103
+type: ticket
+title: Raw source fetch bundle evidence
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-DIRECT-SOURCE
+sprint: S-002
+layer:
+  - docs
+  - tests
+branch: codex/T-0103-raw-source-fetch-bundle-evidence
+context_profile: trading_domain
+problem: >
+  Live source bundles could include raw source fetch manifests as evidence
+  payloads, but bundle metadata and pipeline reports did not summarize those
+  manifests for source review.
+tasks:
+  - Add compact raw source fetch manifest evidence to generic power-system
+    bundle metadata.
+  - Fail closed if raw fetch evidence claims to contain raw records or secrets.
+  - Add pipeline summary output for raw source fetch evidence when present.
+  - Document the redacted raw-fetch evidence boundary.
+acceptance_criteria:
+  - Bundle metadata records manifest counts, total row/page counts, source
+    surface counts, registry feed IDs, query-plan IDs, and per-manifest hashes.
+  - Raw rows and credential values remain excluded from metadata evidence.
+  - Bundle validation rejects unredacted raw-fetch evidence.
+  - Pipeline reports summarize raw source fetch evidence when present.
+  - No source adapter, normalization, state-pack publish, cache, or HotState
+    behavior changes.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_ingestion.py tests/test_power_system_state.py tests/test_power_system_raw_fetches.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0103
+affected_files:
+  - domain/power_system_ingestion.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_ingestion.py
+  - tests/test_power_system_ingestion.py
+  - tests/test_power_system_state.py
+change_request_required: true
+change_id: CR-0084
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added compact redacted raw source fetch evidence to generic power-system
+  bundle metadata and pipeline reports.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0103/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0103.md

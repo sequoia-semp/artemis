@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PowerSystemArtifactRetentionPolicy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_key",
+    "display_name",
+    "commodity",
+    "operator_id",
+    "product_family",
+    "state_pack_publish_allowed",
+    "lineage_required",
+    "source_specific_required",
+    "forecast_revision_policy",
+    "retention_tiers",
+    "historical_source_policy",
+    "source_documents",
+    "verification_status",
+    "status"
+  ],
+  "properties": {
+    "artifact_key": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+    "display_name": {"type": "string"},
+    "commodity": {"const": "power"},
+    "operator_id": {"type": "string"},
+    "product_family": {
+      "enum": [
+        "load",
+        "locational_marginal_price",
+        "generation_mix",
+        "price_shape",
+        "operational_events"
+      ]
+    },
+    "state_pack_publish_allowed": {"type": "boolean"},
+    "lineage_required": {"type": "boolean"},
+    "source_specific_required": {"type": "boolean"},
+    "forecast_revision_policy": {
+      "enum": [
+        "not_applicable",
+        "latest_curve_hot_revision_history_separate",
+        "candidate_pending"
+      ]
+    },
+    "retention_tiers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hot", "warm", "cold"],
+      "properties": {
+        "hot": {"$ref": "#/$defs/tier_policy"},
+        "warm": {"$ref": "#/$defs/tier_policy"},
+        "cold": {"$ref": "#/$defs/tier_policy"}
+      }
+    },
+    "historical_source_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_restorable",
+        "approved_query_plan_ids",
+        "derived_view_windows_days",
+        "max_hot_history_days",
+        "row_version_policy"
+      ],
+      "properties": {
+        "source_restorable": {"type": "boolean"},
+        "approved_query_plan_ids": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "derived_view_windows_days": {
+          "type": "array",
+          "items": {"type": "integer", "minimum": 1},
+          "uniqueItems": true
+        },
+        "max_hot_history_days": {"type": ["integer", "null"], "minimum": 1},
+        "row_version_policy": {
+          "enum": [
+            "not_applicable",
+            "current_row_filter_required",
+            "source_specific_pending"
+          ]
+        }
+      }
+    },
+    "source_documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["authority", "url", "notes"],
+        "properties": {
+          "authority": {"type": "string"},
+          "url": {"type": "string"},
+          "notes": {"type": "string"}
+        }
+      },
+      "minItems": 1
+    },
+    "verification_status": {"enum": ["user_approved", "source_backed", "candidate"]},
+    "status": {"enum": ["approved_core", "candidate", "deferred"]}
+  },
+  "$defs": {
+    "tier_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tier", "scope", "max_age_days"],
+      "properties": {
+        "tier": {
+          "enum": [
+            "hot",
+            "hot_warm",
+            "cold",
+            "snapshots_and_stats",
+            "candidate_only",
+            "deferred",
+            "not_applicable"
+          ]
+        },
+        "scope": {"type": "string"},
+        "max_age_days": {"type": ["integer", "null"], "minimum": 0}
+      }
+    }
+  }
+}

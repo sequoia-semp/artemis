@@ -1,0 +1,55 @@
+id: T-0104
+type: ticket
+title: HotState source evidence view projection
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-DIRECT-SOURCE
+sprint: S-002
+layer:
+  - docs
+  - tests
+branch: codex/T-0104-hotstate-source-evidence-view-projection
+context_profile: trading_domain
+problem: >
+  Power-system bundles preserved source-audit metadata in accepted state, but
+  Analyst views did not project that metadata into view evidence through the
+  HotState read path.
+tasks:
+  - Add a generic read-only projection from power-system bundle metadata to
+    Analyst view evidence entries.
+  - Include preflight, metadata verification, source readiness, source
+    publications, raw source fetches, and operational event candidate-plan
+    summaries when present.
+  - Keep projection compact and redacted.
+  - Document that Analyst views read this evidence through HotState and do not
+    call PJM adapters or raw source rows.
+acceptance_criteria:
+  - Analyst view builds from accepted HotState include compact source evidence
+    derived from `power_system_artifact_bundle` metadata.
+  - Projection includes source readiness, raw fetch, and operational event
+    blocker counts when present.
+  - Projection does not expose raw source rows, error messages, request headers,
+    or credential values.
+  - Supplied input and HotState read boundaries remain unchanged.
+  - No source adapter, state-pack publish, cache mutation, or UI behavior
+    changes.
+required_tests:
+  - .venv/bin/pytest tests/test_analyst_views.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0104
+affected_files:
+  - docs/user/analyst_mode.md
+  - src/pga_workbench/analyst/view_engine.py
+  - tests/test_analyst_views.py
+change_request_required: true
+change_id: CR-0085
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added compact redacted source-audit evidence projection from accepted
+  power-system bundle metadata into Analyst views through HotState.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0104/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0104.md

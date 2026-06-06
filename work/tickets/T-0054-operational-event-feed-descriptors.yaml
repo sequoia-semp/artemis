@@ -1,0 +1,61 @@
+id: T-0054
+type: ticket
+title: Power system operational event feed descriptors
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - docs
+  - registry
+  - schema
+  - validation
+  - tests
+branch: codex/T-0054-operational-event-feed-descriptors
+context_profile: trading_domain
+problem: >
+  Broader direct-PJM incorporation needs a power-system event source surface for
+  outage and constraint publications without prematurely approving lifecycle,
+  topology, or impact semantics.
+tasks:
+  - Add a generic operational event feed descriptor schema and registry.
+  - Add PJM Data Miner candidate descriptors for forecast generation outages and transmission constraints.
+  - Link candidate source-catalog publications to the operational event feed descriptors.
+  - Extend source/operator cross-reference validation to include operational event feeds.
+  - Add tests proving descriptors are candidate-only and fail closed on unknown descriptor references.
+acceptance_criteria:
+  - power_system_operational_event_feeds.yaml validates with duplicate-key protection and schema checks.
+  - PJM outage and transmission-constraint source catalog entries resolve to candidate operational event feed descriptors.
+  - Operational event descriptors resolve to the PJM power-system operator.
+  - No operational event feed is approved for normalized artifacts or shared publish.
+  - Unknown operational event descriptor references fail closed.
+  - No outage lifecycle semantics, topology linkage, Gantt behavior, congestion attribution, or cache mutation policy is approved by this ticket.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_operational_events.py tests/test_power_system_operators.py tests/test_power_system_source_catalog.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0054
+affected_files:
+  - domain/power_system_operational_events.md
+  - registries/power_system_operational_event_feeds.yaml
+  - registries/power_system_source_catalog.yaml
+  - schemas/power_system_operational_event_feed.schema.json
+  - src/pga_workbench/registry.py
+  - src/pga_workbench/services/power_system_operational_events.py
+  - src/pga_workbench/services/power_system_operators.py
+  - src/pga_workbench/services/power_system_sources.py
+  - tests/test_power_system_operational_events.py
+  - tests/test_power_system_operators.py
+change_request_required: true
+change_id: CR-0035
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added generic candidate operational-event feed descriptors for PJM forecast
+  generation outages and transmission constraints, linked those descriptors from
+  the source catalog, and extended source/operator reference validation to cover
+  the new descriptor registry while keeping all event feeds candidate-only.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0054/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0054.md

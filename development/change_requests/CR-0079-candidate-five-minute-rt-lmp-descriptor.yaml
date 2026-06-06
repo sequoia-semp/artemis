@@ -1,0 +1,40 @@
+change_id: CR-0079
+title: Candidate five-minute RT LMP descriptor
+created_at: 2026-06-06T00:00:00Z
+change_class: 4
+severity: medium
+tickets:
+  - T-0098
+problem_statement: >
+  Five-minute RT LMP needed explicit candidate registry coverage for planning
+  without granting source-row normalization, canonical promotion, or publish
+  authority.
+root_cause: >
+  The source catalog had a candidate publication placeholder, but the feed and
+  query-plan registries did not yet encode the candidate surface.
+affected_files:
+  - domain/power_system_prices.md
+  - registries/power_system_price_feeds.yaml
+  - registries/power_system_source_catalog.yaml
+  - registries/power_system_source_query_plans.yaml
+  - schemas/power_system_price_feed.schema.json
+  - src/pga_workbench/services/power_prices.py
+  - tests/test_power_system_price_core.py
+  - tests/test_power_system_source_catalog.py
+  - tests/test_power_system_source_metadata.py
+  - tests/test_source_query_plans.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_price_core.py
+  - .venv/bin/pytest tests/test_power_system_source_catalog.py
+  - .venv/bin/pytest tests/test_source_query_plans.py
+  - .venv/bin/pytest tests/test_power_system_source_metadata.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0098
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the candidate five-minute feed and query-plan descriptors and restore
+  the source publication to a placeholder without registry feed IDs. Approved
+  hourly LMP behavior remains unchanged.

@@ -1,0 +1,66 @@
+id: T-0081
+type: ticket
+title: Query execution evidence on source readiness
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-FUNDAMENTALS
+sprint: S-002
+layer:
+  - docs
+  - schema
+  - tests
+branch: codex/T-0081-query-execution-evidence-on-source-readiness
+context_profile: trading_domain
+problem: >
+  Source readiness reports carried source fetch statuses, but they did not yet
+  preserve the query execution evidence produced by approved source query plans.
+  That left the readiness and bundle boundary weaker than the live request
+  planning layer.
+tasks:
+  - Extend the generic source readiness schema with optional query execution
+    evidence.
+  - Add redacted query execution summaries to PJM live smoke reports when source
+    rows are fetched.
+  - Execute PJM live smoke pnode and hourly LMP source checks through planned
+    query request records.
+  - Preserve compact query execution evidence when source readiness is embedded
+    into power-system bundle metadata.
+  - Include query execution evidence in pipeline source-readiness summaries when
+    present.
+  - Add regression tests and documentation for readiness and bundle boundaries.
+acceptance_criteria:
+  - "Source readiness reports may carry query execution summaries with plan ID,
+    request counts, account class, request kinds, feed IDs, pnodes, date
+    windows, and `contains_secret_values: false`."
+  - PJM live smoke pnode/LMP fetches execute planned query request records and
+    attach matching query execution summaries to request parameters.
+  - Bundle metadata preserves only compact redacted query execution evidence.
+  - Unredacted query execution evidence fails closed.
+  - Existing fixture readiness inputs without query execution evidence remain
+    accepted.
+  - State-pack publish behavior and HotState read path remain unchanged.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_live_smoke.py tests/test_power_system_ingestion.py tests/test_power_system_state.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0081
+affected_files:
+  - domain/power_system_ingestion.md
+  - domain/power_system_preflight.md
+  - schemas/power_system_source_readiness.schema.json
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_ingestion.py
+  - src/pga_workbench/services/power_system_live_smoke.py
+  - tests/test_power_system_ingestion.py
+  - tests/test_power_system_live_smoke.py
+change_request_required: true
+change_id: CR-0062
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added optional redacted query execution evidence to source readiness reports,
+  PJM live smoke, bundle metadata, and pipeline readiness summaries.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0081/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0081.md

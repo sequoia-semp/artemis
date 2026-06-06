@@ -1,0 +1,54 @@
+id: T-0085
+type: ticket
+title: Power location source identity validation
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-PRICES
+sprint: S-002
+layer:
+  - validation
+  - registry
+  - docs
+  - tests
+branch: codex/T-0085-power-location-source-identity-validation
+context_profile: trading_domain
+problem: >
+  Direct PJM price ingestion depends on approved power locations resolving to
+  official PJM pnode identities, but strict validation did not yet prove that
+  approved power locations carried complete, verified source identity metadata.
+tasks:
+  - Add a generic power-location source identity validation service.
+  - Require approved PJM power locations to carry official Data Miner pnode ID,
+    name, type, and verified source status.
+  - Reject duplicate PJM pnode mappings across approved power locations.
+  - Wire the validation into the strict power-system reference gate.
+  - Add regression tests and documentation.
+acceptance_criteria:
+  - Approved PJM power locations expose a validated source identity policy for
+    official Data Miner pnodes.
+  - Missing verified PJM pnode source status fails closed.
+  - Duplicate approved PJM pnode-to-location mappings fail closed.
+  - Existing pnode fixture verification and price artifact behavior remain
+    unchanged.
+  - State-pack publish behavior and HotState read path remain unchanged.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_price_core.py tests/test_native_validation_runner.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0085
+affected_files:
+  - domain/power_locations.md
+  - src/pga_workbench/services/power_system_locations.py
+  - src/pga_workbench/validation/runner.py
+  - tests/test_power_system_price_core.py
+change_request_required: true
+change_id: CR-0066
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added strict source identity validation for approved power locations and PJM
+  pnode mappings.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0085/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0085.md

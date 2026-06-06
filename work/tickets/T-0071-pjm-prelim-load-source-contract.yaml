@@ -1,0 +1,53 @@
+id: T-0071
+type: ticket
+title: PJM preliminary load source contract correction
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - registry
+  - docs
+  - tests
+branch: codex/T-0071-pjm-prelim-load-source-contract
+context_profile: trading_domain
+problem: >
+  The registered hrl_load_prelim area columns include zone/area alternates that
+  are not present in PJM's live metadata, and the feed is zonal rather than
+  RTO-defaulted, blocking candidate metadata verification and RTO-filtered smoke
+  checks for preliminary load.
+tasks:
+  - Narrow hrl_load_prelim area_columns to the source-backed load_area field.
+  - Remove the RTO default area filter from hrl_load_prelim.
+  - Preserve metered-load area alternates.
+  - Add regression coverage for the live metadata shape.
+  - Document the preliminary-load source-field distinction.
+acceptance_criteria:
+  - hrl_load_prelim metadata verification passes with live-observed columns.
+  - hrl_load_prelim no longer requires zone or area fields.
+  - hrl_load_prelim no longer applies an RTO default area filter.
+  - Existing fixture normalization remains valid.
+  - Metered load source contract is not narrowed by this correction.
+  - No accepted-state publish path, shared cache, or source semantic approval is changed.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_source_metadata.py tests/test_pjm_fundamentals_semantic_core.py tests/test_power_system_live_smoke.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0071
+affected_files:
+  - domain/pjm_fundamentals.md
+  - registries/pjm_fundamental_feeds.yaml
+  - tests/test_power_system_source_metadata.py
+change_request_required: true
+change_id: CR-0052
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Corrected hrl_load_prelim to require only the live source-backed load_area
+  field, removed the RTO default area filter because live preliminary load rows
+  are zonal, preserved metered-load area alternates, and added regression
+  coverage for the live-observed metadata shape.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0071/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0071.md

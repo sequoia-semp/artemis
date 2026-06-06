@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PjmLoadArea",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "area_id",
+    "display_name",
+    "market",
+    "commodity",
+    "area_type",
+    "feed_values",
+    "source_documents",
+    "verification_status",
+    "status"
+  ],
+  "properties": {
+    "area_id": {"type": "string", "pattern": "^[A-Z0-9_]+$"},
+    "display_name": {"type": "string"},
+    "market": {"const": "PJM"},
+    "commodity": {"const": "power"},
+    "area_type": {"enum": ["rto", "zone", "region"]},
+    "feed_values": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "source_documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["authority", "url", "notes"],
+        "properties": {
+          "authority": {"type": "string"},
+          "url": {"type": "string"},
+          "notes": {"type": "string"}
+        }
+      },
+      "minItems": 1
+    },
+    "verification_status": {"enum": ["candidate", "official_pjm_documented"]},
+    "status": {"enum": ["candidate", "approved_core"]}
+  }
+}

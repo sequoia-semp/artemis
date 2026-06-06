@@ -1,0 +1,52 @@
+NERC_HOLIDAYS:
+  display_name: NERC holiday calendar for North American power products
+  calendar_type: holiday_calendar
+  market: NORTH_AMERICA_POWER
+  timezone: America/New_York
+  holiday_rules:
+    - name: New Year's Day
+      rule_type: fixed_date
+      month: 1
+      day: 1
+    - name: Memorial Day
+      rule_type: last_weekday
+      month: 5
+      weekday: monday
+    - name: Independence Day
+      rule_type: fixed_date
+      month: 7
+      day: 4
+    - name: Labor Day
+      rule_type: nth_weekday
+      month: 9
+      weekday: monday
+      nth: 1
+    - name: Thanksgiving Day
+      rule_type: nth_weekday
+      month: 11
+      weekday: thursday
+      nth: 4
+    - name: Christmas Day
+      rule_type: fixed_date
+      month: 12
+      day: 25
+  source_documents:
+    - authority: ICE product specifications
+      url: registries/exchange_contracts.yaml
+      notes: PJM peak and off-peak product specs reference weekdays excluding NERC holidays and weekend/NERC-holiday full-day off-peak treatment.
+  verification_status: user_approved
+  status: approved_core
+
+PJM_EPT_POWER_DAY:
+  display_name: PJM Eastern Prevailing Time power day
+  calendar_type: power_day_calendar
+  market: PJM
+  timezone: America/New_York
+  holiday_calendar: NERC_HOLIDAYS
+  day_start_hour: 0
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: PJM Data Miner publishes hourly EPT and UTC timestamps; shape rollups use EPT hour-ending rules.
+  verification_status: user_approved
+  status: approved_core

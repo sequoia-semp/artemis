@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PowerSystemSourceReadiness",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "operator_id",
+    "source_system",
+    "ready",
+    "blockers",
+    "preflight",
+    "metadata_verification",
+    "source_fetches",
+    "fetch_source_rows",
+    "contains_secret_values"
+  ],
+  "properties": {
+    "operator_id": {"type": "string", "minLength": 1},
+    "source_system": {"type": "string", "minLength": 1},
+    "ready": {"type": "boolean"},
+    "blockers": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "preflight": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ready", "blocker_count", "selected_feeds", "credential_checks", "contains_secret_values"],
+      "properties": {
+        "ready": {"type": "boolean"},
+        "blocker_count": {"type": "integer", "minimum": 0},
+        "selected_feeds": {"type": "object"},
+        "credential_checks": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["configured", "value_redacted"],
+            "properties": {
+              "configured": {"type": "boolean"},
+              "value_redacted": {"const": true}
+            }
+          }
+        },
+        "contains_secret_values": {"const": false}
+      }
+    },
+    "metadata_verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["definition_source", "verified_feed_count", "verified_feeds", "contains_secret_values"],
+      "properties": {
+        "definition_source": {"type": ["string", "null"]},
+        "verified_feed_count": {"type": "integer", "minimum": 0},
+        "verified_feeds": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["registry_feed_id", "data_miner_feed", "required_field_count", "observed_field_count"],
+            "properties": {
+              "registry_feed_id": {"type": ["string", "null"]},
+              "data_miner_feed": {"type": ["string", "null"]},
+              "required_field_count": {"type": "integer", "minimum": 0},
+              "observed_field_count": {"type": "integer", "minimum": 0}
+            }
+          }
+        },
+        "contains_secret_values": {"const": false}
+      }
+    },
+    "source_fetches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "status",
+          "product_family",
+          "registry_feed_id",
+          "data_miner_feed",
+          "row_count",
+          "page_count",
+          "truncated_by_max_pages"
+        ],
+        "properties": {
+          "status": {"enum": ["success", "empty", "error"]},
+          "product_family": {"type": "string", "minLength": 1},
+          "registry_feed_id": {"type": "string", "minLength": 1},
+          "data_miner_feed": {"type": "string", "minLength": 1},
+          "row_count": {"type": "integer", "minimum": 0},
+          "page_count": {"type": "integer", "minimum": 0},
+          "truncated_by_max_pages": {"type": "boolean"},
+          "error_code": {"type": "string"},
+          "error_message": {"type": "string"}
+        }
+      }
+    },
+    "query_execution": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": [
+        "plan_id",
+        "planned_request_count",
+        "built_request_count",
+        "account_class",
+        "max_connections_per_minute",
+        "request_kinds",
+        "registry_feed_ids",
+        "pnode_ids",
+        "date_windows",
+        "contains_secret_values"
+      ],
+      "properties": {
+        "plan_id": {"type": "string", "minLength": 1},
+        "planned_request_count": {"type": "integer", "minimum": 0},
+        "built_request_count": {"type": "integer", "minimum": 0},
+        "account_class": {"type": "string", "minLength": 1},
+        "max_connections_per_minute": {"type": "integer", "minimum": 1},
+        "request_kinds": {
+          "type": "object",
+          "additionalProperties": {"type": "integer", "minimum": 0}
+        },
+        "registry_feed_ids": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        },
+        "pnode_ids": {
+          "type": "array",
+          "items": {"type": "integer"}
+        },
+        "date_windows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["start", "end"],
+            "properties": {
+              "start": {"type": "string"},
+              "end": {"type": "string"}
+            }
+          }
+        },
+        "contains_secret_values": {"const": false}
+      }
+    },
+    "fetch_source_rows": {"type": "boolean"},
+    "contains_secret_values": {"const": false}
+  }
+}

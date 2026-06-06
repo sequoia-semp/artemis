@@ -1,0 +1,55 @@
+id: T-0084
+type: ticket
+title: Source query plan reference validation
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-FUNDAMENTALS
+sprint: S-002
+layer:
+  - validation
+  - registry
+  - tests
+branch: codex/T-0084-source-query-plan-reference-validation
+context_profile: trading_domain
+problem: >
+  Power-system source query plans validated their JSON schema shape, but strict
+  validation did not yet prove that plan publication IDs and applicable feed
+  IDs resolved to source catalog records and normalized feed descriptors.
+tasks:
+  - Add query-plan cross-reference validation for source publications and feed
+    descriptors.
+  - Support multi-publication bounded plans by requiring each feed to have
+    source publication coverage rather than forcing every feed under one
+    primary publication.
+  - Wire query-plan reference validation into the strict power-system reference
+    gate.
+  - Add regression tests for resolved references and fail-closed unknown
+    publication/feed cases.
+acceptance_criteria:
+  - Strict validation fails when a query plan references an unknown source
+    publication.
+  - Strict validation fails when a query plan applies to an unknown feed
+    descriptor.
+  - Load bounded interval plans can span load actual and load forecast
+    publications while still proving every feed has source-publication coverage.
+  - State-pack publish behavior and HotState read path remain unchanged.
+required_tests:
+  - .venv/bin/pytest tests/test_source_query_plans.py tests/test_native_validation_runner.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0084
+affected_files:
+  - src/pga_workbench/services/source_query_plans.py
+  - src/pga_workbench/validation/runner.py
+  - tests/test_source_query_plans.py
+change_request_required: true
+change_id: CR-0065
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added source query plan reference validation and included it in the strict
+  power-system reference validation gate.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0084/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0084.md

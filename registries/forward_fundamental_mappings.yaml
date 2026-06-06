@@ -26,16 +26,15 @@ ICE_PMI_TO_PJM_WH_RT_LMP_51288:
     calendar: PJM_WEEKDAYS_EXCLUDING_NERC_HOLIDAYS
   source_authority:
     - OFFICIAL_EXCHANGE_SPEC
-    - USER_APPROVED_CONVENTION
-    - OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE
+    - OFFICIAL_ISO_DATA
   source_documents:
     - authority: ICE product specification
       url: https://www.ice.com/products/6590369/PJM-Western-Hub-Real-Time-Peak-1-MW-Fixed-Price-Future
       notes: Defines PMI Reference Price A as PJM Western Hub real-time peak LMP average.
     - authority: PJM Data Miner API Guide
       url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
-      notes: Documents PJM Data Miner pnode and real-time LMP feeds; exact 51288 pnode mapping remains user-approved in this slice.
-  verification_status: official_exchange_verified_user_pnode_approved
+      notes: Documents PJM Data Miner pnode and real-time LMP feeds; committed PJM pnode fixture verifies 51288 = WESTERN HUB.
+  verification_status: official_exchange_verified
   status: approved_core
 
 ICE_PDP_TO_PJM_WH_RT_LMP_51288:
@@ -66,16 +65,15 @@ ICE_PDP_TO_PJM_WH_RT_LMP_51288:
     calendar: PJM_DAILY_REPORTED_PRICES
   source_authority:
     - OFFICIAL_EXCHANGE_SPEC
-    - USER_APPROVED_CONVENTION
-    - OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE
+    - OFFICIAL_ISO_DATA
   source_documents:
     - authority: ICE product specification
       url: https://www.ice.com/products/6590472/PJM-Western-Hub-Real-Time-Peak-Daily-Fixed-Price-Future/specs
       notes: Defines PDP Reference Price A as PJM Western Hub real-time peak LMP average.
     - authority: PJM Data Miner API Guide
       url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
-      notes: Documents PJM Data Miner pnode and real-time LMP feeds; exact 51288 pnode mapping remains user-approved in this slice.
-  verification_status: official_exchange_verified_user_pnode_approved
+      notes: Documents PJM Data Miner pnode and real-time LMP feeds; committed PJM pnode fixture verifies 51288 = WESTERN HUB.
+  verification_status: official_exchange_verified
   status: approved_core
 
 ICE_PJC_TO_PJM_WH_DA_LMP_51288:
@@ -101,15 +99,15 @@ ICE_PJC_TO_PJM_WH_DA_LMP_51288:
     description: ICE Reference Price A average of PJM day-ahead LMPs for hours ending 0800-2300 EPT.
     hours_ending_ept: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
     calendar: PJM_WEEKDAYS_EXCLUDING_NERC_HOLIDAYS
-  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, OFFICIAL_ISO_DATA]
   source_documents:
     - authority: ICE product specification
       url: https://www.ice.com/products/6590366/PJM-Western-Hub-Day-Ahead-Peak-Fixed-Price-Future
       notes: Defines PJC Reference Price A as PJM Western Hub day-ahead peak LMP average.
-    - authority: GridStatus PJM LMP example
-      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
-      notes: Public example showing Western Hub pnode 51288 in PJM hub LMP data.
-  verification_status: official_exchange_verified_user_pnode_approved
+    - authority: PJM Data Miner pnode fixture
+      url: tests/fixtures/pjm_pnodes_wh_ad_ni.json
+      notes: Committed PJM Data Miner pnode fixture verifies Western Hub pnode 51288.
+  verification_status: official_exchange_verified
   status: approved_core
 
 ICE_PJD_TO_PJM_WH_DA_LMP_51288:
@@ -135,15 +133,15 @@ ICE_PJD_TO_PJM_WH_DA_LMP_51288:
     description: ICE offpeak average using weekday HE 0100-0700 and 2400 EPT plus all 24 hours on weekends and NERC holidays.
     hours_ending_ept: [1, 2, 3, 4, 5, 6, 7, 24]
     calendar: PJM_OFFPEAK_WITH_WEEKEND_AND_NERC_HOLIDAY_FULL_DAY
-  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, OFFICIAL_ISO_DATA]
   source_documents:
     - authority: ICE product specification
       url: https://www.ice.com/products/6590428/PJM-Western-Hub-Day-Ahead-Off-Peak-Fixed-Price-Future
       notes: Defines PJD Reference Price A as PJM Western Hub day-ahead offpeak LMP average.
-    - authority: GridStatus PJM LMP example
-      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
-      notes: Public example showing Western Hub pnode 51288 in PJM hub LMP data.
-  verification_status: official_exchange_verified_user_pnode_approved
+    - authority: PJM Data Miner pnode fixture
+      url: tests/fixtures/pjm_pnodes_wh_ad_ni.json
+      notes: Committed PJM Data Miner pnode fixture verifies Western Hub pnode 51288.
+  verification_status: official_exchange_verified
   status: approved_core
 
 ICE_OPJ_TO_PJM_WH_RT_LMP_51288:
@@ -169,15 +167,15 @@ ICE_OPJ_TO_PJM_WH_RT_LMP_51288:
     description: ICE offpeak average using weekday HE 0100-0700 and 2400 EPT plus all 24 hours on weekends and NERC holidays.
     hours_ending_ept: [1, 2, 3, 4, 5, 6, 7, 24]
     calendar: PJM_OFFPEAK_WITH_WEEKEND_AND_NERC_HOLIDAY_FULL_DAY
-  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, OFFICIAL_ISO_DATA]
   source_documents:
     - authority: ICE product specification
       url: https://www.ice.com/products/6590424/PJM-Western-Hub-Real-Time-Off-Peak-Fixed-Price-Future
       notes: Defines OPJ Reference Price A as PJM Western Hub real-time offpeak LMP average.
-    - authority: GridStatus PJM LMP example
-      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
-      notes: Public example showing Western Hub pnode 51288 in PJM hub LMP data.
-  verification_status: official_exchange_verified_user_pnode_approved
+    - authority: PJM Data Miner pnode fixture
+      url: tests/fixtures/pjm_pnodes_wh_ad_ni.json
+      notes: Committed PJM Data Miner pnode fixture verifies Western Hub pnode 51288.
+  verification_status: official_exchange_verified
   status: approved_core
 
 ICE_ADB_TO_PJM_AD_DA_LMP_34497127:
@@ -203,15 +201,15 @@ ICE_ADB_TO_PJM_AD_DA_LMP_34497127:
     description: ICE Reference Price A average of PJM day-ahead LMPs for hours ending 0800-2300 EPT.
     hours_ending_ept: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
     calendar: PJM_WEEKDAYS_EXCLUDING_NERC_HOLIDAYS
-  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, OFFICIAL_ISO_DATA]
   source_documents:
     - authority: ICE product specification
       url: https://www.ice.com/products/6590327/PJM-AEP-Dayton-Hub-Day-Ahead-Peak-Fixed-Price-Future
       notes: Defines ADB Reference Price A as AEP-Dayton Hub day-ahead peak LMP average.
-    - authority: GridStatus PJM LMP example
-      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
-      notes: Public example showing AEP-DAYTON HUB pnode 34497127 in PJM hub LMP data.
-  verification_status: official_exchange_verified_user_pnode_approved
+    - authority: PJM Data Miner pnode fixture
+      url: tests/fixtures/pjm_pnodes_wh_ad_ni.json
+      notes: Committed PJM Data Miner pnode fixture verifies AEP-DAYTON HUB pnode 34497127.
+  verification_status: official_exchange_verified
   status: approved_core
 
 ICE_ADD_TO_PJM_AD_DA_LMP_34497127:
@@ -237,15 +235,15 @@ ICE_ADD_TO_PJM_AD_DA_LMP_34497127:
     description: ICE offpeak average using weekday HE 0100-0700 and 2400 EPT plus all 24 hours on weekends and NERC holidays.
     hours_ending_ept: [1, 2, 3, 4, 5, 6, 7, 24]
     calendar: PJM_OFFPEAK_WITH_WEEKEND_AND_NERC_HOLIDAY_FULL_DAY
-  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, OFFICIAL_ISO_DATA]
   source_documents:
     - authority: ICE product specification
       url: https://www.ice.com/products/6590388/PJM-AEP-Dayton-Hub-Day-Ahead-Off-Peak-Fixed-Price-Future
       notes: Defines ADD Reference Price A as AEP-Dayton Hub day-ahead offpeak LMP average.
-    - authority: GridStatus PJM LMP example
-      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
-      notes: Public example showing AEP-DAYTON HUB pnode 34497127 in PJM hub LMP data.
-  verification_status: official_exchange_verified_user_pnode_approved
+    - authority: PJM Data Miner pnode fixture
+      url: tests/fixtures/pjm_pnodes_wh_ad_ni.json
+      notes: Committed PJM Data Miner pnode fixture verifies AEP-DAYTON HUB pnode 34497127.
+  verification_status: official_exchange_verified
   status: approved_core
 
 ICE_MSO_TO_PJM_AD_RT_LMP_34497127:
@@ -271,15 +269,15 @@ ICE_MSO_TO_PJM_AD_RT_LMP_34497127:
     description: ICE Reference Price A average of PJM real-time LMPs for hours ending 0800-2300 EPT.
     hours_ending_ept: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
     calendar: PJM_WEEKDAYS_EXCLUDING_NERC_HOLIDAYS
-  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, OFFICIAL_ISO_DATA]
   source_documents:
     - authority: ICE product specification
       url: https://www.ice.com/products/6590354/PJM-AEP-Dayton-Hub-Real-Time-Peak-Fixed-Price-Future
       notes: Defines MSO Reference Price A as AEP-Dayton Hub real-time peak LMP average.
-    - authority: GridStatus PJM LMP example
-      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
-      notes: Public example showing AEP-DAYTON HUB pnode 34497127 in PJM hub LMP data.
-  verification_status: official_exchange_verified_user_pnode_approved
+    - authority: PJM Data Miner pnode fixture
+      url: tests/fixtures/pjm_pnodes_wh_ad_ni.json
+      notes: Committed PJM Data Miner pnode fixture verifies AEP-DAYTON HUB pnode 34497127.
+  verification_status: official_exchange_verified
   status: approved_core
 
 ICE_AOD_TO_PJM_AD_RT_LMP_34497127:
@@ -305,15 +303,15 @@ ICE_AOD_TO_PJM_AD_RT_LMP_34497127:
     description: ICE offpeak average using weekday HE 0100-0700 and 2400 EPT plus all 24 hours on weekends and NERC holidays.
     hours_ending_ept: [1, 2, 3, 4, 5, 6, 7, 24]
     calendar: PJM_OFFPEAK_WITH_WEEKEND_AND_NERC_HOLIDAY_FULL_DAY
-  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, OFFICIAL_ISO_DATA]
   source_documents:
     - authority: ICE product specification
       url: https://www.ice.com/products/6590389/PJM-AEP-Dayton-Hub-Real-Time-Off-Peak-Fixed-Price-Future
       notes: Defines AOD Reference Price A as AEP-Dayton Hub real-time offpeak LMP average.
-    - authority: GridStatus PJM LMP example
-      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
-      notes: Public example showing AEP-DAYTON HUB pnode 34497127 in PJM hub LMP data.
-  verification_status: official_exchange_verified_user_pnode_approved
+    - authority: PJM Data Miner pnode fixture
+      url: tests/fixtures/pjm_pnodes_wh_ad_ni.json
+      notes: Committed PJM Data Miner pnode fixture verifies AEP-DAYTON HUB pnode 34497127.
+  verification_status: official_exchange_verified
   status: approved_core
 
 ICE_NIB_TO_PJM_NI_DA_LMP_33092315:
@@ -339,15 +337,15 @@ ICE_NIB_TO_PJM_NI_DA_LMP_33092315:
     description: ICE Reference Price A average of PJM day-ahead LMPs for hours ending 0800-2300 EPT.
     hours_ending_ept: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
     calendar: PJM_WEEKDAYS_EXCLUDING_NERC_HOLIDAYS
-  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, OFFICIAL_ISO_DATA]
   source_documents:
     - authority: ICE product specification
       url: https://www.ice.com/products/6590360/PJM-NI-Hub-Day-Ahead-Peak-Fixed-Price-Future
       notes: Defines NIB Reference Price A as NI Hub day-ahead peak LMP average.
-    - authority: GridStatus PJM LMP example
-      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
-      notes: Public example and linked data show N ILLINOIS HUB pnode 33092315 in PJM hub LMP data.
-  verification_status: official_exchange_verified_user_pnode_approved
+    - authority: PJM Data Miner pnode fixture
+      url: tests/fixtures/pjm_pnodes_wh_ad_ni.json
+      notes: Committed PJM Data Miner pnode fixture verifies N ILLINOIS HUB pnode 33092315.
+  verification_status: official_exchange_verified
   status: approved_core
 
 ICE_NID_TO_PJM_NI_DA_LMP_33092315:
@@ -373,15 +371,15 @@ ICE_NID_TO_PJM_NI_DA_LMP_33092315:
     description: ICE offpeak average using weekday HE 0100-0700 and 2400 EPT plus all 24 hours on weekends and NERC holidays.
     hours_ending_ept: [1, 2, 3, 4, 5, 6, 7, 24]
     calendar: PJM_OFFPEAK_WITH_WEEKEND_AND_NERC_HOLIDAY_FULL_DAY
-  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, OFFICIAL_ISO_DATA]
   source_documents:
     - authority: ICE product specification
       url: https://www.ice.com/products/6590409/PJM-NI-Hub-Day-Ahead-Off-Peak-Fixed-Price-Future
       notes: Defines NID Reference Price A as NI Hub day-ahead offpeak LMP average.
-    - authority: GridStatus PJM LMP example
-      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
-      notes: Public example and linked data show N ILLINOIS HUB pnode 33092315 in PJM hub LMP data.
-  verification_status: official_exchange_verified_user_pnode_approved
+    - authority: PJM Data Miner pnode fixture
+      url: tests/fixtures/pjm_pnodes_wh_ad_ni.json
+      notes: Committed PJM Data Miner pnode fixture verifies N ILLINOIS HUB pnode 33092315.
+  verification_status: official_exchange_verified
   status: approved_core
 
 ICE_PNL_TO_PJM_NI_RT_LMP_33092315:
@@ -407,15 +405,15 @@ ICE_PNL_TO_PJM_NI_RT_LMP_33092315:
     description: ICE Reference Price A average of PJM real-time LMPs for hours ending 0800-2300 EPT.
     hours_ending_ept: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
     calendar: PJM_WEEKDAYS_EXCLUDING_NERC_HOLIDAYS
-  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, OFFICIAL_ISO_DATA]
   source_documents:
     - authority: ICE product specification
       url: https://www.ice.com/products/6590371/PJM-NI-Hub-Real-Time-Peak-Fixed-Price-Future
       notes: Defines PNL Reference Price A as NI Hub real-time peak LMP average.
-    - authority: GridStatus PJM LMP example
-      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
-      notes: Public example and linked data show N ILLINOIS HUB pnode 33092315 in PJM hub LMP data.
-  verification_status: official_exchange_verified_user_pnode_approved
+    - authority: PJM Data Miner pnode fixture
+      url: tests/fixtures/pjm_pnodes_wh_ad_ni.json
+      notes: Committed PJM Data Miner pnode fixture verifies N ILLINOIS HUB pnode 33092315.
+  verification_status: official_exchange_verified
   status: approved_core
 
 ICE_NIO_TO_PJM_NI_RT_LMP_33092315:
@@ -441,15 +439,15 @@ ICE_NIO_TO_PJM_NI_RT_LMP_33092315:
     description: ICE offpeak average using weekday HE 0100-0700 and 2400 EPT plus all 24 hours on weekends and NERC holidays.
     hours_ending_ept: [1, 2, 3, 4, 5, 6, 7, 24]
     calendar: PJM_OFFPEAK_WITH_WEEKEND_AND_NERC_HOLIDAY_FULL_DAY
-  source_authority: [OFFICIAL_EXCHANGE_SPEC, PUBLIC_GRIDSTATUS_EXAMPLE, OFFICIAL_ISO_DATA_PENDING_EXPORT_FIXTURE]
+  source_authority: [OFFICIAL_EXCHANGE_SPEC, OFFICIAL_ISO_DATA]
   source_documents:
     - authority: ICE product specification
       url: https://www.ice.com/products/6590410/PJM-NI-Hub-Real-Time-Off-Peak-Fixed-Price-Future
       notes: Defines NIO Reference Price A as NI Hub real-time offpeak LMP average.
-    - authority: GridStatus PJM LMP example
-      url: https://opensource.gridstatus.io/en/latest/Examples/pjm/PJM%20LMP%20Data.html
-      notes: Public example and linked data show N ILLINOIS HUB pnode 33092315 in PJM hub LMP data.
-  verification_status: official_exchange_verified_user_pnode_approved
+    - authority: PJM Data Miner pnode fixture
+      url: tests/fixtures/pjm_pnodes_wh_ad_ni.json
+      notes: Committed PJM Data Miner pnode fixture verifies N ILLINOIS HUB pnode 33092315.
+  verification_status: official_exchange_verified
   status: approved_core
 
 ICE_H_TO_GAS_HH_LD1:

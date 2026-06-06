@@ -245,6 +245,22 @@ def test_state_pack_validation_rejects_invalid_delivery_windows(tmp_path):
     assert exc.value.code == "STATE_PACK_INVALID"
 
 
+def test_state_pack_validation_rejects_candidate_artifact_products(tmp_path):
+    manifest = RunManifest(run_id="bad-product", created_at="2026-06-04T12:00:00Z", agent_pack_version="0.1.0")
+
+    with pytest.raises(WorkbenchException) as exc:
+        build_candidate_state_pack(
+            tmp_path,
+            "bad-product",
+            "2026-06-04T12:00:00Z",
+            {"power_system_operational_event_feeds": {}},
+            manifest,
+        )
+
+    assert exc.value.code == "STATE_PACK_INVALID"
+    assert "not approved for state-pack publish" in exc.value.message
+
+
 def test_state_pack_blocks_synthetic_and_shared_readonly_publish(tmp_path):
     manifest = RunManifest(run_id="state-1", created_at="2026-06-04T12:00:00Z", agent_pack_version="0.1.0")
     build_candidate_state_pack(tmp_path, "state-1", "2026-06-04T12:00:00Z", {}, manifest, synthetic=True)

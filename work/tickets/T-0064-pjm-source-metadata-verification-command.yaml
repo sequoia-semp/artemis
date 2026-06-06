@@ -1,0 +1,52 @@
+id: T-0064
+type: ticket
+title: PJM source metadata verification command
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - docs
+  - validation
+  - tests
+branch: codex/T-0064-pjm-source-metadata-verification-command
+context_profile: trading_domain
+problem: >
+  Direct PJM ingestion needs an operator-facing metadata verification report
+  before broader live source pulls are relied on.
+tasks:
+  - Add multi-feed PJM Data Miner definition verification reports.
+  - Select approved core metadata expectations by default.
+  - Allow explicit feed selection by Data Miner feed name or registry feed ID.
+  - Add fixture-backed and opt-in live CLI verification paths.
+  - Expose the verifier through Artemis data-sources commands.
+  - Document command behavior and candidate-feed guardrails.
+acceptance_criteria:
+  - Fixture metadata verification writes a report with verified feed counts.
+  - Live metadata verification is opt-in and uses Data Miner definition fetches.
+  - Explicit feed selection works without requiring unrelated definition payloads.
+  - Candidate feeds are excluded by default and can only be included for inspection.
+  - Missing required fields fail closed with a structured exception.
+  - No source feed, state-pack, or cache publish semantics are changed.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_source_metadata.py tests/test_pjm_dataminer_connector.py tests/test_artemis_cli.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0064
+affected_files:
+  - domain/power_system_source_metadata.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_source_metadata.py
+  - tests/test_power_system_source_metadata.py
+change_request_required: true
+change_id: CR-0045
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added multi-feed PJM Data Miner metadata verification reports, fixture-backed
+  and opt-in live CLI paths, explicit approved-core default feed selection,
+  explicit feed selection support, and Artemis data-sources command exposure.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0064/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0064.md

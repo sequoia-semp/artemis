@@ -1,0 +1,33 @@
+change_id: CR-0095
+title: PJM load live pipeline
+created_at: 2026-06-06T00:00:00Z
+change_class: 4
+severity: medium
+tickets:
+  - T-0114
+problem_statement: >
+  A direct PJM integration stopping point needs one approved source feed to move
+  through the full evidence, state-pack, and HotState path without depending on
+  price, generation, or candidate actual-load feeds.
+root_cause: >
+  Existing commands covered load artifact construction and broader bundle
+  staging, but no narrow load-only production pipeline assembled all source
+  evidence required by the publish gate.
+affected_files:
+  - docs/architecture/direct_pjm_authoritative_sources.md
+  - docs/user/setup.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/state/packs.py
+  - tests/test_power_system_state.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_state.py tests/test_pjm_fundamentals_semantic_core.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0114
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the run-pjm-load-pipeline command and tests, revert the setup and
+  architecture documentation notes, and rely on fixture-backed load artifact
+  construction plus the broader morning bundle pipeline.

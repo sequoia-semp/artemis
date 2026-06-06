@@ -1,0 +1,49 @@
+id: T-0076
+type: ticket
+title: PJM pipeline source readiness summary
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - validation
+  - docs
+  - tests
+branch: codex/T-0076-pjm-pipeline-source-readiness-summary
+context_profile: trading_domain
+problem: >
+  The candidate-only PJM morning pipeline should expose a compact source
+  readiness summary in its report when the built bundle carries readiness
+  evidence.
+tasks:
+  - Add source readiness summary extraction from bundle metadata.
+  - Include the summary in PJM morning pipeline reports.
+  - Preserve null summary for bundles without source readiness evidence.
+  - Document the pipeline report readiness boundary.
+acceptance_criteria:
+  - Pipeline reports include source_readiness when bundle metadata carries it.
+  - Pipeline reports use compact redacted source-readiness summary fields only.
+  - Pipeline reports use null source_readiness when no readiness evidence exists.
+  - Candidate-only pipeline still does not publish accepted state.
+  - No accepted-state publish path, shared cache, or source semantic approval is changed.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_state.py tests/test_power_system_ingestion.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0076
+affected_files:
+  - domain/power_system_state_candidates.md
+  - src/pga_workbench/cli.py
+  - tests/test_power_system_state.py
+change_request_required: true
+change_id: CR-0057
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added compact source readiness summary extraction from bundle metadata and
+  included it in PJM morning pipeline reports while preserving null summaries
+  for bundles without readiness evidence and candidate-only publish behavior.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0076/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0076.md

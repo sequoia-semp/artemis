@@ -1,0 +1,38 @@
+change_id: CR-0027
+title: Power system source catalog for direct PJM authoritative publications
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: high
+tickets:
+  - T-0046
+problem_statement: >
+  Direct PJM Data Miner incorporation needed a source-publication layer broader
+  than individual PJM feed descriptors so future ISO/RTO sources, source terms,
+  query-planning constraints, and candidate feed families can be represented
+  without prematurely approving normalized products.
+root_cause: >
+  The repository had PJM load and price feed descriptors but no generic
+  power-system source catalog tying authoritative publication families to
+  contracts, terms, query planning, and normalized descriptor references.
+affected_files:
+  - domain/power_system_source_catalog.md
+  - docs/OFFICIAL_SOURCE_REGISTER.md
+  - registries/power_system_source_catalog.yaml
+  - schemas/power_system_source_publication.schema.json
+  - src/pga_workbench/registry.py
+  - src/pga_workbench/data/connectors/pjm_dataminer.py
+  - src/pga_workbench/services/power_system_sources.py
+  - tests/test_power_system_source_catalog.py
+  - tests/test_pjm_dataminer_connector.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_source_catalog.py tests/test_pjm_dataminer_connector.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0046
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the source catalog registry, schema, service helper, connector
+  definition URL helper, tests, and documentation references; registry
+  validation would then return to individual feed descriptors only.

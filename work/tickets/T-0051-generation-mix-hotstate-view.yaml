@@ -1,0 +1,51 @@
+id: T-0051
+type: ticket
+title: Generation mix HotState analyst view context
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-FUNDAMENTALS
+sprint: S-002
+layer:
+  - docs
+  - validation
+  - tests
+branch: codex/T-0051-generation-mix-hotstate-view
+context_profile: trading_domain
+problem: >
+  Direct PJM generation mix should be usable by analyst views through the
+  accepted state pack and HotState read path without adding direct adapter calls
+  to view builders or screens.
+tasks:
+  - Add deterministic generation-mix summary, drivers, current-day view, and evidence fields to the artifact builder.
+  - Keep the source-specific pjm_generation_mix artifact as the authoritative product.
+  - Add tests proving generation mix view context publishes through state packs and loads through HotState.
+  - Add tests proving a current-day analyst view consumes generation mix context through HotState.
+  - Document that generation mix view context is derived from accepted artifacts only.
+acceptance_criteria:
+  - Generation mix artifacts retain the source-specific pjm_generation_mix product unchanged.
+  - View-ready generation mix fields are deterministic and source-backed by pjm_generation_mix.
+  - A published state pack exposes generation mix current-day context through HotState.
+  - The analyst current-day view can consume generation mix context through HotState merge.
+  - No Textual screen, analyst view builder, or cache reader calls the PJM adapter directly.
+  - No synthetic generation values, outage semantics, topology links, or cache mutation policy changes are introduced.
+required_tests:
+  - .venv/bin/pytest tests/test_generation_mix.py tests/test_analyst_views.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0051
+affected_files:
+  - domain/power_generation_mix.md
+  - src/pga_workbench/services/generation_mix.py
+  - tests/test_generation_mix.py
+change_request_required: true
+change_id: CR-0032
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added deterministic generation mix summary, drivers, current-day view context,
+  evidence, and market scope fields derived from the accepted pjm_generation_mix
+  artifact, with HotState-backed analyst view regression coverage.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0051/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0051.md

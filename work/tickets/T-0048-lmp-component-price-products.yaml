@@ -1,0 +1,63 @@
+id: T-0048
+type: ticket
+title: First-class PJM hourly LMP component source price products
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-FUNDAMENTALS
+sprint: S-002
+layer:
+  - docs
+  - registry
+  - schema
+  - tests
+branch: codex/T-0048-lmp-component-price-products
+context_profile: trading_domain
+problem: >
+  Direct PJM price incorporation needs source-backed LMP component products for
+  congestion, marginal loss, and system energy while keeping exchange-settled
+  trading products and shape rollups tied to FULL_LMP unless separately approved.
+tasks:
+  - Extend power-system price feed descriptors and schema to support explicit
+    LMP components.
+  - Emit PJM hourly PriceSurfacePoint records for FULL_LMP, CONGESTION,
+    MARGINAL_LOSS, and SYSTEM_ENERGY from the same source observation.
+  - Preserve raw/source component lineage on every emitted price point.
+  - Fail closed when a supported source component value is missing.
+  - Keep daily shape rollups constrained to hourly FULL_LMP points.
+acceptance_criteria:
+  - PJM DA and RT hourly LMP feed descriptors support all four LMP components.
+  - Fixture normalization emits one price point per supported component.
+  - Component index IDs preserve market, location, market run, component,
+    granularity, and delivery period.
+  - Missing supported component values fail closed with a structured exception.
+  - Daily PEAK/OFFPEAK/ATC rollups ignore component points until component shape
+    rules are explicitly approved.
+  - No new pnodes, forward mappings, exchange products, outage semantics,
+    topology links, or shared-cache publish behavior are approved by this ticket.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_price_core.py tests/test_power_price_shape_rollups.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0048
+affected_files:
+  - domain/power_system_prices.md
+  - registries/power_system_price_feeds.yaml
+  - schemas/power_system_price_feed.schema.json
+  - src/pga_workbench/services/power_prices.py
+  - src/pga_workbench/services/power_price_shapes.py
+  - tests/test_power_system_price_core.py
+  - tests/test_power_price_shape_rollups.py
+change_request_required: true
+change_id: CR-0029
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Extended PJM DA/RT hourly LMP feed descriptors to support FULL_LMP,
+  CONGESTION, MARGINAL_LOSS, and SYSTEM_ENERGY; emitted one source-backed
+  PriceSurfacePoint per supported component; preserved component lineage; added
+  missing-component fail-closed behavior; and constrained daily shape rollups to
+  hourly FULL_LMP points until component rollup rules are approved.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0048/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0048.md

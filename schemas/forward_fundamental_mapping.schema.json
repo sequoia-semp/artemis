@@ -92,7 +92,6 @@
     },
     "verification_status": {
       "enum": [
-        "official_exchange_verified_user_pnode_approved",
         "official_exchange_verified",
         "candidate"
       ]

@@ -1,0 +1,28 @@
+change_id: CR-0077
+title: PJM pnode effective-date price gate
+created_at: 2026-06-06T00:00:00Z
+change_class: 3
+severity: high
+tickets:
+  - T-0096
+problem_statement: >
+  Canonical PJM price artifacts needed to enforce effective-dated pnode master
+  data, not only static pnode name/type identity.
+root_cause: >
+  Earlier pnode verification focused on matching approved location identity and
+  did not compare pnode effective windows to artifact as-of timestamps.
+affected_files:
+  - domain/power_system_prices.md
+  - src/pga_workbench/services/power_prices.py
+  - tests/test_power_system_price_core.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_price_core.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0096
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the as-of effective-date check from pnode verification. Existing name,
+  type, component, and current-row checks remain unchanged.

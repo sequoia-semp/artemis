@@ -1,0 +1,32 @@
+change_id: CR-0040
+title: State-pack artifact product publish gate
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: medium
+tickets:
+  - T-0059
+problem_statement: >
+  The artifact product registry declared candidate-only products, but
+  state-pack validation did not yet enforce publish status for registered
+  artifact product keys.
+root_cause: >
+  The first artifact product registry pass added governance and native reference
+  validation before wiring the registry into candidate state-pack validation.
+affected_files:
+  - domain/power_system_artifact_products.md
+  - src/pga_workbench/services/power_system_artifact_products.py
+  - src/pga_workbench/state/packs.py
+  - tests/test_power_system_artifact_products.py
+  - tests/test_workbench_mvp.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_artifact_products.py tests/test_workbench_mvp.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0059
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove state-pack validation of registered artifact product publish status.
+  The artifact product registry would remain available for governance and
+  native reference validation only.

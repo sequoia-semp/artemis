@@ -26,13 +26,18 @@ This file is a pointer register, not a guarantee that all listed specs have been
 - ICE PJM AEP Dayton Hub Day-Ahead and Real-Time Peak/Off-Peak Fixed Price Futures (`ADB`, `ADD`, `MSO`, `AOD`)
 - ICE PJM Northern Illinois Hub Day-Ahead and Real-Time Peak/Off-Peak Fixed Price Futures (`NIB`, `NID`, `PNL`, `NIO`)
 - PJM Data Miner / PJM official data sources
-- PJM Data Miner pnode and real-time hourly LMP feeds for Western Hub RT LMP
-  mapping. Current core demo uses user-approved `51288 = WESTERN HUB`; commit a
-  PJM pnode export fixture before changing the source status to fully
-  official-ISO-verified.
-- GridStatus public PJM LMP examples are used as secondary evidence for hub pnode
-  IDs in this mapping slice; they do not replace a committed PJM pnode export
-  fixture.
+- PJM Data Miner pnode, day-ahead hourly LMP, and real-time hourly LMP feeds.
+  The committed PJM pnode fixture verifies `51288 = WESTERN HUB`,
+  `34497127 = AEP-DAYTON HUB`, and `33092315 = N ILLINOIS HUB` for direct
+  PJM hourly LMP and forward-to-fundamental mapping use.
+- PJM Data Miner source publication catalog for load forecasts, load actuals,
+  hourly LMPs, pnodes, and candidate five-minute LMP, generation-by-fuel,
+  outage, and transmission-constraint feeds. The catalog records source terms,
+  query-planning constraints, and generic power-system publication lifecycle
+  semantics; it does not by itself approve normalized products.
+- PJM Data Miner `gen_by_fuel` for aggregate generation-by-fuel source
+  observations. This approves fuel-mix artifacts only, not unit-level generation,
+  emissions conversion, outage state, or topology semantics.
 
 ### Gas
 

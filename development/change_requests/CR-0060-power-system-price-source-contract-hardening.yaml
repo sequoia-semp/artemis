@@ -1,0 +1,36 @@
+change_id: CR-0060
+title: Power system price source contract hardening
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: high
+tickets:
+  - T-0079
+problem_statement: >
+  Direct PJM price ingestion needed executable source-product contract rules so
+  authoritative hourly LMP observations cannot be normalized without current-row
+  filtering, UTC delivery windows, source component coverage, and approved pnode
+  identity semantics.
+root_cause: >
+  Existing PJM LMP normalization preserved row versions, pnode IDs, and source
+  components, but the price feed registry did not encode those requirements as
+  generic power-system contract fields enforced by strict validation.
+affected_files:
+  - domain/power_system_prices.md
+  - registries/power_system_price_feeds.yaml
+  - schemas/power_system_price_feed.schema.json
+  - src/pga_workbench/services/power_prices.py
+  - src/pga_workbench/validation/runner.py
+  - tests/test_power_system_price_core.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_price_core.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0079
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the source_product_contract schema requirement, PJM registry contract
+  values, price-feed contract validator, validation-runner integration, tests,
+  and documentation additions. Existing PJM LMP normalization would continue
+  without registry-level contract enforcement.

@@ -15,8 +15,8 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_data_source_registry_validates_without_credentials():
     payload = validate_data_sources(ROOT / "registries/data_sources.yaml", ROOT / "schemas")
 
-    assert set(payload["data_sources"]) == {"file_drop", "vendor_api", "iso_api", "ice_exchange"}
-    assert credential_env_names(payload) == ["ARTEMIS_VENDOR_API_KEY", "ARTEMIS_ICE_API_KEY"]
+    assert set(payload["data_sources"]) == {"file_drop", "vendor_api", "iso_api", "pjm_dataminer", "ice_exchange"}
+    assert credential_env_names(payload) == ["ARTEMIS_VENDOR_API_KEY", "ARTEMIS_PJM_API_KEY", "ARTEMIS_ICE_API_KEY"]
 
 
 def test_fixture_data_blocked_in_normal_analyst_mode():

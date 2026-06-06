@@ -1,0 +1,54 @@
+id: T-0113
+type: ticket
+title: HotState gap query helpers
+status: validated
+owner: user
+risk: low
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-DIRECT-SOURCE
+sprint: S-002
+layer:
+  - validation
+  - docs
+  - tests
+branch: codex/T-0113-hotstate-gap-query-helpers
+context_profile: trading_domain
+problem: >
+  Accepted fundamental and derived price-shape artifacts carried explicit gaps,
+  but HotState did not expose a read helper for Analyst or UI paths to retrieve
+  those gaps without re-parsing artifact-specific payloads.
+tasks:
+  - Add a generic HotState artifact_gaps helper.
+  - Add fundamental, generation mix, and price-shape gap convenience helpers.
+  - Preserve source artifact, location, and reason filters.
+  - Document that explicit gaps must not be filled with synthetic values.
+  - Add regression coverage for fundamental and price-shape gaps.
+acceptance_criteria:
+  - HotState returns accepted fundamental coverage gaps with source artifact
+    labels.
+  - HotState returns accepted derived price-shape gaps with source artifact
+    labels.
+  - HotState filters gaps by location and reason.
+  - Invalid gap payloads fail closed.
+  - No source adapter, normalization, state-pack publish, or cache mutation
+    behavior changes.
+required_tests:
+  - .venv/bin/pytest tests/test_hot_state_gap_queries.py tests/test_hot_state_fundamental_queries.py tests/test_hot_state_price_queries.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0113
+affected_files:
+  - docs/architecture/direct_pjm_authoritative_sources.md
+  - docs/user/analyst_mode.md
+  - src/pga_workbench/cache/hot_state.py
+  - tests/test_hot_state_gap_queries.py
+change_request_required: true
+change_id: CR-0094
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added HotState gap query helpers for accepted fundamental, generation mix, and
+  price-shape artifacts so Analyst/UI consumers can surface missing
+  source-backed data explicitly.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0113/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0113.md

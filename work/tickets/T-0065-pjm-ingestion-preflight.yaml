@@ -1,0 +1,54 @@
+id: T-0065
+type: ticket
+title: PJM ingestion preflight
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - docs
+  - validation
+  - tests
+branch: codex/T-0065-pjm-ingestion-preflight
+context_profile: trading_domain
+problem: >
+  Direct PJM source workflows need a readiness report before live ingestion so
+  operators can see credential, feed, metadata, access-policy, and query-plan
+  blockers without fetching source observations or publishing state.
+tasks:
+  - Add a non-mutating PJM ingestion preflight service.
+  - Report credential presence without exposing secrets.
+  - Report selected load, price, pnode, generation mix, and metadata feeds.
+  - Reuse source access policy and hourly LMP query planning.
+  - Expose the preflight through PGA and Artemis data-sources CLI surfaces.
+  - Document the preflight boundary.
+acceptance_criteria:
+  - Missing key/date-window/pnode prerequisites produce readiness blockers.
+  - Bounded account-class query plans produce ready reports.
+  - Over-budget query plans produce blockers, not hidden policy bypasses.
+  - CLI reports never include the PJM API key value.
+  - The command does not fetch source observations or publish state.
+  - No source feed, state-pack, or cache contract is changed.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_preflight.py tests/test_source_access_policies.py tests/test_source_query_plans.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0065
+affected_files:
+  - domain/power_system_preflight.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_preflight.py
+  - tests/test_power_system_preflight.py
+change_request_required: true
+change_id: CR-0046
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added a non-mutating PJM ingestion preflight report that checks credential
+  presence without exposing secrets, selected feeds, source metadata
+  expectations, source access policy, and hourly LMP query-plan budgets, with
+  PGA and Artemis CLI command exposure.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0065/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0065.md

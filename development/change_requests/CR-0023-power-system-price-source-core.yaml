@@ -1,0 +1,46 @@
+change_id: CR-0023
+title: Power system price source core and PJM Data Miner LMP spine
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: high
+tickets:
+  - T-0042
+problem_statement: >
+  Add generic source-price feed contracts for power systems and implement PJM
+  Data Miner pnode and hourly DA/RT LMP source products as the first approved
+  ISO/RTO-backed price spine.
+root_cause: >
+  Direct PJM LMPs are authoritative ISO publications, but the repository only
+  has local mark normalization and forward-to-fundamental mappings. Analyst
+  views need source-backed PJM price artifacts while preserving the broader
+  Artemis rule that source products, canonical price surfaces, and derived
+  shapes are separate.
+affected_files:
+  - domain/power_system_prices.md
+  - registries/power_system_price_feeds.yaml
+  - schemas/power_system_price_feed.schema.json
+  - schemas/power_price_state.schema.json
+  - schemas/price_surface_point.schema.json
+  - src/pga_workbench/models.py
+  - src/pga_workbench/services/power_prices.py
+  - src/pga_workbench/cli.py
+  - tests/test_power_system_price_core.py
+  - tests/test_pjm_dataminer_connector.py
+tests_required:
+  - Registry/schema tests for generic power-system price feed descriptors.
+  - PJM pnode fixture normalization tests.
+  - PJM DA/RT hourly LMP fixture normalization tests.
+  - PriceSurfacePoint bridge tests proving FULL_LMP-only canonical prices.
+  - CLI fixture tests and bounded live flag parse tests.
+  - Optional live PJM smoke test skipped unless ARTEMIS_PJM_API_KEY and live flag are present.
+rollback_plan: >
+  Remove the new registry, schemas, service, CLI command, fixtures, and tests.
+  Existing local mark normalization, forward mappings, and PJM fundamentals
+  artifacts remain independent and continue to validate.
+approval_notes: >
+  This change does not approve congestion-only, loss-only, or energy-only
+  tradable price products. Those fields are retained as source lineage only.
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z

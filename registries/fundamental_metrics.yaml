@@ -4,6 +4,7 @@ PJM.LOAD.ACTUAL.HOURLY_MW:
   market: PJM
   metric_family: load
   metric_class: actual
+  product_role: best_series
   value_unit: MW
   granularity: hourly
   delivery_time_contract: interval_ending
@@ -18,12 +19,61 @@ PJM.LOAD.ACTUAL.HOURLY_MW:
     - delivery_start_utc
     - delivery_end_utc
 
+PJM.LOAD.ACTUAL.METERED.HOURLY_MW:
+  display_name: PJM hourly metered load
+  commodity: power
+  market: PJM
+  metric_family: load
+  metric_class: actual
+  product_role: source_specific
+  feed_ids:
+    - hrl_load_metered
+  quality_rank: 100
+  value_unit: MW
+  granularity: hourly
+  delivery_time_contract: interval_ending
+  source_contract: iso_load
+  source_status: registry_only
+  verification_status: candidate
+  status: candidate
+  description: Source-specific PJM Data Miner metered hourly load product for deterministic best-series selection.
+  lineage_requirements:
+    - source_name
+    - source_feed
+    - delivery_start_utc
+    - delivery_end_utc
+
+PJM.LOAD.ACTUAL.PRELIMINARY.HOURLY_MW:
+  display_name: PJM hourly preliminary load
+  commodity: power
+  market: PJM
+  metric_family: load
+  metric_class: actual
+  product_role: source_specific
+  feed_ids:
+    - hrl_load_prelim
+  quality_rank: 50
+  value_unit: MW
+  granularity: hourly
+  delivery_time_contract: interval_ending
+  source_contract: iso_load
+  source_status: registry_only
+  verification_status: candidate
+  status: candidate
+  description: Source-specific PJM Data Miner preliminary hourly load product; may feed best-series load with a quality label when metered load is unavailable.
+  lineage_requirements:
+    - source_name
+    - source_feed
+    - delivery_start_utc
+    - delivery_end_utc
+
 PJM.LOAD.FORECAST.DAY_AHEAD.HOURLY_MW:
   display_name: PJM day-ahead hourly load forecast
   commodity: power
   market: PJM
   metric_family: load
   metric_class: forecast
+  product_role: latest_curve
   value_unit: MW
   granularity: hourly
   delivery_time_contract: interval_ending
@@ -41,12 +91,67 @@ PJM.LOAD.FORECAST.DAY_AHEAD.HOURLY_MW:
     horizon: day_ahead
     vintage_policy: latest_curve
 
+PJM.LOAD.FORECAST.SEVEN_DAY.LATEST.HOURLY_MW:
+  display_name: PJM seven-day hourly load forecast latest curve
+  commodity: power
+  market: PJM
+  metric_family: load
+  metric_class: forecast
+  product_role: latest_curve
+  feed_ids:
+    - load_frcstd_7_day
+  value_unit: MW
+  granularity: hourly
+  delivery_time_contract: interval_ending
+  source_contract: iso_load
+  source_status: registry_only
+  verification_status: candidate
+  status: candidate
+  description: Source-specific latest PJM seven-day hourly load forecast curve from Data Miner.
+  lineage_requirements:
+    - source_name
+    - source_feed
+    - forecast_issued_at_utc
+    - delivery_start_utc
+    - delivery_end_utc
+  forecast:
+    horizon: seven_day
+    vintage_policy: latest_curve
+
+PJM.LOAD.FORECAST.SEVEN_DAY.REVISION.HOURLY_MW:
+  display_name: PJM seven-day hourly load forecast revision
+  commodity: power
+  market: PJM
+  metric_family: load
+  metric_class: forecast
+  product_role: revision_history
+  feed_ids:
+    - load_frcstd_hist
+  value_unit: MW
+  granularity: hourly
+  delivery_time_contract: interval_ending
+  source_contract: iso_load
+  source_status: registry_only
+  verification_status: candidate
+  status: candidate
+  description: Source-specific historical PJM load forecast revision product from Data Miner.
+  lineage_requirements:
+    - source_name
+    - source_feed
+    - forecast_issued_at_utc
+    - delivery_start_utc
+    - delivery_end_utc
+  forecast:
+    horizon: seven_day
+    vintage_policy: revision_history
+
 PJM.LOAD.FORECAST_ERROR.DAY_AHEAD.HOURLY_MW:
   display_name: PJM day-ahead hourly load forecast error
   commodity: power
   market: PJM
   metric_family: load
   metric_class: derived
+  product_role: derived
   value_unit: MW
   granularity: hourly
   delivery_time_contract: interval_ending
@@ -65,3 +170,29 @@ PJM.LOAD.FORECAST_ERROR.DAY_AHEAD.HOURLY_MW:
     input_metric_ids:
       - PJM.LOAD.ACTUAL.HOURLY_MW
       - PJM.LOAD.FORECAST.DAY_AHEAD.HOURLY_MW
+
+PJM.LOAD.FORECAST_ERROR.SEVEN_DAY.HOURLY_MW:
+  display_name: PJM seven-day hourly load forecast error
+  commodity: power
+  market: PJM
+  metric_family: load
+  metric_class: derived
+  product_role: derived
+  value_unit: MW
+  granularity: hourly
+  delivery_time_contract: interval_ending
+  source_contract: derived
+  source_status: registry_only
+  verification_status: candidate
+  status: candidate
+  description: Deterministic actual-minus-latest-seven-day-forecast load error metric identity.
+  lineage_requirements:
+    - input_metric_ids
+    - calculation_run_id
+    - delivery_start_utc
+    - delivery_end_utc
+  formula:
+    formula_type: ACTUAL_MINUS_FORECAST
+    input_metric_ids:
+      - PJM.LOAD.ACTUAL.HOURLY_MW
+      - PJM.LOAD.FORECAST.SEVEN_DAY.LATEST.HOURLY_MW

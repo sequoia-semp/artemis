@@ -1,0 +1,57 @@
+id: T-0044
+type: ticket
+title: First-class power market calendars
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-FUNDAMENTALS
+sprint: S-002
+layer:
+  - docs
+  - registry
+  - schema
+  - tests
+branch: codex/T-0044-power-market-calendars
+context_profile: trading_domain
+problem: >
+  Power shape rollups need calendar behavior represented as reusable domain
+  contracts instead of hardcoded NERC holiday logic in services.
+tasks:
+  - Add a power market calendar registry and schema.
+  - Register NERC holiday and PJM EPT power-day calendars.
+  - Add a core calendar resolver for fixed-date, nth-weekday, and last-weekday rules.
+  - Refactor daily shape rollups to use the calendar resolver.
+  - Add registry, resolver, and rollup regression tests.
+acceptance_criteria:
+  - Calendar registry validates with schemas and duplicate-key protection.
+  - NERC holidays resolve from registry rules for fixed, nth-weekday, and last-weekday dates.
+  - Shape rules reference a holiday calendar instead of relying on hardcoded service constants.
+  - Unknown calendars fail closed with a structured exception.
+  - Existing daily PEAK/OFFPEAK/ATC rollup behavior remains unchanged.
+required_tests:
+  - .venv/bin/pytest tests/test_power_market_calendars.py tests/test_power_price_shape_rollups.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0044
+affected_files:
+  - domain/power_market_calendars.md
+  - registries/power_market_calendars.yaml
+  - registries/power_price_shape_rules.yaml
+  - schemas/power_market_calendar.schema.json
+  - schemas/power_price_shape_rule.schema.json
+  - src/pga_workbench/core/calendars.py
+  - src/pga_workbench/services/power_price_shapes.py
+  - src/pga_workbench/registry.py
+  - tests/test_power_market_calendars.py
+  - tests/test_power_price_shape_rollups.py
+change_request_required: true
+change_id: CR-0025
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added validated power-market calendar descriptors, NERC holiday and PJM EPT
+  power-day calendar records, a core calendar resolver, registry-backed
+  holiday lookup for daily shape rollups, and calendar regression tests.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0044/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0044.md

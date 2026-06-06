@@ -1,0 +1,109 @@
+PJM_DATAMINER_HOURLY_LMP_DAILY_CHUNKS:
+  display_name: PJM Data Miner hourly LMP daily bounded query plan
+  access_surface: pjm_data_miner_api
+  publication_id: PJM_DATAMINER_HOURLY_LMP_CORE
+  access_policy_id: PJM_DATAMINER_API_PUBLIC_USE
+  applies_to_feed_ids:
+    - PJM_DA_HOURLY_LMP
+    - PJM_RT_HOURLY_LMP
+  date_window:
+    mode: inclusive_day_chunks
+    max_days_per_request: 1
+    inclusive_bounds: true
+  planned_request_budget:
+    enforce_account_class_budget: true
+    metadata_requests_per_pnode: 1
+  required_query_dimensions:
+    - pnode_id
+    - row_is_current
+    - delivery_date_range
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents Data Miner startRow, rowCount, date-range filters, and LMP feed filtering.
+    - authority: PJM Data Miner
+      url: https://www.pjm.com/markets-and-operations/etools/data-miner-2
+      notes: Documents Data Miner access terms and connection limits used as the request budget.
+  status: approved_core
+
+PJM_DATAMINER_FIVE_MINUTE_RT_LMP_CANDIDATE_DAILY_CHUNKS:
+  display_name: PJM Data Miner candidate five-minute RT LMP daily bounded query plan
+  access_surface: pjm_data_miner_api
+  publication_id: PJM_DATAMINER_FIVE_MINUTE_RT_LMP
+  access_policy_id: PJM_DATAMINER_API_PUBLIC_USE
+  applies_to_feed_ids:
+    - PJM_RT_FIVE_MINUTE_LMP
+  date_window:
+    mode: inclusive_day_chunks
+    max_days_per_request: 1
+    inclusive_bounds: true
+  planned_request_budget:
+    enforce_account_class_budget: true
+    metadata_requests_per_pnode: 1
+  required_query_dimensions:
+    - pnode_id
+    - row_is_current
+    - delivery_date_range
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Candidate planning record for rt_fivemin_hrl_lmps access mechanics; no live production fetch is approved by this plan.
+    - authority: PJM Data Miner
+      url: https://www.pjm.com/markets-and-operations/etools/data-miner-2
+      notes: Documents Data Miner access terms and connection limits used as the request budget.
+  status: candidate
+
+PJM_DATAMINER_LOAD_BOUNDED_INTERVAL:
+  display_name: PJM Data Miner load bounded interval query plan
+  access_surface: pjm_data_miner_api
+  publication_id: PJM_DATAMINER_LOAD_FORECASTS
+  access_policy_id: PJM_DATAMINER_API_PUBLIC_USE
+  applies_to_feed_ids:
+    - hrl_load_metered
+    - hrl_load_prelim
+    - load_frcstd_7_day
+    - load_frcstd_hist
+  date_window:
+    mode: bounded_interval
+    max_days_per_request: 10000
+    inclusive_bounds: true
+  planned_request_budget:
+    enforce_account_class_budget: true
+    metadata_requests_per_pnode: 0
+  required_query_dimensions:
+    - delivery_date_range
+    - area_filter
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents Data Miner load feed date filters, area fields, row counts, and pagination mechanics.
+    - authority: PJM Data Miner
+      url: https://www.pjm.com/markets-and-operations/etools/data-miner-2
+      notes: Documents Data Miner access terms and connection limits used as the request budget.
+  status: approved_core
+
+PJM_DATAMINER_GENERATION_MIX_BOUNDED_INTERVAL:
+  display_name: PJM Data Miner generation mix bounded interval query plan
+  access_surface: pjm_data_miner_api
+  publication_id: PJM_DATAMINER_GENERATION_BY_FUEL
+  access_policy_id: PJM_DATAMINER_API_PUBLIC_USE
+  applies_to_feed_ids:
+    - PJM_GEN_BY_FUEL
+  date_window:
+    mode: bounded_interval
+    max_days_per_request: 10000
+    inclusive_bounds: true
+  planned_request_budget:
+    enforce_account_class_budget: true
+    metadata_requests_per_pnode: 0
+  required_query_dimensions:
+    - delivery_date_range
+    - fuel_type
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents gen_by_fuel fields, date filters, row counts, and pagination mechanics.
+    - authority: PJM Data Miner
+      url: https://www.pjm.com/markets-and-operations/etools/data-miner-2
+      notes: Documents Data Miner access terms and connection limits used as the request budget.
+  status: approved_core

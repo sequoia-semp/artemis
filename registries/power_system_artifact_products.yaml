@@ -1,0 +1,79 @@
+pjm_load_fundamentals:
+  display_name: PJM load fundamentals state artifact
+  commodity: power
+  operator_id: PJM
+  product_family: load
+  artifact_role: source_product
+  source_product: true
+  composition_product_key: true
+  state_pack_publish_status: approved_core
+  source_documents:
+    - authority: domain/pjm_fundamentals.md
+      url: domain/pjm_fundamentals.md
+      notes: Documents PJM load fundamentals artifacts, source-product separation, best-series products, and view context.
+  verification_status: user_approved
+  status: approved_core
+
+pjm_power_prices:
+  display_name: PJM hourly LMP price state artifact
+  commodity: power
+  operator_id: PJM
+  product_family: locational_marginal_price
+  artifact_role: source_product
+  source_product: true
+  composition_product_key: true
+  state_pack_publish_status: approved_core
+  source_documents:
+    - authority: domain/power_system_prices.md
+      url: domain/power_system_prices.md
+      notes: Documents PJM hourly LMP source price artifacts and component separation.
+  verification_status: user_approved
+  status: approved_core
+
+pjm_generation_mix:
+  display_name: PJM generation mix state artifact
+  commodity: power
+  operator_id: PJM
+  product_family: generation_mix
+  artifact_role: source_product
+  source_product: true
+  composition_product_key: true
+  state_pack_publish_status: approved_core
+  source_documents:
+    - authority: domain/power_generation_mix.md
+      url: domain/power_generation_mix.md
+      notes: Documents aggregate PJM generation mix source artifacts and HotState view consumption.
+  verification_status: user_approved
+  status: approved_core
+
+power_price_shape_rollups:
+  display_name: Power price shape rollup state artifact
+  commodity: power
+  operator_id: PJM
+  product_family: price_shape
+  artifact_role: derived_product
+  source_product: false
+  composition_product_key: true
+  state_pack_publish_status: approved_core
+  source_documents:
+    - authority: domain/power_price_shape_rules.md
+      url: domain/power_price_shape_rules.md
+      notes: Documents daily shape rollups derived from authoritative hourly full-LMP source prices.
+  verification_status: user_approved
+  status: approved_core
+
+power_system_operational_event_feeds:
+  display_name: Power system operational event feed descriptor artifact
+  commodity: power
+  operator_id: PJM
+  product_family: operational_events
+  artifact_role: candidate_descriptor
+  source_product: false
+  composition_product_key: false
+  state_pack_publish_status: candidate_only
+  source_documents:
+    - authority: domain/power_system_operational_events.md
+      url: domain/power_system_operational_events.md
+      notes: Documents candidate-only operational event descriptors for PJM outages and constraints.
+  verification_status: user_approved
+  status: candidate

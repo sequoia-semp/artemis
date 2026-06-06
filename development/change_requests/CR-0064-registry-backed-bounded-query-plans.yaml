@@ -1,0 +1,34 @@
+change_id: CR-0064
+title: Registry-backed bounded query plans
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: high
+tickets:
+  - T-0083
+problem_statement: >
+  Direct PJM load and generation-by-fuel ingestion needed bounded interval
+  query plans to be declared in the generic power-system registry so
+  publication lineage, supported feeds, date-window mode, and access policy were
+  auditable before source rows are fetched.
+root_cause: >
+  The original query-plan registry only modeled hourly LMP daily chunks. The
+  first bounded interval implementation added deterministic request records but
+  still encoded plan applicability and publication lineage in service code.
+affected_files:
+  - domain/power_system_source_catalog.md
+  - registries/power_system_source_query_plans.yaml
+  - schemas/power_system_source_query_plan.schema.json
+  - src/pga_workbench/services/source_query_plans.py
+  - tests/test_source_query_plans.py
+tests_required:
+  - .venv/bin/pytest tests/test_source_query_plans.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0083
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the bounded interval registry records and schema expansions, then
+  restore code-level bounded plan lineage for PJM load and generation mix. The
+  hourly LMP query-plan registry would remain unchanged.

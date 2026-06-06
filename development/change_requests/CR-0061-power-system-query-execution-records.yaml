@@ -1,0 +1,32 @@
+change_id: CR-0061
+title: Power system query execution records
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: high
+tickets:
+  - T-0080
+problem_statement: >
+  Power-system source query plans needed to produce executable request records
+  rather than leaving live request construction in PJM-specific CLI helpers.
+root_cause: >
+  The existing PJM hourly LMP query plan enforced request budgets and date
+  chunking, but the actual Data Miner query parameters were still constructed
+  outside the source query planning service.
+affected_files:
+  - domain/power_system_source_catalog.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/source_query_plans.py
+  - tests/test_source_query_plans.py
+  - tests/test_power_system_price_core.py
+tests_required:
+  - .venv/bin/pytest tests/test_source_query_plans.py tests/test_power_system_price_core.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0080
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove source query request records, request summaries, CLI live-fetch
+  integration, tests, and documentation additions. PJM hourly LMP live fetches
+  would return to CLI-local query construction.

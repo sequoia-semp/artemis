@@ -1,0 +1,49 @@
+id: T-0110
+type: ticket
+title: PJM LMP delivery window consistency
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-DIRECT-SOURCE
+sprint: S-002
+layer:
+  - validation
+  - docs
+  - tests
+branch: codex/T-0110-pjm-lmp-delivery-window-consistency
+context_profile: trading_domain
+problem: >
+  Approved hourly PJM LMP feeds declared UTC hourly delivery windows, but row
+  normalization did not explicitly reject non-hourly UTC starts or
+  contradictions between PJM Data Miner UTC and EPT delivery-start fields.
+tasks:
+  - Add exact UTC-hour delivery-start validation for approved hourly LMP rows.
+  - Validate PJM EPT delivery-start fields against the UTC instant.
+  - Preserve current-row, component, pnode identity, and effective-date gates.
+  - Document the source timestamp consistency requirement.
+acceptance_criteria:
+  - Non-hourly UTC delivery starts fail before source observations are built.
+  - PJM EPT timestamps that do not map to the UTC delivery instant fail closed.
+  - Valid summer and winter PJM EPT/UTC offsets normalize successfully.
+  - Candidate five-minute LMP remains non-promotable.
+  - No source adapter, state-pack, cache, HotState, or publish behavior changes.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_price_core.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0110
+affected_files:
+  - domain/power_system_prices.md
+  - src/pga_workbench/services/power_prices.py
+  - tests/test_power_system_price_core.py
+change_request_required: true
+change_id: CR-0091
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added source timestamp consistency checks for approved PJM hourly LMP rows,
+  requiring exact UTC hour starts and PJM EPT timestamps that map to the same
+  UTC delivery instant.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0110/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0110.md

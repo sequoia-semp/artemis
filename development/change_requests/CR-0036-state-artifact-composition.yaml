@@ -1,0 +1,33 @@
+change_id: CR-0036
+title: State artifact composition for multi-source PJM packs
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: medium
+tickets:
+  - T-0055
+problem_statement: >
+  PJM load, generation, and price builders each emitted source-specific
+  artifacts and view-ready fields, but combining those outputs manually risked
+  overwriting shared fields such as summary, drivers, inputs, and
+  current_day_view.
+root_cause: >
+  Earlier source-product passes validated individual artifact builders before
+  adding a deterministic pre-publish composition layer for multi-source state
+  packs.
+affected_files:
+  - domain/state_artifact_composition.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/artifact_composition.py
+  - tests/test_artifact_composition.py
+tests_required:
+  - .venv/bin/pytest tests/test_artifact_composition.py tests/test_analyst_views.py tests/test_pjm_fundamentals_semantic_core.py tests/test_generation_mix.py tests/test_power_price_shape_rollups.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0055
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the artifact composition service, compose-artifacts CLI, tests, and
+  documentation. Individual artifact builders and the existing state-pack
+  candidate/publish flow remain unchanged.

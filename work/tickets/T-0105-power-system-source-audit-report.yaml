@@ -1,0 +1,58 @@
+id: T-0105
+type: ticket
+title: Power system source audit report
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-DIRECT-SOURCE
+sprint: S-002
+layer:
+  - cli
+  - docs
+  - schema
+  - tests
+branch: codex/T-0105-power-system-source-audit-report
+context_profile: trading_domain
+problem: >
+  Source-audit evidence was embedded in bundles, pipeline reports, and Analyst
+  view evidence, but there was no standalone generic report for inspecting a
+  bundle or accepted HotState source posture.
+tasks:
+  - Add a generic power-system source audit schema.
+  - Add a deterministic service that summarizes redacted bundle metadata.
+  - Expose a read-only CLI command for bundle-file and HotState inputs.
+  - Document the read-only source-audit workflow.
+acceptance_criteria:
+  - Audit reports validate against schema.
+  - Audit reports summarize preflight, metadata verification, source readiness,
+    source publications, raw fetch evidence, and operational-event plan evidence
+    when present.
+  - Raw source rows, request headers, credential values, and source error
+    messages are not emitted.
+  - CLI can read either a workspace bundle JSON or accepted HotState artifacts.
+  - Blocked source posture returns non-zero unless `--allow-blockers` is
+    supplied.
+  - No source adapter, normalization, state-pack publish, cache mutation, or UI
+    behavior changes.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_source_audit.py tests/test_power_system_state.py tests/test_analyst_views.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0105
+affected_files:
+  - docs/user/analyst_mode.md
+  - domain/power_system_ingestion.md
+  - schemas/power_system_source_audit.schema.json
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_audit.py
+  - tests/test_power_system_source_audit.py
+change_request_required: true
+change_id: CR-0086
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added a schema-validated read-only power-system source audit report from
+  bundle JSON or accepted HotState artifacts.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0105/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0105.md

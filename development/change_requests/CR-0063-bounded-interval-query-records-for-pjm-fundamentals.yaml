@@ -1,0 +1,37 @@
+change_id: CR-0063
+title: Bounded interval source query records
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: high
+tickets:
+  - T-0082
+problem_statement: >
+  PJM load and generation-by-fuel live fetch helpers needed deterministic query
+  execution records comparable to the hourly LMP path so direct PJM
+  fundamentals ingestion can be inspected, budgeted, and audited before source
+  rows are fetched.
+root_cause: >
+  The first query execution record implementation covered hourly LMP daily
+  chunks and pnode metadata, while simpler bounded interval fundamentals feeds
+  still built Data Miner source-row queries directly in live helper code.
+affected_files:
+  - domain/power_system_source_catalog.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_live_smoke.py
+  - src/pga_workbench/services/source_query_plans.py
+  - tests/test_generation_mix.py
+  - tests/test_pjm_fundamentals_semantic_core.py
+  - tests/test_power_system_live_smoke.py
+  - tests/test_source_query_plans.py
+tests_required:
+  - .venv/bin/pytest tests/test_source_query_plans.py tests/test_pjm_fundamentals_semantic_core.py tests/test_generation_mix.py tests/test_power_system_live_smoke.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0082
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Revert the bounded interval request builders and restore the previous direct
+  CLI/live-smoke Data Miner query construction for PJM load and generation mix.
+  Existing hourly LMP query execution records would remain unchanged.

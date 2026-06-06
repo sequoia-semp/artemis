@@ -1,0 +1,32 @@
+change_id: CR-0093
+title: HotState fundamental query helpers
+created_at: 2026-06-06T00:00:00Z
+change_class: 4
+severity: low
+tickets:
+  - T-0112
+problem_statement: >
+  Accepted fundamental artifacts needed explicit HotState query helpers so
+  Analyst and future UI paths can consume source-specific products, best-series
+  records, and generation mix observations without direct adapter access.
+root_cause: >
+  HotState exposed whole artifacts and prior Analyst views merged dictionaries,
+  but the source-product versus best-series boundary was not represented by a
+  governed read helper.
+affected_files:
+  - docs/architecture/direct_pjm_authoritative_sources.md
+  - docs/user/analyst_mode.md
+  - src/pga_workbench/cache/hot_state.py
+  - tests/test_hot_state_fundamental_queries.py
+tests_required:
+  - .venv/bin/pytest tests/test_hot_state_fundamental_queries.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0112
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the HotState fundamental query helpers, revert the Analyst and
+  architecture read-path documentation notes, and remove the helper regression
+  tests.

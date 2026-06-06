@@ -1,0 +1,38 @@
+change_id: CR-0025
+title: First-class power market calendars
+created_at: 2026-06-06T00:00:00Z
+change_class: 4
+severity: high
+tickets:
+  - T-0044
+problem_statement: >
+  Daily power price shape rollups depended on NERC holiday logic embedded in
+  service code. Artemis needs calendar behavior represented as registry-backed
+  domain data so future PJM and non-PJM power-system rules can reuse the same
+  calendar contract.
+root_cause: >
+  Existing exchange and shape registries referenced calendars by name, but
+  there was no validated calendar registry or resolver. This left holiday
+  membership as hardcoded Python behavior.
+affected_files:
+  - domain/power_market_calendars.md
+  - registries/power_market_calendars.yaml
+  - registries/power_price_shape_rules.yaml
+  - schemas/power_market_calendar.schema.json
+  - schemas/power_price_shape_rule.schema.json
+  - src/pga_workbench/core/calendars.py
+  - src/pga_workbench/services/power_price_shapes.py
+  - src/pga_workbench/registry.py
+  - tests/test_power_market_calendars.py
+  - tests/test_power_price_shape_rollups.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_market_calendars.py tests/test_power_price_shape_rollups.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0044
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the calendar registry, schema, resolver, tests, and shape-rule calendar
+  references. Restore the prior shape-rollup holiday helper if needed.

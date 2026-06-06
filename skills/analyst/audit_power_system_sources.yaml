@@ -1,0 +1,25 @@
+id: analyst.audit_power_system_sources
+class: analyst
+intent: Inspect accepted or workspace power-system source-audit evidence without source mutation.
+inputs:
+  required: []
+  optional:
+    - power_system_artifact_bundle
+    - hot_state_root
+tools:
+  - power_system_source_audit
+outputs:
+  - power_system_source_audit
+llm_role:
+  allowed:
+    - summarize
+    - explain
+    - identify_blockers
+  forbidden:
+    - invent_conventions
+    - approve_source_publications
+    - normalize_candidate_sources
+    - place_trades
+validation:
+  schemas:
+    - schemas/power_system_source_audit.schema.json

@@ -1,0 +1,90 @@
+COAL:
+  display_name: Coal
+  fuel_family: coal
+  is_renewable: false
+  source_aliases:
+    PJM:
+      - Coal
+  status: approved_core
+
+GAS:
+  display_name: Gas
+  fuel_family: gas
+  is_renewable: false
+  source_aliases:
+    PJM:
+      - Gas
+  status: approved_core
+
+NUCLEAR:
+  display_name: Nuclear
+  fuel_family: nuclear
+  is_renewable: false
+  source_aliases:
+    PJM:
+      - Nuclear
+  status: approved_core
+
+WIND:
+  display_name: Wind
+  fuel_family: renewable
+  is_renewable: true
+  source_aliases:
+    PJM:
+      - Wind
+  status: approved_core
+
+SOLAR:
+  display_name: Solar
+  fuel_family: renewable
+  is_renewable: true
+  source_aliases:
+    PJM:
+      - Solar
+  status: approved_core
+
+HYDRO:
+  display_name: Hydro
+  fuel_family: hydro
+  is_renewable: true
+  source_aliases:
+    PJM:
+      - Hydro
+  status: approved_core
+
+OIL:
+  display_name: Oil
+  fuel_family: oil
+  is_renewable: false
+  source_aliases:
+    PJM:
+      - Oil
+  status: approved_core
+
+MULTIPLE_FUELS:
+  display_name: Multiple Fuels
+  fuel_family: other
+  is_renewable: false
+  source_aliases:
+    PJM:
+      - Multiple Fuels
+  status: approved_core
+
+OTHER_RENEWABLES:
+  display_name: Other Renewables
+  fuel_family: renewable
+  is_renewable: true
+  source_aliases:
+    PJM:
+      - Other Renewables
+      - Other renewables
+  status: approved_core
+
+STORAGE:
+  display_name: Storage
+  fuel_family: storage
+  is_renewable: false
+  source_aliases:
+    PJM:
+      - Storage
+  status: approved_core

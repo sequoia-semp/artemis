@@ -1,0 +1,37 @@
+{
+  "source": "PJM Data Miner",
+  "fixture_scope": "minimal_gen_by_fuel",
+  "feeds": {
+    "gen_by_fuel": [
+      {
+        "datetime_beginning_utc": "2026-06-01T04:00:00Z",
+        "datetime_beginning_ept": "2026-06-01T00:00:00",
+        "fuel_type": "Gas",
+        "mw": 42000.0,
+        "fuel_percentage_of_total": 52.5,
+        "is_renewable": false
+      },
+      {
+        "datetime_beginning_utc": "2026-06-01T04:00:00Z",
+        "datetime_beginning_ept": "2026-06-01T00:00:00",
+        "fuel_type": "Nuclear",
+        "mw": 31000.0,
+        "fuel_percentage_of_total": 38.75,
+        "is_renewable": false
+      },
+      {
+        "datetime_beginning_utc": "2026-06-01T04:00:00Z",
+        "datetime_beginning_ept": "2026-06-01T00:00:00",
+        "fuel_type": "Wind",
+        "mw": 7000.0,
+        "fuel_percentage_of_total": 8.75,
+        "is_renewable": true
+      }
+    ]
+  },
+  "lineage": {
+    "source_feed": "gen_by_fuel",
+    "source_document": "PJM Data Miner API Guide",
+    "contains_credentials": false
+  }
+}

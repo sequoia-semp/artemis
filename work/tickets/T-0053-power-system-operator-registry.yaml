@@ -1,0 +1,59 @@
+id: T-0053
+type: ticket
+title: Power system operator registry
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - docs
+  - registry
+  - schema
+  - validation
+  - tests
+branch: codex/T-0053-power-system-operator-registry
+context_profile: trading_domain
+problem: >
+  Broader power-system abstraction needs a first-class operator identity so PJM
+  can remain the first implementation without hardcoding PJM as the generic
+  concept for all future ISO/RTO, balancing authority, source, calendar, and
+  topology work.
+tasks:
+  - Add a generic power system operator schema and registry.
+  - Add PJM as the first approved source-backed operator record.
+  - Add cross-reference validation for source publications, power locations, feed descriptors, and operator-specific calendars.
+  - Document the operator reference policy and non-PJM expansion boundary.
+  - Add fail-closed tests for unknown operator references.
+acceptance_criteria:
+  - power_system_operators.yaml validates with duplicate-key protection and schema checks.
+  - PJM is represented as an approved rto_iso operator with official source documents.
+  - Existing PJM source, location, feed, and calendar registries resolve to the PJM operator.
+  - Unknown operator references fail closed.
+  - No non-PJM ingestion, non-PJM market convention, topology semantics, or cache mutation policy is approved by this ticket.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_operators.py tests/test_power_system_source_catalog.py tests/test_power_system_price_core.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0053
+affected_files:
+  - domain/power_system_operators.md
+  - registries/power_system_operators.yaml
+  - schemas/power_system_operator.schema.json
+  - src/pga_workbench/registry.py
+  - src/pga_workbench/services/power_system_operators.py
+  - src/pga_workbench/validation/runner.py
+  - tests/test_native_validation_runner.py
+  - tests/test_power_system_operators.py
+change_request_required: true
+change_id: CR-0034
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added a generic power-system operator registry and schema, represented PJM as
+  the first approved source-backed RTO/ISO operator, and added cross-reference
+  validation for source publications, power locations, feed descriptors, and
+  operator-specific calendars.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0053/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0053.md

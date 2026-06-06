@@ -1,0 +1,29 @@
+change_id: CR-0057
+title: PJM pipeline source readiness summary
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: medium
+tickets:
+  - T-0076
+problem_statement: >
+  Readiness-gated PJM morning pipelines embed source readiness in the bundle,
+  but the pipeline report does not expose a compact readiness summary for
+  operator review.
+root_cause: >
+  Source readiness evidence was added to bundles after the candidate-only
+  pipeline report shape was created.
+affected_files:
+  - domain/power_system_state_candidates.md
+  - src/pga_workbench/cli.py
+  - tests/test_power_system_state.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_state.py tests/test_power_system_ingestion.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0076
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove source_readiness from the pipeline report. Bundle-level readiness
+  evidence and candidate staging remain unchanged.

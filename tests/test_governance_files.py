@@ -134,3 +134,24 @@ def test_vcs_policy_standardizes_local_venv_and_merge_flow():
     assert "make release-check" in (ROOT / "docs/RELEASE_PROCESS.md").read_text(encoding="utf-8")
     assert "pga vcs-ready --ticket T-####" in policy
     assert "git push -u origin codex/T-####-slug" in policy
+
+
+def test_direct_pjm_authoritative_source_plan_preserves_boundaries():
+    index = (ROOT / "docs/README.md").read_text(encoding="utf-8")
+    plan_path = "docs/architecture/direct_pjm_authoritative_sources.md"
+    assert plan_path in index
+
+    plan = (ROOT / plan_path).read_text(encoding="utf-8")
+    for expected in [
+        "PJM Data Miner is the authoritative ISO publication path",
+        "Source-specific products remain separate from best-series products.",
+        "Latest forecast curves remain separate from forecast revision history.",
+        "Price publications remain separate from derived shapes",
+        "Textual and Analyst views read through HotState artifacts, not adapters.",
+        "candidate state pack directories and atomic accepted-state pointer swaps",
+        "matching source-readiness",
+        "Five-minute LMP remains candidate-only",
+        "Timestamp interpretation across UTC and PJM Eastern Prevailing Time.",
+        "Raw rows or credentials leaking into state packs",
+    ]:
+        assert expected in plan

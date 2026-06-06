@@ -1,0 +1,56 @@
+id: T-0109
+type: ticket
+title: Source readiness publish gate
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-DIRECT-SOURCE
+sprint: S-002
+layer:
+  - validation
+  - docs
+  - tests
+branch: codex/T-0109-source-readiness-publish-gate
+context_profile: trading_domain
+problem: >
+  Production state-pack publish validation blocked candidate source
+  publications, but approved direct-source publications did not yet require
+  matching source-readiness, metadata-verification, and raw-fetch evidence.
+tasks:
+  - Preserve selected registry feed IDs in source-publication bundle evidence.
+  - Require matching publish evidence for approved production source
+    publications before accepted-state promotion.
+  - Keep local fixture and candidate-publication behavior unchanged.
+  - Add publish failure tests proving prior accepted state is preserved.
+  - Document the approved source publication evidence gate.
+acceptance_criteria:
+  - Approved production source publications without source-readiness,
+    metadata-verification, or raw-fetch evidence fail publish.
+  - Approved production source publications with mismatched selected feed
+    evidence fail publish with structured feed-specific blockers.
+  - Approved production source publications with matching evidence can publish.
+  - Candidate production publications remain blocked.
+  - Local fixture bundles remain allowed for candidate publication evidence.
+  - Failed publish preserves candidate files and does not update current.json.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_state.py tests/test_power_system_source_catalog.py tests/test_governance_files.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0109
+affected_files:
+  - docs/architecture/direct_pjm_authoritative_sources.md
+  - src/pga_workbench/services/power_system_ingestion.py
+  - src/pga_workbench/services/power_system_sources.py
+  - tests/test_governance_files.py
+  - tests/test_power_system_state.py
+change_request_required: true
+change_id: CR-0090
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added selected-feed source-publication evidence and a generic publish-time
+  gate requiring ready, matching metadata, readiness, and raw-fetch evidence
+  for approved production power-system source publications.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0109/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0109.md

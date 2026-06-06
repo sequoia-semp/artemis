@@ -43,6 +43,7 @@ Use this file as the docs entrypoint.
 ## Current Architecture
 
 - `docs/ARCHITECTURE.md`
+- `docs/architecture/direct_pjm_authoritative_sources.md`
 - `docs/architecture/power_gas_trading_agent_workbench.md`
 
 ## Archive / Compatibility Records

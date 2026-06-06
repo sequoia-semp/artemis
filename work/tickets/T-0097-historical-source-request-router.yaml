@@ -1,0 +1,55 @@
+id: T-0097
+type: ticket
+title: Historical source request router
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-DIRECT-SOURCE
+sprint: S-002
+layer:
+  - validation
+  - docs
+  - tests
+branch: codex/T-0097-historical-source-request-router
+context_profile: trading_domain
+problem: >
+  Retention policies declared source-restorable artifacts, approved query
+  plans, and derived view windows, but there was no deterministic router that
+  converted those policies into compact source request plans without fetching.
+tasks:
+  - Add a generic historical source request router driven by artifact retention
+    policies.
+  - Bind PJM hourly LMP, load fundamentals, and generation mix artifacts to
+    existing approved query planners.
+  - Keep derived shape products non-source-restorable.
+  - Exclude candidate PJM load actual feeds from default historical load
+    routing.
+  - Document the router boundary.
+acceptance_criteria:
+  - PJM LMP history routes to the approved daily chunk query plan and 30-day
+    window.
+  - PJM load fundamentals history routes only approved load forecast feeds by
+    default.
+  - PJM generation mix routes to its approved bounded query plan.
+  - Non-source-restorable products fail closed.
+  - Router emits no raw rows or secret values and performs no live fetch.
+required_tests:
+  - .venv/bin/pytest tests/test_historical_source_router.py
+  - .venv/bin/pytest tests/test_power_system_retention.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0097
+affected_files:
+  - domain/power_system_retention.md
+  - src/pga_workbench/services/historical_source_router.py
+  - tests/test_historical_source_router.py
+change_request_required: true
+change_id: CR-0078
+implemented_at: '2026-06-06T00:00:00Z'
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0097/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0097.md
+implementation_summary: >
+  Added a retention-policy-driven historical source request router for approved
+  PJM source-restorable artifacts.

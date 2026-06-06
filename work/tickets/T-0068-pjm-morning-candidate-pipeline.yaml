@@ -1,0 +1,53 @@
+id: T-0068
+type: ticket
+title: PJM morning candidate pipeline
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - docs
+  - validation
+  - tests
+branch: codex/T-0068-pjm-morning-candidate-pipeline
+context_profile: trading_domain
+problem: >
+  Operators need a single candidate-only workflow that builds the approved PJM
+  morning bundle and stages it through state-pack candidate validation without
+  accepted-state publish side effects.
+tasks:
+  - Add a PJM morning pipeline command that reuses the bundle builder.
+  - Stage the resulting bundle through the existing candidate-state service.
+  - Write bundle and pipeline report outputs.
+  - Expose the workflow through the Artemis analyst bundle command surface.
+  - Document the candidate-only pipeline boundary.
+acceptance_criteria:
+  - The pipeline builds a PJM morning bundle from fixture or live source inputs.
+  - The pipeline stages a candidate state pack from the built bundle.
+  - The pipeline writes a report with bundle output and candidate staging details.
+  - The pipeline does not update current.json or accepted state.
+  - Existing explicit publisher remains the only accepted-state publish path.
+  - No source feed, cache, or accepted-state contract is changed.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_state.py tests/test_power_system_ingestion.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0068
+affected_files:
+  - domain/power_system_ingestion.md
+  - domain/power_system_state_candidates.md
+  - src/pga_workbench/cli.py
+  - tests/test_power_system_state.py
+change_request_required: true
+change_id: CR-0049
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added a candidate-only PJM morning pipeline command that reuses the approved
+  bundle builder, writes bundle and pipeline report outputs, and stages the
+  result through the validated candidate state-pack path without accepted-state
+  publish side effects.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0068/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0068.md

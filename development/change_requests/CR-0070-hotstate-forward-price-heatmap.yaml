@@ -1,0 +1,28 @@
+change_id: CR-0070
+title: HotState forward price heatmap
+created_at: 2026-06-06T00:00:00Z
+change_class: 4
+severity: medium
+tickets:
+  - T-0089
+problem_statement: >
+  Analyst heatmap builds needed a HotState read path for accepted
+  price_surface_points to align with the state-pack architecture invariant.
+root_cause: >
+  The heatmap builder was initially file-oriented and did not expose the
+  accepted-state artifact read path used by other analyst view commands.
+affected_files:
+  - domain/power_system_prices.md
+  - src/pga_workbench/cli.py
+  - tests/test_forward_price_heatmap.py
+tests_required:
+  - .venv/bin/pytest tests/test_forward_price_heatmap.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0089
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the heatmap HotState input branch and restore file input as the only
+  heatmap CLI source.

@@ -1,0 +1,72 @@
+id: T-0050
+type: ticket
+title: PJM generation-by-fuel source core
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-FUNDAMENTALS
+sprint: S-002
+layer:
+  - docs
+  - registry
+  - schema
+  - cli
+  - tests
+branch: codex/T-0050-pjm-generation-mix-source-core
+context_profile: trading_domain
+problem: >
+  Broader power-system fundamentals need aggregate generation mix alongside
+  load and price source products, with PJM Data Miner gen_by_fuel as the first
+  authoritative source implementation.
+tasks:
+  - Add a canonical generation fuel taxonomy with source aliases.
+  - Add a power generation mix feed registry and schema.
+  - Add generation mix observation/state contracts and PJM normalization.
+  - Add fixture and CLI builders for PJM generation mix artifacts.
+  - Promote PJM gen_by_fuel source catalog status only for aggregate fuel mix.
+  - Add fail-closed tests for unknown fuel labels and renewable flag mismatch.
+acceptance_criteria:
+  - Generation fuel and mix feed registries validate with schemas and duplicate-key protection.
+  - PJM gen_by_fuel rows normalize into source-backed generation mix observations.
+  - Unknown source fuel labels fail closed.
+  - Source renewable flags must match the canonical fuel registry.
+  - Fixture and live CLI command surfaces are available for PJM generation mix.
+  - Generation mix artifacts publish through state packs and HotState.
+  - No unit-level generation, emissions conversion, outage lifecycle semantics,
+    topology links, or shared-cache policy changes are approved by this ticket.
+required_tests:
+  - .venv/bin/pytest tests/test_generation_mix.py tests/test_power_system_source_catalog.py tests/test_data_sources.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0050
+affected_files:
+  - domain/power_generation_mix.md
+  - domain/power_system_source_catalog.md
+  - docs/OFFICIAL_SOURCE_REGISTER.md
+  - registries/data_sources.yaml
+  - registries/power_generation_fuels.yaml
+  - registries/power_generation_mix_feeds.yaml
+  - registries/power_system_source_catalog.yaml
+  - schemas/generation_mix_state.schema.json
+  - schemas/power_generation_fuel.schema.json
+  - schemas/power_generation_mix_feed.schema.json
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/models.py
+  - src/pga_workbench/registry.py
+  - src/pga_workbench/services/generation_mix.py
+  - src/pga_workbench/services/power_system_sources.py
+  - tests/fixtures/pjm_generation_mix_minimal.json
+  - tests/test_generation_mix.py
+  - tests/test_power_system_source_catalog.py
+change_request_required: true
+change_id: CR-0031
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added a canonical generation fuel taxonomy, PJM generation-by-fuel feed
+  descriptor, generation mix observation/state artifacts, PJM gen_by_fuel
+  fixture and CLI builders, fail-closed fuel normalization checks, and source
+  catalog promotion for aggregate fuel mix only.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0050/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0050.md
