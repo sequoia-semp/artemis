@@ -407,6 +407,27 @@ def test_power_system_artifact_bundle_rejects_unredacted_preflight_claim():
     assert "redacted" in exc.value.message
 
 
+def test_power_system_artifact_bundle_rejects_disallowed_secret_field_in_redacted_preflight():
+    bundle = build_power_system_artifact_bundle(
+        {"pjm_load_fundamentals": {"run_id": "load"}},
+        bundle_id="test-bundle",
+        as_of="2026-06-04T12:00:00Z",
+        operator_id="PJM",
+        source_system="pjm_data_miner_api",
+    )
+    bundle["power_system_artifact_bundle"]["preflight"] = {
+        "contains_secret_values": False,
+        "api_key": "must-not-be-trusted-by-flag",
+    }
+
+    with pytest.raises(WorkbenchException) as exc:
+        validate_power_system_artifact_bundle(bundle)
+
+    assert exc.value.code == POWER_SYSTEM_INGESTION_ERROR
+    assert "disallowed secret field" in exc.value.message
+    assert "api_key" in exc.value.message
+
+
 def test_power_system_artifact_bundle_rejects_unredacted_preflight_query_plan_claim():
     with pytest.raises(WorkbenchException) as exc:
         build_power_system_artifact_bundle(

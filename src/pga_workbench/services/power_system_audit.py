@@ -8,6 +8,7 @@ from jsonschema import Draft202012Validator
 from ..exceptions import WorkbenchException
 from ..registry import load_yaml_unique
 from .power_system_ingestion import BUNDLE_METADATA_KEY, validate_power_system_artifact_bundle
+from .redaction import assert_no_disallowed_secret_fields
 
 POWER_SYSTEM_AUDIT_ERROR = "POWER_SYSTEM_AUDIT_ERROR"
 
@@ -104,3 +105,4 @@ def _assert_redacted(value: dict[str, Any] | None, label: str) -> None:
         raise WorkbenchException(POWER_SYSTEM_AUDIT_ERROR, f"Source audit {label} evidence must be redacted")
     if value.get("contains_raw_records") is not None and value.get("contains_raw_records") is not False:
         raise WorkbenchException(POWER_SYSTEM_AUDIT_ERROR, f"Source audit {label} evidence must not contain raw records")
+    assert_no_disallowed_secret_fields(value, label=f"Source audit {label}", error_code=POWER_SYSTEM_AUDIT_ERROR)

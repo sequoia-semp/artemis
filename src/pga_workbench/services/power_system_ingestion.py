@@ -4,6 +4,7 @@ from typing import Any
 
 from ..exceptions import WorkbenchException
 from .artifact_composition import compose_artifact_payloads, validate_artifact_composition_metadata
+from .redaction import assert_no_disallowed_secret_fields
 
 POWER_SYSTEM_INGESTION_ERROR = "POWER_SYSTEM_INGESTION_ERROR"
 BUNDLE_METADATA_KEY = "power_system_artifact_bundle"
@@ -70,36 +71,62 @@ def validate_power_system_artifact_bundle(bundle: dict[str, Any]) -> None:
             raise WorkbenchException(POWER_SYSTEM_INGESTION_ERROR, "Bundle preflight evidence must be a mapping")
         if preflight.get("contains_secret_values") is not False:
             raise WorkbenchException(POWER_SYSTEM_INGESTION_ERROR, "Bundle preflight evidence must be redacted")
+        assert_no_disallowed_secret_fields(preflight, label="Bundle preflight", error_code=POWER_SYSTEM_INGESTION_ERROR)
     metadata_verification = metadata.get("metadata_verification")
     if metadata_verification is not None:
         if not isinstance(metadata_verification, dict):
             raise WorkbenchException(POWER_SYSTEM_INGESTION_ERROR, "Bundle metadata verification evidence must be a mapping")
         if metadata_verification.get("contains_secret_values") is not False:
             raise WorkbenchException(POWER_SYSTEM_INGESTION_ERROR, "Bundle metadata verification evidence must be redacted")
+        assert_no_disallowed_secret_fields(
+            metadata_verification,
+            label="Bundle metadata verification",
+            error_code=POWER_SYSTEM_INGESTION_ERROR,
+        )
     source_readiness = metadata.get("source_readiness")
     if source_readiness is not None:
         if not isinstance(source_readiness, dict):
             raise WorkbenchException(POWER_SYSTEM_INGESTION_ERROR, "Bundle source readiness evidence must be a mapping")
         if source_readiness.get("contains_secret_values") is not False:
             raise WorkbenchException(POWER_SYSTEM_INGESTION_ERROR, "Bundle source readiness evidence must be redacted")
+        assert_no_disallowed_secret_fields(
+            source_readiness,
+            label="Bundle source readiness",
+            error_code=POWER_SYSTEM_INGESTION_ERROR,
+        )
     source_publications = metadata.get("source_publications")
     if source_publications is not None:
         if not isinstance(source_publications, dict):
             raise WorkbenchException(POWER_SYSTEM_INGESTION_ERROR, "Bundle source publication evidence must be a mapping")
         if source_publications.get("contains_secret_values") is not False:
             raise WorkbenchException(POWER_SYSTEM_INGESTION_ERROR, "Bundle source publication evidence must be redacted")
+        assert_no_disallowed_secret_fields(
+            source_publications,
+            label="Bundle source publication",
+            error_code=POWER_SYSTEM_INGESTION_ERROR,
+        )
     raw_source_fetches = metadata.get("raw_source_fetches")
     if raw_source_fetches is not None:
         if not isinstance(raw_source_fetches, dict):
             raise WorkbenchException(POWER_SYSTEM_INGESTION_ERROR, "Bundle raw source fetch evidence must be a mapping")
         if raw_source_fetches.get("contains_raw_records") is not False or raw_source_fetches.get("contains_secret_values") is not False:
             raise WorkbenchException(POWER_SYSTEM_INGESTION_ERROR, "Bundle raw source fetch evidence must be redacted")
+        assert_no_disallowed_secret_fields(
+            raw_source_fetches,
+            label="Bundle raw source fetch",
+            error_code=POWER_SYSTEM_INGESTION_ERROR,
+        )
     operational_event_plan = metadata.get("operational_event_plan")
     if operational_event_plan is not None:
         if not isinstance(operational_event_plan, dict):
             raise WorkbenchException(POWER_SYSTEM_INGESTION_ERROR, "Bundle operational event plan evidence must be a mapping")
         if operational_event_plan.get("contains_secret_values") is not False:
             raise WorkbenchException(POWER_SYSTEM_INGESTION_ERROR, "Bundle operational event plan evidence must be redacted")
+        assert_no_disallowed_secret_fields(
+            operational_event_plan,
+            label="Bundle operational event plan",
+            error_code=POWER_SYSTEM_INGESTION_ERROR,
+        )
 
 
 def _preflight_evidence(report: dict[str, Any]) -> dict[str, Any]:
@@ -206,6 +233,7 @@ def _compact_query_plan_evidence(value: Any, *, label: str) -> dict[str, Any] | 
         raise WorkbenchException(POWER_SYSTEM_INGESTION_ERROR, f"{label} evidence must be a mapping")
     if value.get("contains_secret_values") is not None and value.get("contains_secret_values") is not False:
         raise WorkbenchException(POWER_SYSTEM_INGESTION_ERROR, f"{label} evidence must be redacted")
+    assert_no_disallowed_secret_fields(value, label=label, error_code=POWER_SYSTEM_INGESTION_ERROR)
     allowed = [
         "plan_id",
         "planned_request_count",
