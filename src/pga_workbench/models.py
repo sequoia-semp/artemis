@@ -194,6 +194,19 @@ class NormalizedPosition:
     exposures: list[dict[str, Any]] = field(default_factory=list)
 
 
+@dataclass(frozen=True, order=True)
+class RiskFactorId:
+    value: str
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.value, str) or not self.value.strip():
+            raise ValueError("RiskFactorId requires a non-empty string value")
+        object.__setattr__(self, "value", self.value.strip())
+
+    def __str__(self) -> str:
+        return self.value
+
+
 @dataclass(frozen=True)
 class OptionContract:
     option_contract_id: str
