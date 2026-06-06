@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PowerSystemOperator",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "operator_id",
+    "display_name",
+    "commodity",
+    "operator_kind",
+    "market_code",
+    "balancing_authority_code",
+    "settlement_timezone",
+    "primary_interconnection",
+    "data_access_surfaces",
+    "supported_product_families",
+    "source_documents",
+    "verification_status",
+    "status"
+  ],
+  "properties": {
+    "operator_id": {"type": "string", "pattern": "^[A-Z0-9_]+$"},
+    "display_name": {"type": "string"},
+    "commodity": {"const": "power"},
+    "operator_kind": {"enum": ["rto_iso", "iso", "rto", "balancing_authority", "utility_ba"]},
+    "market_code": {"type": "string"},
+    "balancing_authority_code": {"type": "string"},
+    "settlement_timezone": {"type": "string"},
+    "primary_interconnection": {"enum": ["Eastern", "Western", "ERCOT", "Quebec", "Other"]},
+    "footprint_note": {"type": "string"},
+    "data_access_surfaces": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "supported_product_families": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "load",
+          "locational_marginal_price",
+          "generation_mix",
+          "outages",
+          "constraints",
+          "interchange",
+          "ancillary_services"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "source_documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["authority", "url", "notes"],
+        "properties": {
+          "authority": {"type": "string"},
+          "url": {"type": "string"},
+          "notes": {"type": "string"}
+        }
+      },
+      "minItems": 1
+    },
+    "verification_status": {"enum": ["candidate", "official_operator_documented", "ferc_documented"]},
+    "status": {"enum": ["candidate", "approved_core", "deferred"]}
+  }
+}

@@ -1,0 +1,57 @@
+id: T-0058
+type: ticket
+title: Power system artifact product registry
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - docs
+  - registry
+  - schema
+  - validation
+  - tests
+branch: codex/T-0058-power-system-artifact-product-registry
+context_profile: trading_domain
+problem: >
+  Broader power-system composition needs registry-governed state artifact
+  product identity rather than only code-level composition product keys.
+tasks:
+  - Add a power-system artifact product schema and registry.
+  - Register approved PJM load, hourly price, generation mix, and derived price shape artifacts.
+  - Register operational event descriptors as candidate-only.
+  - Add validation that registry composition keys match the artifact composer.
+  - Add validation that candidate products cannot be marked approved for state-pack publish.
+acceptance_criteria:
+  - power_system_artifact_products.yaml validates with schema and duplicate-key protection.
+  - Registry composition product keys match artifact composition metadata keys.
+  - Artifact products reference known power-system operators.
+  - Candidate operational event descriptor products remain candidate-only for state-pack publish.
+  - Native strict validation includes artifact product reference checks.
+  - No source normalization, publish mutation, or cache policy changes are introduced.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_artifact_products.py tests/test_artifact_composition.py tests/test_native_validation_runner.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0058
+affected_files:
+  - domain/power_system_artifact_products.md
+  - registries/power_system_artifact_products.yaml
+  - schemas/power_system_artifact_product.schema.json
+  - src/pga_workbench/registry.py
+  - src/pga_workbench/services/power_system_artifact_products.py
+  - src/pga_workbench/validation/runner.py
+  - tests/test_power_system_artifact_products.py
+change_request_required: true
+change_id: CR-0039
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added a power-system artifact product registry and schema, registered approved
+  PJM load, hourly price, generation mix, and derived price shape state
+  artifacts plus candidate operational event descriptors, and wired native
+  validation to ensure composition product keys match the artifact composer.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0058/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0058.md

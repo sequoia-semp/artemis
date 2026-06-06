@@ -22,3 +22,6 @@ skills:
   - id: analyst.build_eastern_power_view
     class: analyst
     path: analyst/build_eastern_power_view.yaml
+  - id: analyst.audit_power_system_sources
+    class: analyst
+    path: analyst/audit_power_system_sources.yaml

@@ -156,6 +156,59 @@ tools:
     authority: deterministic_service
     deterministic_service: true
 
+  pjm_load_fundamentals:
+    command: artemis analyst fundamentals build-pjm-load
+    risk: external_api
+    modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: pjm_load_feed_rows_or_dataminer_request
+    output_contract:
+      type: pjm_load_fundamental_artifacts
+    lineage:
+      records:
+        - registries/pjm_fundamental_feeds.yaml
+        - registries/pjm_load_areas.yaml
+        - schemas/fundamental_state.schema.json
+        - src/pga_workbench/services/fundamentals.py
+    authority: deterministic_service
+    deterministic_service: true
+
+  pjm_lmp_prices:
+    command: artemis analyst prices build-pjm-lmp
+    risk: external_api
+    modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: pjm_lmp_feed_rows_or_dataminer_request
+    output_contract:
+      type: pjm_power_price_artifacts
+    lineage:
+      records:
+        - registries/power_system_price_feeds.yaml
+        - registries/power_locations.yaml
+        - schemas/power_price_state.schema.json
+        - src/pga_workbench/services/power_prices.py
+    authority: deterministic_service
+    deterministic_service: true
+
+  power_price_shape_rollups:
+    command: artemis analyst prices rollup-shapes
+    risk: workspace_write
+    modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: hourly_price_surface_points
+    output_contract:
+      type: daily_power_price_shape_rollups
+    lineage:
+      records:
+        - registries/power_price_shape_rules.yaml
+        - schemas/power_price_shape_state.schema.json
+        - src/pga_workbench/services/power_price_shapes.py
+    authority: deterministic_service
+    deterministic_service: true
+
   normalize_prices:
     command: pga normalize-prices
     risk: workspace_write
@@ -223,6 +276,42 @@ tools:
       type: data_source_list
     lineage:
       records: [registries/data_sources.yaml, schemas/data_source.schema.json]
+    authority: deterministic_service
+    deterministic_service: true
+
+  pjm_operational_event_candidate_plan:
+    command: artemis data-sources pjm-operational-event-plan
+    risk: read_only
+    modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: power_system_operational_event_feeds
+    output_contract:
+      type: power_system_operational_event_plan
+    lineage:
+      records:
+        - registries/power_system_source_catalog.yaml
+        - registries/power_system_operational_event_feeds.yaml
+        - schemas/power_system_operational_event_plan.schema.json
+        - src/pga_workbench/services/power_system_operational_events.py
+    authority: deterministic_service
+    deterministic_service: true
+
+  power_system_source_audit:
+    command: artemis analyst bundle source-audit
+    risk: read_only
+    modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: power_system_artifact_bundle
+      required: [bundle_or_state_root]
+    output_contract:
+      type: power_system_source_audit
+    lineage:
+      records:
+        - schemas/power_system_source_audit.schema.json
+        - src/pga_workbench/services/power_system_audit.py
+        - src/pga_workbench/cli.py
     authority: deterministic_service
     deterministic_service: true
 

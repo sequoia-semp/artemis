@@ -1,0 +1,57 @@
+id: T-0070
+type: ticket
+title: PJM live smoke readiness report
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - docs
+  - validation
+  - tests
+branch: codex/T-0070-pjm-live-smoke-readiness-report
+context_profile: trading_domain
+problem: >
+  Operators need a narrow, non-mutating smoke command that verifies direct PJM
+  Data Miner readiness with redacted evidence before a full bundle or candidate
+  pipeline run.
+tasks:
+  - Add a reusable PJM live smoke service with preflight, metadata verification, and bounded source row checks.
+  - Expose the smoke service through root and Artemis data-source CLI commands.
+  - Use the credentialed PJM Data Miner metadata API for live metadata verification.
+  - Keep smoke reports redacted and free of raw source rows or credential values.
+  - Document the live smoke boundary.
+acceptance_criteria:
+  - Smoke reports include redacted preflight evidence.
+  - Smoke reports include compact source metadata verification evidence.
+  - Successful smoke reports can fetch one bounded row for load, pnode metadata, hourly LMP, and generation mix.
+  - Blocked smoke reports do not fetch source rows.
+  - The command supports metadata-only mode.
+  - No accepted-state publish path, shared cache, or source semantic approval is changed.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_live_smoke.py tests/test_power_system_preflight.py tests/test_pjm_dataminer_connector.py tests/test_power_system_source_metadata.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0070
+affected_files:
+  - domain/power_system_preflight.md
+  - domain/power_system_source_metadata.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/data/connectors/pjm_dataminer.py
+  - src/pga_workbench/services/power_system_live_smoke.py
+  - tests/test_pjm_dataminer_connector.py
+  - tests/test_power_system_live_smoke.py
+change_request_required: true
+change_id: CR-0051
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added a non-mutating PJM live smoke service and CLI command that reuses
+  preflight planning, verifies selected Data Miner definitions, optionally
+  fetches one bounded row per selected source surface, and writes redacted
+  readiness evidence without raw rows or credentials. Updated live metadata
+  verification to use the credentialed PJM Data Miner metadata API.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0070/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0070.md

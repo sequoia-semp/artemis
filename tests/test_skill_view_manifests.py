@@ -7,6 +7,7 @@ import pytest
 
 from pga_workbench.exceptions import WorkbenchException
 from pga_workbench.analyst.view_engine import validate_view_manifest
+from pga_workbench.registry import load_yaml_unique
 from pga_workbench.skills.validator import validate_skill_manifest
 
 
@@ -16,8 +17,19 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_skill_manifest_validates_and_references_registered_tools():
     result = validate_skill_manifest(ROOT, ROOT / "schemas")
 
-    assert result["skills"] == 7
+    assert result["skills"] == 8
     assert result["procedural_skills"] == 10
+    assert str(ROOT / "skills" / "analyst" / "audit_power_system_sources.yaml") in result["validated"]
+
+
+def test_source_audit_analyst_skill_uses_read_only_audit_tool():
+    descriptor = load_yaml_unique(ROOT / "skills" / "analyst" / "audit_power_system_sources.yaml")
+
+    assert descriptor["id"] == "analyst.audit_power_system_sources"
+    assert descriptor["tools"] == ["power_system_source_audit"]
+    assert descriptor["outputs"] == ["power_system_source_audit"]
+    assert descriptor["validation"]["schemas"] == ["schemas/power_system_source_audit.schema.json"]
+    assert "approve_source_publications" in descriptor["llm_role"]["forbidden"]
 
 
 def test_view_manifest_validates_and_references_registered_skills():

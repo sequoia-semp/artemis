@@ -1,0 +1,54 @@
+id: T-0094
+type: ticket
+title: Source publication publish gate
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-DIRECT-SOURCE
+sprint: S-002
+layer:
+  - validation
+  - docs
+  - tests
+  - release
+branch: codex/T-0094-source-publication-publish-gate
+context_profile: trading_domain
+problem: >
+  Direct PJM bundles could carry source publication evidence showing candidate
+  or non-approved source publications, but accepted state-pack publish did not
+  explicitly block production promotion based on that evidence.
+tasks:
+  - Add a publish-time source-publication status gate.
+  - Block production-like accepted-state publish for candidate or non-approved
+    source publications.
+  - Preserve candidate staging and local fixture/test/development validation
+    workflows.
+  - Document the accepted-state boundary.
+acceptance_criteria:
+  - Candidate staging still accepts valid bundles with source publication
+    evidence.
+  - Production accepted-state publish blocks candidate source publications.
+  - Fixture/local accepted-state publish remains allowed for local validation.
+  - Failed publish preserves the candidate and does not update current state.
+  - Existing artifact-product and synthetic publish gates remain intact.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_state.py
+  - .venv/bin/pytest tests/test_power_system_source_catalog.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0094
+affected_files:
+  - domain/power_system_state_candidates.md
+  - src/pga_workbench/services/power_system_sources.py
+  - src/pga_workbench/state/packs.py
+  - tests/test_power_system_state.py
+change_request_required: true
+change_id: CR-0075
+implemented_at: '2026-06-06T00:00:00Z'
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0094/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0094.md
+implementation_summary: >
+  Added accepted-state publish blocking for production bundles with candidate
+  or non-approved source publication evidence.

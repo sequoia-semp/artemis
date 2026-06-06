@@ -1,0 +1,61 @@
+id: T-0080
+type: ticket
+title: Power system query execution records
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-FUNDAMENTALS
+sprint: S-002
+layer:
+  - cli
+  - docs
+  - tests
+branch: codex/T-0080-power-system-query-execution-records
+context_profile: trading_domain
+problem: >
+  PJM hourly LMP query planning counted bounded requests, but executable request
+  construction still lived in CLI helper code. Broader power-system source
+  integration needs deterministic query execution records before adapters make
+  live calls.
+tasks:
+  - Add source query request records with feed IDs, source feed names, pnodes,
+    date windows, query parameters, pagination bounds, and plan lineage.
+  - Build deterministic PJM hourly LMP request records from the approved source
+    query plan.
+  - Add compact redacted query execution summaries.
+  - Wire PJM hourly LMP live fetches to execute planned request records.
+  - Remove CLI-local PJM hourly LMP query construction.
+  - Add regression tests and documentation for the query execution boundary.
+acceptance_criteria:
+  - PJM hourly LMP request records exactly match the approved query-plan request
+    budget.
+  - Request records include pnode metadata requests and per-feed/per-window LMP
+    source-row requests.
+  - Built LMP queries preserve current-row filters, UTC date ranges, pnode IDs,
+    fields, pagination limits, and query-plan lineage.
+  - Live PJM LMP fetches execute planned records and attach compact query
+    request/execution evidence to `DataRequest` parameters.
+  - Query execution summaries contain no secrets.
+  - State-pack publish behavior and HotState read path remain unchanged.
+required_tests:
+  - .venv/bin/pytest tests/test_source_query_plans.py tests/test_power_system_price_core.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0080
+affected_files:
+  - domain/power_system_source_catalog.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/source_query_plans.py
+  - tests/test_source_query_plans.py
+  - tests/test_power_system_price_core.py
+change_request_required: true
+change_id: CR-0061
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added deterministic source query request records and wired PJM hourly LMP live
+  fetches to execute those records with compact redacted query execution
+  evidence.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0080/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0080.md

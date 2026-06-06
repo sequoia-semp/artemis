@@ -23,6 +23,15 @@
       "items": {"type": "string"},
       "minItems": 1
     },
+    "product_role": {
+      "enum": ["source_specific", "best_series", "latest_curve", "revision_history", "derived"]
+    },
+    "feed_ids": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "quality_rank": {"type": "integer", "minimum": 0},
     "forecast": {
       "type": "object",
       "additionalProperties": false,

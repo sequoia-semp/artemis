@@ -20,11 +20,20 @@ def test_initial_pjm_fundamental_metric_classes_are_registered():
 
     assert set(metrics) >= {
         "PJM.LOAD.ACTUAL.HOURLY_MW",
+        "PJM.LOAD.ACTUAL.METERED.HOURLY_MW",
+        "PJM.LOAD.ACTUAL.PRELIMINARY.HOURLY_MW",
         "PJM.LOAD.FORECAST.DAY_AHEAD.HOURLY_MW",
+        "PJM.LOAD.FORECAST.SEVEN_DAY.LATEST.HOURLY_MW",
+        "PJM.LOAD.FORECAST.SEVEN_DAY.REVISION.HOURLY_MW",
         "PJM.LOAD.FORECAST_ERROR.DAY_AHEAD.HOURLY_MW",
+        "PJM.LOAD.FORECAST_ERROR.SEVEN_DAY.HOURLY_MW",
     }
     assert {record["metric_class"] for record in metrics.values()} >= {"actual", "forecast", "derived"}
     assert metrics["PJM.LOAD.FORECAST.DAY_AHEAD.HOURLY_MW"]["forecast"]["vintage_policy"] == "latest_curve"
+    assert metrics["PJM.LOAD.ACTUAL.HOURLY_MW"]["product_role"] == "best_series"
+    assert metrics["PJM.LOAD.ACTUAL.METERED.HOURLY_MW"]["feed_ids"] == ["hrl_load_metered"]
+    assert metrics["PJM.LOAD.FORECAST.SEVEN_DAY.LATEST.HOURLY_MW"]["forecast"]["vintage_policy"] == "latest_curve"
+    assert metrics["PJM.LOAD.FORECAST.SEVEN_DAY.REVISION.HOURLY_MW"]["forecast"]["vintage_policy"] == "revision_history"
     assert metrics["PJM.LOAD.FORECAST_ERROR.DAY_AHEAD.HOURLY_MW"]["formula"] == {
         "formula_type": "ACTUAL_MINUS_FORECAST",
         "input_metric_ids": [

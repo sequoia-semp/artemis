@@ -68,10 +68,19 @@ def test_tool_spec_v2_metadata_is_validated_and_exposed():
     parse_period = tools["tools"]["parse_period"]
     work_context = tools["tools"]["work_context"]
     release_candidate = tools["tools"]["release_candidate"]
+    event_plan = tools["tools"]["pjm_operational_event_candidate_plan"]
+    source_audit = tools["tools"]["power_system_source_audit"]
 
     assert parse_period["authority"] == "deterministic_service"
     assert parse_period["deterministic_service"] is True
     assert parse_period["lineage"]["records"]
+    assert event_plan["risk"] == "read_only"
+    assert event_plan["authority"] == "deterministic_service"
+    assert event_plan["output_contract"]["type"] == "power_system_operational_event_plan"
+    assert source_audit["risk"] == "read_only"
+    assert source_audit["authority"] == "deterministic_service"
+    assert source_audit["input_contract"]["type"] == "power_system_artifact_bundle"
+    assert source_audit["output_contract"]["type"] == "power_system_source_audit"
     assert work_context["authority"] == "compatibility_alias"
     assert work_context["output_contract"]["type"] == "artemis_development_context"
     assert repo_patch["adapter"] == "cli"
@@ -80,3 +89,23 @@ def test_tool_spec_v2_metadata_is_validated_and_exposed():
     assert repo_patch["input_contract"]["type"] == "ticket_id"
     assert release_candidate["authority"] == "human_review_required"
     assert release_candidate["risk"] == "release_candidate"
+
+
+def test_pjm_operational_event_candidate_plan_tool_is_read_only_for_analysts():
+    tools = load_tool_registry(ROOT / "registries/tools.yaml", ROOT / "schemas")
+    permissions = load_tool_permissions(ROOT / "registries/tool_permissions.yaml", ROOT / "schemas")
+
+    decision = classify_tool("pjm_operational_event_candidate_plan", tools, permissions, "analyst")
+
+    assert decision.allowed is True
+    assert decision.risk == "read_only"
+
+
+def test_power_system_source_audit_tool_is_read_only_for_analysts():
+    tools = load_tool_registry(ROOT / "registries/tools.yaml", ROOT / "schemas")
+    permissions = load_tool_permissions(ROOT / "registries/tool_permissions.yaml", ROOT / "schemas")
+
+    decision = classify_tool("power_system_source_audit", tools, permissions, "analyst")
+
+    assert decision.allowed is True
+    assert decision.risk == "read_only"

@@ -1,0 +1,64 @@
+id: T-0079
+type: ticket
+title: Power system price source contract hardening
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-FUNDAMENTALS
+sprint: S-002
+layer:
+  - docs
+  - registry
+  - schema
+  - tests
+  - validation
+branch: codex/T-0079-power-system-price-source-contract-hardening
+context_profile: trading_domain
+problem: >
+  Direct PJM hourly LMP data is now source-backed, but the generic
+  power-system price feed descriptors did not yet make row-version filtering,
+  UTC delivery windows, pnode promotion requirements, and LMP component coverage
+  executable as source-product contract rules.
+tasks:
+  - Extend the generic power-system price feed schema with source-product
+    contract semantics.
+  - Seed PJM pnode, day-ahead hourly LMP, and real-time hourly LMP descriptors
+    with contract policies.
+  - Add validation that approved hourly LMP feeds require UTC delivery starts,
+    current-row filters, row version numbers, full source component coverage,
+    and approved pnode promotion semantics.
+  - Include price source contract validation in strict power-system reference
+    validation.
+  - Add regression tests and update price-domain documentation.
+acceptance_criteria:
+  - Price feed registry validates with source-product contract fields.
+  - Approved PJM hourly LMP feeds fail closed if row-current filtering,
+    component coverage, UTC delivery windows, or promotion policy is weakened.
+  - PJM pnode metadata remains effective-dated metadata and does not become a
+    price observation product.
+  - Source LMP components remain source-specific; exchange/trading product
+    expansion is not approved by this ticket.
+  - State-pack publish behavior and HotState read path remain unchanged.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_price_core.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0079
+affected_files:
+  - domain/power_system_prices.md
+  - registries/power_system_price_feeds.yaml
+  - schemas/power_system_price_feed.schema.json
+  - src/pga_workbench/services/power_prices.py
+  - src/pga_workbench/validation/runner.py
+  - tests/test_power_system_price_core.py
+change_request_required: true
+change_id: CR-0060
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added generic price source-product contract semantics and enforced the first
+  PJM hourly LMP contract rules for current rows, UTC hourly delivery windows,
+  source component coverage, and approved-pnode promotion.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0079/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0079.md

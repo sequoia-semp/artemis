@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PowerSystemArtifactProduct",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_key",
+    "display_name",
+    "commodity",
+    "operator_id",
+    "product_family",
+    "artifact_role",
+    "source_product",
+    "composition_product_key",
+    "state_pack_publish_status",
+    "source_documents",
+    "verification_status",
+    "status"
+  ],
+  "properties": {
+    "artifact_key": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+    "display_name": {"type": "string"},
+    "commodity": {"const": "power"},
+    "operator_id": {"type": "string"},
+    "product_family": {
+      "enum": [
+        "load",
+        "locational_marginal_price",
+        "generation_mix",
+        "price_shape",
+        "operational_events"
+      ]
+    },
+    "artifact_role": {"enum": ["source_product", "derived_product", "candidate_descriptor"]},
+    "source_product": {"type": "boolean"},
+    "composition_product_key": {"type": "boolean"},
+    "state_pack_publish_status": {"enum": ["approved_core", "candidate_only", "deferred"]},
+    "source_documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["authority", "url", "notes"],
+        "properties": {
+          "authority": {"type": "string"},
+          "url": {"type": "string"},
+          "notes": {"type": "string"}
+        }
+      },
+      "minItems": 1
+    },
+    "verification_status": {"enum": ["user_approved", "source_backed", "candidate"]},
+    "status": {"enum": ["approved_core", "candidate", "deferred"]}
+  }
+}

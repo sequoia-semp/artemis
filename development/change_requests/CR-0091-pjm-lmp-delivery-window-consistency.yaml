@@ -1,0 +1,31 @@
+change_id: CR-0091
+title: PJM LMP delivery window consistency
+created_at: 2026-06-06T00:00:00Z
+change_class: 3
+severity: medium
+tickets:
+  - T-0110
+problem_statement: >
+  PJM hourly LMP normalization needed to prove that source UTC delivery starts
+  are exact hourly windows and that PJM EPT source timestamps agree with the
+  UTC instant before canonical source price promotion.
+root_cause: >
+  Prior normalization parsed `datetime_beginning_utc` and preserved
+  `datetime_beginning_ept` lineage, but did not compare the two timestamp
+  fields or reject non-hourly UTC delivery starts.
+affected_files:
+  - domain/power_system_prices.md
+  - src/pga_workbench/services/power_prices.py
+  - tests/test_power_system_price_core.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_price_core.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0110
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the UTC-hour and PJM EPT consistency checks from LMP normalization,
+  revert the source timestamp documentation note, and remove the timestamp
+  regression tests.

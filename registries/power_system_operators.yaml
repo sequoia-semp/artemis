@@ -1,0 +1,30 @@
+PJM:
+  display_name: PJM Interconnection
+  commodity: power
+  operator_kind: rto_iso
+  market_code: PJM
+  balancing_authority_code: PJM
+  settlement_timezone: America/New_York
+  primary_interconnection: Eastern
+  footprint_note: Coordinates wholesale power markets and grid operations across all or parts of 13 states and the District of Columbia.
+  data_access_surfaces:
+    - pjm_data_miner_api
+    - pjm_public_web
+  supported_product_families:
+    - load
+    - locational_marginal_price
+    - generation_mix
+    - outages
+    - constraints
+  source_documents:
+    - authority: PJM Who We Are
+      url: https://www.pjm.com/about-pjm/who-we-are/MVCWhoWeAre
+      notes: Identifies PJM as a regional transmission organization coordinating wholesale electricity movement across its footprint.
+    - authority: FERC PJM market overview
+      url: https://www.ferc.gov/industries-data/electric/electric-power-markets/pjm
+      notes: Describes PJM as operating a competitive wholesale electricity market and managing grid reliability.
+    - authority: PJM Data Miner
+      url: https://www.pjm.com/markets-and-operations/etools/data-miner-2
+      notes: Identifies Data Miner as a PJM public data and API access surface used by approved source publications.
+  verification_status: official_operator_documented
+  status: approved_core

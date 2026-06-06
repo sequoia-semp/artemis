@@ -1,0 +1,35 @@
+change_id: CR-0034
+title: Power system operator registry
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: medium
+tickets:
+  - T-0053
+problem_statement: >
+  The direct PJM data spine reused string fields such as market_operator,
+  market, and iso_or_ba across source, location, feed, and calendar registries
+  without a first-class power-system operator abstraction.
+root_cause: >
+  Early PJM source passes intentionally scoped to feed-level contracts before
+  promoting operator identity into a reusable power-system registry.
+affected_files:
+  - domain/power_system_operators.md
+  - registries/power_system_operators.yaml
+  - schemas/power_system_operator.schema.json
+  - src/pga_workbench/registry.py
+  - src/pga_workbench/services/power_system_operators.py
+  - src/pga_workbench/validation/runner.py
+  - tests/test_native_validation_runner.py
+  - tests/test_power_system_operators.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_operators.py tests/test_power_system_source_catalog.py tests/test_power_system_price_core.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0053
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the operator registry, schema, service, tests, and documentation. PJM
+  source, price, generation, load, and calendar registries would retain their
+  existing string fields but lose cross-registry operator validation.

@@ -1,0 +1,61 @@
+id: T-0043
+type: ticket
+title: Daily power price shape rollups from hourly LMPs
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-FUNDAMENTALS
+sprint: S-002
+layer:
+  - docs
+  - registry
+  - schema
+  - cli
+  - tests
+branch: codex/T-0043-power-price-shape-rollups
+context_profile: trading_domain
+problem: >
+  Direct PJM hourly LMP ingestion produces source-backed hourly full-LMP points,
+  but analyst price workflows need deterministic daily PEAK, OFFPEAK, and ATC
+  shape products that are independent of source adapters.
+tasks:
+  - Add a power price shape-rule registry and schema.
+  - Add daily PJM PEAK, OFFPEAK, and ATC rule descriptors.
+  - Add a deterministic hourly-to-daily shape rollup service with explicit gaps.
+  - Add CLI commands for fixture/workspace rollups.
+  - Add registry, service, state-pack, and CLI tests.
+acceptance_criteria:
+  - Shape rules validate with schemas and duplicate-key protection.
+  - Weekday PEAK uses HE 0800-2300 EPT and excludes weekends/NERC holidays.
+  - OFFPEAK uses weekday HE 0100-0700 and 2400 EPT plus all weekend/holiday hours.
+  - ATC uses all 24 hours and remains separate from equal-MW ATC position decomposition.
+  - Incomplete days emit explicit gaps instead of inferred prices.
+  - Rollup outputs preserve input hourly price lineage and rule IDs.
+  - CLI can build rollup artifacts from existing price surface JSON.
+required_tests:
+  - .venv/bin/pytest tests/test_power_price_shape_rollups.py tests/test_power_system_price_core.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0043
+affected_files:
+  - domain/power_price_shape_rules.md
+  - registries/power_price_shape_rules.yaml
+  - registries/tools.yaml
+  - schemas/power_price_shape_rule.schema.json
+  - schemas/power_price_shape_state.schema.json
+  - src/pga_workbench/services/power_price_shapes.py
+  - src/pga_workbench/models.py
+  - src/pga_workbench/registry.py
+  - src/pga_workbench/cli.py
+  - tests/test_power_price_shape_rollups.py
+change_request_required: true
+change_id: CR-0024
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Implemented registry-backed daily PEAK, OFFPEAK, and ATC shape rules, a
+  deterministic hourly-to-daily rollup service with explicit incomplete-day
+  gaps, CLI commands, HotState-ready artifacts, and regression tests.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0043/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0043.md

@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PowerPriceShapeRule",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "rule_id",
+    "display_name",
+    "market",
+    "commodity",
+    "shape",
+    "calendar",
+    "granularity",
+    "hour_basis",
+    "aggregation",
+    "source_documents",
+    "verification_status",
+    "status"
+  ],
+  "properties": {
+    "rule_id": {"type": "string", "pattern": "^[A-Z0-9_]+$"},
+    "display_name": {"type": "string"},
+    "market": {"type": "string"},
+    "commodity": {"const": "power"},
+    "shape": {"enum": ["PEAK", "OFFPEAK", "ATC"]},
+    "calendar": {"type": "string"},
+    "holiday_calendar": {"type": ["string", "null"]},
+    "granularity": {"enum": ["daily"]},
+    "hour_basis": {"enum": ["hour_ending_ept"]},
+    "include_weekdays": {"type": "boolean"},
+    "include_weekends": {"type": "boolean"},
+    "include_nerc_holidays": {"type": "boolean"},
+    "weekday_hours_ending": {
+      "type": "array",
+      "items": {"type": "integer", "minimum": 1, "maximum": 24}
+    },
+    "weekend_hours_ending": {
+      "type": "array",
+      "items": {"type": "integer", "minimum": 1, "maximum": 24}
+    },
+    "holiday_hours_ending": {
+      "type": "array",
+      "items": {"type": "integer", "minimum": 1, "maximum": 24}
+    },
+    "aggregation": {"enum": ["arithmetic_average"]},
+    "source_documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["authority", "url", "notes"],
+        "properties": {
+          "authority": {"type": "string"},
+          "url": {"type": "string"},
+          "notes": {"type": "string"}
+        }
+      },
+      "minItems": 1
+    },
+    "verification_status": {"enum": ["candidate", "official_exchange_verified"]},
+    "status": {"enum": ["candidate", "approved_core"]}
+  }
+}

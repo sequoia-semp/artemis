@@ -1,0 +1,30 @@
+change_id: CR-0049
+title: PJM morning candidate pipeline
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: medium
+tickets:
+  - T-0068
+problem_statement: >
+  Power-system bundles can be built and staged as candidates in separate steps,
+  but there is no single candidate-only workflow that runs the approved PJM
+  morning bundle path and stages the result without publishing accepted state.
+root_cause: >
+  Bundle build and state candidate staging were introduced as independent
+  commands before an end-to-end candidate workflow was added.
+affected_files:
+  - domain/power_system_ingestion.md
+  - domain/power_system_state_candidates.md
+  - src/pga_workbench/cli.py
+  - tests/test_power_system_state.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_state.py tests/test_power_system_ingestion.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0068
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the PJM morning pipeline command. Separate bundle build and candidate
+  staging commands remain intact.

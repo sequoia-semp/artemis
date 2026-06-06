@@ -1,0 +1,28 @@
+PJM_GEN_BY_FUEL:
+  display_name: PJM generation by fuel type
+  source: PJM Data Miner
+  market: PJM
+  commodity: power
+  source_system: iso_rto_api
+  product_type: generation_mix
+  data_miner_feed: gen_by_fuel
+  granularity: hourly
+  value_unit: MW
+  time_columns:
+    delivery_start_utc: datetime_beginning_utc
+    delivery_start_ept: datetime_beginning_ept
+  fuel_columns:
+    fuel_type: fuel_type
+    is_renewable: is_renewable
+  value_columns:
+    mw: mw
+    fuel_percentage_of_total: fuel_percentage_of_total
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents gen_by_fuel fields including datetime_beginning_utc, datetime_beginning_ept, fuel_type, mw, fuel_percentage_of_total, and is_renewable.
+    - authority: PJM Data Viewer Generation By Fuel Type
+      url: https://dataviewer.pjm.com/dataviewer/pages/public/gen-by-fuel.jsf
+      notes: Establishes the PJM public generation-by-fuel publication context.
+  verification_status: official_pjm_documented
+  status: approved_core

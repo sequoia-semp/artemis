@@ -1,0 +1,49 @@
+id: T-0088
+type: ticket
+title: Heatmap retention policy windows
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-PRICES
+sprint: S-002
+layer:
+  - cli
+  - validation
+  - tests
+branch: codex/T-0088-heatmap-retention-policy-windows
+context_profile: trading_domain
+problem: >
+  Forward price heatmap defaults matched the PJM hourly LMP retention windows,
+  but the builder and CLI still used local defaults instead of reading the
+  machine-readable retention policy.
+tasks:
+  - Add retention-policy lookup for heatmap history windows.
+  - Keep explicit history-day overrides compatible for direct service callers.
+  - Wire CLI heatmap builds to pass the registry directory into the heatmap
+    builder.
+  - Add regression tests for policy-backed history windows and CLI parsing.
+acceptance_criteria:
+  - Forward price heatmap history windows can be read from
+    `pjm_power_prices.historical_source_policy.derived_view_windows_days`.
+  - Existing default heatmap behavior remains 1d, 5d, 10d, and 30d.
+  - CLI heatmap commands expose a registry path for retention-backed windows.
+  - State-pack publish behavior and HotState read path remain unchanged.
+required_tests:
+  - .venv/bin/pytest tests/test_forward_price_heatmap.py tests/test_power_system_retention.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0088
+affected_files:
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/heatmap.py
+  - tests/test_forward_price_heatmap.py
+change_request_required: true
+change_id: CR-0069
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Wired forward price heatmap history windows to the power-system retention
+  policy and exposed registry selection on CLI heatmap commands.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0088/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0088.md

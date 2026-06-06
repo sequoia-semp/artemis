@@ -1,0 +1,29 @@
+change_id: CR-0073
+title: Multi-surface query-plan bundle evidence
+created_at: 2026-06-06T00:00:00Z
+change_class: 4
+severity: medium
+tickets:
+  - T-0092
+problem_statement: >
+  Power-system ingestion bundles needed to retain the generic multi-surface
+  preflight query-plan evidence introduced for direct PJM source readiness,
+  not only the legacy hourly LMP query-plan field.
+root_cause: >
+  Bundle preflight compaction predated multi-surface query-plan reports and
+  copied only the compatibility `query_plan` field.
+affected_files:
+  - domain/power_system_ingestion.md
+  - src/pga_workbench/services/power_system_ingestion.py
+  - tests/test_power_system_ingestion.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_ingestion.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0092
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the `query_plans` field from preflight bundle evidence and keep the
+  legacy `query_plan` compatibility field.

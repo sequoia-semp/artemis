@@ -1,0 +1,30 @@
+change_id: CR-0071
+title: HotState-only analyst views
+created_at: 2026-06-06T00:00:00Z
+change_class: 4
+severity: medium
+tickets:
+  - T-0090
+problem_statement: >
+  Analyst views needed a direct accepted-state read path so PJM fundamentals and
+  current-day views can be built through HotState without requiring local input
+  fixture files.
+root_cause: >
+  The analyst view CLI merged HotState artifacts only after reading a required
+  input JSON payload, which kept the accepted-state path dependent on a file
+  input even when all required artifacts were already in HotState.
+affected_files:
+  - docs/user/analyst_mode.md
+  - src/pga_workbench/cli.py
+  - tests/test_analyst_views.py
+tests_required:
+  - .venv/bin/pytest tests/test_analyst_views.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0090
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Restore required analyst view input JSON and remove the HotState-only payload
+  branch. Existing file-plus-HotState merge behavior would remain available.

@@ -1,0 +1,31 @@
+change_id: CR-0044
+title: Power system ingestion bundle
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: medium
+tickets:
+  - T-0063
+problem_statement: >
+  PJM direct-source loaders can build individual fundamentals, price,
+  generation mix, and price-shape artifacts, but there is no single deterministic
+  bundle command that assembles the approved morning artifact set for inspection
+  or state-pack candidate building.
+root_cause: >
+  Source/product passes were implemented incrementally by artifact family before
+  adding an orchestration layer across fundamentals and prices.
+affected_files:
+  - domain/power_system_ingestion.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_ingestion.py
+  - tests/test_power_system_ingestion.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_ingestion.py tests/test_artifact_composition.py tests/test_artemis_cli.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0063
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the bundle service and CLI commands. Existing individual PJM artifact
+  builders, composition CLI, and state-pack build/publish paths remain intact.

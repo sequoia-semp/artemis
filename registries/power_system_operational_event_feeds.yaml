@@ -1,0 +1,65 @@
+PJM_FRCSTD_GEN_OUTAGES:
+  display_name: PJM forecast generation outages
+  source: PJM Data Miner
+  operator_id: PJM
+  market: PJM
+  commodity: power
+  source_system: iso_rto_api
+  event_family: generation_outage
+  event_class: forecast_generation_outage
+  data_miner_feed: frcstd_gen_outages
+  granularity: event
+  timestamp_policy: source_specific_pending
+  identifier_policy: candidate_source_keys_pending
+  topology_linkage: not_approved
+  normalization_status: candidate_descriptor_only
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Lists forecast generation outages as a PJM Data Miner feed; outage lifecycle semantics are not approved by this descriptor.
+  verification_status: candidate
+  status: candidate
+
+PJM_DA_TRANSCONSTRAINTS:
+  display_name: PJM day-ahead transmission constraints
+  source: PJM Data Miner
+  operator_id: PJM
+  market: PJM
+  commodity: power
+  source_system: iso_rto_api
+  event_family: transmission_constraint
+  event_class: day_ahead_transmission_constraint
+  data_miner_feed: da_transconstraints
+  granularity: event
+  timestamp_policy: source_specific_pending
+  identifier_policy: candidate_source_keys_pending
+  topology_linkage: not_approved
+  normalization_status: candidate_descriptor_only
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Lists day-ahead transmission constraints as a PJM Data Miner feed; constraint identity and topology linkage are not approved by this descriptor.
+  verification_status: candidate
+  status: candidate
+
+PJM_RT_TRANSN_CONSTRAINTS:
+  display_name: PJM real-time transmission constraints
+  source: PJM Data Miner
+  operator_id: PJM
+  market: PJM
+  commodity: power
+  source_system: iso_rto_api
+  event_family: transmission_constraint
+  event_class: real_time_transmission_constraint
+  data_miner_feed: rt_transn_constraints
+  granularity: event
+  timestamp_policy: source_specific_pending
+  identifier_policy: candidate_source_keys_pending
+  topology_linkage: not_approved
+  normalization_status: candidate_descriptor_only
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Lists real-time transmission constraints as a PJM Data Miner feed; constraint identity and topology linkage are not approved by this descriptor.
+  verification_status: candidate
+  status: candidate

@@ -1,0 +1,35 @@
+change_id: CR-0050
+title: Metadata verification evidence on PJM bundles
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: medium
+tickets:
+  - T-0069
+problem_statement: >
+  The standalone PJM source metadata verifier can prove that registered Data
+  Miner definitions still expose required source fields, but PJM bundle and
+  candidate pipeline outputs do not yet carry that evidence or gate live source
+  fetches on definition verification.
+root_cause: >
+  Metadata verification was introduced as a separate data-source command before
+  it was integrated into the morning bundle and candidate-only pipeline path.
+affected_files:
+  - domain/power_system_ingestion.md
+  - domain/power_system_source_metadata.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_ingestion.py
+  - src/pga_workbench/services/power_system_preflight.py
+  - tests/test_power_system_ingestion.py
+  - tests/test_power_system_preflight.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_ingestion.py tests/test_power_system_source_metadata.py tests/test_power_system_preflight.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0069
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the bundle metadata verification evidence parameter and CLI flags.
+  Keep the standalone metadata verification command and existing bundle,
+  preflight, and candidate-staging behavior intact.

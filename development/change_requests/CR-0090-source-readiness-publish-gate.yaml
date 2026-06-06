@@ -1,0 +1,33 @@
+change_id: CR-0090
+title: Source readiness publish gate
+created_at: 2026-06-06T00:00:00Z
+change_class: 3
+severity: medium
+tickets:
+  - T-0109
+problem_statement: >
+  Accepted production state packs could include approved direct-source
+  publication evidence without proving that the selected feeds had matching
+  readiness, metadata verification, and raw-fetch evidence.
+root_cause: >
+  Prior publish validation focused on blocking candidate source publications
+  and did not yet enforce the positive evidence required for approved
+  direct-source publication promotion.
+affected_files:
+  - docs/architecture/direct_pjm_authoritative_sources.md
+  - src/pga_workbench/services/power_system_ingestion.py
+  - src/pga_workbench/services/power_system_sources.py
+  - tests/test_governance_files.py
+  - tests/test_power_system_state.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_state.py tests/test_power_system_source_catalog.py tests/test_governance_files.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0109
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove selected-registry-feed evidence from source-publication bundles,
+  remove the approved-source publish evidence gate, revert the architecture
+  note, and remove the publish gate regression tests.

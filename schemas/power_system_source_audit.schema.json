@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PowerSystemSourceAudit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "audit_id",
+    "bundle_id",
+    "as_of",
+    "operator_id",
+    "source_system",
+    "data_environment",
+    "ready",
+    "blockers",
+    "summary",
+    "preflight",
+    "metadata_verification",
+    "source_readiness",
+    "source_publications",
+    "raw_source_fetches",
+    "operational_event_plan",
+    "contains_raw_records",
+    "contains_secret_values"
+  ],
+  "properties": {
+    "audit_id": {"type": "string", "minLength": 1},
+    "bundle_id": {"type": "string", "minLength": 1},
+    "as_of": {"type": "string", "minLength": 1},
+    "operator_id": {"type": "string", "minLength": 1},
+    "source_system": {"type": "string", "minLength": 1},
+    "data_environment": {"type": "string", "minLength": 1},
+    "ready": {"type": "boolean"},
+    "blockers": {"type": "array", "items": {"type": "string"}},
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_fetch_rows",
+        "raw_fetch_manifest_count",
+        "candidate_publication_count",
+        "blocked_operational_event_publication_count",
+        "blocked_operational_event_feed_count"
+      ],
+      "properties": {
+        "source_fetch_rows": {"type": "integer", "minimum": 0},
+        "raw_fetch_manifest_count": {"type": "integer", "minimum": 0},
+        "candidate_publication_count": {"type": "integer", "minimum": 0},
+        "blocked_operational_event_publication_count": {"type": "integer", "minimum": 0},
+        "blocked_operational_event_feed_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "preflight": {"type": ["object", "null"], "additionalProperties": true},
+    "metadata_verification": {"type": ["object", "null"], "additionalProperties": true},
+    "source_readiness": {"type": ["object", "null"], "additionalProperties": true},
+    "source_publications": {"type": ["object", "null"], "additionalProperties": true},
+    "raw_source_fetches": {"type": ["object", "null"], "additionalProperties": true},
+    "operational_event_plan": {"type": ["object", "null"], "additionalProperties": true},
+    "contains_raw_records": {"const": false},
+    "contains_secret_values": {"const": false}
+  }
+}

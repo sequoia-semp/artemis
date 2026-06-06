@@ -1,0 +1,55 @@
+id: T-0111
+type: ticket
+title: HotState price query helpers
+status: validated
+owner: user
+risk: low
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-DIRECT-SOURCE
+sprint: S-002
+layer:
+  - validation
+  - docs
+  - tests
+branch: codex/T-0111-hotstate-price-query-helpers
+context_profile: trading_domain
+problem: >
+  Analyst and heatmap code could read accepted price_surface_points from
+  HotState artifacts, but there was no explicit query helper separating
+  source-published price points from derived shape products.
+tasks:
+  - Add HotState price_surface_points filtering helpers.
+  - Add source_price_points and derived_price_shape_points read paths.
+  - Update heatmap HotState reads to use the helper instead of direct artifact
+    access.
+  - Document the accepted-state price read path boundary.
+  - Add regression coverage for source versus derived price-point separation.
+acceptance_criteria:
+  - HotState can return all accepted price-surface points as typed
+    PriceSurfacePoint records.
+  - HotState can filter by commodity, location, source_role, and source
+    artifact lineage.
+  - Source-published points and derived shape points remain separate.
+  - Heatmap CLI still reads accepted price points through HotState.
+  - No source adapter, normalization, state-pack publish, or cache mutation
+    behavior changes.
+required_tests:
+  - .venv/bin/pytest tests/test_hot_state_price_queries.py tests/test_forward_price_heatmap.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0111
+affected_files:
+  - docs/architecture/direct_pjm_authoritative_sources.md
+  - docs/user/analyst_mode.md
+  - src/pga_workbench/cache/hot_state.py
+  - src/pga_workbench/cli.py
+  - tests/test_hot_state_price_queries.py
+change_request_required: true
+change_id: CR-0092
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added typed HotState price query helpers for accepted source-published and
+  derived price points, and moved heatmap HotState reads onto the helper path.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0111/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0111.md

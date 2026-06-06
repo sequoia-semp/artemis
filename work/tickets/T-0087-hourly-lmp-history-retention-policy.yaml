@@ -1,0 +1,58 @@
+id: T-0087
+type: ticket
+title: Hourly LMP history retention policy
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-PRICES
+sprint: S-002
+layer:
+  - registry
+  - schema
+  - validation
+  - docs
+  - tests
+branch: codex/T-0087-hourly-lmp-history-retention-policy
+context_profile: trading_domain
+problem: >
+  PJM hourly LMP retention documented 30-day hot history and source-restorable
+  cold history, but the policy did not yet encode which approved query plan and
+  derived view windows support direct-PJM heatmap history.
+tasks:
+  - Add generic historical source policy fields to power-system artifact
+    retention policies.
+  - Register PJM hourly LMP history as source-restorable through the approved
+    hourly LMP query plan.
+  - Encode the 1d, 5d, 10d, and 30d heatmap windows in retention policy.
+  - Validate query-plan references, hot-history bounds, and PJM row-version
+    policy.
+  - Add regression tests and documentation.
+acceptance_criteria:
+  - "`pjm_power_prices` retention names `PJM_DATAMINER_HOURLY_LMP_DAILY_CHUNKS`
+    as the approved source-restoration query plan."
+  - "`pjm_power_prices` retention encodes 1d, 5d, 10d, and 30d heatmap windows."
+  - Unknown historical query-plan references fail closed.
+  - Derived view windows beyond the approved hot history horizon fail closed.
+  - State-pack publish behavior and HotState read path remain unchanged.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_retention.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0087
+affected_files:
+  - domain/power_system_prices.md
+  - domain/power_system_retention.md
+  - registries/power_system_artifact_retention_policies.yaml
+  - schemas/power_system_artifact_retention_policy.schema.json
+  - src/pga_workbench/services/power_system_retention.py
+  - tests/test_power_system_retention.py
+change_request_required: true
+change_id: CR-0068
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added machine-readable historical source policy for power-system artifacts and
+  enforced PJM hourly LMP heatmap history retention semantics.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0087/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0087.md

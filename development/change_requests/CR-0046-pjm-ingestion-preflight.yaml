@@ -1,0 +1,33 @@
+change_id: CR-0046
+title: PJM ingestion preflight
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: medium
+tickets:
+  - T-0065
+problem_statement: >
+  Direct PJM ingestion can build bundles and verify source metadata, but there
+  is no non-mutating readiness report that checks credentials, selected feeds,
+  source access policy, metadata expectations, and LMP query-plan budgets before
+  a live run.
+root_cause: >
+  Source access policy, query planning, metadata verification, and bundle
+  orchestration were added as separate capabilities before a single preflight
+  gate was introduced.
+affected_files:
+  - domain/power_system_preflight.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_preflight.py
+  - tests/test_power_system_preflight.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_preflight.py tests/test_source_access_policies.py tests/test_source_query_plans.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0065
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the preflight service and CLI command. Existing source access policy,
+  source query planning, metadata verification, and bundle commands remain
+  intact.

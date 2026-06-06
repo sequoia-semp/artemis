@@ -1,0 +1,49 @@
+id: T-0072
+type: ticket
+title: PJM live smoke source error evidence
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - validation
+  - docs
+  - tests
+branch: codex/T-0072-pjm-live-smoke-source-error-evidence
+context_profile: trading_domain
+problem: >
+  A late source-row failure in PJM live smoke can prevent the command from
+  writing the redacted readiness evidence already collected from preflight,
+  metadata verification, and earlier source surfaces.
+tasks:
+  - Convert per-source row fetch failures into redacted smoke evidence.
+  - Mark smoke reports not ready when any source-row fetch errors.
+  - Preserve successful evidence from earlier source-row checks.
+  - Document source-row error evidence behavior.
+acceptance_criteria:
+  - Successful source-row checks carry success status and row counts.
+  - Empty source-row checks remain blockers.
+  - Failed source-row checks produce redacted error evidence instead of crashing the report builder.
+  - Failed source-row checks mark the report not ready with a blocker.
+  - No accepted-state publish path, shared cache, or source semantic approval is changed.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_live_smoke.py tests/test_power_system_preflight.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0072
+affected_files:
+  - domain/power_system_preflight.md
+  - src/pga_workbench/services/power_system_live_smoke.py
+  - tests/test_power_system_live_smoke.py
+change_request_required: true
+change_id: CR-0053
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added per-source smoke fetch statuses and redacted error evidence so source
+  row failures become blockers in the written smoke report instead of crashing
+  the report builder. Successful and empty source-row checks remain explicit.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0072/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0072.md

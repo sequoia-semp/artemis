@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PowerGenerationFuel",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["fuel_id", "display_name", "fuel_family", "is_renewable", "source_aliases", "status"],
+  "properties": {
+    "fuel_id": {"type": "string", "pattern": "^[A-Z0-9_]+$"},
+    "display_name": {"type": "string"},
+    "fuel_family": {"enum": ["coal", "gas", "nuclear", "renewable", "hydro", "oil", "storage", "other"]},
+    "is_renewable": {"type": "boolean"},
+    "source_aliases": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {"type": "string"},
+        "minItems": 1,
+        "uniqueItems": true
+      }
+    },
+    "status": {"enum": ["approved_core", "candidate"]}
+  }
+}

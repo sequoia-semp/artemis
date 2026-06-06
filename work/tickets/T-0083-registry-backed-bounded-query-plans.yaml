@@ -1,0 +1,61 @@
+id: T-0083
+type: ticket
+title: Registry-backed bounded query plans
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-FUNDAMENTALS
+sprint: S-002
+layer:
+  - registry
+  - schema
+  - docs
+  - tests
+branch: codex/T-0083-registry-backed-bounded-query-plans
+context_profile: trading_domain
+problem: >
+  PJM load and generation bounded interval request records existed in service
+  code, but the plan IDs, applicable feeds, date-window mode, and publication
+  lineage were not yet represented in the generic power-system query-plan
+  registry.
+tasks:
+  - Extend the power-system source query plan schema for generic bounded
+    interval plans and non-pnode query dimensions.
+  - Add approved PJM Data Miner bounded interval plan records for load and
+    generation-by-fuel.
+  - Make bounded interval request builders consume registry records for feed
+    applicability, publication lineage, access policy, and date-window bounds.
+  - Add regression tests for registry lineage and unsupported-feed rejection.
+  - Update source catalog documentation for registry-backed bounded plans.
+acceptance_criteria:
+  - Power-system query plans can represent both daily chunked LMP requests and
+    bounded interval fundamentals requests.
+  - PJM load bounded plans list the four approved load feed descriptors and
+    preserve source publication lineage.
+  - PJM generation mix bounded plans list `PJM_GEN_BY_FUEL` and preserve source
+    publication lineage.
+  - Bounded request builders reject feeds outside the approved registry plan
+    before constructing Data Miner requests.
+  - State-pack publish behavior and HotState read path remain unchanged.
+required_tests:
+  - .venv/bin/pytest tests/test_source_query_plans.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0083
+affected_files:
+  - domain/power_system_source_catalog.md
+  - registries/power_system_source_query_plans.yaml
+  - schemas/power_system_source_query_plan.schema.json
+  - src/pga_workbench/services/source_query_plans.py
+  - tests/test_source_query_plans.py
+change_request_required: true
+change_id: CR-0064
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added generic bounded interval query-plan schema support, registered PJM load
+  and generation mix bounded plans, and wired bounded request builders to those
+  records.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0083/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0083.md

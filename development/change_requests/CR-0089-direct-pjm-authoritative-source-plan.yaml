@@ -1,0 +1,31 @@
+change_id: CR-0089
+title: Direct PJM authoritative source plan
+created_at: 2026-06-06T00:00:00Z
+change_class: 4
+severity: low
+tickets:
+  - T-0108
+problem_statement: >
+  Direct PJM fundamentals and price work needed a single architecture planning
+  record that rationalizes authoritative source objectives, current state,
+  scope decisions, work decomposition, and high-risk boundaries.
+root_cause: >
+  Prior validated slices implemented source descriptors, query planning,
+  metadata verification, raw-fetch evidence, source audit, and registry
+  discovery, but the cross-domain source incorporation plan was scattered
+  across tickets and reports.
+affected_files:
+  - docs/README.md
+  - docs/architecture/direct_pjm_authoritative_sources.md
+  - tests/test_governance_files.py
+tests_required:
+  - .venv/bin/pytest tests/test_governance_files.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0108
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the direct PJM authoritative-source architecture record, remove its
+  docs-index link, and remove the governance assertions.

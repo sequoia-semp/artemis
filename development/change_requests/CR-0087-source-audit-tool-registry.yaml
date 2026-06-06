@@ -1,0 +1,27 @@
+change_id: CR-0087
+title: Source audit tool registry
+created_at: 2026-06-06T00:00:00Z
+change_class: 4
+severity: low
+tickets:
+  - T-0106
+problem_statement: >
+  The source-audit command needed to be represented in the governed tool
+  registry so read-only analyst and runtime workflows can discover it.
+root_cause: >
+  T-0105 added the command and deterministic service, but the runtime tool
+  registry had not been extended with a read-only entry for it.
+affected_files:
+  - registries/tools.yaml
+  - tests/test_tool_permissions.py
+tests_required:
+  - .venv/bin/pytest tests/test_tool_permissions.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0106
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the source-audit tool registry entry and its permission regression
+  tests. The CLI command remains available from T-0105.

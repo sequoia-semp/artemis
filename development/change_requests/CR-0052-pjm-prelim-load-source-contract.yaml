@@ -1,0 +1,33 @@
+change_id: CR-0052
+title: PJM preliminary load source contract correction
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: medium
+tickets:
+  - T-0071
+problem_statement: >
+  Live PJM Data Miner metadata for hrl_load_prelim exposes load_area but does
+  not expose the zone or area alternates currently required by the registry,
+  and live rows are zonal rather than RTO-defaulted, causing live candidate
+  metadata verification and RTO-filtered smoke checks to fail for the
+  preliminary load feed.
+root_cause: >
+  The preliminary load feed inherited the broader metered-load area field list
+  and RTO default filter before live feed metadata verification was exercised
+  against the credentialed PJM metadata API.
+affected_files:
+  - domain/pjm_fundamentals.md
+  - registries/pjm_fundamental_feeds.yaml
+  - tests/test_power_system_source_metadata.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_source_metadata.py tests/test_pjm_fundamentals_semantic_core.py tests/test_power_system_live_smoke.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0071
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Restore the prior hrl_load_prelim area_columns list. Live metadata
+  verification for candidate preliminary load would fail again until a separate
+  source mapping is introduced.

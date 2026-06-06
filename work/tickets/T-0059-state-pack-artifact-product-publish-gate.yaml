@@ -1,0 +1,51 @@
+id: T-0059
+type: ticket
+title: State-pack artifact product publish gate
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - docs
+  - validation
+  - tests
+branch: codex/T-0059-state-pack-artifact-product-publish-gate
+context_profile: trading_domain
+problem: >
+  Candidate-only registered artifact products must not be accepted into Morning
+  State Packs simply because their artifact mapping is schema-valid.
+tasks:
+  - Add publish-status validation for registered artifact product keys.
+  - Invoke artifact product publish-status validation from state-pack validation.
+  - Preserve existing behavior for unregistered legacy artifact keys.
+  - Add regression tests proving candidate-only artifact products fail before publish.
+  - Document the publish gate.
+acceptance_criteria:
+  - Registered approved artifact products can validate in state packs.
+  - Registered candidate-only artifact products fail candidate state-pack validation.
+  - Unregistered legacy artifact keys continue to validate under existing checks.
+  - No source normalization, accepted-state mutation, or cache mutation policy changes are introduced.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_artifact_products.py tests/test_workbench_mvp.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0059
+affected_files:
+  - domain/power_system_artifact_products.md
+  - src/pga_workbench/services/power_system_artifact_products.py
+  - src/pga_workbench/state/packs.py
+  - tests/test_power_system_artifact_products.py
+  - tests/test_workbench_mvp.py
+change_request_required: true
+change_id: CR-0040
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added registered artifact product publish-status validation to state-pack
+  candidate validation, blocking candidate-only artifact products such as
+  operational event descriptors while preserving legacy unregistered artifact
+  behavior.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0059/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0059.md

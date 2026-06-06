@@ -58,9 +58,7 @@ NI = 33092315 = N ILLINOIS HUB
 ```
 
 ICE contract mechanics are verified from official ICE product specifications.
-The PJM pnode mappings are public-example-backed and remain marked as pending a
-committed PJM pnode export fixture before being promoted to fully
-official-ISO-verified status.
+PJM pnode identities are verified by the committed PJM Data Miner pnode fixture.
 
 ## PJM Western Hub RT Peak Demo
 
@@ -81,8 +79,7 @@ pnode_type = HUB
 ```
 
 ICE contract mechanics are verified from official ICE product specifications.
-The exact `51288 = WESTERN HUB` pnode mapping is user-approved for this core
-semantic demo and remains marked as pending a committed PJM pnode export fixture.
+The `51288 = WESTERN HUB` pnode mapping is verified by the committed PJM Data Miner pnode fixture.
 
 ## ICE Gas Contract Demo Grid
 

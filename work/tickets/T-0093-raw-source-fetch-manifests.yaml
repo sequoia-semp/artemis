@@ -1,0 +1,59 @@
+id: T-0093
+type: ticket
+title: Raw source fetch manifests
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-DIRECT-SOURCE
+sprint: S-002
+layer:
+  - schema
+  - validation
+  - docs
+  - tests
+  - agent_runtime
+branch: codex/T-0093-raw-source-fetch-manifests
+context_profile: trading_domain
+problem: >
+  Direct PJM live fetches normalized source rows into artifacts but did not
+  retain a generic, redacted acquisition manifest proving what bounded source
+  requests were executed and what result counts were received.
+tasks:
+  - Add a generic power-system raw source fetch manifest schema.
+  - Add deterministic manifest construction with raw-record hashing and no raw
+    rows or credential values.
+  - Attach manifests to PJM live load, generation mix, and LMP artifact builds.
+  - Preserve existing fixture-backed artifact shapes.
+  - Document the manifest boundary as evidence, not a source product.
+acceptance_criteria:
+  - Raw fetch manifests validate against a schema.
+  - Manifests include request/result metadata and raw-record hashes.
+  - Manifests explicitly mark raw rows and secret values absent.
+  - PJM live build helpers can produce manifests without changing existing
+    helper return contracts.
+  - Fixture builds do not synthesize manifests.
+  - No state-pack publish semantics change.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_raw_fetches.py
+  - .venv/bin/pytest tests/test_pjm_fundamentals_semantic_core.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0093
+affected_files:
+  - domain/power_system_ingestion.md
+  - schemas/power_system_raw_fetch_manifest.schema.json
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/artifact_composition.py
+  - src/pga_workbench/services/power_system_raw_fetches.py
+  - tests/test_pjm_fundamentals_semantic_core.py
+  - tests/test_power_system_raw_fetches.py
+change_request_required: true
+change_id: CR-0074
+implemented_at: '2026-06-06T00:00:00Z'
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0093/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0093.md
+implementation_summary: >
+  Added generic raw source fetch manifests and attached them to PJM live source
+  artifact builds as redacted acquisition evidence.

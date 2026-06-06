@@ -1,0 +1,31 @@
+change_id: CR-0033
+title: Power price shape HotState analyst view context
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: medium
+tickets:
+  - T-0052
+problem_statement: >
+  PJM hourly LMP and derived daily shape artifacts could publish through state
+  packs, but analyst views did not yet receive deterministic view-ready price
+  context from the accepted shape artifacts.
+root_cause: >
+  The price source and shape rollup passes focused on authoritative hourly
+  source normalization, component separation, calendar-backed shape math, and
+  gaps before adding HotState view payload shaping.
+affected_files:
+  - domain/power_price_shape_rules.md
+  - src/pga_workbench/services/power_price_shapes.py
+  - tests/test_power_price_shape_rollups.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_price_shape_rollups.py tests/test_analyst_views.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0052
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove price shape view payload derivation and its tests. Hourly PJM LMP
+  source artifacts and deterministic daily shape rollups remain intact, but
+  analyst views would no longer receive price shape context from HotState.

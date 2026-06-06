@@ -1,0 +1,31 @@
+change_id: CR-0075
+title: Source publication publish gate
+created_at: 2026-06-06T00:00:00Z
+change_class: 3
+severity: high
+tickets:
+  - T-0094
+problem_statement: >
+  Accepted-state publishing needed to account for source publication evidence,
+  not only artifact product status, so candidate PJM source publications cannot
+  become authoritative production state through a bundle.
+root_cause: >
+  Source publication lifecycle evidence was introduced after the original
+  artifact-product publish gate and was not yet checked during promotion.
+affected_files:
+  - domain/power_system_state_candidates.md
+  - src/pga_workbench/services/power_system_sources.py
+  - src/pga_workbench/state/packs.py
+  - tests/test_power_system_state.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_state.py
+  - .venv/bin/pytest tests/test_power_system_source_catalog.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0094
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the source-publication publish gate from `publish_candidate_state_pack`;
+  candidate staging and artifact-product gates remain unchanged.

@@ -1,0 +1,30 @@
+change_id: CR-0094
+title: HotState gap query helpers
+created_at: 2026-06-06T00:00:00Z
+change_class: 4
+severity: low
+tickets:
+  - T-0113
+problem_statement: >
+  Accepted-state explicit gaps needed a governed HotState read helper so
+  Analyst and future UI paths can present missing source-backed data without
+  direct artifact parsing or synthetic fills.
+root_cause: >
+  Fundamental and price-shape artifacts carried gap arrays, but HotState only
+  exposed whole artifact mappings and did not provide a generic gap read path.
+affected_files:
+  - docs/architecture/direct_pjm_authoritative_sources.md
+  - docs/user/analyst_mode.md
+  - src/pga_workbench/cache/hot_state.py
+  - tests/test_hot_state_gap_queries.py
+tests_required:
+  - .venv/bin/pytest tests/test_hot_state_gap_queries.py tests/test_hot_state_fundamental_queries.py tests/test_hot_state_price_queries.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0113
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the HotState gap query helpers, revert the explicit-gap documentation
+  notes, and remove the gap helper regression tests.

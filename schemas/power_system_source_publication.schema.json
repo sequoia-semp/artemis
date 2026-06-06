@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PowerSystemSourcePublication",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "publication_id",
+    "display_name",
+    "market_operator",
+    "market",
+    "commodity",
+    "source_kind",
+    "access_surface",
+    "product_family",
+    "source_feed_names",
+    "contract_families",
+    "canonical_roles",
+    "publication_lifecycle",
+    "query_planning",
+    "terms",
+    "source_documents",
+    "verification_status",
+    "status"
+  ],
+  "properties": {
+    "publication_id": {"type": "string", "pattern": "^[A-Z0-9_]+$"},
+    "display_name": {"type": "string"},
+    "market_operator": {"type": "string"},
+    "market": {"type": "string"},
+    "commodity": {"const": "power"},
+    "source_kind": {"enum": ["iso_rto_api", "iso_rto_publication"]},
+    "access_surface": {"enum": ["pjm_data_miner_api", "pjm_public_web"]},
+    "product_family": {
+      "enum": [
+        "load",
+        "locational_marginal_price",
+        "pricing_node_master",
+        "generation",
+        "outages",
+        "constraints",
+        "interchange",
+        "ancillary_services"
+      ]
+    },
+    "source_feed_names": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "registry_feed_ids": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "contract_families": {
+      "type": "array",
+      "items": {"enum": ["fundamentals", "iso_load", "market_prices", "outages", "fuel_mix", "constraints"]},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "canonical_roles": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "source_observation",
+          "latest_curve",
+          "revision_history",
+          "metadata",
+          "source_price",
+          "source_constraint",
+          "source_outage",
+          "candidate_expansion"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "publication_lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cadence",
+        "market_day_basis",
+        "publication_finality",
+        "revision_policy",
+        "retention_alignment",
+        "authoritative_use"
+      ],
+      "properties": {
+        "cadence": {
+          "enum": [
+            "real_time_interval",
+            "hourly",
+            "daily",
+            "effective_dated",
+            "event_driven",
+            "mixed",
+            "source_specific_pending"
+          ]
+        },
+        "market_day_basis": {
+          "enum": [
+            "calendar_day",
+            "operating_day",
+            "effective_date",
+            "not_applicable",
+            "source_specific_pending"
+          ]
+        },
+        "publication_finality": {
+          "enum": [
+            "preliminary",
+            "final",
+            "revisioned",
+            "row_versioned",
+            "effective_dated",
+            "mixed",
+            "candidate_pending"
+          ]
+        },
+        "revision_policy": {
+          "enum": [
+            "none_expected",
+            "latest_and_revision_history_separate",
+            "row_version_current_filter_required",
+            "effective_dated_versions",
+            "source_specific_pending"
+          ]
+        },
+        "retention_alignment": {
+          "enum": [
+            "hot_latest",
+            "hot_latest_warm_revisions_cold_archive",
+            "source_restorable_cold_history",
+            "effective_dated_metadata",
+            "candidate_only",
+            "deferred"
+          ]
+        },
+        "authoritative_use": {
+          "enum": [
+            "approved_source_surface",
+            "candidate_metadata_only",
+            "candidate_not_publishable"
+          ]
+        }
+      }
+    },
+    "query_planning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["timezone", "timestamp_policy", "archive_policy"],
+      "properties": {
+        "timezone": {"enum": ["UTC", "EPT", "source_mixed"]},
+        "timestamp_policy": {"enum": ["utc_delivery_windows_required", "effective_dated_metadata", "source_specific_pending"]},
+        "archive_policy": {"enum": ["standard_paginated", "archive_aware_required", "not_yet_scoped"]}
+      }
+    },
+    "terms": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["internal_use_only", "redistribution_requires_license", "rate_limit_notes"],
+      "properties": {
+        "internal_use_only": {"type": "boolean"},
+        "redistribution_requires_license": {"type": "boolean"},
+        "rate_limit_notes": {"type": "string"}
+      }
+    },
+    "source_documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["authority", "url", "notes"],
+        "properties": {
+          "authority": {"type": "string"},
+          "url": {"type": "string"},
+          "notes": {"type": "string"}
+        }
+      },
+      "minItems": 1
+    },
+    "verification_status": {"enum": ["candidate", "official_pjm_documented"]},
+    "status": {"enum": ["candidate", "approved_core", "deferred"]}
+  }
+}

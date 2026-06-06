@@ -1,0 +1,31 @@
+change_id: CR-0048
+title: Power system bundle state candidate staging
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: medium
+tickets:
+  - T-0067
+problem_statement: >
+  Power-system bundles can be built and inspected, but there is no safe
+  candidate-only command that stages a validated bundle through the state-pack
+  validator without publishing accepted state.
+root_cause: >
+  Bundle orchestration was added before a state candidate staging workflow was
+  introduced for the power-system artifact path.
+affected_files:
+  - domain/power_system_ingestion.md
+  - domain/power_system_state_candidates.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_state.py
+  - tests/test_power_system_state.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_state.py tests/test_power_system_ingestion.py tests/test_artifact_composition.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0067
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the bundle candidate staging service and CLI commands. Existing bundle
+  creation and state-pack build/publish operations remain intact.

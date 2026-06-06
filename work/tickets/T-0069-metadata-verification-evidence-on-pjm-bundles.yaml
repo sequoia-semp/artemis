@@ -1,0 +1,56 @@
+id: T-0069
+type: ticket
+title: Metadata verification evidence on PJM bundles
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - docs
+  - validation
+  - tests
+branch: codex/T-0069-metadata-verification-evidence-on-pjm-bundles
+context_profile: trading_domain
+problem: >
+  PJM morning bundles and candidate-only pipeline runs should carry compact,
+  redacted evidence that selected authoritative Data Miner definitions were
+  verified before live source observations were fetched.
+tasks:
+  - Add compact metadata verification evidence to power-system bundle metadata.
+  - Require live PJM morning bundle and pipeline runs to verify selected source definitions before source observation fetches.
+  - Allow fixture-backed bundle runs to attach metadata verification evidence from fixture definitions.
+  - Fail offline bundle builds when metadata verification is explicitly required and no metadata input is supplied.
+  - Document the metadata evidence boundary and live-source gate.
+acceptance_criteria:
+  - Bundle metadata can include compact source metadata verification evidence without raw definition payloads.
+  - Bundle validation rejects metadata verification evidence that claims to contain secret values.
+  - Live PJM bundle and pipeline runs verify selected load, generation, pnode, and LMP definitions before fetching observations.
+  - Fixture-backed bundle runs can use `--metadata-input`.
+  - Fixture-backed bundle runs with `--require-metadata-verification` fail closed without metadata input.
+  - No accepted-state publish path, cache contract, or source semantic approval is changed.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_ingestion.py tests/test_power_system_source_metadata.py tests/test_power_system_preflight.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0069
+affected_files:
+  - domain/power_system_ingestion.md
+  - domain/power_system_source_metadata.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_ingestion.py
+  - src/pga_workbench/services/power_system_preflight.py
+  - tests/test_power_system_ingestion.py
+  - tests/test_power_system_preflight.py
+change_request_required: true
+change_id: CR-0050
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added compact, redacted PJM source metadata verification evidence to
+  power-system bundles, integrated fixture and live metadata verification into
+  the PJM morning bundle/pipeline path, and required live definition
+  verification before source observation fetches.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0069/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0069.md

@@ -1,0 +1,32 @@
+change_id: CR-0055
+title: Source readiness evidence on power-system bundles
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: medium
+tickets:
+  - T-0074
+problem_statement: >
+  Power-system source readiness can now be validated as a generic artifact, but
+  PJM morning bundles cannot yet attach or require that readiness evidence
+  before live source ingestion.
+root_cause: >
+  Source readiness was introduced as an operator-facing smoke artifact after
+  the bundle metadata evidence layer was created for preflight and metadata
+  verification only.
+affected_files:
+  - domain/power_system_ingestion.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_ingestion.py
+  - tests/test_power_system_ingestion.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_ingestion.py tests/test_power_system_live_smoke.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0074
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove source readiness bundle evidence and CLI gates. Existing preflight,
+  metadata verification, live smoke, and bundle construction behavior remain
+  intact.

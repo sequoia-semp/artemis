@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PowerMarketCalendar",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "calendar_id",
+    "display_name",
+    "calendar_type",
+    "market",
+    "timezone",
+    "source_documents",
+    "verification_status",
+    "status"
+  ],
+  "properties": {
+    "calendar_id": {"type": "string", "pattern": "^[A-Z0-9_]+$"},
+    "display_name": {"type": "string"},
+    "calendar_type": {"enum": ["holiday_calendar", "power_day_calendar"]},
+    "market": {"type": "string"},
+    "timezone": {"type": "string"},
+    "holiday_calendar": {"type": ["string", "null"]},
+    "day_start_hour": {"type": ["integer", "null"], "minimum": 0, "maximum": 23},
+    "holiday_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "rule_type", "month"],
+        "properties": {
+          "name": {"type": "string"},
+          "rule_type": {"enum": ["fixed_date", "nth_weekday", "last_weekday"]},
+          "month": {"type": "integer", "minimum": 1, "maximum": 12},
+          "day": {"type": "integer", "minimum": 1, "maximum": 31},
+          "weekday": {"enum": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]},
+          "nth": {"type": "integer", "minimum": 1, "maximum": 5}
+        }
+      }
+    },
+    "source_documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["authority", "url", "notes"],
+        "properties": {
+          "authority": {"type": "string"},
+          "url": {"type": "string"},
+          "notes": {"type": "string"}
+        }
+      },
+      "minItems": 1
+    },
+    "verification_status": {"enum": ["candidate", "user_approved", "official_exchange_verified"]},
+    "status": {"enum": ["candidate", "approved_core"]}
+  }
+}

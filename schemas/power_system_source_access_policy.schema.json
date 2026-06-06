@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PowerSystemSourceAccessPolicy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "policy_id",
+    "display_name",
+    "access_surface",
+    "source_kind",
+    "account_classes",
+    "default_account_class",
+    "row_count",
+    "pagination",
+    "archive_policy",
+    "source_documents",
+    "status"
+  ],
+  "properties": {
+    "policy_id": {"type": "string", "pattern": "^[A-Z0-9_]+$"},
+    "display_name": {"type": "string"},
+    "access_surface": {"enum": ["pjm_data_miner_api", "pjm_public_web"]},
+    "source_kind": {"enum": ["iso_rto_api", "iso_rto_publication"]},
+    "account_classes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["non_member", "member"],
+      "properties": {
+        "non_member": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["max_connections_per_minute"],
+          "properties": {
+            "max_connections_per_minute": {"type": "integer", "minimum": 1}
+          }
+        },
+        "member": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["max_connections_per_minute"],
+          "properties": {
+            "max_connections_per_minute": {"type": "integer", "minimum": 1}
+          }
+        }
+      }
+    },
+    "default_account_class": {"enum": ["non_member", "member"]},
+    "row_count": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minimum", "maximum", "default"],
+      "properties": {
+        "minimum": {"type": "integer", "minimum": 1},
+        "maximum": {"type": "integer", "minimum": 1},
+        "default": {"type": "integer", "minimum": 1}
+      }
+    },
+    "pagination": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["default_max_pages", "allow_unbounded"],
+      "properties": {
+        "default_max_pages": {"type": "integer", "minimum": 1},
+        "allow_unbounded": {"type": "boolean"}
+      }
+    },
+    "archive_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy", "notes"],
+      "properties": {
+        "policy": {"enum": ["standard_paginated", "archive_aware_required", "not_yet_scoped"]},
+        "notes": {"type": "string"}
+      }
+    },
+    "source_documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["authority", "url", "notes"],
+        "properties": {
+          "authority": {"type": "string"},
+          "url": {"type": "string"},
+          "notes": {"type": "string"}
+        }
+      },
+      "minItems": 1
+    },
+    "status": {"enum": ["approved_core", "candidate"]}
+  }
+}

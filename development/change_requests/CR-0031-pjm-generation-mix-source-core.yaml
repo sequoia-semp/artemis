@@ -1,0 +1,46 @@
+change_id: CR-0031
+title: PJM generation-by-fuel source core
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: high
+tickets:
+  - T-0050
+problem_statement: >
+  The direct PJM fundamentals spine covered load actuals and forecasts but did
+  not yet include aggregate generation mix, a core power-system fundamental
+  needed for broader market-state interpretation.
+root_cause: >
+  The first fundamentals pass intentionally scoped to PJM load actual/forecast
+  products before introducing a separate fuel taxonomy and generation-mix state
+  contract.
+affected_files:
+  - domain/power_generation_mix.md
+  - domain/power_system_source_catalog.md
+  - docs/OFFICIAL_SOURCE_REGISTER.md
+  - registries/data_sources.yaml
+  - registries/power_generation_fuels.yaml
+  - registries/power_generation_mix_feeds.yaml
+  - registries/power_system_source_catalog.yaml
+  - schemas/generation_mix_state.schema.json
+  - schemas/power_generation_fuel.schema.json
+  - schemas/power_generation_mix_feed.schema.json
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/models.py
+  - src/pga_workbench/registry.py
+  - src/pga_workbench/services/generation_mix.py
+  - src/pga_workbench/services/power_system_sources.py
+  - tests/fixtures/pjm_generation_mix_minimal.json
+  - tests/test_generation_mix.py
+  - tests/test_power_system_source_catalog.py
+tests_required:
+  - .venv/bin/pytest tests/test_generation_mix.py tests/test_power_system_source_catalog.py tests/test_data_sources.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0050
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove generation-mix schemas, registries, service, model, CLI commands,
+  fixture, tests, source-catalog promotion, and documentation; PJM fundamentals
+  would return to load-only source products.

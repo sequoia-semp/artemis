@@ -1,0 +1,55 @@
+id: T-0062
+type: ticket
+title: Power system source metadata verification
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - docs
+  - validation
+  - tests
+branch: codex/T-0062-power-system-source-metadata-verification
+context_profile: trading_domain
+problem: >
+  Direct PJM fundamentals and price ingestion should fail before normalization
+  when source feed definitions no longer expose registry-required fields.
+tasks:
+  - Add connector support for fetching PJM Data Miner feed definitions.
+  - Add a generic power-system source metadata expectation service.
+  - Derive PJM Data Miner expectations from fundamental, price, and generation mix feed registries.
+  - Verify source definition payloads against required registry fields.
+  - Add native validation coverage that approved source catalog feeds have metadata expectations.
+  - Document source metadata verification behavior.
+acceptance_criteria:
+  - PJM Data Miner definition fetches do not send API credentials.
+  - Metadata expectations include approved PJM load, pnode, hourly LMP, and generation mix feeds.
+  - Definition verification fails closed when required fields are missing.
+  - Approved source catalog feed IDs without metadata expectations fail validation.
+  - Candidate feeds are not promoted by metadata verification.
+  - No state-pack or cache payload contract changes are introduced.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_source_metadata.py tests/test_pjm_dataminer_connector.py tests/test_native_validation_runner.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0062
+affected_files:
+  - domain/power_system_source_metadata.md
+  - src/pga_workbench/data/connectors/pjm_dataminer.py
+  - src/pga_workbench/services/power_system_source_metadata.py
+  - src/pga_workbench/validation/runner.py
+  - tests/test_pjm_dataminer_connector.py
+  - tests/test_power_system_source_metadata.py
+change_request_required: true
+change_id: CR-0043
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added PJM Data Miner definition fetch support, generic power-system source
+  metadata expectations derived from registered feed descriptors, definition
+  verification against required fields, and native validation coverage for
+  approved source catalog feed metadata expectations.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0062/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0062.md

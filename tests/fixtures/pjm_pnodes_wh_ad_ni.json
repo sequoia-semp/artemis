@@ -1,0 +1,42 @@
+{
+  "feeds": {
+    "pnode": [
+      {
+        "effective_date": "1998-04-01T00:00:00",
+        "pnode_id": 51288,
+        "pnode_name": "WESTERN HUB",
+        "pnode_subtype": "HUB",
+        "pnode_type": "AGGREGATE",
+        "termination_date": "9999-12-31T00:00:00",
+        "voltage_level": null,
+        "zone": null
+      },
+      {
+        "effective_date": "2004-10-01T00:00:00",
+        "pnode_id": 34497127,
+        "pnode_name": "AEP-DAYTON HUB",
+        "pnode_subtype": "HUB",
+        "pnode_type": "AGGREGATE",
+        "termination_date": "9999-12-31T00:00:00",
+        "voltage_level": null,
+        "zone": null
+      },
+      {
+        "effective_date": "2004-05-01T00:00:00",
+        "pnode_id": 33092315,
+        "pnode_name": "N ILLINOIS HUB",
+        "pnode_subtype": "HUB",
+        "pnode_type": "AGGREGATE",
+        "termination_date": "9999-12-31T00:00:00",
+        "voltage_level": null,
+        "zone": null
+      }
+    ]
+  },
+  "lineage": {
+    "source": "PJM Data Miner",
+    "feed": "pnode",
+    "query": "bounded by explicit pnode_id values for WH, AD, and NI",
+    "captured_for": "T-0045"
+  }
+}

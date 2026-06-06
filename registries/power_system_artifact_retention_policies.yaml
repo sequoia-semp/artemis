@@ -1,0 +1,193 @@
+pjm_load_fundamentals:
+  display_name: PJM load fundamentals artifact retention
+  commodity: power
+  operator_id: PJM
+  product_family: load
+  state_pack_publish_allowed: true
+  lineage_required: true
+  source_specific_required: true
+  forecast_revision_policy: latest_curve_hot_revision_history_separate
+  retention_tiers:
+    hot:
+      tier: hot
+      scope: Latest accepted state-pack artifact plus latest load forecast curve.
+      max_age_days: 14
+    warm:
+      tier: hot_warm
+      scope: Six-hour and twelve-hour forecast revisions for the past seven days.
+      max_age_days: 7
+    cold:
+      tier: cold
+      scope: Older exact forecast revisions remain cold/source-restorable and separate from latest curves.
+      max_age_days: null
+  historical_source_policy:
+    source_restorable: true
+    approved_query_plan_ids:
+      - PJM_DATAMINER_LOAD_BOUNDED_INTERVAL
+    derived_view_windows_days:
+      - 14
+    max_hot_history_days: 14
+    row_version_policy: not_applicable
+  source_documents:
+    - authority: configs/forecast_retention_policy.yaml
+      url: configs/forecast_retention_policy.yaml
+      notes: Establishes latest-curve hot retention and separate revision-history retention.
+    - authority: domain/pjm_fundamentals.md
+      url: domain/pjm_fundamentals.md
+      notes: Documents source-specific PJM load products, best-series selection, and latest-versus-revision separation.
+  verification_status: user_approved
+  status: approved_core
+
+pjm_power_prices:
+  display_name: PJM hourly LMP artifact retention
+  commodity: power
+  operator_id: PJM
+  product_family: locational_marginal_price
+  state_pack_publish_allowed: true
+  lineage_required: true
+  source_specific_required: true
+  forecast_revision_policy: not_applicable
+  retention_tiers:
+    hot:
+      tier: hot
+      scope: Latest accepted state-pack hourly DA/RT LMP observations and canonical price-surface points for approved pnodes.
+      max_age_days: 30
+    warm:
+      tier: not_applicable
+      scope: No warm tier is approved for hourly LMP artifacts in this pass.
+      max_age_days: null
+    cold:
+      tier: cold
+      scope: Historical hourly LMP pulls are source-restorable only through approved bounded query plans.
+      max_age_days: null
+  historical_source_policy:
+    source_restorable: true
+    approved_query_plan_ids:
+      - PJM_DATAMINER_HOURLY_LMP_DAILY_CHUNKS
+    derived_view_windows_days:
+      - 1
+      - 5
+      - 10
+      - 30
+    max_hot_history_days: 30
+    row_version_policy: current_row_filter_required
+  source_documents:
+    - authority: domain/power_system_prices.md
+      url: domain/power_system_prices.md
+      notes: Documents source-specific PJM hourly LMP observations and canonical price-surface products.
+    - authority: registries/power_system_source_query_plans.yaml
+      url: registries/power_system_source_query_plans.yaml
+      notes: Establishes bounded query planning for hourly PJM LMP history.
+  verification_status: user_approved
+  status: approved_core
+
+pjm_generation_mix:
+  display_name: PJM generation mix artifact retention
+  commodity: power
+  operator_id: PJM
+  product_family: generation_mix
+  state_pack_publish_allowed: true
+  lineage_required: true
+  source_specific_required: true
+  forecast_revision_policy: not_applicable
+  retention_tiers:
+    hot:
+      tier: hot
+      scope: Latest accepted state-pack aggregate generation-by-fuel observations.
+      max_age_days: 14
+    warm:
+      tier: not_applicable
+      scope: No warm tier is approved for generation mix artifacts in this pass.
+      max_age_days: null
+    cold:
+      tier: cold
+      scope: Historical generation mix pulls are source-restorable through bounded Data Miner fetches.
+      max_age_days: null
+  historical_source_policy:
+    source_restorable: true
+    approved_query_plan_ids:
+      - PJM_DATAMINER_GENERATION_MIX_BOUNDED_INTERVAL
+    derived_view_windows_days:
+      - 14
+    max_hot_history_days: 14
+    row_version_policy: not_applicable
+  source_documents:
+    - authority: domain/power_generation_mix.md
+      url: domain/power_generation_mix.md
+      notes: Documents aggregate PJM generation mix source artifacts and view context.
+  verification_status: user_approved
+  status: approved_core
+
+power_price_shape_rollups:
+  display_name: Power price shape rollup artifact retention
+  commodity: power
+  operator_id: PJM
+  product_family: price_shape
+  state_pack_publish_allowed: true
+  lineage_required: true
+  source_specific_required: false
+  forecast_revision_policy: not_applicable
+  retention_tiers:
+    hot:
+      tier: hot
+      scope: Latest accepted derived daily peak, off-peak, and ATC rollups with source hourly LMP lineage.
+      max_age_days: 30
+    warm:
+      tier: not_applicable
+      scope: No warm tier is approved for derived shape rollups in this pass.
+      max_age_days: null
+    cold:
+      tier: snapshots_and_stats
+      scope: Older derived shape history should be recomputed from retained/source-restorable hourly LMP inputs unless explicitly snapshotted.
+      max_age_days: null
+  historical_source_policy:
+    source_restorable: false
+    approved_query_plan_ids: []
+    derived_view_windows_days:
+      - 1
+      - 5
+      - 10
+      - 30
+    max_hot_history_days: 30
+    row_version_policy: not_applicable
+  source_documents:
+    - authority: domain/power_price_shape_rules.md
+      url: domain/power_price_shape_rules.md
+      notes: Documents deterministic daily shape rollups from authoritative hourly full-LMP source prices.
+  verification_status: user_approved
+  status: approved_core
+
+power_system_operational_event_feeds:
+  display_name: Power system operational event descriptor retention
+  commodity: power
+  operator_id: PJM
+  product_family: operational_events
+  state_pack_publish_allowed: false
+  lineage_required: false
+  source_specific_required: false
+  forecast_revision_policy: candidate_pending
+  retention_tiers:
+    hot:
+      tier: candidate_only
+      scope: Candidate descriptors may be kept in registries and tests but cannot publish to accepted state.
+      max_age_days: null
+    warm:
+      tier: not_applicable
+      scope: Warm retention is deferred until outage and constraint lifecycle semantics are approved.
+      max_age_days: null
+    cold:
+      tier: deferred
+      scope: Cold retention is deferred until operational event contracts and topology linkage are approved.
+      max_age_days: null
+  historical_source_policy:
+    source_restorable: false
+    approved_query_plan_ids: []
+    derived_view_windows_days: []
+    max_hot_history_days: null
+    row_version_policy: source_specific_pending
+  source_documents:
+    - authority: domain/power_system_operational_events.md
+      url: domain/power_system_operational_events.md
+      notes: Documents candidate-only outage and constraint feed descriptors.
+  verification_status: candidate
+  status: candidate

@@ -1,0 +1,77 @@
+id: T-0041
+type: ticket
+status: validated
+title: PJM fundamentals semantic core and Data Miner load spine
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T01:24:00Z'
+epic: E-PJM-FUNDAMENTALS
+sprint: S-002
+layer:
+- docs
+- registry
+- schema
+- cli
+- tests
+branch: codex/T-0041-pjm-fundamentals-semantic-core
+context_profile: behavioral
+problem: 'Artemis needs source-backed PJM load actual, preliminary actual, latest
+  forecast, revision-history, and forecast-error semantics before the PJM-first analyst
+  workflows can consume Data Miner load fundamentals through accepted state packs
+  and HotState.
+
+  '
+tasks:
+- Add PJM fundamental feed and load-area registries.
+- Extend fundamental metric semantics for source-specific, best-series, latest-curve,
+  revision-history, and derived products.
+- Add a PJM Data Miner connector with env-key auth and fixture-first tests.
+- Add normalized PJM load fundamental state artifacts and deterministic derivation.
+- Wire a CLI command for PJM load fundamentals artifact output.
+- Add tests for registries, connector, normalization, state-pack, and Analyst view
+  consumption.
+acceptance_criteria:
+- PJM feed and load-area registries validate with schemas.
+- Latest forecast curves and revision history remain separate products.
+- Metered actual load is preferred over preliminary load in best-series actuals.
+- The `+/-14d` output shape preserves explicit gaps instead of inferring values.
+- PJM API credentials are read from env and never logged or committed.
+- Analyst views consume generated artifacts through HotState.
+- Bounded live Data Miner smoke command can fetch one page without walking entire feeds.
+- Generated artifacts include deterministic summary, drivers, driver deltas, and current/prior/14-day view sections.
+required_tests:
+- .venv/bin/python -m pytest tests/test_fundamentals_registries.py tests/test_pjm_fundamentals_semantic_core.py
+  tests/test_pjm_dataminer_connector.py tests/test_analyst_views.py tests/test_data_sources.py
+  -q
+- .venv/bin/python -m pytest -q
+- .venv/bin/artemis validate --strict --ticket T-0041
+affected_files:
+- domain/pjm_fundamentals.md
+- registries/pjm_fundamental_feeds.yaml
+- registries/pjm_load_areas.yaml
+- registries/fundamental_metrics.yaml
+- registries/data_sources.yaml
+- registries/tools.yaml
+- schemas/pjm_fundamental_feed.schema.json
+- schemas/pjm_load_area.schema.json
+- schemas/fundamental_state.schema.json
+- schemas/fundamental_metric.schema.json
+- schemas/data_contracts/fundamentals.schema.json
+- schemas/data_contracts/iso_load.schema.json
+- src/pga_workbench/data/connectors/pjm_dataminer.py
+- src/pga_workbench/services/fundamentals.py
+- src/pga_workbench/models.py
+- src/pga_workbench/cli.py
+- tests/test_pjm_fundamentals_semantic_core.py
+- tests/test_pjm_dataminer_connector.py
+change_request_required: true
+change_id: CR-0022
+implemented_at: '2026-06-06T00:44:16Z'
+implementation_summary: >
+  Implemented PJM fundamentals semantic core, Data Miner connector, deterministic
+  load artifacts, fixture-backed regression coverage, optional live smoke tests,
+  bounded live fetch CLI controls, and HotState-ready analyst summary/view sections.
+validated_at: '2026-06-06T00:44:16Z'
+validation_report: development/validation_reports/T-0041/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0041.md

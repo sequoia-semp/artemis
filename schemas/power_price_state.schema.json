@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PowerPriceState",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["run_id", "as_of", "source_products", "price_surface_points", "derived", "gaps", "lineage"],
+  "properties": {
+    "run_id": {"type": "string"},
+    "as_of": {"type": "string"},
+    "source_products": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {"type": "object"}
+      }
+    },
+    "price_surface_points": {
+      "type": "array",
+      "items": {"type": "object"}
+    },
+    "derived": {
+      "type": "array",
+      "items": {"type": "object"}
+    },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["product_id", "location_id", "date", "reason"],
+        "properties": {
+          "product_id": {"type": "string"},
+          "location_id": {"type": "string"},
+          "date": {"type": "string"},
+          "reason": {"type": "string"}
+        }
+      }
+    },
+    "lineage": {"type": "object"}
+  }
+}

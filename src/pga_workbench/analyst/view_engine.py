@@ -68,7 +68,6 @@ def merge_hot_state_artifacts(input_payload: dict[str, Any], artifacts: dict[str
         "drivers",
         "driver_deltas",
         "forecast_actual_diffs",
-        "evidence",
         "scenarios",
         "prior_day_retrospective",
         "current_day_view",
@@ -80,6 +79,12 @@ def merge_hot_state_artifacts(input_payload: dict[str, Any], artifacts: dict[str
         if field in artifacts and field not in input_payload:
             merged[field] = artifacts[field]
 
+    if "evidence" not in input_payload:
+        evidence = list(artifacts.get("evidence") or []) if isinstance(artifacts.get("evidence"), list) else []
+        evidence.extend(_power_system_bundle_evidence(artifacts))
+        if evidence:
+            merged["evidence"] = evidence
+
     lineage = []
     if isinstance(artifacts.get("source_lineage"), list):
         lineage.extend(artifacts["source_lineage"])
@@ -90,6 +95,107 @@ def merge_hot_state_artifacts(input_payload: dict[str, Any], artifacts: dict[str
     if lineage:
         merged["source_lineage"] = lineage
     return merged
+
+
+def _power_system_bundle_evidence(artifacts: dict[str, Any]) -> list[dict[str, Any]]:
+    metadata = artifacts.get("power_system_artifact_bundle")
+    if not isinstance(metadata, dict):
+        return []
+    evidence: list[dict[str, Any]] = []
+    preflight = metadata.get("preflight")
+    if isinstance(preflight, dict):
+        evidence.append(
+            {
+                "artifact": "power_system_artifact_bundle",
+                "evidence_type": "source_preflight",
+                "operator_id": metadata.get("operator_id"),
+                "source_system": metadata.get("source_system"),
+                "ready": bool(preflight.get("ready")),
+                "blocker_count": int(preflight.get("blocker_count") or 0),
+                "selected_feeds": dict(preflight.get("selected_feeds") or {}),
+                "contains_secret_values": False,
+            }
+        )
+    metadata_verification = metadata.get("metadata_verification")
+    if isinstance(metadata_verification, dict):
+        evidence.append(
+            {
+                "artifact": "power_system_artifact_bundle",
+                "evidence_type": "source_metadata_verification",
+                "operator_id": metadata.get("operator_id"),
+                "source_system": metadata.get("source_system"),
+                "definition_source": metadata_verification.get("definition_source"),
+                "verified_feed_count": int(metadata_verification.get("verified_feed_count") or 0),
+                "contains_secret_values": False,
+            }
+        )
+    source_readiness = metadata.get("source_readiness")
+    if isinstance(source_readiness, dict):
+        evidence.append(
+            {
+                "artifact": "power_system_artifact_bundle",
+                "evidence_type": "source_readiness",
+                "operator_id": metadata.get("operator_id"),
+                "source_system": metadata.get("source_system"),
+                "ready": bool(source_readiness.get("ready")),
+                "blocker_count": int(source_readiness.get("blocker_count") or 0),
+                "fetch_source_rows": bool(source_readiness.get("fetch_source_rows")),
+                "source_fetch_count": len(source_readiness.get("source_fetches") or []),
+                "contains_secret_values": False,
+            }
+        )
+    source_publications = metadata.get("source_publications")
+    if isinstance(source_publications, dict):
+        publications = [item for item in source_publications.get("source_publications") or [] if isinstance(item, dict)]
+        candidate_count = sum(
+            1
+            for item in publications
+            if (item.get("publication_lifecycle") or {}).get("authoritative_use") != "approved_source_surface"
+        )
+        evidence.append(
+            {
+                "artifact": "power_system_artifact_bundle",
+                "evidence_type": "source_publications",
+                "operator_id": metadata.get("operator_id"),
+                "source_system": metadata.get("source_system"),
+                "publication_count": int(source_publications.get("publication_count") or len(publications)),
+                "candidate_publication_count": candidate_count,
+                "contains_secret_values": False,
+            }
+        )
+    raw_fetches = metadata.get("raw_source_fetches")
+    if isinstance(raw_fetches, dict):
+        evidence.append(
+            {
+                "artifact": "power_system_artifact_bundle",
+                "evidence_type": "raw_source_fetches",
+                "operator_id": metadata.get("operator_id"),
+                "source_system": metadata.get("source_system"),
+                "manifest_count": int(raw_fetches.get("manifest_count") or 0),
+                "total_row_count": int(raw_fetches.get("total_row_count") or 0),
+                "truncated_manifest_count": int(raw_fetches.get("truncated_manifest_count") or 0),
+                "source_surface_counts": dict(raw_fetches.get("source_surface_counts") or {}),
+                "contains_raw_records": False,
+                "contains_secret_values": False,
+            }
+        )
+    operational_event_plan = metadata.get("operational_event_plan")
+    if isinstance(operational_event_plan, dict):
+        evidence.append(
+            {
+                "artifact": "power_system_artifact_bundle",
+                "evidence_type": "operational_event_plan",
+                "operator_id": metadata.get("operator_id"),
+                "source_system": metadata.get("source_system"),
+                "approved": bool(operational_event_plan.get("approved")),
+                "publication_count": int(operational_event_plan.get("publication_count") or 0),
+                "feed_count": int(operational_event_plan.get("feed_count") or 0),
+                "blocked_publication_count": int(operational_event_plan.get("blocked_publication_count") or 0),
+                "blocked_feed_count": int(operational_event_plan.get("blocked_feed_count") or 0),
+                "contains_secret_values": False,
+            }
+        )
+    return evidence
 
 
 def _horizon_for(view_type: str, as_of: date) -> dict[str, str]:

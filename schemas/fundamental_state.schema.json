@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FundamentalState",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["run_id", "as_of", "source_products", "best_series", "derived", "gaps", "lineage"],
+  "properties": {
+    "run_id": {"type": "string"},
+    "as_of": {"type": "string"},
+    "source_products": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {"type": "object"}
+      }
+    },
+    "best_series": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {"type": "object"}
+      }
+    },
+    "derived": {
+      "type": "array",
+      "items": {"type": "object"}
+    },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["metric_id", "location_id", "date", "reason"],
+        "properties": {
+          "metric_id": {"type": "string"},
+          "location_id": {"type": "string"},
+          "date": {"type": "string"},
+          "reason": {"type": "string"},
+          "horizon": {"type": "string"}
+        }
+      }
+    },
+    "lineage": {"type": "object"}
+  }
+}

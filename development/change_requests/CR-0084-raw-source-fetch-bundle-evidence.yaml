@@ -1,0 +1,30 @@
+change_id: CR-0084
+title: Raw source fetch bundle evidence
+created_at: 2026-06-06T00:00:00Z
+change_class: 4
+severity: medium
+tickets:
+  - T-0103
+problem_statement: >
+  Direct-source review needed compact raw fetch evidence in bundle metadata and
+  pipeline reports without exposing raw source rows or credentials.
+root_cause: >
+  Raw source fetch manifests were available as bundle payload evidence, but the
+  generic bundle metadata did not summarize them for source audit workflows.
+affected_files:
+  - domain/power_system_ingestion.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_ingestion.py
+  - tests/test_power_system_ingestion.py
+  - tests/test_power_system_state.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_ingestion.py tests/test_power_system_state.py tests/test_power_system_raw_fetches.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0103
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove raw source fetch metadata evidence, pipeline summary output, docs, and
+  tests. Existing raw source fetch manifest payloads remain unchanged.

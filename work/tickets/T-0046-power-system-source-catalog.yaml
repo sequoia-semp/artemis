@@ -1,0 +1,71 @@
+id: T-0046
+type: ticket
+title: Power system source catalog for direct PJM authoritative publications
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-FUNDAMENTALS
+sprint: S-002
+layer:
+  - docs
+  - registry
+  - schema
+  - tests
+branch: codex/T-0046-power-system-source-catalog
+context_profile: trading_domain
+problem: >
+  Direct PJM source ingestion needs a power-system-first source publication
+  catalog that records authoritative source surfaces, candidate expansion feeds,
+  terms, and query-planning constraints without making every PJM feed an
+  approved normalized product.
+tasks:
+  - Add a generic power system source publication schema.
+  - Register PJM Data Miner source publication families for load, hourly LMPs,
+    five-minute LMP, generation-by-fuel, outages, and constraints.
+  - Require approved core source publications to reference existing normalized
+    feed descriptors.
+  - Add a small service helper for loading and reference-checking the catalog.
+  - Add PJM Data Miner public definition URL construction that never includes
+    the API key.
+  - Add regression tests for registry validation, source terms, approved/candidate
+    separation, descriptor references, and connector definition URLs.
+acceptance_criteria:
+  - Source catalog registry validates with schemas and duplicate-key protection.
+  - Approved PJM core source publications reference existing load or price feed
+    descriptors.
+  - Candidate expansion feeds can be cataloged without being promoted into
+    normalized products.
+  - PJM Data Miner terms and rate-limit notes are captured for every cataloged
+    publication family.
+  - Connector definition URL construction does not expose credentials.
+  - No new pnodes, price components, outage semantics, topology links, or shared
+    publish behavior are approved by this ticket.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_source_catalog.py tests/test_pjm_dataminer_connector.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0046
+affected_files:
+  - domain/power_system_source_catalog.md
+  - docs/OFFICIAL_SOURCE_REGISTER.md
+  - registries/power_system_source_catalog.yaml
+  - schemas/power_system_source_publication.schema.json
+  - src/pga_workbench/registry.py
+  - src/pga_workbench/data/connectors/pjm_dataminer.py
+  - src/pga_workbench/services/power_system_sources.py
+  - tests/test_power_system_source_catalog.py
+  - tests/test_pjm_dataminer_connector.py
+change_request_required: true
+change_id: CR-0027
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added a generic power-system source publication schema and catalog with PJM
+  Data Miner as the first concrete source family, including approved load
+  forecast and hourly LMP surfaces plus candidate five-minute LMP, generation,
+  outage, and transmission-constraint entries. Added reference checks for
+  approved normalized feed descriptors and a credential-free PJM definition URL
+  helper.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0046/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0046.md

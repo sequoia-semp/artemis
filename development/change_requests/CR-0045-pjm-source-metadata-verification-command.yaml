@@ -1,0 +1,30 @@
+change_id: CR-0045
+title: PJM source metadata verification command
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: medium
+tickets:
+  - T-0064
+problem_statement: >
+  Source metadata expectations can be derived and checked in service code, but
+  operators do not yet have a CLI/report workflow to verify fixture or live PJM
+  Data Miner feed definitions before direct ingestion.
+root_cause: >
+  Metadata verification was added as a static and unit-test guardrail before an
+  operational command surface was introduced.
+affected_files:
+  - domain/power_system_source_metadata.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_source_metadata.py
+  - tests/test_power_system_source_metadata.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_source_metadata.py tests/test_pjm_dataminer_connector.py tests/test_artemis_cli.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0064
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the metadata verification CLI/report helpers. Native static metadata
+  reference validation and connector definition URL support remain intact.

@@ -11,7 +11,14 @@ from ..core.time import utc_now_iso
 from ..exceptions import WorkbenchException
 from ..models import MorningStatePack, RunManifest
 from ..registry import SHARED_READONLY_PUBLISH_BLOCKED, SYNTHETIC_PROMOTION_BLOCKED
+from ..registry_access import DEFAULT_REGISTRY_DIR
 from ..serialization import read_json, write_json
+from ..services.artifact_composition import ARTIFACT_COMPOSITION_ERROR, validate_artifact_composition_metadata
+from ..services.power_system_artifact_products import (
+    POWER_SYSTEM_ARTIFACT_PRODUCT_ERROR,
+    validate_state_pack_artifact_product_publish_status,
+)
+from ..services.power_system_sources import validate_state_pack_source_publication_publish_status
 
 STATE_PACK_INVALID = "STATE_PACK_INVALID"
 SCHEMA_ROOT = Path(__file__).resolve().parents[3] / "schemas"
@@ -48,7 +55,10 @@ def validate_state_pack(candidate_dir: Path) -> None:
     if str(manifest["run_id"]) != state_id:
         raise WorkbenchException(STATE_PACK_INVALID, f"State pack manifest run_id mismatch: {manifest['run_id']} != {state_id}")
     _parse_utc_timestamp(str(manifest["created_at"]), "manifest.created_at")
-    _validate_delivery_windows(payload.get("artifacts") or {})
+    artifacts = payload.get("artifacts") or {}
+    _validate_delivery_windows(artifacts)
+    _validate_composition_metadata(artifacts)
+    _validate_artifact_product_publish_status(artifacts)
 
 
 def _validate_state_pack_schema(payload: dict[str, Any]) -> None:
@@ -99,6 +109,26 @@ def _validate_delivery_windows(artifacts: dict[str, Any]) -> None:
             raise WorkbenchException(STATE_PACK_INVALID, "delivery_start must be before delivery_end")
 
 
+def _validate_composition_metadata(artifacts: dict[str, Any]) -> None:
+    if "artifact_composition" not in artifacts:
+        return
+    try:
+        validate_artifact_composition_metadata(artifacts)
+    except WorkbenchException as exc:
+        if exc.code == ARTIFACT_COMPOSITION_ERROR:
+            raise WorkbenchException(STATE_PACK_INVALID, exc.message) from exc
+        raise
+
+
+def _validate_artifact_product_publish_status(artifacts: dict[str, Any]) -> None:
+    try:
+        validate_state_pack_artifact_product_publish_status(artifacts, DEFAULT_REGISTRY_DIR)
+    except WorkbenchException as exc:
+        if exc.code == POWER_SYSTEM_ARTIFACT_PRODUCT_ERROR:
+            raise WorkbenchException(STATE_PACK_INVALID, exc.message) from exc
+        raise
+
+
 def publish_candidate_state_pack(root: Path, state_id: str, shared_readonly: bool = False) -> Path:
     if shared_readonly:
         raise WorkbenchException(SHARED_READONLY_PUBLISH_BLOCKED, "shared-readonly mode cannot publish shared state")
@@ -108,12 +138,13 @@ def publish_candidate_state_pack(root: Path, state_id: str, shared_readonly: boo
     payload = read_json(candidate_dir / "state_pack.json")
     if payload.get("synthetic") is True:
         raise WorkbenchException(SYNTHETIC_PROMOTION_BLOCKED, "Synthetic state packs cannot be promoted")
+    validate_state_pack_source_publication_publish_status(dict(payload.get("artifacts") or {}))
     accepted_dir = root / "accepted" / state_id
     if accepted_dir.exists():
         raise WorkbenchException("STATE_ALREADY_ACCEPTED", f"Accepted state already exists: {state_id}")
     accepted_dir.parent.mkdir(parents=True, exist_ok=True)
     shutil.move(str(candidate_dir), str(accepted_dir))
-    pointer = {"state_id": state_id, "path": str(accepted_dir), "updated_at": utc_now_iso()}
+    pointer = {"state_id": state_id, "path": str(Path("accepted") / state_id), "updated_at": utc_now_iso()}
     write_json(root / "current.json.tmp", pointer)
     (root / "current.json.tmp").replace(root / "current.json")
     return accepted_dir

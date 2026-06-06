@@ -1,0 +1,62 @@
+id: T-0078
+type: ticket
+title: Source publication evidence on power-system bundles
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-FUNDAMENTALS
+sprint: S-002
+layer:
+  - cli
+  - docs
+  - tests
+branch: codex/T-0078-source-publication-evidence-on-power-system-bundles
+context_profile: trading_domain
+problem: >
+  Power-system source publication lifecycle semantics were recorded in the
+  source catalog, but PJM morning bundles did not yet carry compact evidence of
+  which publication families and lifecycle states backed the bundle. That made
+  bundle inspection weaker than registry inspection.
+tasks:
+  - Add a compact source-publication report helper selected by registry feed
+    IDs.
+  - Attach redacted source publication evidence to power-system artifact bundle
+    metadata.
+  - Automatically include source publication evidence in PJM morning bundle and
+    pipeline builds.
+  - Add a compact source publication summary to PJM morning pipeline reports.
+  - Add regression tests and ingestion documentation.
+acceptance_criteria:
+  - Bundle metadata includes source publication IDs, statuses, registry feed IDs,
+    canonical roles, and lifecycle semantics for selected PJM source feeds.
+  - Source publication evidence carries no raw source rows, request headers, or
+    secrets and is rejected if marked unredacted.
+  - PJM morning pipeline reports summarize publication status and
+    authoritative-use classifications.
+  - Candidate source publications remain visibly candidate in bundle evidence
+    and are not promoted into shared publish behavior.
+  - Existing state-pack publish invariants remain unchanged.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_ingestion.py tests/test_power_system_state.py tests/test_power_system_source_catalog.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0078
+affected_files:
+  - domain/power_system_ingestion.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_ingestion.py
+  - src/pga_workbench/services/power_system_sources.py
+  - tests/test_power_system_ingestion.py
+  - tests/test_power_system_state.py
+  - tests/test_power_system_source_catalog.py
+change_request_required: true
+change_id: CR-0059
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added compact source-publication evidence to power-system bundles and PJM
+  morning pipeline reports, using the generic source catalog as the source of
+  lifecycle and authoritative-use semantics.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0078/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0078.md

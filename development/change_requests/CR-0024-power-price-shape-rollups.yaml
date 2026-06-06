@@ -1,0 +1,39 @@
+change_id: CR-0024
+title: Power price shape rollups from hourly source prices
+created_at: 2026-06-06T00:00:00Z
+change_class: 5
+severity: high
+tickets:
+  - T-0043
+problem_statement: >
+  Artemis can ingest PJM hourly LMP source prices, but downstream price
+  workflows use PEAK, OFFPEAK, and ATC shapes. Shape math must be deterministic,
+  registry-backed, and separate from source adapters.
+root_cause: >
+  Shape rules were embedded only as text inside exchange and forward mapping
+  records. There was no service-level contract to turn hourly source-backed
+  prices into daily shape price artifacts while preserving lineage and explicit
+  gaps for incomplete source days.
+affected_files:
+  - domain/power_price_shape_rules.md
+  - registries/power_price_shape_rules.yaml
+  - registries/tools.yaml
+  - schemas/power_price_shape_rule.schema.json
+  - schemas/power_price_shape_state.schema.json
+  - src/pga_workbench/services/power_price_shapes.py
+  - src/pga_workbench/models.py
+  - src/pga_workbench/registry.py
+  - src/pga_workbench/cli.py
+  - tests/test_power_price_shape_rollups.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_price_shape_rollups.py tests/test_power_system_price_core.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0043
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the shape rule registry, schemas, rollup service, CLI command, tool
+  registry entry, tests, and T-0043 records. Existing PJM hourly source price
+  ingestion remains independent.

@@ -10,6 +10,7 @@ from ..exceptions import WorkbenchException
 from ..models import ForwardPriceHeatmapReport, PriceSurfacePoint
 from ..registry import load_yaml_unique
 from ..serialization import read_json
+from .power_system_retention import validate_power_system_artifact_retention_references
 
 HEATMAP_ERROR = "HEATMAP_ERROR"
 
@@ -45,8 +46,10 @@ def build_forward_price_heatmap(
     as_of: str,
     run_id: str = "forward-price-heatmap",
     history_days: list[int] | None = None,
+    registry_dir: Path | None = None,
+    source_artifact_key: str = "pjm_power_prices",
 ) -> ForwardPriceHeatmapReport:
-    history_days = history_days or [1, 5, 10, 30]
+    history_days = history_days or _history_days_from_retention_policy(registry_dir, source_artifact_key) or [1, 5, 10, 30]
     target = _parse_as_of(as_of)
     cells: list[dict[str, Any]] = []
 
@@ -84,6 +87,15 @@ def build_forward_price_heatmap(
         cells=cells,
         lineage={"point_count": len(points), "group_count": len(cells)},
     )
+
+
+def _history_days_from_retention_policy(registry_dir: Path | None, artifact_key: str) -> list[int]:
+    if registry_dir is None:
+        return []
+    references = validate_power_system_artifact_retention_references(Path(registry_dir))
+    policies = dict(references.get("historical_source_policies") or {})
+    policy = dict(policies.get(artifact_key) or {})
+    return [int(item) for item in policy.get("derived_view_windows_days") or []]
 
 
 def read_price_surface_points(path: Path) -> list[PriceSurfacePoint]:

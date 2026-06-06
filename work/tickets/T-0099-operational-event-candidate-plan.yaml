@@ -1,0 +1,53 @@
+id: T-0099
+type: ticket
+title: Operational event candidate plan
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-DIRECT-SOURCE
+sprint: S-002
+layer:
+  - schema
+  - validation
+  - docs
+  - tests
+branch: codex/T-0099-operational-event-candidate-plan
+context_profile: trading_domain
+problem: >
+  PJM outage and transmission constraint feeds were registered as candidate
+  descriptors, but there was no validated planning report that summarized
+  publication and feed blockers without promoting operational-event semantics.
+tasks:
+  - Add an operational event candidate plan schema.
+  - Build a generic candidate plan from source publications and feed
+    descriptors.
+  - Report publication-level and feed-level blockers separately.
+  - Keep all current PJM outage and constraint feeds candidate-only.
+  - Document the non-mutating candidate planning boundary.
+acceptance_criteria:
+  - Candidate plan validates against schema.
+  - Plan includes PJM outage and transmission constraint publications.
+  - Plan reports all three candidate operational event feeds.
+  - Pending timestamp, identity, topology, lifecycle, and normalization blockers
+    remain visible.
+  - No source fetch, normalization, publish, or HotState behavior is enabled.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_operational_events.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0099
+affected_files:
+  - domain/power_system_operational_events.md
+  - schemas/power_system_operational_event_plan.schema.json
+  - src/pga_workbench/services/power_system_operational_events.py
+  - tests/test_power_system_operational_events.py
+change_request_required: true
+change_id: CR-0080
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added a validated candidate planning report for PJM operational event source
+  descriptors without enabling normalization or publish behavior.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0099/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0099.md

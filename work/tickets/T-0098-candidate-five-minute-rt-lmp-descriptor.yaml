@@ -1,0 +1,65 @@
+id: T-0098
+type: ticket
+title: Candidate five-minute RT LMP descriptor
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-DIRECT-SOURCE
+sprint: S-002
+layer:
+  - registry
+  - schema
+  - validation
+  - docs
+  - tests
+branch: codex/T-0098-candidate-five-minute-rt-lmp-descriptor
+context_profile: trading_domain
+problem: >
+  PJM five-minute real-time LMP was cataloged as a candidate source publication
+  but lacked a concrete candidate feed descriptor and query-plan record, making
+  future planning less explicit while still needing to block promotion.
+tasks:
+  - Add candidate five-minute RT LMP feed descriptor support to the price-feed
+    schema.
+  - Register `PJM_RT_FIVE_MINUTE_LMP` as candidate metadata only.
+  - Link the candidate feed to the existing five-minute source publication.
+  - Add a candidate query-plan record for planning/reference validation only.
+  - Block candidate price feeds from normalization into canonical artifacts.
+  - Document the candidate-only boundary.
+acceptance_criteria:
+  - Registry validation accepts the candidate five-minute feed descriptor.
+  - Source catalog links the candidate source publication to the candidate feed.
+  - Query-plan reference validation resolves the candidate plan and feed.
+  - Metadata expectations include the candidate feed when candidates are
+    requested but default approved-core metadata excludes it.
+  - Candidate five-minute feed normalization fails closed.
+  - No live fetch, publish, or HotState behavior is enabled for five-minute LMP.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_price_core.py
+  - .venv/bin/pytest tests/test_power_system_source_catalog.py
+  - .venv/bin/pytest tests/test_source_query_plans.py
+  - .venv/bin/pytest tests/test_power_system_source_metadata.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0098
+affected_files:
+  - domain/power_system_prices.md
+  - registries/power_system_price_feeds.yaml
+  - registries/power_system_source_catalog.yaml
+  - registries/power_system_source_query_plans.yaml
+  - schemas/power_system_price_feed.schema.json
+  - src/pga_workbench/services/power_prices.py
+  - tests/test_power_system_price_core.py
+  - tests/test_power_system_source_catalog.py
+  - tests/test_power_system_source_metadata.py
+  - tests/test_source_query_plans.py
+change_request_required: true
+change_id: CR-0079
+implemented_at: '2026-06-06T00:00:00Z'
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0098/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0098.md
+implementation_summary: >
+  Added candidate-only PJM five-minute RT LMP feed and query-plan descriptors
+  while blocking candidate price-feed normalization.

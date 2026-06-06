@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PowerSystemSourceFeedApprovalReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "operator_id",
+    "source_system",
+    "product_family",
+    "approval_scope",
+    "approved",
+    "feed_assessments",
+    "contains_secret_values"
+  ],
+  "properties": {
+    "operator_id": {"type": "string", "minLength": 1},
+    "source_system": {"type": "string", "minLength": 1},
+    "product_family": {"type": "string", "minLength": 1},
+    "approval_scope": {"type": "string", "minLength": 1},
+    "approved": {"type": "boolean"},
+    "feed_assessments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "feed_id",
+          "data_miner_feed",
+          "feed_status",
+          "publication_id",
+          "publication_status",
+          "authoritative_use",
+          "metadata_verified",
+          "source_row_count",
+          "approved",
+          "blockers"
+        ],
+        "properties": {
+          "feed_id": {"type": "string", "minLength": 1},
+          "data_miner_feed": {"type": ["string", "null"]},
+          "feed_status": {"type": ["string", "null"]},
+          "publication_id": {"type": ["string", "null"]},
+          "publication_status": {"type": ["string", "null"]},
+          "authoritative_use": {"type": ["string", "null"]},
+          "metadata_verified": {"type": "boolean"},
+          "source_row_count": {"type": "integer", "minimum": 0},
+          "approved": {"type": "boolean"},
+          "blockers": {
+            "type": "array",
+            "items": {"type": "string"},
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "contains_secret_values": {"const": false}
+  }
+}

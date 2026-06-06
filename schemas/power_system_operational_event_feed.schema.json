@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PowerSystemOperationalEventFeed",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "feed_id",
+    "display_name",
+    "source",
+    "operator_id",
+    "market",
+    "commodity",
+    "source_system",
+    "event_family",
+    "event_class",
+    "data_miner_feed",
+    "granularity",
+    "timestamp_policy",
+    "identifier_policy",
+    "topology_linkage",
+    "normalization_status",
+    "source_documents",
+    "verification_status",
+    "status"
+  ],
+  "properties": {
+    "feed_id": {"type": "string", "pattern": "^[A-Z0-9_]+$"},
+    "display_name": {"type": "string"},
+    "source": {"type": "string"},
+    "operator_id": {"type": "string"},
+    "market": {"type": "string"},
+    "commodity": {"const": "power"},
+    "source_system": {"enum": ["iso_rto_api", "iso_rto_publication"]},
+    "event_family": {"enum": ["generation_outage", "transmission_constraint"]},
+    "event_class": {"enum": ["forecast_generation_outage", "day_ahead_transmission_constraint", "real_time_transmission_constraint"]},
+    "data_miner_feed": {"type": "string"},
+    "granularity": {"enum": ["event"]},
+    "timestamp_policy": {"enum": ["source_specific_pending", "utc_delivery_windows_required"]},
+    "identifier_policy": {"enum": ["candidate_source_keys_pending", "source_identity_approved"]},
+    "topology_linkage": {"enum": ["not_approved", "candidate", "approved"]},
+    "normalization_status": {"enum": ["candidate_descriptor_only", "approved_core"]},
+    "source_documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["authority", "url", "notes"],
+        "properties": {
+          "authority": {"type": "string"},
+          "url": {"type": "string"},
+          "notes": {"type": "string"}
+        }
+      },
+      "minItems": 1
+    },
+    "verification_status": {"enum": ["candidate", "official_pjm_documented"]},
+    "status": {"enum": ["candidate", "approved_core", "deferred"]}
+  }
+}

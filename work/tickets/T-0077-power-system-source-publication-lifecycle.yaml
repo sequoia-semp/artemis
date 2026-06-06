@@ -1,0 +1,64 @@
+id: T-0077
+type: ticket
+title: Power system source publication lifecycle semantics
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-FUNDAMENTALS
+sprint: S-002
+layer:
+  - docs
+  - registry
+  - schema
+  - tests
+branch: codex/T-0077-power-system-source-publication-lifecycle
+context_profile: trading_domain
+problem: >
+  Direct PJM source data can now be connected and sampled, but the generic
+  source catalog did not yet distinguish publication cadence, finality, revision
+  behavior, retention alignment, and authoritative-use status. Without those
+  lifecycle semantics, source discovery could be mistaken for safe authoritative
+  state promotion.
+tasks:
+  - Extend the generic power-system source publication schema with lifecycle
+    semantics.
+  - Add publication lifecycle values to the existing PJM Data Miner source
+    catalog entries without promoting candidate products.
+  - Add executable source-catalog validation that approved core publications
+    cannot retain unresolved lifecycle semantics.
+  - Add regression tests for lifecycle summary and fail-closed validation.
+  - Update source-catalog documentation and the official source register.
+acceptance_criteria:
+  - Source catalog registry validates with required lifecycle semantics.
+  - Approved core PJM publication families have explicit cadence, market-day,
+    finality, revision, retention, and authoritative-use fields.
+  - Candidate five-minute LMP, outage, and constraint entries remain candidate
+    and cannot be treated as publishable authoritative artifacts.
+  - Approved core publications fail closed when lifecycle fields are unresolved
+    or not approved for authoritative source use.
+  - No new PJM feed, pnode, price component, outage lifecycle, topology link, or
+    shared publish behavior is approved by this ticket.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_source_catalog.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0077
+affected_files:
+  - docs/OFFICIAL_SOURCE_REGISTER.md
+  - domain/power_system_source_catalog.md
+  - registries/power_system_source_catalog.yaml
+  - schemas/power_system_source_publication.schema.json
+  - src/pga_workbench/services/power_system_sources.py
+  - tests/test_power_system_source_catalog.py
+change_request_required: true
+change_id: CR-0058
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added generic publication lifecycle semantics to the power-system source
+  catalog and seeded PJM Data Miner entries with cadence, finality, revision,
+  retention, and authoritative-use classifications. Approved source
+  publications now fail validation when lifecycle semantics remain unresolved.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0077/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0077.md

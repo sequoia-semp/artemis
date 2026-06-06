@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PjmFundamentalFeed",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "feed_id",
+    "display_name",
+    "source",
+    "market",
+    "commodity",
+    "feed_class",
+    "data_miner_feed",
+    "retention_product",
+    "granularity",
+    "value_unit",
+    "time_columns",
+    "value_columns",
+    "area_columns",
+    "supported_metric_ids",
+    "source_documents",
+    "verification_status",
+    "status"
+  ],
+  "properties": {
+    "feed_id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+    "display_name": {"type": "string"},
+    "source": {"const": "PJM Data Miner"},
+    "market": {"const": "PJM"},
+    "commodity": {"const": "power"},
+    "feed_class": {
+      "enum": ["actual", "preliminary_actual", "latest_forecast", "revision_history"]
+    },
+    "data_miner_feed": {"type": "string"},
+    "retention_product": {
+      "enum": ["source_observation", "latest_curve", "revision_history"]
+    },
+    "granularity": {"enum": ["hourly"]},
+    "value_unit": {"const": "MW"},
+    "source_contract": {"type": "string"},
+    "time_columns": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["delivery_start_utc"],
+      "properties": {
+        "delivery_start_utc": {"type": "string"},
+        "delivery_end_utc": {"type": ["string", "null"]},
+        "issued_at_utc": {"type": ["string", "null"]},
+        "delivery_start_ept": {"type": ["string", "null"]},
+        "delivery_end_ept": {"type": ["string", "null"]},
+        "issued_at_ept": {"type": ["string", "null"]}
+      }
+    },
+    "value_columns": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "area_columns": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "default_area_filter": {"type": ["string", "null"]},
+    "supported_metric_ids": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "source_documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["authority", "url", "notes"],
+        "properties": {
+          "authority": {"type": "string"},
+          "url": {"type": "string"},
+          "notes": {"type": "string"}
+        }
+      },
+      "minItems": 1
+    },
+    "verification_status": {"enum": ["candidate", "official_pjm_documented"]},
+    "status": {"enum": ["candidate", "approved_core"]}
+  }
+}

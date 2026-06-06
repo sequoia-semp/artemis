@@ -119,7 +119,7 @@ def test_forward_mapping_preserves_pjm_pnode_and_peak_aggregation_rule():
     assert mapping["target"]["pnode_name"] == "WESTERN HUB"
     assert mapping["target"]["pjm_lmp_feed"] == "rt_hrl_lmps"
     assert mapping["aggregation_rule"]["hours_ending_ept"] == list(range(8, 24))
-    assert mapping["verification_status"] == "official_exchange_verified_user_pnode_approved"
+    assert mapping["verification_status"] == "official_exchange_verified"
 
 
 @pytest.mark.parametrize("symbol,expected", sorted(MONTHLY_PJM_POWER_MAPPINGS.items()))
@@ -131,6 +131,7 @@ def test_monthly_pjm_power_mappings_preserve_pnode_feeds_and_shape_rules(symbol,
     assert mapping["target"]["pnode_id"] == pnode_id
     assert mapping["target"]["pnode_name"] == pnode_name
     assert mapping["target"]["pjm_lmp_feed"] == ("da_hrl_lmps" if market_run == "DA" else "rt_hrl_lmps")
+    assert mapping["verification_status"] == "official_exchange_verified"
     if shape == "PEAK":
         assert mapping["aggregation_rule"]["hours_ending_ept"] == list(range(8, 24))
     else:

@@ -1,0 +1,296 @@
+PJM_DATAMINER_LOAD_ACTUALS:
+  display_name: PJM Data Miner load actual source publications
+  market_operator: PJM
+  market: PJM
+  commodity: power
+  source_kind: iso_rto_api
+  access_surface: pjm_data_miner_api
+  product_family: load
+  source_feed_names:
+    - hrl_load_metered
+    - hrl_load_prelim
+  registry_feed_ids:
+    - hrl_load_metered
+    - hrl_load_prelim
+  contract_families:
+    - fundamentals
+    - iso_load
+  canonical_roles:
+    - source_observation
+  publication_lifecycle:
+    cadence: hourly
+    market_day_basis: operating_day
+    publication_finality: mixed
+    revision_policy: none_expected
+    retention_alignment: hot_latest
+    authoritative_use: candidate_metadata_only
+  query_planning:
+    timezone: source_mixed
+    timestamp_policy: utc_delivery_windows_required
+    archive_policy: standard_paginated
+  terms:
+    internal_use_only: true
+    redistribution_requires_license: true
+    rate_limit_notes: PJM Data Miner terms limit connections by membership class; live jobs must remain explicitly bounded.
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents Data Miner feed search mechanics and load actual feed names.
+    - authority: PJM Data Miner
+      url: https://www.pjm.com/markets-and-operations/etools/data-miner-2
+      notes: Documents Data Miner access terms, connection limits, and redistribution restrictions.
+  verification_status: candidate
+  status: candidate
+
+PJM_DATAMINER_LOAD_FORECASTS:
+  display_name: PJM Data Miner load forecast source publications
+  market_operator: PJM
+  market: PJM
+  commodity: power
+  source_kind: iso_rto_api
+  access_surface: pjm_data_miner_api
+  product_family: load
+  source_feed_names:
+    - load_frcstd_7_day
+    - load_frcstd_hist
+  registry_feed_ids:
+    - load_frcstd_7_day
+    - load_frcstd_hist
+  contract_families:
+    - fundamentals
+    - iso_load
+  canonical_roles:
+    - latest_curve
+    - revision_history
+  publication_lifecycle:
+    cadence: hourly
+    market_day_basis: operating_day
+    publication_finality: revisioned
+    revision_policy: latest_and_revision_history_separate
+    retention_alignment: hot_latest_warm_revisions_cold_archive
+    authoritative_use: approved_source_surface
+  query_planning:
+    timezone: source_mixed
+    timestamp_policy: utc_delivery_windows_required
+    archive_policy: standard_paginated
+  terms:
+    internal_use_only: true
+    redistribution_requires_license: true
+    rate_limit_notes: PJM Data Miner terms limit connections by membership class; live jobs must remain explicitly bounded.
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents seven-day and historical load forecast feeds, forecast timestamps, and evaluated-at fields.
+    - authority: PJM Data Miner
+      url: https://www.pjm.com/markets-and-operations/etools/data-miner-2
+      notes: Documents Data Miner access terms, connection limits, and redistribution restrictions.
+  verification_status: official_pjm_documented
+  status: approved_core
+
+PJM_DATAMINER_HOURLY_LMP_CORE:
+  display_name: PJM Data Miner hourly LMP and pnode source publications
+  market_operator: PJM
+  market: PJM
+  commodity: power
+  source_kind: iso_rto_api
+  access_surface: pjm_data_miner_api
+  product_family: locational_marginal_price
+  source_feed_names:
+    - pnode
+    - da_hrl_lmps
+    - rt_hrl_lmps
+  registry_feed_ids:
+    - PJM_PNODE
+    - PJM_DA_HOURLY_LMP
+    - PJM_RT_HOURLY_LMP
+  contract_families:
+    - market_prices
+  canonical_roles:
+    - metadata
+    - source_price
+  publication_lifecycle:
+    cadence: mixed
+    market_day_basis: operating_day
+    publication_finality: row_versioned
+    revision_policy: row_version_current_filter_required
+    retention_alignment: source_restorable_cold_history
+    authoritative_use: approved_source_surface
+  query_planning:
+    timezone: source_mixed
+    timestamp_policy: utc_delivery_windows_required
+    archive_policy: archive_aware_required
+  terms:
+    internal_use_only: true
+    redistribution_requires_license: true
+    rate_limit_notes: PJM Data Miner terms limit connections by membership class; historical LMP pulls must use archive-aware query planning.
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents pnode, day-ahead hourly LMP, and real-time hourly LMP feeds and filters.
+    - authority: PJM Energy Market
+      url: https://www.pjm.com/markets-and-operations/energy
+      notes: Establishes PJM day-ahead and real-time energy-market publication context for hourly LMPs.
+    - authority: PJM Data Miner
+      url: https://www.pjm.com/markets-and-operations/etools/data-miner-2
+      notes: Documents Data Miner access terms, connection limits, and redistribution restrictions.
+  verification_status: official_pjm_documented
+  status: approved_core
+
+PJM_DATAMINER_FIVE_MINUTE_RT_LMP:
+  display_name: PJM Data Miner five-minute real-time LMP source publication
+  market_operator: PJM
+  market: PJM
+  commodity: power
+  source_kind: iso_rto_api
+  access_surface: pjm_data_miner_api
+  product_family: locational_marginal_price
+  source_feed_names:
+    - rt_fivemin_hrl_lmps
+  registry_feed_ids:
+    - PJM_RT_FIVE_MINUTE_LMP
+  contract_families:
+    - market_prices
+  canonical_roles:
+    - source_price
+    - candidate_expansion
+  publication_lifecycle:
+    cadence: real_time_interval
+    market_day_basis: operating_day
+    publication_finality: candidate_pending
+    revision_policy: source_specific_pending
+    retention_alignment: candidate_only
+    authoritative_use: candidate_metadata_only
+  query_planning:
+    timezone: source_mixed
+    timestamp_policy: source_specific_pending
+    archive_policy: not_yet_scoped
+  terms:
+    internal_use_only: true
+    redistribution_requires_license: true
+    rate_limit_notes: PJM Data Miner terms limit connections by membership class; no live production fetch is approved for this candidate feed yet.
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Lists the five-minute real-time LMP feed; exact normalized contract is not yet approved.
+  verification_status: candidate
+  status: candidate
+
+PJM_DATAMINER_GENERATION_BY_FUEL:
+  display_name: PJM Data Miner generation by fuel source publication
+  market_operator: PJM
+  market: PJM
+  commodity: power
+  source_kind: iso_rto_api
+  access_surface: pjm_data_miner_api
+  product_family: generation
+  source_feed_names:
+    - gen_by_fuel
+  registry_feed_ids:
+    - PJM_GEN_BY_FUEL
+  contract_families:
+    - fundamentals
+    - fuel_mix
+  canonical_roles:
+    - source_observation
+  publication_lifecycle:
+    cadence: hourly
+    market_day_basis: operating_day
+    publication_finality: final
+    revision_policy: none_expected
+    retention_alignment: hot_latest
+    authoritative_use: approved_source_surface
+  query_planning:
+    timezone: source_mixed
+    timestamp_policy: utc_delivery_windows_required
+    archive_policy: standard_paginated
+  terms:
+    internal_use_only: true
+    redistribution_requires_license: true
+    rate_limit_notes: PJM Data Miner terms limit connections by membership class; live jobs must remain explicitly bounded.
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents gen_by_fuel fields including datetime_beginning_utc, fuel_type, mw, fuel_percentage_of_total, and is_renewable.
+  verification_status: official_pjm_documented
+  status: approved_core
+
+PJM_DATAMINER_OUTAGES:
+  display_name: PJM Data Miner outage source publications
+  market_operator: PJM
+  market: PJM
+  commodity: power
+  source_kind: iso_rto_api
+  access_surface: pjm_data_miner_api
+  product_family: outages
+  source_feed_names:
+    - frcstd_gen_outages
+  registry_feed_ids:
+    - PJM_FRCSTD_GEN_OUTAGES
+  contract_families:
+    - outages
+  canonical_roles:
+    - source_outage
+    - candidate_expansion
+  publication_lifecycle:
+    cadence: event_driven
+    market_day_basis: operating_day
+    publication_finality: candidate_pending
+    revision_policy: source_specific_pending
+    retention_alignment: candidate_only
+    authoritative_use: candidate_not_publishable
+  query_planning:
+    timezone: source_mixed
+    timestamp_policy: source_specific_pending
+    archive_policy: not_yet_scoped
+  terms:
+    internal_use_only: true
+    redistribution_requires_license: true
+    rate_limit_notes: PJM Data Miner terms limit connections by membership class; outage lifecycle semantics must be approved before shared publish.
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Lists forecast generation outages as a Data Miner feed; outage lifecycle/event semantics are deferred.
+  verification_status: candidate
+  status: candidate
+
+PJM_DATAMINER_TRANSMISSION_CONSTRAINTS:
+  display_name: PJM Data Miner transmission constraint source publications
+  market_operator: PJM
+  market: PJM
+  commodity: power
+  source_kind: iso_rto_api
+  access_surface: pjm_data_miner_api
+  product_family: constraints
+  source_feed_names:
+    - da_transconstraints
+    - rt_transn_constraints
+  registry_feed_ids:
+    - PJM_DA_TRANSCONSTRAINTS
+    - PJM_RT_TRANSN_CONSTRAINTS
+  contract_families:
+    - constraints
+    - market_prices
+  canonical_roles:
+    - source_constraint
+    - candidate_expansion
+  publication_lifecycle:
+    cadence: event_driven
+    market_day_basis: operating_day
+    publication_finality: candidate_pending
+    revision_policy: source_specific_pending
+    retention_alignment: candidate_only
+    authoritative_use: candidate_not_publishable
+  query_planning:
+    timezone: source_mixed
+    timestamp_policy: source_specific_pending
+    archive_policy: not_yet_scoped
+  terms:
+    internal_use_only: true
+    redistribution_requires_license: true
+    rate_limit_notes: PJM Data Miner terms limit connections by membership class; constraint identity and topology linkage are not approved yet.
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Lists day-ahead and real-time transmission constraint feeds; graph/topology semantics are deferred.
+  verification_status: candidate
+  status: candidate

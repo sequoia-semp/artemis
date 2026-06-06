@@ -1,0 +1,50 @@
+id: T-0075
+type: ticket
+title: PJM generation storage fuel
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - registry
+  - docs
+  - tests
+branch: codex/T-0075-pjm-generation-storage-fuel
+context_profile: trading_domain
+problem: >
+  Live PJM gen_by_fuel rows include Storage, which currently fails closed as an
+  unknown generation fuel during bounded live bundle construction.
+tasks:
+  - Add canonical STORAGE to the power generation fuel registry.
+  - Map PJM source alias Storage to STORAGE.
+  - Treat Storage as fuel_family storage and non-renewable for current PJM source rows.
+  - Add regression coverage for the live-observed label.
+  - Document the storage fuel treatment.
+acceptance_criteria:
+  - power_generation_fuels.yaml validates with STORAGE.
+  - PJM generation mix normalization accepts source fuel label Storage.
+  - Renewable flag mismatch behavior remains fail-closed.
+  - Unknown non-registered fuels remain fail-closed.
+  - No accepted-state publish path, shared cache, or source semantic approval is changed.
+required_tests:
+  - .venv/bin/pytest tests/test_generation_mix.py tests/test_power_system_ingestion.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0075
+affected_files:
+  - domain/power_generation_mix.md
+  - registries/power_generation_fuels.yaml
+  - tests/test_generation_mix.py
+change_request_required: true
+change_id: CR-0056
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added canonical STORAGE to the power generation fuel registry with PJM source
+  alias Storage, fuel_family storage, and non-renewable treatment. Added
+  regression coverage for the live-observed Storage label and confirmed bounded
+  live PJM bundle construction now normalizes storage fuel rows.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0075/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0075.md

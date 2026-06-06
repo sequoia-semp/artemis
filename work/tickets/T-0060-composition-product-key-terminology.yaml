@@ -1,0 +1,52 @@
+id: T-0060
+type: ticket
+title: Composition product key terminology
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - docs
+  - validation
+  - tests
+branch: codex/T-0060-composition-product-key-terminology
+context_profile: trading_domain
+problem: >
+  Composition product keys include approved derived products, so calling them
+  source-product keys weakens the source-vs-derived distinction.
+tasks:
+  - Rename composer product-key terminology to composition product keys.
+  - Keep a compatibility alias for existing code imports.
+  - Update artifact composition metadata tests and docs.
+  - Add validation that stale legacy source_product_keys metadata fails when it conflicts with composition product keys.
+acceptance_criteria:
+  - New composed artifacts emit artifact_composition.composition_product_keys.
+  - Registry validation compares artifact product composition keys against COMPOSITION_PRODUCT_KEYS.
+  - Source-product terminology in docs no longer describes derived composition products.
+  - Existing compatibility import SOURCE_PRODUCT_KEYS remains available.
+  - No publish behavior, source normalization, or cache policy changes are introduced.
+required_tests:
+  - .venv/bin/pytest tests/test_artifact_composition.py tests/test_power_system_artifact_products.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0060
+affected_files:
+  - domain/power_system_artifact_products.md
+  - domain/state_artifact_composition.md
+  - src/pga_workbench/services/artifact_composition.py
+  - src/pga_workbench/services/power_system_artifact_products.py
+  - tests/test_artifact_composition.py
+  - tests/test_power_system_artifact_products.py
+change_request_required: true
+change_id: CR-0041
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Renamed artifact composition product-key terminology from source-product keys
+  to composition product keys, preserved a compatibility alias, updated
+  metadata validation and registry checks, and documented that composition keys
+  may include approved derived products.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0060/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0060.md

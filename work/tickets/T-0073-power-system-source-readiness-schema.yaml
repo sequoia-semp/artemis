@@ -1,0 +1,53 @@
+id: T-0073
+type: ticket
+title: Power-system source readiness schema
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - schema
+  - validation
+  - docs
+  - tests
+branch: codex/T-0073-power-system-source-readiness-schema
+context_profile: trading_domain
+problem: >
+  Live smoke readiness evidence should be a schema-validated power-system
+  source contract rather than an implicit PJM-only report shape.
+tasks:
+  - Add a generic power-system source readiness schema.
+  - Add service-level validation for readiness reports.
+  - Validate PJM live-smoke CLI output before writing reports.
+  - Add tests for valid reports and fail-closed redaction enforcement.
+  - Document the generic readiness contract and PJM-first binding.
+acceptance_criteria:
+  - PJM live-smoke reports validate against the generic readiness schema.
+  - Reports claiming to contain secret values fail schema validation.
+  - Per-source fetch statuses are schema-constrained.
+  - The CLI validates readiness reports before writing output.
+  - No accepted-state publish path, shared cache, or source semantic approval is changed.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_live_smoke.py tests/test_power_system_preflight.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0073
+affected_files:
+  - domain/power_system_preflight.md
+  - schemas/power_system_source_readiness.schema.json
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_live_smoke.py
+  - tests/test_power_system_live_smoke.py
+change_request_required: true
+change_id: CR-0054
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added a generic power-system source readiness schema, service-level validator,
+  and CLI validation for PJM live-smoke output so readiness evidence is
+  schema-enforced, redacted, and operator-neutral while PJM remains the first
+  producer.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0073/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0073.md

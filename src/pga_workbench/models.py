@@ -30,6 +30,90 @@ class PriceSurfacePoint:
 
 
 @dataclass(frozen=True)
+class PjmPnode:
+    source: str
+    pnode_id: int
+    pnode_name: str
+    pnode_type: str | None
+    pnode_subtype: str | None
+    zone: str | None
+    voltage_level: str | None
+    effective_start: str
+    effective_end: str
+    lineage: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class PjmLmpObservation:
+    as_of: str
+    source: str
+    market: str
+    market_run: str
+    pnode_id: int
+    pnode_name: str
+    pnode_type: str | None
+    zone: str | None
+    delivery_start: str
+    delivery_end: str
+    total_lmp: float
+    congestion_price: float | None
+    marginal_loss_price: float | None
+    system_energy_price: float | None
+    quote_unit: str
+    row_is_current: bool
+    version_nbr: int | None
+    lineage: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class PowerPriceState:
+    run_id: str
+    as_of: str
+    source_products: dict[str, list[dict[str, Any]]]
+    price_surface_points: list[dict[str, Any]]
+    derived: list[dict[str, Any]]
+    gaps: list[dict[str, Any]]
+    lineage: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class PowerPriceShapeState:
+    run_id: str
+    as_of: str
+    source_points: list[dict[str, Any]]
+    price_surface_points: list[dict[str, Any]]
+    gaps: list[dict[str, Any]]
+    lineage: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class GenerationMixObservation:
+    as_of: str
+    source: str
+    market: str
+    location_id: str
+    fuel_id: str
+    raw_fuel_type: str
+    delivery_start: str
+    delivery_end: str
+    mw: float
+    fuel_percentage_of_total: float | None
+    is_renewable: bool
+    unit: str
+    lineage: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class GenerationMixState:
+    run_id: str
+    as_of: str
+    source_products: dict[str, list[dict[str, Any]]]
+    observations: list[dict[str, Any]]
+    gaps: list[dict[str, Any]]
+    lineage: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
 class RawPosition:
     as_of: str
     raw_product: str
@@ -166,6 +250,17 @@ class FundamentalObservation:
     delivery_end: str
     value: float
     unit: str
+    lineage: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class FundamentalState:
+    run_id: str
+    as_of: str
+    source_products: dict[str, list[dict[str, Any]]]
+    best_series: dict[str, list[dict[str, Any]]]
+    derived: list[dict[str, Any]]
+    gaps: list[dict[str, Any]]
     lineage: dict[str, Any] = field(default_factory=dict)
 
 

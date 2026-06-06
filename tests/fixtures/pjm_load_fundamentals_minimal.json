@@ -1,0 +1,56 @@
+{
+  "feeds": {
+    "hrl_load_metered": [
+      {
+        "datetime_beginning_utc": "2026-06-04T13:00:00Z",
+        "datetime_ending_utc": "2026-06-04T14:00:00Z",
+        "datetime_beginning_ept": "2026-06-04T09:00:00",
+        "datetime_ending_ept": "2026-06-04T10:00:00",
+        "load_area": "RTO",
+        "mw": 1000
+      }
+    ],
+    "hrl_load_prelim": [
+      {
+        "datetime_beginning_utc": "2026-06-04T13:00:00Z",
+        "datetime_ending_utc": "2026-06-04T14:00:00Z",
+        "datetime_beginning_ept": "2026-06-04T09:00:00",
+        "datetime_ending_ept": "2026-06-04T10:00:00",
+        "load_area": "RTO",
+        "prelim_load_avg_hourly": 900
+      }
+    ],
+    "load_frcstd_7_day": [
+      {
+        "evaluated_at_datetime_utc": "2026-06-04T12:00:00Z",
+        "evaluated_at_datetime_ept": "2026-06-04T08:00:00",
+        "forecast_datetime_beginning_utc": "2026-06-04T13:00:00Z",
+        "forecast_datetime_ending_utc": "2026-06-04T14:00:00Z",
+        "forecast_datetime_beginning_ept": "2026-06-04T09:00:00",
+        "forecast_datetime_ending_ept": "2026-06-04T10:00:00",
+        "forecast_area": "RTO_COMBINED",
+        "forecast_load_mw": 950
+      },
+      {
+        "evaluated_at_datetime_utc": "2026-06-04T12:00:00Z",
+        "evaluated_at_datetime_ept": "2026-06-04T08:00:00",
+        "forecast_datetime_beginning_utc": "2026-06-05T13:00:00Z",
+        "forecast_datetime_ending_utc": "2026-06-05T14:00:00Z",
+        "forecast_datetime_beginning_ept": "2026-06-05T09:00:00",
+        "forecast_datetime_ending_ept": "2026-06-05T10:00:00",
+        "forecast_area": "RTO_COMBINED",
+        "forecast_load_mw": 1100
+      }
+    ],
+    "load_frcstd_hist": [
+      {
+        "evaluated_at_utc": "2026-06-03T12:00:00Z",
+        "evaluated_at_ept": "2026-06-03T08:00:00",
+        "forecast_hour_beginning_utc": "2026-06-04T13:00:00Z",
+        "forecast_hour_beginning_ept": "2026-06-04T09:00:00",
+        "forecast_area": "RTO",
+        "forecast_load_mw": 940
+      }
+    ]
+  }
+}

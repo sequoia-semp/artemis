@@ -1,0 +1,53 @@
+id: T-0067
+type: ticket
+title: Power system bundle state candidate staging
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - docs
+  - validation
+  - tests
+branch: codex/T-0067-power-system-bundle-state-candidate-staging
+context_profile: trading_domain
+problem: >
+  Power-system artifact bundles need a candidate-only state-pack staging path
+  that validates the bundle through existing state-pack checks without
+  publishing accepted state.
+tasks:
+  - Add a generic bundle-to-candidate state staging service.
+  - Validate bundle metadata before building a candidate state pack.
+  - Add PGA and Artemis candidate staging commands without publish flags.
+  - Prove staging does not update current.json or create accepted state.
+  - Document the candidate staging boundary.
+acceptance_criteria:
+  - Valid bundles can stage candidate state packs.
+  - Invalid bundles fail before candidate state creation.
+  - Staged candidates include bundle metadata and manifest input lineage.
+  - Staging commands do not publish state or update current.json.
+  - Existing state publisher remains the only accepted-state publish path.
+  - No source feed, cache, or accepted-state contract is changed.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_state.py tests/test_power_system_ingestion.py tests/test_artifact_composition.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0067
+affected_files:
+  - domain/power_system_ingestion.md
+  - domain/power_system_state_candidates.md
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/power_system_state.py
+  - tests/test_power_system_state.py
+change_request_required: true
+change_id: CR-0048
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added a generic validated bundle-to-candidate state staging service, PGA and
+  Artemis candidate-only staging commands, and tests proving staged bundles
+  build candidate state packs without updating current.json or accepted state.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0067/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0067.md

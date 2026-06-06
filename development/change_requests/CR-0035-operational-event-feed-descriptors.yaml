@@ -1,0 +1,39 @@
+change_id: CR-0035
+title: Power system operational event feed descriptors
+created_at: 2026-06-06T00:00:00Z
+change_class: 6
+severity: medium
+tickets:
+  - T-0054
+problem_statement: >
+  PJM outage and transmission-constraint publications were listed in the source
+  catalog as candidate expansions, but there was no generic feed-descriptor
+  layer for operational event sources.
+root_cause: >
+  The direct PJM data spine prioritized approved load, price, calendar, and
+  generation-mix products before adding candidate descriptors for higher-risk
+  operational event feeds whose lifecycle and topology semantics are deferred.
+affected_files:
+  - domain/power_system_operational_events.md
+  - registries/power_system_operational_event_feeds.yaml
+  - registries/power_system_source_catalog.yaml
+  - schemas/power_system_operational_event_feed.schema.json
+  - src/pga_workbench/registry.py
+  - src/pga_workbench/services/power_system_operational_events.py
+  - src/pga_workbench/services/power_system_operators.py
+  - src/pga_workbench/services/power_system_sources.py
+  - tests/test_power_system_operational_events.py
+  - tests/test_power_system_operators.py
+tests_required:
+  - .venv/bin/pytest tests/test_power_system_operational_events.py tests/test_power_system_operators.py tests/test_power_system_source_catalog.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0054
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove the operational event feed registry, schema, service, source-catalog
+  registry_feed_id links, tests, and documentation. Existing source catalog
+  candidate entries for outages and constraints would remain without normalized
+  feed descriptors.

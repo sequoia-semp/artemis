@@ -1,0 +1,61 @@
+id: T-0061
+type: ticket
+title: Power system artifact retention policies
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - docs
+  - registry
+  - schema
+  - validation
+  - tests
+branch: codex/T-0061-power-system-artifact-retention-policies
+context_profile: trading_domain
+problem: >
+  Direct PJM source products are now modeled across load, prices, generation
+  mix, and derived shape rollups, but retention and publish policy are not
+  executable at the artifact-product layer.
+tasks:
+  - Add a generic power-system artifact retention policy schema and registry.
+  - Cover every registered artifact product with exactly one retention policy.
+  - Validate retention policies against artifact products and operators.
+  - Enforce lineage and source-specific separation for publishable source products.
+  - Keep candidate operational event descriptors blocked from state-pack publish.
+  - Document retention policy behavior and PJM-first binding.
+acceptance_criteria:
+  - Registry validation includes power_system_artifact_retention_policies.yaml with no strict warnings.
+  - Every artifact product has a retention policy.
+  - Retention policy product family, operator, commodity, and publish status match artifact products.
+  - Publishable artifacts require lineage.
+  - Publishable source products require source-specific separation.
+  - Candidate operational event descriptors cannot allow state-pack publish.
+  - PJM load fundamentals preserve latest forecast curve and revision-history separation.
+required_tests:
+  - .venv/bin/pytest tests/test_power_system_retention.py tests/test_power_system_artifact_products.py tests/test_native_validation_runner.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0061
+affected_files:
+  - domain/power_system_retention.md
+  - registries/power_system_artifact_retention_policies.yaml
+  - schemas/power_system_artifact_retention_policy.schema.json
+  - src/pga_workbench/registry.py
+  - src/pga_workbench/services/power_system_retention.py
+  - src/pga_workbench/validation/runner.py
+  - tests/test_power_system_retention.py
+change_request_required: true
+change_id: CR-0042
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added a generic power-system artifact retention policy registry and schema,
+  covered all current artifact products, enforced retention/product/operator
+  reference checks in native validation, and documented PJM-first retention
+  binding for load, prices, generation mix, shape rollups, and candidate
+  operational event descriptors.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0061/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0061.md

@@ -1,0 +1,52 @@
+id: T-0107
+type: ticket
+title: Source audit analyst skill
+status: validated
+owner: user
+risk: low
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PJM-DIRECT-SOURCE
+sprint: S-002
+layer:
+  - skills
+  - docs
+  - tests
+branch: codex/T-0107-source-audit-analyst-skill
+context_profile: trading_domain
+problem: >
+  The source-audit command was registered as a read-only deterministic tool, but
+  analyst skill discovery did not yet expose a bounded workflow for inspecting
+  source evidence from accepted state roots or workspace bundles.
+tasks:
+  - Add an analyst skill descriptor for source-audit evidence inspection.
+  - Register the skill in the governed skill manifest.
+  - Document the read-only analyst source-audit entrypoint.
+  - Add regression coverage for the skill descriptor wiring.
+acceptance_criteria:
+  - Skill manifest validation accepts the source-audit analyst skill.
+  - The skill references only the read-only power_system_source_audit tool.
+  - The skill output and validation schema reference the source-audit contract.
+  - Analyst data-source documentation names the bundle and HotState-root audit
+    workflows.
+  - No source adapter, state-pack publish, cache, HotState, or mutation behavior
+    changes.
+required_tests:
+  - .venv/bin/pytest tests/test_skill_view_manifests.py tests/test_tool_permissions.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0107
+affected_files:
+  - docs/analyst/data_sources.md
+  - skills/manifest.yaml
+  - skills/analyst/audit_power_system_sources.yaml
+  - tests/test_skill_view_manifests.py
+change_request_required: true
+change_id: CR-0088
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added a bounded analyst source-audit skill descriptor, registered it in the
+  skill manifest, documented its read-only workflow, and covered the descriptor
+  with validation tests.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0107/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0107.md

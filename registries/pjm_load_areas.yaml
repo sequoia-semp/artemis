@@ -1,0 +1,194 @@
+PJM_RTO:
+  display_name: PJM RTO
+  market: PJM
+  commodity: power
+  area_type: rto
+  feed_values: [RTO, RTO_COMBINED, PJM RTO]
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents RTO and RTO_COMBINED as PJM load forecast area values across forecast feeds.
+  verification_status: official_pjm_documented
+  status: approved_core
+
+AE_MIDATL:
+  display_name: Atlantic Electric Mid-Atlantic forecast area
+  market: PJM
+  commodity: power
+  area_type: region
+  feed_values: [AE/MIDATL]
+  source_documents:
+    - authority: PJM Data Miner live sample
+      url: https://api.pjm.com/api/v1/load_frcstd_7_day
+      notes: Observed as a forecast_area value in a live one-row load_frcstd_7_day sample.
+  verification_status: candidate
+  status: candidate
+
+AECO:
+  display_name: Atlantic City Electric load area
+  market: PJM
+  commodity: power
+  area_type: zone
+  feed_values: [AECO, AE]
+  source_documents:
+    - authority: PJM Data Miner live sample
+      url: https://api.pjm.com/api/v1/hrl_load_metered
+      notes: Observed as load_area and zone values in a live one-row hrl_load_metered sample.
+  verification_status: candidate
+  status: candidate
+
+AEP:
+  display_name: American Electric Power zone
+  market: PJM
+  commodity: power
+  area_type: zone
+  feed_values: [AEP]
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents AEP as a PJM load forecast area value.
+  verification_status: official_pjm_documented
+  status: candidate
+
+AP:
+  display_name: Allegheny Power zone
+  market: PJM
+  commodity: power
+  area_type: zone
+  feed_values: [AP, APS]
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents AP and APS as PJM load forecast area values.
+  verification_status: official_pjm_documented
+  status: candidate
+
+ATSI:
+  display_name: ATSI zone
+  market: PJM
+  commodity: power
+  area_type: zone
+  feed_values: [ATSI]
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents ATSI as a PJM load forecast area value.
+  verification_status: official_pjm_documented
+  status: candidate
+
+COMED:
+  display_name: ComEd zone
+  market: PJM
+  commodity: power
+  area_type: zone
+  feed_values: [COMED]
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents COMED as a PJM load forecast area value.
+  verification_status: official_pjm_documented
+  status: candidate
+
+DAYTON:
+  display_name: Dayton zone
+  market: PJM
+  commodity: power
+  area_type: zone
+  feed_values: [DAYTON, DAY]
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents DAYTON and DAY as PJM load forecast area values.
+  verification_status: official_pjm_documented
+  status: candidate
+
+DEOK:
+  display_name: Duke Energy Ohio/Kentucky zone
+  market: PJM
+  commodity: power
+  area_type: zone
+  feed_values: [DEOK]
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents DEOK as a PJM load forecast area value.
+  verification_status: official_pjm_documented
+  status: candidate
+
+DOMINION:
+  display_name: Dominion zone
+  market: PJM
+  commodity: power
+  area_type: zone
+  feed_values: [DOMINION, DOM]
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents DOMINION and DOM as PJM load forecast area values.
+  verification_status: official_pjm_documented
+  status: candidate
+
+DUQUESNE:
+  display_name: Duquesne zone
+  market: PJM
+  commodity: power
+  area_type: zone
+  feed_values: [DUQUESNE, DUQ]
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents DUQUESNE and DUQ as PJM load forecast area values.
+  verification_status: official_pjm_documented
+  status: candidate
+
+EKPC:
+  display_name: East Kentucky Power Cooperative zone
+  market: PJM
+  commodity: power
+  area_type: zone
+  feed_values: [EKPC]
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents EKPC as a PJM load forecast area value.
+  verification_status: official_pjm_documented
+  status: candidate
+
+MIDATL:
+  display_name: PJM Mid-Atlantic region
+  market: PJM
+  commodity: power
+  area_type: region
+  feed_values: [MIDATL, MID_ATLANTIC_REGION]
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents MIDATL and MID_ATLANTIC_REGION as PJM load forecast area values.
+  verification_status: official_pjm_documented
+  status: candidate
+
+SOUTHERN_REGION:
+  display_name: PJM Southern region
+  market: PJM
+  commodity: power
+  area_type: region
+  feed_values: [SOUTHERN_REGION]
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents SOUTHERN_REGION as a PJM load forecast area value.
+  verification_status: official_pjm_documented
+  status: candidate
+
+WESTERN_REGION:
+  display_name: PJM Western region
+  market: PJM
+  commodity: power
+  area_type: region
+  feed_values: [WESTERN_REGION]
+  source_documents:
+    - authority: PJM Data Miner API Guide
+      url: https://www.pjm.com/-/media/DotCom/etools/data-miner-2/data-miner-2-api-guide.ashx
+      notes: Documents WESTERN_REGION as a PJM load forecast area value.
+  verification_status: official_pjm_documented
+  status: candidate

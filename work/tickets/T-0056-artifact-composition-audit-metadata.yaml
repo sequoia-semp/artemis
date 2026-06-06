@@ -1,0 +1,49 @@
+id: T-0056
+type: ticket
+title: Artifact composition audit metadata
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-POWER-SYSTEM-CORE
+sprint: S-002
+layer:
+  - docs
+  - validation
+  - tests
+branch: codex/T-0056-artifact-composition-audit-metadata
+context_profile: trading_domain
+problem: >
+  Composed multi-source PJM state artifacts need an auditable composition
+  metadata block so the accepted state can prove which source products and view
+  fields were assembled.
+tasks:
+  - Add generated artifact_composition metadata to composed payloads.
+  - Record payload count, source-product keys, view fields, input keys, current-day view keys, and shared list counts.
+  - Reject input payloads that attempt to supply the reserved artifact_composition key.
+  - Document the metadata contract.
+acceptance_criteria:
+  - Composed artifacts include deterministic artifact_composition metadata.
+  - Reserved metadata keys from input payloads fail closed.
+  - Composition metadata survives state-pack publish and HotState view consumption.
+  - No source normalization, publish behavior, accepted-state mutation, or cache mutation policy changes are introduced.
+required_tests:
+  - .venv/bin/pytest tests/test_artifact_composition.py tests/test_analyst_views.py
+  - .venv/bin/pytest
+  - .venv/bin/artemis validate --strict --ticket T-0056
+affected_files:
+  - domain/state_artifact_composition.md
+  - src/pga_workbench/services/artifact_composition.py
+  - tests/test_artifact_composition.py
+change_request_required: true
+change_id: CR-0037
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added generated artifact_composition metadata for composed multi-source
+  payloads, including payload count, source-product keys, view fields, input
+  keys, current-day view keys, and shared list counts, plus reserved-key
+  fail-closed protection.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0056/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0056.md

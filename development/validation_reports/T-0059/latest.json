@@ -1,0 +1,654 @@
+{
+  "affected_files_snapshot": [
+    {
+      "exists": true,
+      "modified_at": 1780715406.9175622,
+      "path": "domain/power_system_artifact_products.md",
+      "sha256": "f30ff787e39b35f0cd2a43b880541cc5293ac68e56bd2f4d782147a4ce5e59cb"
+    },
+    {
+      "exists": true,
+      "modified_at": 1780715406.9162726,
+      "path": "src/pga_workbench/services/power_system_artifact_products.py",
+      "sha256": "81b99c742ecebe44f707726a3efd3411db9b9420718beb4ababbaaea43911d56"
+    },
+    {
+      "exists": true,
+      "modified_at": 1780715406.9167159,
+      "path": "src/pga_workbench/state/packs.py",
+      "sha256": "0745d26bf4ca489eec474e18eb846bafe893408617d073446a62b3a0f7a80f08"
+    },
+    {
+      "exists": true,
+      "modified_at": 1780715406.9170437,
+      "path": "tests/test_power_system_artifact_products.py",
+      "sha256": "85daef99d2d47ae01ba44c6daa6588ece558388d9efc1d5d141dde76fee12dfb"
+    },
+    {
+      "exists": true,
+      "modified_at": 1780715406.91731,
+      "path": "tests/test_workbench_mvp.py",
+      "sha256": "45d82a38010e2fca15ffcc8d0313ab1973868980918e3b546f144d0de8fe2f4b"
+    }
+  ],
+  "branch": "main",
+  "changed_files_snapshot": [
+    "M docs/OFFICIAL_SOURCE_REGISTER.md",
+    " M docs/user/setup.md",
+    " M domain/forward_fundamental_mapping.md",
+    " M domain/power_locations.md",
+    " M domain/price_instrument_model.md",
+    " M local/.env.example",
+    " M registries/data_sources.yaml",
+    " M registries/forward_fundamental_mappings.yaml",
+    " M registries/fundamental_metrics.yaml",
+    " M registries/power_locations.yaml",
+    " M registries/tools.yaml",
+    " M schemas/data_contracts/fundamentals.schema.json",
+    " M schemas/data_contracts/iso_load.schema.json",
+    " M schemas/forward_fundamental_mapping.schema.json",
+    " M schemas/fundamental_metric.schema.json",
+    " M src/pga_workbench/cli.py",
+    " M src/pga_workbench/models.py",
+    " M src/pga_workbench/registry.py",
+    " M src/pga_workbench/state/packs.py",
+    " M src/pga_workbench/validation/runner.py",
+    " M tests/test_data_sources.py",
+    " M tests/test_forward_fundamental_mapping.py",
+    " M tests/test_fundamentals_registries.py",
+    " M tests/test_native_validation_runner.py",
+    " M tests/test_workbench_mvp.py",
+    "?? development/change_requests/CR-0022-pjm-fundamentals-semantic-core.yaml",
+    "?? development/change_requests/CR-0023-power-system-price-source-core.yaml",
+    "?? development/change_requests/CR-0024-power-price-shape-rollups.yaml",
+    "?? development/change_requests/CR-0025-power-market-calendars.yaml",
+    "?? development/change_requests/CR-0026-pjm-pnode-verification.yaml",
+    "?? development/change_requests/CR-0027-power-system-source-catalog.yaml",
+    "?? development/change_requests/CR-0028-pjm-source-access-policy.yaml",
+    "?? development/change_requests/CR-0029-lmp-component-price-products.yaml",
+    "?? development/change_requests/CR-0030-pjm-hourly-lmp-query-planning.yaml",
+    "?? development/change_requests/CR-0031-pjm-generation-mix-source-core.yaml",
+    "?? development/change_requests/CR-0032-generation-mix-hotstate-view.yaml",
+    "?? development/change_requests/CR-0033-power-price-shape-hotstate-view.yaml",
+    "?? development/change_requests/CR-0034-power-system-operator-registry.yaml",
+    "?? development/change_requests/CR-0035-operational-event-feed-descriptors.yaml",
+    "?? development/change_requests/CR-0036-state-artifact-composition.yaml",
+    "?? development/change_requests/CR-0037-artifact-composition-audit-metadata.yaml",
+    "?? development/change_requests/CR-0038-state-pack-composition-metadata-validation.yaml",
+    "?? development/change_requests/CR-0039-power-system-artifact-product-registry.yaml",
+    "?? development/change_requests/CR-0040-state-pack-artifact-product-publish-gate.yaml",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0041.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0042.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0043.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0044.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0045.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0046.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0047.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0048.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0049.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0050.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0051.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0052.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0053.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0054.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0055.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0056.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0057.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0058.md",
+    "?? development/regression_reports/REGRESSION_REPORT_T-0059.md",
+    "?? development/validation_reports/T-0041/",
+    "?? development/validation_reports/T-0042/",
+    "?? development/validation_reports/T-0043/",
+    "?? development/validation_reports/T-0044/",
+    "?? development/validation_reports/T-0045/",
+    "?? development/validation_reports/T-0046/",
+    "?? development/validation_reports/T-0047/",
+    "?? development/validation_reports/T-0048/",
+    "?? development/validation_reports/T-0049/",
+    "?? development/validation_reports/T-0050/",
+    "?? development/validation_reports/T-0051/",
+    "?? development/validation_reports/T-0052/",
+    "?? development/validation_reports/T-0053/",
+    "?? development/validation_reports/T-0054/",
+    "?? development/validation_reports/T-0055/",
+    "?? development/validation_reports/T-0056/",
+    "?? development/validation_reports/T-0057/",
+    "?? development/validation_reports/T-0058/",
+    "?? development/validation_reports/T-0059/",
+    "?? domain/pjm_fundamentals.md",
+    "?? domain/power_generation_mix.md",
+    "?? domain/power_market_calendars.md",
+    "?? domain/power_price_shape_rules.md",
+    "?? domain/power_system_artifact_products.md",
+    "?? domain/power_system_operational_events.md",
+    "?? domain/power_system_operators.md",
+    "?? domain/power_system_prices.md",
+    "?? domain/power_system_source_catalog.md",
+    "?? domain/state_artifact_composition.md",
+    "?? registries/pjm_fundamental_feeds.yaml",
+    "?? registries/pjm_load_areas.yaml",
+    "?? registries/power_generation_fuels.yaml",
+    "?? registries/power_generation_mix_feeds.yaml",
+    "?? registries/power_market_calendars.yaml",
+    "?? registries/power_price_shape_rules.yaml",
+    "?? registries/power_system_artifact_products.yaml",
+    "?? registries/power_system_operational_event_feeds.yaml",
+    "?? registries/power_system_operators.yaml",
+    "?? registries/power_system_price_feeds.yaml",
+    "?? registries/power_system_source_access_policies.yaml",
+    "?? registries/power_system_source_catalog.yaml",
+    "?? registries/power_system_source_query_plans.yaml",
+    "?? schemas/fundamental_state.schema.json",
+    "?? schemas/generation_mix_state.schema.json",
+    "?? schemas/pjm_fundamental_feed.schema.json",
+    "?? schemas/pjm_load_area.schema.json",
+    "?? schemas/power_generation_fuel.schema.json",
+    "?? schemas/power_generation_mix_feed.schema.json",
+    "?? schemas/power_market_calendar.schema.json",
+    "?? schemas/power_price_shape_rule.schema.json",
+    "?? schemas/power_price_shape_state.schema.json",
+    "?? schemas/power_price_state.schema.json",
+    "?? schemas/power_system_artifact_product.schema.json",
+    "?? schemas/power_system_operational_event_feed.schema.json",
+    "?? schemas/power_system_operator.schema.json",
+    "?? schemas/power_system_price_feed.schema.json",
+    "?? schemas/power_system_source_access_policy.schema.json",
+    "?? schemas/power_system_source_publication.schema.json",
+    "?? schemas/power_system_source_query_plan.schema.json",
+    "?? src/pga_workbench/core/calendars.py",
+    "?? src/pga_workbench/data/connectors/pjm_dataminer.py",
+    "?? src/pga_workbench/services/artifact_composition.py",
+    "?? src/pga_workbench/services/fundamentals.py",
+    "?? src/pga_workbench/services/generation_mix.py",
+    "?? src/pga_workbench/services/power_price_shapes.py",
+    "?? src/pga_workbench/services/power_prices.py",
+    "?? src/pga_workbench/services/power_system_artifact_products.py",
+    "?? src/pga_workbench/services/power_system_operational_events.py",
+    "?? src/pga_workbench/services/power_system_operators.py",
+    "?? src/pga_workbench/services/power_system_sources.py",
+    "?? src/pga_workbench/services/source_access_policies.py",
+    "?? src/pga_workbench/services/source_query_plans.py",
+    "?? tests/fixtures/pjm_generation_mix_minimal.json",
+    "?? tests/fixtures/pjm_lmp_prices_minimal.json",
+    "?? tests/fixtures/pjm_load_fundamentals_minimal.json",
+    "?? tests/fixtures/pjm_pnodes_wh_ad_ni.json",
+    "?? tests/test_artifact_composition.py",
+    "?? tests/test_generation_mix.py",
+    "?? tests/test_pjm_dataminer_connector.py",
+    "?? tests/test_pjm_fundamentals_semantic_core.py",
+    "?? tests/test_power_market_calendars.py",
+    "?? tests/test_power_price_shape_rollups.py",
+    "?? tests/test_power_system_artifact_products.py",
+    "?? tests/test_power_system_operational_events.py",
+    "?? tests/test_power_system_operators.py",
+    "?? tests/test_power_system_price_core.py",
+    "?? tests/test_power_system_source_catalog.py",
+    "?? tests/test_source_access_policies.py",
+    "?? tests/test_source_query_plans.py",
+    "?? work/tickets/T-0041-pjm-fundamentals-semantic-core.yaml",
+    "?? work/tickets/T-0042-power-system-price-source-core.yaml",
+    "?? work/tickets/T-0043-power-price-shape-rollups.yaml",
+    "?? work/tickets/T-0044-power-market-calendars.yaml",
+    "?? work/tickets/T-0045-pjm-pnode-verification.yaml",
+    "?? work/tickets/T-0046-power-system-source-catalog.yaml",
+    "?? work/tickets/T-0047-pjm-source-access-policy.yaml",
+    "?? work/tickets/T-0048-lmp-component-price-products.yaml",
+    "?? work/tickets/T-0049-pjm-hourly-lmp-query-planning.yaml",
+    "?? work/tickets/T-0050-pjm-generation-mix-source-core.yaml",
+    "?? work/tickets/T-0051-generation-mix-hotstate-view.yaml",
+    "?? work/tickets/T-0052-power-price-shape-hotstate-view.yaml",
+    "?? work/tickets/T-0053-power-system-operator-registry.yaml",
+    "?? work/tickets/T-0054-operational-event-feed-descriptors.yaml",
+    "?? work/tickets/T-0055-state-artifact-composition.yaml",
+    "?? work/tickets/T-0056-artifact-composition-audit-metadata.yaml",
+    "?? work/tickets/T-0057-state-pack-composition-metadata-validation.yaml",
+    "?? work/tickets/T-0058-power-system-artifact-product-registry.yaml",
+    "?? work/tickets/T-0059-state-pack-artifact-product-publish-gate.yaml"
+  ],
+  "checks": [
+    {
+      "check_id": "pytest",
+      "details": {
+        "returncode": 0
+      },
+      "duration_seconds": 13.988433,
+      "label": "pytest",
+      "required": true,
+      "status": "passed",
+      "summary": "pytest passed"
+    },
+    {
+      "check_id": "registries",
+      "details": {
+        "checked_records": 220,
+        "registry_dir": "/Users/zachfisher/Documents/Power Agent/registries",
+        "validated_files": [
+          "data_sources.yaml",
+          "delivery_window_policies.yaml",
+          "exchange_contracts.yaml",
+          "forward_fundamental_mappings.yaml",
+          "fundamental_metrics.yaml",
+          "gas_locations.yaml",
+          "market_indices.yaml",
+          "market_regions.yaml",
+          "option_contracts.yaml",
+          "period_aliases.yaml",
+          "pjm_fundamental_feeds.yaml",
+          "pjm_load_areas.yaml",
+          "power_generation_fuels.yaml",
+          "power_generation_mix_feeds.yaml",
+          "power_locations.yaml",
+          "power_market_calendars.yaml",
+          "power_price_shape_rules.yaml",
+          "power_system_artifact_products.yaml",
+          "power_system_operational_event_feeds.yaml",
+          "power_system_operators.yaml",
+          "power_system_price_feeds.yaml",
+          "power_system_source_access_policies.yaml",
+          "power_system_source_catalog.yaml",
+          "power_system_source_query_plans.yaml",
+          "product_master.yaml",
+          "quantity_conventions.yaml",
+          "quoted_spreads.yaml",
+          "tool_permissions.yaml",
+          "tools.yaml",
+          "vol_surface_universe.yaml"
+        ],
+        "warnings": []
+      },
+      "duration_seconds": 0.195999,
+      "label": "registry validation",
+      "required": true,
+      "status": "passed",
+      "summary": "registry validation passed"
+    },
+    {
+      "check_id": "work_items",
+      "details": {
+        "validated": [
+          "/Users/zachfisher/Documents/Power Agent/work/epics/E-0001-vcs-versioning-and-local-agent.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/epics/E-NATIVE-WORKFLOW.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/sprints/S-0001-merge-vcs-governance-local-agent.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/sprints/S-001-native-workflow-hardening.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/sprints/S-002-context-control-agent-harness-cleanup.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0001-merge-existing-branch.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0002-add-vcs-policy.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0003-add-work-item-schemas.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0004-add-local-llm-config-scaffold.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0005-update-status-docs-to-current-main.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0006-harden-opencode-poc.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0007-agent-kb-skill-release-loop.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0008-evaluate-agent-wrapper-options.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0009-wrapper-abstraction-layer.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0010-standardize-dev-env-and-vcs-readiness.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0011-integration-capability-registry.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0012-flexible-local-llm-profiles.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0013-opencode-hardening.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0014-work-context-onboarding.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0015-deterministic-kb-groundwork.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0016-registry-driven-normalization.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0017-release-spec-integration.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0018-artemis-core-abstraction.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0019-consolidate-artemis-architecture.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0020-foundation-architecture-cleanup.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0021-architecture-authority-consolidation.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0022-pjm-wh-rt-peak-forward-fundamental-mapping.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0023-pjm-hub-contract-grid-price-storage-semantics.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0024-ice-gas-contract-index-mapping.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0025-artemis-runtime-hardening-and-setup.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0026-price-instrument-position-pnl-spine.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0030-native-validation-runner.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0031-validation-report-bridge.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0032-release-readiness-native-validation.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0033-native-ticket-lifecycle.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0034-native-local-agent-loop.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0035-native-setup-docs.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0036-native-policy-release-gates.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0037-affected-file-snapshot-staleness.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0038-change-request-enforcement.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0040-fundamental-metric-registry-and-schema.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0041-pjm-fundamentals-semantic-core.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0042-power-system-price-source-core.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0043-power-price-shape-rollups.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0044-power-market-calendars.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0045-pjm-pnode-verification.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0046-power-system-source-catalog.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0047-pjm-source-access-policy.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0048-lmp-component-price-products.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0049-pjm-hourly-lmp-query-planning.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0050-pjm-generation-mix-source-core.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0051-generation-mix-hotstate-view.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0052-power-price-shape-hotstate-view.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0053-power-system-operator-registry.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0054-operational-event-feed-descriptors.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0055-state-artifact-composition.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0056-artifact-composition-audit-metadata.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0057-state-pack-composition-metadata-validation.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0058-power-system-artifact-product-registry.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0059-state-pack-artifact-product-publish-gate.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-context-audit.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-context-profiles.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-context-tool-integrity.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-skill-surface-validation.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-tool-spec-v2.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-validation-release-consolidation.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-wrapper-shim-cleanup.yaml"
+        ]
+      },
+      "duration_seconds": 0.198479,
+      "label": "work-item validation",
+      "required": true,
+      "status": "passed",
+      "summary": "work items passed"
+    },
+    {
+      "check_id": "knowledge_base",
+      "details": {
+        "entries": 4,
+        "manifest": "/Users/zachfisher/Documents/Power Agent/knowledge_base/MANIFEST.yaml"
+      },
+      "duration_seconds": 0.001027,
+      "label": "knowledge-base validation",
+      "required": true,
+      "status": "passed",
+      "summary": "knowledge base passed"
+    },
+    {
+      "check_id": "artemis_config",
+      "details": {
+        "name": "artemis"
+      },
+      "duration_seconds": 0.016543,
+      "label": "artemis config validation",
+      "required": true,
+      "status": "passed",
+      "summary": "artemis config passed"
+    },
+    {
+      "check_id": "skills",
+      "details": {
+        "manifest": "/Users/zachfisher/Documents/Power Agent/skills/manifest.yaml",
+        "procedural_manifest": "/Users/zachfisher/Documents/Power Agent/skills/procedural_manifest.yaml",
+        "procedural_skills": 10,
+        "procedural_validated": [
+          "/Users/zachfisher/Documents/Power Agent/skills/market_index_normalization/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/period_parsing/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/spread_basis_decomposition/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/atc_strip_decomposition/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/position_normalization/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/price_surface_normalization/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/vol_surface_normalization/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/pnl_bridge/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/exception_diagnosis/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/dashboard_narrative/SKILL.md"
+        ],
+        "skills": 7,
+        "validated": [
+          "/Users/zachfisher/Documents/Power Agent/skills/analyst/build_current_day_view.yaml",
+          "/Users/zachfisher/Documents/Power Agent/skills/analyst/build_prior_day_retrospective.yaml",
+          "/Users/zachfisher/Documents/Power Agent/skills/analyst/build_fourteen_day_fundamental_view.yaml",
+          "/Users/zachfisher/Documents/Power Agent/skills/analyst/explain_forecast_actual_delta.yaml",
+          "/Users/zachfisher/Documents/Power Agent/skills/analyst/rank_fundamental_drivers.yaml",
+          "/Users/zachfisher/Documents/Power Agent/skills/analyst/build_gas_basis_view.yaml",
+          "/Users/zachfisher/Documents/Power Agent/skills/analyst/build_eastern_power_view.yaml"
+        ]
+      },
+      "duration_seconds": 0.022044,
+      "label": "skill manifest validation",
+      "required": true,
+      "status": "passed",
+      "summary": "skill manifest passed"
+    },
+    {
+      "check_id": "views",
+      "details": {
+        "manifest": "/Users/zachfisher/Documents/Power Agent/views/manifest.yaml",
+        "templates": 6,
+        "validated": [
+          "/Users/zachfisher/Documents/Power Agent/views/templates/current_day.yaml",
+          "/Users/zachfisher/Documents/Power Agent/views/templates/prior_day_retrospective.yaml",
+          "/Users/zachfisher/Documents/Power Agent/views/templates/fourteen_day_fundamentals.yaml",
+          "/Users/zachfisher/Documents/Power Agent/views/templates/eastern_power_market.yaml",
+          "/Users/zachfisher/Documents/Power Agent/views/templates/gas_basis_market.yaml",
+          "/Users/zachfisher/Documents/Power Agent/views/templates/forecast_actual_delta.yaml"
+        ]
+      },
+      "duration_seconds": 0.005115,
+      "label": "view manifest validation",
+      "required": true,
+      "status": "passed",
+      "summary": "view manifest passed"
+    },
+    {
+      "check_id": "power_system_references",
+      "details": {
+        "artifact_products": {
+          "artifact_product_count": 5,
+          "composition_product_keys": [
+            "pjm_generation_mix",
+            "pjm_load_fundamentals",
+            "pjm_power_prices",
+            "power_price_shape_rollups"
+          ]
+        },
+        "operators": {
+          "PJM": [
+            "power_system_source_catalog:PJM_DATAMINER_LOAD_ACTUALS",
+            "power_system_source_catalog:PJM_DATAMINER_LOAD_FORECASTS",
+            "power_system_source_catalog:PJM_DATAMINER_HOURLY_LMP_CORE",
+            "power_system_source_catalog:PJM_DATAMINER_FIVE_MINUTE_RT_LMP",
+            "power_system_source_catalog:PJM_DATAMINER_GENERATION_BY_FUEL",
+            "power_system_source_catalog:PJM_DATAMINER_OUTAGES",
+            "power_system_source_catalog:PJM_DATAMINER_TRANSMISSION_CONSTRAINTS",
+            "power_locations:WH",
+            "power_locations:AD",
+            "power_locations:NI",
+            "pjm_fundamental_feeds.yaml:hrl_load_metered",
+            "pjm_fundamental_feeds.yaml:hrl_load_prelim",
+            "pjm_fundamental_feeds.yaml:load_frcstd_7_day",
+            "pjm_fundamental_feeds.yaml:load_frcstd_hist",
+            "pjm_load_areas.yaml:PJM_RTO",
+            "pjm_load_areas.yaml:AE_MIDATL",
+            "pjm_load_areas.yaml:AECO",
+            "pjm_load_areas.yaml:AEP",
+            "pjm_load_areas.yaml:AP",
+            "pjm_load_areas.yaml:ATSI",
+            "pjm_load_areas.yaml:COMED",
+            "pjm_load_areas.yaml:DAYTON",
+            "pjm_load_areas.yaml:DEOK",
+            "pjm_load_areas.yaml:DOMINION",
+            "pjm_load_areas.yaml:DUQUESNE",
+            "pjm_load_areas.yaml:EKPC",
+            "pjm_load_areas.yaml:MIDATL",
+            "pjm_load_areas.yaml:SOUTHERN_REGION",
+            "pjm_load_areas.yaml:WESTERN_REGION",
+            "power_system_price_feeds.yaml:PJM_PNODE",
+            "power_system_price_feeds.yaml:PJM_DA_HOURLY_LMP",
+            "power_system_price_feeds.yaml:PJM_RT_HOURLY_LMP",
+            "power_generation_mix_feeds.yaml:PJM_GEN_BY_FUEL",
+            "power_system_operational_event_feeds.yaml:PJM_FRCSTD_GEN_OUTAGES",
+            "power_system_operational_event_feeds.yaml:PJM_DA_TRANSCONSTRAINTS",
+            "power_system_operational_event_feeds.yaml:PJM_RT_TRANSN_CONSTRAINTS",
+            "power_market_calendars:PJM_EPT_POWER_DAY"
+          ]
+        },
+        "source_catalog": {
+          "PJM_DATAMINER_FIVE_MINUTE_RT_LMP": [],
+          "PJM_DATAMINER_GENERATION_BY_FUEL": [
+            "PJM_GEN_BY_FUEL"
+          ],
+          "PJM_DATAMINER_HOURLY_LMP_CORE": [
+            "PJM_PNODE",
+            "PJM_DA_HOURLY_LMP",
+            "PJM_RT_HOURLY_LMP"
+          ],
+          "PJM_DATAMINER_LOAD_ACTUALS": [
+            "hrl_load_metered",
+            "hrl_load_prelim"
+          ],
+          "PJM_DATAMINER_LOAD_FORECASTS": [
+            "load_frcstd_7_day",
+            "load_frcstd_hist"
+          ],
+          "PJM_DATAMINER_OUTAGES": [
+            "PJM_FRCSTD_GEN_OUTAGES"
+          ],
+          "PJM_DATAMINER_TRANSMISSION_CONSTRAINTS": [
+            "PJM_DA_TRANSCONSTRAINTS",
+            "PJM_RT_TRANSN_CONSTRAINTS"
+          ]
+        }
+      },
+      "duration_seconds": 0.04008,
+      "label": "power-system reference validation",
+      "required": true,
+      "status": "passed",
+      "summary": "power system references passed"
+    },
+    {
+      "check_id": "data_sources",
+      "details": {
+        "data_sources": {
+          "file_drop": {
+            "credentials": "none",
+            "kind": "file",
+            "required": true,
+            "supported_contracts": [
+              "market_prices",
+              "positions",
+              "trades",
+              "fundamentals",
+              "weather_forecast",
+              "iso_load",
+              "ice_settlements"
+            ]
+          },
+          "ice_exchange": {
+            "credentials": {
+              "mode": "env",
+              "required_env": [
+                "ARTEMIS_ICE_API_KEY"
+              ]
+            },
+            "kind": "ice_exchange",
+            "required": false,
+            "supported_contracts": [
+              "ice_settlements",
+              "forward_curves"
+            ]
+          },
+          "iso_api": {
+            "credentials": {
+              "mode": "env",
+              "required_env": []
+            },
+            "kind": "iso_api",
+            "required": false,
+            "supported_contracts": [
+              "iso_load",
+              "outages",
+              "fuel_mix"
+            ]
+          },
+          "pjm_dataminer": {
+            "credentials": {
+              "mode": "env",
+              "required_env": [
+                "ARTEMIS_PJM_API_KEY"
+              ]
+            },
+            "kind": "iso_api",
+            "required": false,
+            "supported_contracts": [
+              "fundamentals",
+              "iso_load",
+              "market_prices",
+              "fuel_mix"
+            ]
+          },
+          "vendor_api": {
+            "credentials": {
+              "mode": "env",
+              "required_env": [
+                "ARTEMIS_VENDOR_API_KEY"
+              ]
+            },
+            "kind": "vendor_api",
+            "required": false,
+            "supported_contracts": [
+              "fundamentals",
+              "weather_forecast",
+              "market_prices"
+            ]
+          }
+        },
+        "version": "0.1.0"
+      },
+      "duration_seconds": 0.002248,
+      "label": "data-source descriptor validation",
+      "required": true,
+      "status": "passed",
+      "summary": "data sources passed"
+    },
+    {
+      "check_id": "capabilities",
+      "details": {
+        "recommended_mode": "opencode_external_model"
+      },
+      "duration_seconds": 0.031986,
+      "label": "capability validation",
+      "required": true,
+      "status": "passed",
+      "summary": "capabilities passed"
+    },
+    {
+      "check_id": "context_audit",
+      "details": {
+        "counts": {
+          "blockers": 0,
+          "findings": 0
+        },
+        "findings": [],
+        "passed": true
+      },
+      "duration_seconds": 0.013717,
+      "label": "context surface audit",
+      "required": true,
+      "status": "passed",
+      "summary": "context audit passed"
+    },
+    {
+      "check_id": "release_sanity",
+      "details": {
+        "validation_commands": [
+          "artemis validate --strict"
+        ]
+      },
+      "duration_seconds": 0.016592,
+      "label": "release-readiness sanity",
+      "required": true,
+      "status": "passed",
+      "summary": "native release sanity checks passed"
+    }
+  ],
+  "command_results": [
+    {
+      "command": "python -m pytest -q",
+      "duration_seconds": 13.988433,
+      "returncode": 0,
+      "status": "passed",
+      "stderr": "",
+      "stdout": "........................................................................ [ 21%]\n........................................................................ [ 42%]\n............................................ss.......................... [ 64%]\n........................................................................ [ 85%]\n.................................................                        [100%]\n335 passed, 2 skipped in 13.86s\n"
+    }
+  ],
+  "commit": "9230b6b406912cf2c2c2115f0dbbdeca5da393ed",
+  "errors": [],
+  "generated_at": "2026-06-06T03:11:31Z",
+  "overall_status": "passed",
+  "repo_root": "/Users/zachfisher/Documents/Power Agent",
+  "report_id": "validation.T-0059.20260606T031131Z",
+  "skipped": false,
+  "strict": true,
+  "ticket_id": "T-0059",
+  "warnings": []
+}
