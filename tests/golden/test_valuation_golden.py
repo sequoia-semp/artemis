@@ -6,8 +6,10 @@ from pathlib import Path
 import pytest
 
 from pga_workbench.exceptions import VALUATION_INSUFFICIENT_DATA, WorkbenchException
+from pga_workbench.exceptions import VALUATION_TIE_OUT_FAILED
 from pga_workbench.services.greeks import run_black76_greeks
 from pga_workbench.services.normalization import normalize_positions
+from pga_workbench.services import pnl as pnl_service
 from pga_workbench.services.pnl import run_pnl_attribution
 from pga_workbench.services.risk import run_historical_var
 
@@ -51,6 +53,9 @@ def test_golden_valuation_scenarios(scenario_path: Path):
                 "mark_adjustment_effect": pnl_report.mark_adjustment_effect,
                 "unexplained_residual": pnl_report.unexplained_residual,
                 "bridge_sums": pnl_report.bridge_sums,
+                "independent_total_effect": pnl_report.independent_total_effect,
+                "explained_total_effect": pnl_report.explained_total_effect,
+                "residual_tolerance": pnl_report.residual_tolerance,
             },
             pnl["expected"],
             abs_tol=abs_tol,
@@ -96,3 +101,24 @@ def test_historical_var_missing_factor_fails_closed():
 
     assert exc.value.code == VALUATION_INSUFFICIENT_DATA
     assert "missing returns for risk factors" in exc.value.message
+
+
+def test_pnl_injected_attribution_bug_fails_independent_tie_out(monkeypatch):
+    scenario = _scenario("flat_single_leg.json")
+    pnl = scenario["pnl"]
+    original_q = pnl_service._q
+
+    def wrong_quantity(position):
+        return original_q(position) * 2.0
+
+    monkeypatch.setattr(pnl_service, "_q", wrong_quantity)
+
+    with pytest.raises(WorkbenchException) as exc:
+        run_pnl_attribution(
+            normalize_positions(pnl["prior_positions"]),
+            normalize_positions(pnl["current_positions"]),
+            run_id="injected-pnl-bug",
+        )
+
+    assert exc.value.code == VALUATION_TIE_OUT_FAILED
+    assert "residual_cause=bridge_exceeds_tolerance" in exc.value.message

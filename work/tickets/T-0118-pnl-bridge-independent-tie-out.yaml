@@ -1,7 +1,7 @@
 id: T-0118
 type: ticket
 title: PnL bridge independent tie-out
-status: planned
+status: validated
 owner: user
 risk: high
 created_at: '2026-06-06'
@@ -31,3 +31,15 @@ change_request_required: true
 change_id: CR-0096
 dependencies:
   - T-0115
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  PnL attribution now computes an independent begin/end MTM total, records
+  independent and explained totals on reports, applies the documented
+  PNL_RESIDUAL_TOLERANCE, and raises VALUATION_TIE_OUT_FAILED when an
+  attribution mismatch breaches tolerance.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0118/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0118.md
+validation_summary: >
+  .venv/bin/python -m pytest tests/golden tests/test_workbench_mvp.py
+  tests/test_price_instrument_spine.py -q passed.

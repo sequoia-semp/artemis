@@ -278,6 +278,10 @@ class PnlAttributionReport:
     unexplained_residual: float
     bridge_sums: bool
     drivers: list[dict[str, Any]]
+    independent_total_effect: float = 0.0
+    explained_total_effect: float = 0.0
+    residual_tolerance: float = 0.0
+    residual_cause: str = "not_evaluated"
     option_delta_effect: float = 0.0
     option_gamma_effect: float = 0.0
     option_vega_effect: float = 0.0
