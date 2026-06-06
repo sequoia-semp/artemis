@@ -21,6 +21,7 @@ def test_native_runner_reports_expected_checks(monkeypatch):
     assert report.overall_status == "passed"
     assert {
         "pytest",
+        "golden_valuation",
         "registries",
         "work_items",
         "knowledge_base",

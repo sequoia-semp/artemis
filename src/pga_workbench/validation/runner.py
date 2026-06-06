@@ -165,6 +165,19 @@ def run_validation(repo_root: Path, ticket_id: str | None = None, strict: bool =
             details={"returncode": pytest_result.returncode},
         )
     )
+    golden_valuation_result = _run_command(repo_root, "python -m pytest tests/golden -q")
+    command_results.append(golden_valuation_result)
+    checks.append(
+        ValidationCheckResult(
+            check_id="golden_valuation",
+            label="golden valuation scenarios",
+            status=golden_valuation_result.status,
+            required=True,
+            duration_seconds=golden_valuation_result.duration_seconds,
+            summary="golden valuation passed" if golden_valuation_result.status == "passed" else "golden valuation failed",
+            details={"returncode": golden_valuation_result.returncode},
+        )
+    )
     registry_result = _check(
         "registry validation",
         "registries",
