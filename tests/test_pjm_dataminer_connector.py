@@ -87,6 +87,20 @@ def test_pjm_dataminer_connector_rejects_error_payload(monkeypatch):
     assert "Invalid filter" in exc.value.message
 
 
+def test_pjm_dataminer_connector_rejects_unexpected_non_list_envelope(monkeypatch):
+    monkeypatch.delenv("ARTEMIS_PJM_API_KEY", raising=False)
+    connector = PjmDataMinerConnector(
+        api_key="test-key",
+        http_get=lambda *_: {"row": 1, "totalRows": 1},
+    )
+
+    with pytest.raises(WorkbenchException) as exc:
+        connector.fetch(DataRequest(contract="load_frcstd_7_day", parameters={"feed": "load_frcstd_7_day"}))
+
+    assert exc.value.code == PJM_DATAMINER_ERROR
+    assert "recognized records array" in exc.value.message
+
+
 def test_pjm_dataminer_connector_reads_env_key(monkeypatch):
     monkeypatch.setenv("ARTEMIS_PJM_API_KEY", "env-key")
     seen_headers = []

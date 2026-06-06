@@ -127,8 +127,6 @@ def _records_from_payload(payload: dict[str, Any]) -> list[dict[str, Any]]:
         records = payload.get(key)
         if isinstance(records, list):
             return [dict(item) for item in records if isinstance(item, dict)]
-    if all(not isinstance(value, list) for value in payload.values()):
-        return [dict(payload)]
     raise WorkbenchException(PJM_DATAMINER_ERROR, "PJM Data Miner response did not contain a recognized records array")
 
 
