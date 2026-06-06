@@ -1,0 +1,29 @@
+id: T-0130
+type: ticket
+title: View grounding tests
+status: planned
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-GROUNDING-DETERMINISM
+sprint: S-WAVE-1-C1
+layer:
+  - agent
+  - tests
+branch: codex/workscope-valuation-live-safety
+context_profile: behavioral
+problem: >
+  Grounded and unsupported view-claim paths need regression coverage.
+tasks:
+  - Add supported and unsupported claim tests.
+acceptance_criteria:
+  - Both paths are covered.
+required_tests:
+  - .venv/bin/python -m pytest tests/test_analyst_views.py -q
+affected_files:
+  - tests/
+change_request_required: true
+change_id: CR-0098
+dependencies:
+  - T-0128

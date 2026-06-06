@@ -1,0 +1,36 @@
+change_id: CR-0098
+title: Analyst grounding and deterministic runtime enforcement
+created_at: 2026-06-06T00:00:00Z
+change_class: 7
+severity: high
+tickets:
+  - T-0128
+  - T-0129
+  - T-0130
+  - T-0131
+  - T-0132
+  - T-0133
+problem_statement: >
+  Analyst-facing summaries and runtime manifests need grounding and provider
+  determinism enforcement so narrative and generated context remain auditable.
+root_cause: >
+  Current validation checks view structure and agent workflow policy but does
+  not require every surfaced quantitative claim to resolve to lineage-bearing
+  data or every deterministic run to be backed by provider guarantees.
+affected_files:
+  - src/pga_workbench/analyst/
+  - src/pga_workbench/agent_runtime/
+  - src/pga_workbench/state/
+  - configs/
+  - docs/
+  - tests/
+tests_required:
+  - .venv/bin/python -m pytest tests/test_artemis_config.py tests/test_release_readiness_native_validation.py -q
+  - .venv/bin/artemis validate --strict --ticket T-0131
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Restore prior view validation and provider-profile behavior, removing the new
+  grounding and deterministic-runtime gates.

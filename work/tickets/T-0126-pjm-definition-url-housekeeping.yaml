@@ -1,0 +1,28 @@
+id: T-0126
+type: ticket
+title: PJM definition URL housekeeping
+status: planned
+owner: user
+risk: low
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-LIVE-OPERATIONAL-SAFETY
+sprint: S-WAVE-0-B2
+layer:
+  - cli
+  - tests
+branch: codex/workscope-valuation-live-safety
+context_profile: trading_domain
+problem: >
+  definition_url is either dead code or not wired consistently with definition fetches.
+tasks:
+  - Remove or wire definition_url.
+acceptance_criteria:
+  - No dead connector path remains.
+  - Behavior is unit tested.
+required_tests:
+  - .venv/bin/python -m pytest tests/test_pjm_dataminer_connector.py -q
+affected_files:
+  - src/pga_workbench/adapters/
+  - tests/test_pjm_dataminer_connector.py
+change_request_required: false

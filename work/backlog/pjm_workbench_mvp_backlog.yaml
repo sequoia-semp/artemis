@@ -75,3 +75,57 @@ tracks:
       - deterministic_context_bundles
       - release_check_gate
       - scenario_draft_only_tools
+  workscope_wave_0:
+    priority: P0
+    current_ticket: T-0116
+    gate: Trust valuation numbers and run a live PJM key at volume.
+    next:
+      - T-0115 golden valuation scenario harness
+      - T-0116 hand-derived valuation scenarios
+      - T-0117 golden valuation CI gate
+      - T-0118 PnL bridge independent tie-out
+      - T-0119 historical VaR fail-closed behavior
+      - T-0120 typed VaR factor join
+      - T-0121 Greeks and vol oracle labeling
+      - T-0122 PJM token-bucket rate limiter
+      - T-0123 PJM 429 Retry-After backoff
+      - T-0124 PJM rate override validation
+      - T-0125 constructive redaction guarantee
+      - T-0126 PJM definition URL housekeeping
+      - T-0127 PJM payload envelope hardening
+  workscope_wave_1:
+    priority: P1
+    gate: Trustworthy analyst v1.
+    next:
+      - T-0128 view engine grounding pass
+      - T-0129 view lineage reference requirement
+      - T-0130 view grounding tests
+      - T-0131 deterministic provider profile enforcement
+      - T-0132 run manifest provider provenance
+      - T-0133 non-deterministic exploratory mode
+      - T-0134 PJM multi-row E2E pipeline test
+      - T-0135 PJM morning pipeline runbook
+      - T-0136 power-system registry schema handlers
+      - T-0137 validate power-system registries aggregate
+      - T-0138 curve and vintage abstraction
+      - T-0139 period and vintage math tests
+  workscope_wave_2:
+    priority: P2
+    gate: Production hardening.
+    next:
+      - T-0140 typed domain identifiers
+      - T-0141 exact gas-family mapping
+      - T-0142 robust period parser
+      - T-0143 Decimal money aggregation
+      - T-0144 registry cache sizing
+      - T-0145 TTF reference index
+      - T-0146 RGGI reference index
+      - T-0147 publish-path durability
+  workscope_wave_3:
+    priority: P3
+    gate: Multi-user analyst desk.
+    next:
+      - T-0148 read-only Textual TUI
+      - T-0149 TUI pop-out cross-filtering
+      - T-0150 shared read-only cache contract
+      - T-0151 cache-shared rate budget

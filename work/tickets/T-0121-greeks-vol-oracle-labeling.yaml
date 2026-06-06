@@ -1,0 +1,32 @@
+id: T-0121
+type: ticket
+title: Greeks and vol oracle labeling
+status: planned
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-VALUATION-CORRECTNESS
+sprint: S-WAVE-0-A2
+layer:
+  - valuation
+  - tests
+branch: codex/workscope-valuation-live-safety
+context_profile: trading_domain
+problem: >
+  Black-76 Greeks and vol-surface use are screening-only and need oracle coverage plus explicit labels.
+tasks:
+  - Add Greeks and vol expectations to the golden suite.
+  - Make screening-only stance explicit in outputs.
+acceptance_criteria:
+  - Greeks reproduce a known option to tolerance.
+  - Outputs label screening-only scope.
+required_tests:
+  - .venv/bin/python -m pytest tests/golden tests/test_price_instrument_spine.py -q
+affected_files:
+  - src/pga_workbench/services/greeks.py
+  - tests/golden/
+change_request_required: true
+change_id: CR-0096
+dependencies:
+  - T-0115

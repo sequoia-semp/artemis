@@ -1,0 +1,30 @@
+change_id: CR-0102
+title: Analyst TUI and shared read-only cache
+created_at: 2026-06-06T00:00:00Z
+change_class: 7
+severity: medium
+tickets:
+  - T-0148
+  - T-0149
+  - T-0150
+  - T-0151
+problem_statement: >
+  The project goal calls for a Bloomberg-like read-only TUI and eventual
+  one-writer/many-reader shared cache.
+root_cause: >
+  Current analyst workflows expose JSON view payloads and HotState read helpers
+  but do not yet implement the full Textual experience or shared-reader contract.
+affected_files:
+  - src/pga_workbench/app_textual/
+  - src/pga_workbench/cache/
+  - src/pga_workbench/state/
+  - tests/
+tests_required:
+  - .venv/bin/python -m pytest tests/test_app_textual_smoke.py tests/test_power_system_state.py tests/test_hot_state_price_queries.py -q
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Remove TUI and shared-cache contract changes and restore prior HotState-only
+  analyst behavior.

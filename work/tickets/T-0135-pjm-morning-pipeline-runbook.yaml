@@ -1,0 +1,27 @@
+id: T-0135
+type: ticket
+title: PJM morning pipeline runbook
+status: planned
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PIPELINE-REGISTRY-GOVERNANCE
+sprint: S-WAVE-1-D1
+layer:
+  - docs
+branch: codex/workscope-valuation-live-safety
+context_profile: trading_domain
+problem: >
+  The canonical analyst and development operating procedures need a runbook.
+tasks:
+  - Document run-pjm-morning-pipeline and build-pjm-lmp-prices --live workflows.
+acceptance_criteria:
+  - Runbook exists under docs/ and separates analyst and development modes.
+required_tests:
+  - .venv/bin/artemis validate --strict --ticket T-0135
+affected_files:
+  - docs/
+change_request_required: false
+dependencies:
+  - T-0134

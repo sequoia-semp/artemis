@@ -1,0 +1,33 @@
+id: T-0151
+type: ticket
+title: Cache-shared rate budget
+status: planned
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-ANALYST-EXPERIENCE-MULTIUSER
+sprint: S-WAVE-3-G2
+layer:
+  - validation
+  - cli
+  - tests
+branch: codex/workscope-valuation-live-safety
+context_profile: trading_domain
+problem: >
+  Multi-user readers must not multiply live API load by each holding separate budgets.
+tasks:
+  - Extend the token-bucket limiter to a cache-shared budget.
+acceptance_criteria:
+  - Budget is shared across readers, not per process.
+required_tests:
+  - .venv/bin/python -m pytest tests/test_pjm_dataminer_connector.py tests/test_power_system_state.py -q
+affected_files:
+  - src/pga_workbench/cache/
+  - src/pga_workbench/adapters/
+  - tests/
+change_request_required: true
+change_id: CR-0102
+dependencies:
+  - T-0122
+  - T-0150
