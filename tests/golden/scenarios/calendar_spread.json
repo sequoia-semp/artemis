@@ -58,7 +58,10 @@
       "atc_component_effect": 0.0,
       "mark_adjustment_effect": 0.0,
       "unexplained_residual": 0.0,
-      "bridge_sums": true
+      "bridge_sums": true,
+      "independent_total_effect": 700.0,
+      "explained_total_effect": 700.0,
+      "residual_tolerance": 1e-9
     }
   },
   "var": {

@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+from ..exceptions import VALUATION_INSUFFICIENT_DATA, VALUATION_TIE_OUT_FAILED, WorkbenchException
 from ..models import NormalizedPosition, PnlAttributionReport
+
+PNL_RESIDUAL_TOLERANCE = 1e-9
 
 
 def _index(positions: list[NormalizedPosition]) -> dict[str, NormalizedPosition]:
@@ -16,19 +19,48 @@ def _q(position: NormalizedPosition | None) -> float:
 def _price(position: NormalizedPosition | None) -> float:
     if position is None:
         return 0.0
-    return float(position.normalized.get("mark") or 0.0)
+    mark = position.normalized.get("mark")
+    if mark is None:
+        raise WorkbenchException(VALUATION_INSUFFICIENT_DATA, f"PnL position {position.position_id} is missing mark")
+    return float(mark)
 
 
 def _value(position: NormalizedPosition | None) -> float:
     if position is None:
         return 0.0
-    return float(position.derived.get("market_value") or 0.0)
+    market_value = position.derived.get("market_value")
+    if market_value is None:
+        raise WorkbenchException(VALUATION_INSUFFICIENT_DATA, f"PnL position {position.position_id} is missing market_value")
+    return float(market_value)
 
 
 def _identity(position: NormalizedPosition | None) -> dict[str, object]:
     if position is None:
         return {}
     return dict(position.identity or {})
+
+
+def _portfolio_value(positions: dict[str, NormalizedPosition]) -> float:
+    return sum(_value(position) for position in positions.values())
+
+
+def _residual_cause(residual: float, tolerance: float) -> str:
+    return "within_tolerance" if abs(residual) <= tolerance else "bridge_exceeds_tolerance"
+
+
+def _assert_bridge_tie_out(independent_total: float, explained_total: float, residual: float, tolerance: float) -> None:
+    bridge_total = explained_total + residual
+    tie_out_error = bridge_total - independent_total
+    if abs(residual) > tolerance or abs(tie_out_error) > tolerance:
+        raise WorkbenchException(
+            VALUATION_TIE_OUT_FAILED,
+            (
+                "PnL bridge exceeds tolerance: "
+                f"independent_total={independent_total}, explained_total={explained_total}, "
+                f"residual={residual}, tie_out_error={tie_out_error}, tolerance={tolerance}, "
+                f"residual_cause={_residual_cause(residual, tolerance)}"
+            ),
+        )
 
 
 def _group_breakdowns(drivers: list[dict[str, object]]) -> list[dict[str, object]]:
@@ -87,6 +119,7 @@ def run_pnl_attribution(
     position_change_effect = 0.0
     price_move_effect = 0.0
     drivers: list[dict[str, object]] = []
+    independent_total = _portfolio_value(current) - _portfolio_value(prior)
 
     for position_id in sorted(set(prior) | set(current)):
         p0 = prior.get(position_id)
@@ -114,6 +147,15 @@ def run_pnl_attribution(
         )
 
     total_residual = sum(float(driver["residual"]) for driver in drivers)
+    explained_total = (
+        price_move_effect
+        + position_change_effect
+        + 0.0  # basis_move_effect
+        + 0.0  # strip_weight_effect
+        + 0.0  # atc_component_effect
+        + 0.0  # mark_adjustment_effect
+    )
+    _assert_bridge_tie_out(independent_total, explained_total, total_residual, PNL_RESIDUAL_TOLERANCE)
     current_as_of = current_positions[0].as_of if current_positions else ""
     prior_as_of = prior_positions[0].as_of if prior_positions else ""
     return PnlAttributionReport(
@@ -127,7 +169,11 @@ def run_pnl_attribution(
         atc_component_effect=0.0,
         mark_adjustment_effect=0.0,
         unexplained_residual=total_residual,
-        bridge_sums=abs(total_residual) < 1e-9,
+        bridge_sums=abs(total_residual) <= PNL_RESIDUAL_TOLERANCE,
         drivers=drivers,
+        independent_total_effect=independent_total,
+        explained_total_effect=explained_total,
+        residual_tolerance=PNL_RESIDUAL_TOLERANCE,
+        residual_cause=_residual_cause(total_residual, PNL_RESIDUAL_TOLERANCE),
         group_breakdowns=_group_breakdowns(drivers),
     )
