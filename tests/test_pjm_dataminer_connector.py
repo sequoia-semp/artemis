@@ -331,7 +331,7 @@ def test_pjm_dataminer_connector_builds_public_definition_url_without_key(monkey
     assert exc.value.code == PJM_DATAMINER_ERROR
 
 
-def test_pjm_dataminer_connector_fetches_metadata_definition_with_key(monkeypatch):
+def test_pjm_dataminer_connector_fetches_public_definition_without_key(monkeypatch):
     monkeypatch.delenv("ARTEMIS_PJM_API_KEY", raising=False)
     calls = []
 
@@ -339,20 +339,14 @@ def test_pjm_dataminer_connector_fetches_metadata_definition_with_key(monkeypatc
         calls.append((url, headers, timeout))
         return {"columns": [{"fieldName": "datetime_beginning_utc"}]}
 
-    payload = PjmDataMinerConnector(api_key="test-key", base_url="https://api.example/api/v1", http_get=fake_get).fetch_definition("rt_hrl_lmps")
+    payload = PjmDataMinerConnector(
+        api_key=None,
+        definition_base_url="https://definition.example",
+        http_get=fake_get,
+    ).fetch_definition("rt_hrl_lmps")
 
     assert payload == {"columns": [{"fieldName": "datetime_beginning_utc"}]}
-    assert calls == [("https://api.example/api/v1/rt_hrl_lmps/metadata", {"Ocp-Apim-Subscription-Key": "test-key"}, 30.0)]
-
-
-def test_pjm_dataminer_connector_requires_key_for_metadata_definition(monkeypatch):
-    monkeypatch.delenv("ARTEMIS_PJM_API_KEY", raising=False)
-    connector = PjmDataMinerConnector(api_key=None, http_get=lambda *_: {"columns": []})
-
-    with pytest.raises(WorkbenchException) as exc:
-        connector.fetch_definition("rt_hrl_lmps")
-
-    assert exc.value.code == PJM_DATAMINER_AUTH_MISSING
+    assert calls == [("https://definition.example/feed/rt_hrl_lmps/definition", {}, 30.0)]
 
 
 def test_pjm_dataminer_connector_rejects_definition_error_payload(monkeypatch):

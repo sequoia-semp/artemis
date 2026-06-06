@@ -203,7 +203,7 @@ class PjmDataMinerConnector(DataConnector):
         return f"{self.base_url}/{feed}/metadata"
 
     def fetch_definition(self, feed: str) -> dict[str, Any]:
-        payload = self._request_json(self.metadata_url(feed))
+        payload = self._request_json(self.definition_url(feed), headers={})
         if payload.get("errors") or (payload.get("code") and payload.get("message")):
             message = str(payload.get("message") or "PJM Data Miner returned a definition error payload")
             raise WorkbenchException(PJM_DATAMINER_ERROR, message)
@@ -237,12 +237,13 @@ class PjmDataMinerConnector(DataConnector):
             return 0.0
         return self.rate_limiter.acquire()
 
-    def _request_json(self, url: str) -> dict[str, Any]:
+    def _request_json(self, url: str, headers: dict[str, str] | None = None) -> dict[str, Any]:
         attempt = 0
+        request_headers = self._headers() if headers is None else dict(headers)
         while True:
             self._acquire_rate_limit()
             try:
-                return self.http_get(url, self._headers(), self.timeout_seconds)
+                return self.http_get(url, request_headers, self.timeout_seconds)
             except PjmDataMinerRetryAfter as exc:
                 if attempt >= self.max_retry_attempts:
                     raise WorkbenchException(
