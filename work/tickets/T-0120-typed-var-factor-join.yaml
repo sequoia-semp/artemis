@@ -1,0 +1,34 @@
+id: T-0120
+type: ticket
+title: Typed VaR factor join
+status: planned
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-VALUATION-CORRECTNESS
+sprint: S-WAVE-0-A2
+layer:
+  - registry
+  - valuation
+  - tests
+branch: codex/workscope-valuation-live-safety
+context_profile: trading_domain
+problem: >
+  VaR exposure and scenario joins are stringly typed and can silently mismatch.
+tasks:
+  - Introduce a typed risk factor identifier shared by exposures and scenarios.
+  - Make unmatched factors construction-time errors.
+acceptance_criteria:
+  - Unmatched factors raise.
+  - A golden case covers a known non-trivial VaR join.
+required_tests:
+  - .venv/bin/python -m pytest tests/golden -q
+affected_files:
+  - src/pga_workbench/models.py
+  - src/pga_workbench/services/risk.py
+  - tests/golden/
+change_request_required: true
+change_id: CR-0096
+dependencies:
+  - T-0119

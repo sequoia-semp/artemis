@@ -1,0 +1,34 @@
+id: T-0137
+type: ticket
+title: Validate power-system registries aggregate
+status: planned
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PIPELINE-REGISTRY-GOVERNANCE
+sprint: S-WAVE-1-D2
+layer:
+  - registry
+  - validation
+  - tests
+branch: codex/workscope-valuation-live-safety
+context_profile: trading_domain
+problem: >
+  Cross-reference checks need one aggregate command and CI validation.
+tasks:
+  - Add validate-power-system-registries aggregate.
+  - Wire it into required validation.
+acceptance_criteria:
+  - Aggregate fails on any cross-reference violation.
+  - Aggregate runs in CI/native validation.
+required_tests:
+  - .venv/bin/artemis validate --strict --ticket T-0137
+affected_files:
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/validation/
+  - tests/
+change_request_required: true
+change_id: CR-0099
+dependencies:
+  - T-0136

@@ -1,0 +1,32 @@
+id: T-0134
+type: ticket
+title: PJM multi-row E2E pipeline test
+status: planned
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-PIPELINE-REGISTRY-GOVERNANCE
+sprint: S-WAVE-1-D1
+layer:
+  - cli
+  - validation
+  - tests
+branch: codex/workscope-valuation-live-safety
+context_profile: trading_domain
+problem: >
+  The live pipeline exists but lacks a workflow-level test proving record survival.
+tasks:
+  - Drive a multi-row fixture through fetch, normalize, compose, and stage.
+acceptance_criteria:
+  - Row counts survive fetch to artifact.
+  - Candidate is non-published and schema-valid.
+required_tests:
+  - .venv/bin/python -m pytest tests/test_power_system_state.py tests/test_power_system_ingestion.py -q
+affected_files:
+  - tests/
+change_request_required: true
+change_id: CR-0099
+dependencies:
+  - T-0122
+  - T-0127

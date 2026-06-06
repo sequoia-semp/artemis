@@ -1,0 +1,43 @@
+id: T-0119
+type: ticket
+title: Historical VaR fail-closed behavior
+status: validated
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-VALUATION-CORRECTNESS
+sprint: S-WAVE-0-A2
+layer:
+  - valuation
+  - tests
+branch: codex/workscope-valuation-live-safety
+context_profile: trading_domain
+problem: >
+  Missing or mismatched historical VaR factors can default to zero exposure and falsely low risk.
+tasks:
+  - Remove silent zero-risk defaults for missing factors, scenarios, and empty sets.
+  - Return explicit insufficient_data or raise a structured exception.
+acceptance_criteria:
+  - Deliberately missing factors fail closed.
+  - Reports distinguish true zero risk from could-not-compute.
+required_tests:
+  - .venv/bin/python -m pytest tests/golden tests/test_workbench_mvp.py -q
+affected_files:
+  - src/pga_workbench/services/risk.py
+  - tests/golden/
+change_request_required: true
+change_id: CR-0096
+dependencies:
+  - T-0115
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Historical VaR now raises VALUATION_INSUFFICIENT_DATA for empty positions,
+  empty return sets, missing market values, missing expected factors, unmatched
+  scenario factors, and empty scenario PnL sets instead of defaulting to zero risk.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0119/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0119.md
+validation_summary: >
+  .venv/bin/python -m pytest tests/golden tests/test_workbench_mvp.py
+  tests/test_price_instrument_spine.py -q passed.

@@ -1,0 +1,24 @@
+change_id: CR-0101
+title: State publish-path durability
+created_at: 2026-06-06T00:00:00Z
+change_class: 7
+severity: medium
+tickets:
+  - T-0147
+problem_statement: >
+  The state publisher needs an explicit durability audit and crash simulation
+  for pointer-swap publishing before shared-cache trust.
+root_cause: >
+  Existing publish behavior uses candidate staging and pointer replacement, but
+  fsync and partial-write recovery guarantees have not been proven by a failure test.
+affected_files:
+  - src/pga_workbench/state/packs.py
+  - tests/test_power_system_state.py
+tests_required:
+  - .venv/bin/python -m pytest tests/test_power_system_state.py -q
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-06T00:00:00Z
+rollback_plan: >
+  Restore previous pointer-swap implementation and remove the crash simulation test.

@@ -1,0 +1,30 @@
+id: T-0117
+type: ticket
+title: Golden valuation CI gate
+status: planned
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-VALUATION-CORRECTNESS
+sprint: S-WAVE-0-A1
+layer:
+  - validation
+  - tests
+branch: codex/workscope-valuation-live-safety
+context_profile: trading_domain
+problem: >
+  Golden valuation drift must block release readiness.
+tasks:
+  - Wire the golden valuation suite into native validation or CI.
+acceptance_criteria:
+  - Validation fails on any drift beyond documented tolerance.
+required_tests:
+  - .venv/bin/artemis validate --strict --ticket T-0117
+affected_files:
+  - src/pga_workbench/validation/
+  - tests/golden/
+change_request_required: true
+change_id: CR-0096
+dependencies:
+  - T-0115

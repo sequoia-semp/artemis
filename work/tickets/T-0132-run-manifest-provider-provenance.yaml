@@ -1,0 +1,32 @@
+id: T-0132
+type: ticket
+title: Run manifest provider provenance
+status: planned
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-GROUNDING-DETERMINISM
+sprint: S-WAVE-1-C2
+layer:
+  - agent_runtime
+  - validation
+  - tests
+branch: codex/workscope-valuation-live-safety
+context_profile: behavioral
+problem: >
+  Run manifests need provider, model, and parameter provenance for reproducibility.
+tasks:
+  - Record provider identity and params in every RunManifest.
+acceptance_criteria:
+  - Manifest contains provider identity and params for every run.
+required_tests:
+  - .venv/bin/python -m pytest tests/test_release_readiness_native_validation.py -q
+affected_files:
+  - src/pga_workbench/agent_runtime/
+  - src/pga_workbench/state/
+  - tests/
+change_request_required: true
+change_id: CR-0098
+dependencies:
+  - T-0131

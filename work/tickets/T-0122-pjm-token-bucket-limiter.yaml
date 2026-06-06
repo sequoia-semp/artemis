@@ -1,0 +1,31 @@
+id: T-0122
+type: ticket
+title: PJM token-bucket rate limiter
+status: planned
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-LIVE-OPERATIONAL-SAFETY
+sprint: S-WAVE-0-B1
+layer:
+  - cli
+  - validation
+  - tests
+branch: codex/workscope-valuation-live-safety
+context_profile: trading_domain
+problem: >
+  PJM Data Miner rate limits are plan-time counts, not wall-clock runtime throttles.
+tasks:
+  - Add a wall-clock token-bucket limiter keyed by account class.
+  - Keep limiter state process-shared and extensible to shared-cache budgets.
+acceptance_criteria:
+  - A simulated burst beyond budget sleeps rather than rejects.
+  - Limiter state is process-shared.
+required_tests:
+  - .venv/bin/python -m pytest tests/test_pjm_dataminer_connector.py -q
+affected_files:
+  - src/pga_workbench/adapters/
+  - tests/test_pjm_dataminer_connector.py
+change_request_required: true
+change_id: CR-0097

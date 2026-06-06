@@ -4,6 +4,7 @@ import csv
 from pathlib import Path
 from typing import Any
 
+from ..exceptions import VALUATION_INSUFFICIENT_DATA, WorkbenchException
 from ..models import HistoricalVaRReport, NormalizedPosition
 
 
@@ -22,7 +23,7 @@ def _position_risk_factor(position: NormalizedPosition) -> str:
 
 def _historical_quantile(sorted_values: list[float], probability: float) -> float:
     if not sorted_values:
-        return 0.0
+        raise WorkbenchException(VALUATION_INSUFFICIENT_DATA, "Historical VaR requires at least one scenario PnL")
     index = int(probability * (len(sorted_values) - 1))
     return sorted_values[index]
 
@@ -35,13 +36,40 @@ def run_historical_var(
     confidence_levels: list[float] | None = None,
 ) -> HistoricalVaRReport:
     confidence_levels = confidence_levels or [0.95, 0.99]
+    if not positions:
+        raise WorkbenchException(VALUATION_INSUFFICIENT_DATA, "Historical VaR requires at least one position")
+    if not historical_returns:
+        raise WorkbenchException(VALUATION_INSUFFICIENT_DATA, "Historical VaR requires historical returns")
+
     exposure_by_factor: dict[str, float] = {}
     for position in positions:
-        exposure_by_factor[_position_risk_factor(position)] = exposure_by_factor.get(_position_risk_factor(position), 0.0) + float(position.derived.get("market_value") or 0.0)
+        market_value = position.derived.get("market_value")
+        if market_value is None:
+            raise WorkbenchException(
+                VALUATION_INSUFFICIENT_DATA,
+                f"Historical VaR position {position.position_id} is missing market_value",
+            )
+        risk_factor = _position_risk_factor(position)
+        exposure_by_factor[risk_factor] = exposure_by_factor.get(risk_factor, 0.0) + float(market_value)
+
+    expected_factors = set(exposure_by_factor)
+    scenario_factors = {str(row["risk_factor"]) for row in historical_returns}
+    missing_factors = sorted(expected_factors - scenario_factors)
+    unexpected_factors = sorted(scenario_factors - expected_factors)
+    if missing_factors:
+        raise WorkbenchException(
+            VALUATION_INSUFFICIENT_DATA,
+            f"Historical VaR missing returns for risk factors: {', '.join(missing_factors)}",
+        )
+    if unexpected_factors:
+        raise WorkbenchException(
+            VALUATION_INSUFFICIENT_DATA,
+            f"Historical VaR returns include unmatched risk factors: {', '.join(unexpected_factors)}",
+        )
 
     pnl_by_date: dict[str, float] = {}
     for row in historical_returns:
-        exposure = exposure_by_factor.get(str(row["risk_factor"]), 0.0)
+        exposure = exposure_by_factor[str(row["risk_factor"])]
         pnl_by_date[str(row["date"])] = pnl_by_date.get(str(row["date"]), 0.0) + exposure * float(row["return"])
 
     scenario_pnl = [{"date": date, "pnl": pnl} for date, pnl in sorted(pnl_by_date.items())]

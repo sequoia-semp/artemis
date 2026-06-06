@@ -1,0 +1,30 @@
+id: T-0123
+type: ticket
+title: PJM 429 Retry-After backoff
+status: planned
+owner: user
+risk: high
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-LIVE-OPERATIONAL-SAFETY
+sprint: S-WAVE-0-B1
+layer:
+  - cli
+  - tests
+branch: codex/workscope-valuation-live-safety
+context_profile: trading_domain
+problem: >
+  Data Miner throttle responses currently hard-fail instead of honoring Retry-After.
+tasks:
+  - Add bounded retry and exponential backoff in the injectable HTTP path.
+acceptance_criteria:
+  - A simulated 429 honors Retry-After, backs off, then succeeds.
+required_tests:
+  - .venv/bin/python -m pytest tests/test_pjm_dataminer_connector.py -q
+affected_files:
+  - src/pga_workbench/adapters/
+  - tests/test_pjm_dataminer_connector.py
+change_request_required: true
+change_id: CR-0097
+dependencies:
+  - T-0122

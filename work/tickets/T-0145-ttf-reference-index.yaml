@@ -1,0 +1,34 @@
+id: T-0145
+type: ticket
+title: TTF reference index
+status: planned
+owner: user
+risk: medium
+created_at: '2026-06-06'
+updated_at: '2026-06-06T00:00:00Z'
+epic: E-SEMANTIC-CORE-COMPLETENESS
+sprint: S-WAVE-2-E3
+layer:
+  - registry
+  - registry
+  - tests
+branch: codex/workscope-valuation-live-safety
+context_profile: trading_domain
+problem: >
+  TTF reference prices need a clean reference-only home mapped to ICE contracts.
+tasks:
+  - Add TTF as reference_only including USD/MMBtu-settled variant.
+  - Block TTF from core state-pack publish.
+acceptance_criteria:
+  - TTF is resolvable as reference with ICE metadata.
+  - TTF cannot enter a core state pack.
+required_tests:
+  - .venv/bin/python -m pytest tests/test_forward_fundamental_mapping.py tests/test_power_system_state.py -q
+affected_files:
+  - registries/
+  - schemas/
+  - tests/
+change_request_required: true
+change_id: CR-0100
+dependencies:
+  - T-0138
