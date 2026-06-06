@@ -1,7 +1,7 @@
 id: T-0124
 type: ticket
 title: PJM rate override validation
-status: planned
+status: validated
 owner: user
 risk: medium
 created_at: '2026-06-06'
@@ -21,10 +21,23 @@ acceptance_criteria:
   - An over-budget non_member override is refused at plan time.
 required_tests:
   - .venv/bin/python -m pytest tests/test_source_query_plans.py -q
+  - .venv/bin/python -m pytest tests/test_pjm_dataminer_connector.py -q
 affected_files:
-  - src/pga_workbench/services/
+  - src/pga_workbench/data/connectors/pjm_dataminer.py
   - tests/test_source_query_plans.py
+  - tests/test_pjm_dataminer_connector.py
 change_request_required: true
 change_id: CR-0097
 dependencies:
   - T-0122
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  PJM Data Miner connection-limit overrides may now reduce the account-class
+  runtime budget but cannot exceed the published tier budget. Over-budget
+  non_member overrides fail before request planning completes.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0124/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0124.md
+validation_summary: >
+  .venv/bin/python -m pytest tests/test_pjm_dataminer_connector.py
+  tests/test_source_query_plans.py -q passed.

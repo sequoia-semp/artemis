@@ -164,6 +164,34 @@ def test_pjm_dataminer_connector_rejects_planned_pages_over_connection_budget(mo
     assert "connection budget" in exc.value.message
 
 
+def test_pjm_dataminer_connector_rejects_over_budget_rate_override(monkeypatch):
+    monkeypatch.delenv("ARTEMIS_PJM_API_KEY", raising=False)
+    connector = PjmDataMinerConnector(
+        api_key="test-key",
+        account_class="non_member",
+        max_connections_per_minute=7,
+        http_get=lambda *_: {"items": []},
+    )
+
+    with pytest.raises(WorkbenchException) as exc:
+        connector.fetch(DataRequest(contract="load_frcstd_7_day", parameters={"feed": "load_frcstd_7_day"}))
+
+    assert exc.value.code == PJM_DATAMINER_POLICY_ERROR
+    assert "override exceeds account-class budget" in exc.value.message
+
+
+def test_pjm_dataminer_connector_allows_lower_rate_override(monkeypatch):
+    monkeypatch.delenv("ARTEMIS_PJM_API_KEY", raising=False)
+    result = PjmDataMinerConnector(
+        api_key="test-key",
+        account_class="non_member",
+        max_connections_per_minute=3,
+        http_get=lambda *_: {"items": []},
+    ).fetch(DataRequest(contract="load_frcstd_7_day", parameters={"feed": "load_frcstd_7_day"}))
+
+    assert result.lineage["max_connections_per_minute"] == 3
+
+
 def test_pjm_dataminer_token_bucket_sleeps_on_burst(monkeypatch):
     monkeypatch.delenv("ARTEMIS_PJM_API_KEY", raising=False)
     now = [0.0]

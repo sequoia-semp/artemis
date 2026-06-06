@@ -212,10 +212,22 @@ class PjmDataMinerConnector(DataConnector):
         return payload
 
     def _connection_limit(self) -> int:
+        tier_limit = self._account_class_connection_limit()
         if self.max_connections_per_minute is not None:
             if self.max_connections_per_minute < 1:
                 raise WorkbenchException(PJM_DATAMINER_POLICY_ERROR, "PJM Data Miner max connections per minute must be positive")
+            if self.max_connections_per_minute > tier_limit:
+                raise WorkbenchException(
+                    PJM_DATAMINER_POLICY_ERROR,
+                    (
+                        "PJM Data Miner max connections override exceeds account-class budget: "
+                        f"override={self.max_connections_per_minute}, account_class={self.account_class}, tier_budget={tier_limit}"
+                    ),
+                )
             return self.max_connections_per_minute
+        return tier_limit
+
+    def _account_class_connection_limit(self) -> int:
         try:
             return PJM_DATAMINER_CONNECTION_LIMITS_PER_MINUTE[self.account_class]
         except KeyError as exc:
