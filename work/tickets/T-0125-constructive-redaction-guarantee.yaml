@@ -1,7 +1,7 @@
 id: T-0125
 type: ticket
 title: Constructive redaction guarantee
-status: planned
+status: validated
 owner: user
 risk: medium
 created_at: '2026-06-06'
@@ -29,3 +29,16 @@ affected_files:
   - tests/
 change_request_required: true
 change_id: CR-0097
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added a constructive redaction scanner for source evidence payloads and wired
+  it into bundle, source-audit, and accepted-state source-publication gates so
+  disallowed secret-bearing fields fail even when contains_secret_values is set
+  to false.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0125/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0125.md
+validation_summary: >
+  .venv/bin/python -m pytest tests/test_power_system_ingestion.py
+  tests/test_power_system_source_audit.py tests/test_power_system_state.py -q
+  passed.

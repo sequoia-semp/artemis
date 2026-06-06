@@ -12,7 +12,11 @@ from pga_workbench.serialization import read_json, write_json
 from pga_workbench.services.power_system_ingestion import build_power_system_artifact_bundle
 from pga_workbench.services.power_system_raw_fetches import build_raw_source_fetch_manifest
 from pga_workbench.services.power_system_source_metadata import collect_pjm_data_miner_metadata_expectations
-from pga_workbench.services.power_system_sources import POWER_SYSTEM_SOURCE_ERROR, build_power_system_source_publication_report
+from pga_workbench.services.power_system_sources import (
+    POWER_SYSTEM_SOURCE_ERROR,
+    build_power_system_source_publication_report,
+    validate_state_pack_source_publication_publish_status,
+)
 from pga_workbench.services.power_system_state import POWER_SYSTEM_STATE_ERROR, stage_power_system_bundle_candidate
 from pga_workbench.services.source_query_plans import SourceQueryRequest
 from pga_workbench.state.packs import publish_candidate_state_pack
@@ -335,6 +339,25 @@ def test_publish_allows_candidate_source_publication_evidence_for_local_fixture_
     publish_candidate_state_pack(tmp_path, "candidate-1")
 
     assert HotState(tmp_path).artifacts()["power_system_artifact_bundle"]["data_environment"] == "fixture"
+
+
+def test_source_publication_publish_rejects_disallowed_secret_field_in_redacted_evidence():
+    artifacts = {
+        "power_system_artifact_bundle": {
+            "data_environment": "fixture",
+            "source_publications": {
+                "contains_secret_values": False,
+                "api_key": "must-not-be-trusted-by-flag",
+            },
+        }
+    }
+
+    with pytest.raises(WorkbenchException) as exc:
+        validate_state_pack_source_publication_publish_status(artifacts)
+
+    assert exc.value.code == POWER_SYSTEM_SOURCE_ERROR
+    assert "disallowed secret field" in exc.value.message
+    assert "api_key" in exc.value.message
 
 
 def test_publish_blocks_approved_source_publications_without_readiness_evidence(tmp_path):

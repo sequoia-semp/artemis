@@ -5,6 +5,7 @@ from typing import Any
 
 from ..exceptions import WorkbenchException
 from ..registry import load_yaml_unique
+from .redaction import assert_no_disallowed_secret_fields
 
 POWER_SYSTEM_SOURCE_ERROR = "POWER_SYSTEM_SOURCE_ERROR"
 LOCAL_ONLY_DATA_ENVIRONMENTS = {"development", "fixture", "local", "test"}
@@ -117,6 +118,11 @@ def validate_state_pack_source_publication_publish_status(artifacts: dict[str, A
         raise WorkbenchException(POWER_SYSTEM_SOURCE_ERROR, "Source publication evidence must be a mapping")
     if source_publications.get("contains_secret_values") is not False:
         raise WorkbenchException(POWER_SYSTEM_SOURCE_ERROR, "Source publication evidence must be redacted before publish")
+    assert_no_disallowed_secret_fields(
+        source_publications,
+        label="Source publication",
+        error_code=POWER_SYSTEM_SOURCE_ERROR,
+    )
     data_environment = str(metadata.get("data_environment") or "").lower()
     if data_environment in LOCAL_ONLY_DATA_ENVIRONMENTS:
         return
@@ -176,6 +182,11 @@ def _validate_source_publication_publish_evidence(metadata: dict[str, Any], requ
     ]:
         if value.get("contains_secret_values") is not False:
             raise WorkbenchException(POWER_SYSTEM_SOURCE_ERROR, f"Approved source publication {label} evidence must be redacted")
+        assert_no_disallowed_secret_fields(
+            value,
+            label=f"Approved source publication {label}",
+            error_code=POWER_SYSTEM_SOURCE_ERROR,
+        )
     if raw_source_fetches.get("contains_raw_records") is not False:
         raise WorkbenchException(POWER_SYSTEM_SOURCE_ERROR, "Approved source publication raw source fetch evidence must not contain raw records")
     if source_readiness.get("ready") is not True or int(source_readiness.get("blocker_count") or 0) != 0:

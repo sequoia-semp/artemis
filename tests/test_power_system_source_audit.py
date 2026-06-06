@@ -145,6 +145,20 @@ def test_power_system_source_audit_schema_rejects_unredacted_report():
     assert "contains_secret_values" in exc.value.message
 
 
+def test_power_system_source_audit_rejects_disallowed_secret_field_in_redacted_evidence(monkeypatch):
+    bundle = _source_audit_bundle()
+    bundle["power_system_artifact_bundle"]["preflight"]["api_key"] = "must-not-be-trusted-by-flag"
+
+    monkeypatch.setattr("pga_workbench.services.power_system_audit.validate_power_system_artifact_bundle", lambda _: None)
+
+    with pytest.raises(WorkbenchException) as exc:
+        build_power_system_source_audit(bundle)
+
+    assert exc.value.code == POWER_SYSTEM_AUDIT_ERROR
+    assert "disallowed secret field" in exc.value.message
+    assert "api_key" in exc.value.message
+
+
 def test_power_system_source_audit_cli_reads_bundle_file(tmp_path):
     bundle_path = tmp_path / "bundle.json"
     output = tmp_path / "audit.json"
