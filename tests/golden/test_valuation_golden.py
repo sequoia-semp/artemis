@@ -8,6 +8,7 @@ import pytest
 from pga_workbench.exceptions import VALUATION_INSUFFICIENT_DATA, WorkbenchException
 from pga_workbench.exceptions import VALUATION_TIE_OUT_FAILED
 from pga_workbench.services.greeks import run_black76_greeks
+from pga_workbench.models import RiskFactorId
 from pga_workbench.services.normalization import normalize_positions
 from pga_workbench.services import pnl as pnl_service
 from pga_workbench.services.pnl import run_pnl_attribution
@@ -101,6 +102,47 @@ def test_historical_var_missing_factor_fails_closed():
 
     assert exc.value.code == VALUATION_INSUFFICIENT_DATA
     assert "missing returns for risk factors" in exc.value.message
+
+
+def test_historical_var_accepts_typed_risk_factor_identifiers():
+    scenario = _scenario("calendar_spread.json")
+    var = scenario["var"]
+    typed_returns = [dict(row, risk_factor=RiskFactorId(row["risk_factor"])) for row in var["historical_returns"]]
+
+    report = run_historical_var(
+        normalize_positions(var["positions"]),
+        typed_returns,
+        as_of="2026-06-04T12:00:00Z",
+        run_id="typed-factor-calendar-spread",
+    )
+
+    assert report.var_by_confidence["95"] == pytest.approx(404.0)
+    assert report.lineage["risk_factors"] == [
+        "PJM.WH.RT.FULL_LMP.ATC.N26",
+        "PJM.WH.RT.FULL_LMP.ATC.Q126",
+    ]
+
+
+def test_historical_var_malformed_factor_fails_at_construction():
+    scenario = _scenario("flat_single_leg.json")
+    var = scenario["var"]
+    bad_returns = [dict(row, risk_factor={"value": row["risk_factor"]}) for row in var["historical_returns"]]
+
+    with pytest.raises(WorkbenchException) as exc:
+        run_historical_var(
+            normalize_positions(var["positions"]),
+            bad_returns,
+            as_of="2026-06-04T12:00:00Z",
+            run_id="malformed-factor",
+        )
+
+    assert exc.value.code == VALUATION_INSUFFICIENT_DATA
+    assert "risk factor must be a RiskFactorId or string" in exc.value.message
+
+
+def test_risk_factor_id_rejects_empty_values():
+    with pytest.raises(ValueError):
+        RiskFactorId("")
 
 
 def test_pnl_injected_attribution_bug_fails_independent_tie_out(monkeypatch):

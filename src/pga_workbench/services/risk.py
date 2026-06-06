@@ -5,20 +5,31 @@ from pathlib import Path
 from typing import Any
 
 from ..exceptions import VALUATION_INSUFFICIENT_DATA, WorkbenchException
-from ..models import HistoricalVaRReport, NormalizedPosition
+from ..models import HistoricalVaRReport, NormalizedPosition, RiskFactorId
 
 
 def read_historical_returns(path: Path) -> list[dict[str, Any]]:
     with Path(path).open("r", encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
     return [
-        {"date": row["date"], "risk_factor": row["risk_factor"], "return": float(row["return"])}
+        {"date": row["date"], "risk_factor": RiskFactorId(row["risk_factor"]), "return": float(row["return"])}
         for row in rows
     ]
 
 
-def _position_risk_factor(position: NormalizedPosition) -> str:
-    return str(position.normalized["index_id"])
+def _risk_factor_id(value: Any, *, context: str) -> RiskFactorId:
+    if isinstance(value, RiskFactorId):
+        return value
+    if not isinstance(value, str):
+        raise WorkbenchException(VALUATION_INSUFFICIENT_DATA, f"{context} risk factor must be a RiskFactorId or string")
+    try:
+        return RiskFactorId(value)
+    except ValueError as exc:
+        raise WorkbenchException(VALUATION_INSUFFICIENT_DATA, f"{context} risk factor is invalid: {exc}") from exc
+
+
+def _position_risk_factor(position: NormalizedPosition) -> RiskFactorId:
+    return _risk_factor_id(position.normalized.get("index_id"), context=f"position {position.position_id}")
 
 
 def _historical_quantile(sorted_values: list[float], probability: float) -> float:
@@ -41,7 +52,7 @@ def run_historical_var(
     if not historical_returns:
         raise WorkbenchException(VALUATION_INSUFFICIENT_DATA, "Historical VaR requires historical returns")
 
-    exposure_by_factor: dict[str, float] = {}
+    exposure_by_factor: dict[RiskFactorId, float] = {}
     for position in positions:
         market_value = position.derived.get("market_value")
         if market_value is None:
@@ -53,23 +64,24 @@ def run_historical_var(
         exposure_by_factor[risk_factor] = exposure_by_factor.get(risk_factor, 0.0) + float(market_value)
 
     expected_factors = set(exposure_by_factor)
-    scenario_factors = {str(row["risk_factor"]) for row in historical_returns}
+    scenario_factors = {_risk_factor_id(row.get("risk_factor"), context=f"historical return {row.get('date')}") for row in historical_returns}
     missing_factors = sorted(expected_factors - scenario_factors)
     unexpected_factors = sorted(scenario_factors - expected_factors)
     if missing_factors:
         raise WorkbenchException(
             VALUATION_INSUFFICIENT_DATA,
-            f"Historical VaR missing returns for risk factors: {', '.join(missing_factors)}",
+            f"Historical VaR missing returns for risk factors: {', '.join(str(factor) for factor in missing_factors)}",
         )
     if unexpected_factors:
         raise WorkbenchException(
             VALUATION_INSUFFICIENT_DATA,
-            f"Historical VaR returns include unmatched risk factors: {', '.join(unexpected_factors)}",
+            f"Historical VaR returns include unmatched risk factors: {', '.join(str(factor) for factor in unexpected_factors)}",
         )
 
     pnl_by_date: dict[str, float] = {}
     for row in historical_returns:
-        exposure = exposure_by_factor[str(row["risk_factor"])]
+        risk_factor = _risk_factor_id(row.get("risk_factor"), context=f"historical return {row.get('date')}")
+        exposure = exposure_by_factor[risk_factor]
         pnl_by_date[str(row["date"])] = pnl_by_date.get(str(row["date"]), 0.0) + exposure * float(row["return"])
 
     scenario_pnl = [{"date": date, "pnl": pnl} for date, pnl in sorted(pnl_by_date.items())]
@@ -88,5 +100,5 @@ def run_historical_var(
         lookback_observations=len(scenario_pnl),
         var_by_confidence=var_by_confidence,
         scenario_pnl=scenario_pnl,
-        lineage={"risk_factors": sorted(exposure_by_factor)},
+        lineage={"risk_factors": [str(factor) for factor in sorted(exposure_by_factor)]},
     )
