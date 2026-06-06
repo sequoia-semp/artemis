@@ -27,6 +27,8 @@ def _assert_float_map(actual: dict, expected: dict, *, abs_tol: float) -> None:
         actual_value = actual[key]
         if isinstance(expected_value, bool):
             assert actual_value is expected_value
+        elif isinstance(expected_value, str):
+            assert actual_value == expected_value
         else:
             assert actual_value == pytest.approx(expected_value, abs=abs_tol)
 
@@ -79,6 +81,8 @@ def test_golden_valuation_scenarios(scenario_path: Path):
         greeks = scenario["greeks"]
         greeks_report = run_black76_greeks(greeks["rows"], run_id=scenario["scenario_id"])
         assert greeks_report.model_convention == greeks["expected"]["model_convention"]
+        assert greeks_report.lineage["analytics_scope"] == "screening_only"
+        assert greeks_report.lineage["vol_input_scope"] == "single_point_black76_input"
         for actual, expected in zip(greeks_report.greeks, greeks["expected"]["greeks"], strict=True):
             _assert_float_map(
                 {key: actual[key] for key in expected},

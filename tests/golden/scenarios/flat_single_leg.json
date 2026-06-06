@@ -120,6 +120,8 @@
           "position_gamma": 0.05585758033944684,
           "position_vega": 27.928790169723428,
           "position_theta": -11.17151606788937,
+          "analytics_scope": "screening_only",
+          "vol_input_scope": "single_point_black76_input",
           "model_scope": "unregistered_row_input"
         }
       ]
