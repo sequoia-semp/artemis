@@ -3,9 +3,9 @@ runtime:
     - local/.env
 
 providers:
-  # Keep deterministic_only for no-model operation. Change this to local_ollama
-  # when the local Ollama server is reachable and you want Artemis context to
-  # advertise the local model profile.
+  # Keep deterministic_only as the native Artemis default. Optional model
+  # profiles are non-authoritative convenience descriptors unless they declare
+  # an explicit deterministic guarantee with pinned parameters.
   default_profile: deterministic_only
   profiles:
     local_ollama:
