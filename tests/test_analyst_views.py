@@ -94,10 +94,12 @@ def test_view_build_allows_grounded_quantitative_summary_claim():
             }
         ]
     }
+    payload["source_lineage"] = [{"source": "accepted_state_fixture", "artifact": "actual_load"}]
 
     view = build_view(ROOT, "current-day", payload)
 
     assert view["summary"] == "Actual load is 1,000 MW."
+    assert view["data_quality"]["quantitative_claim_lineage_refs"][0]["lineage_ref"] == "lineage.0"
 
 
 def test_view_build_rejects_unsupported_quantitative_summary_claim():
@@ -119,6 +121,50 @@ def test_view_build_rejects_unsupported_quantitative_summary_claim():
     assert exc.value.code == VIEW_ERROR
     assert "Unsupported quantitative claim" in exc.value.message
     assert "summary=999" in exc.value.message
+
+
+def test_view_build_rejects_grounded_quantitative_claim_without_lineage():
+    payload = read_json(ROOT / "tests/fixtures/views/current_day_minimal.json")
+    payload["summary"] = "Actual load is 1,000 MW."
+    payload["inputs"] = {
+        "actual_load": [
+            {
+                "delivery_start": "2026-06-04T13:00:00Z",
+                "delivery_end": "2026-06-04T14:00:00Z",
+                "value": 1000,
+            }
+        ]
+    }
+
+    with pytest.raises(WorkbenchException) as exc:
+        build_view(ROOT, "current-day", payload)
+
+    assert exc.value.code == VIEW_ERROR
+    assert "lack resolvable lineage reference" in exc.value.message
+    assert "summary=1000" in exc.value.message
+
+
+def test_view_build_attaches_lineage_ref_to_displayed_driver_figures():
+    payload = read_json(ROOT / "tests/fixtures/views/current_day_minimal.json")
+    payload["drivers"] = [{"name": "actual_load", "value": 1000, "unit": "MW"}]
+    payload["source_lineage"] = [{"source": "accepted_state_fixture", "artifact": "actual_load"}]
+
+    view = build_view(ROOT, "current-day", payload)
+
+    assert view["source_lineage"][0]["lineage_id"] == "lineage.0"
+    assert view["drivers"][0]["lineage_ref"] == "lineage.0"
+
+
+def test_view_build_rejects_displayed_driver_figure_without_lineage():
+    payload = read_json(ROOT / "tests/fixtures/views/current_day_minimal.json")
+    payload["drivers"] = [{"name": "actual_load", "value": 1000, "unit": "MW"}]
+
+    with pytest.raises(WorkbenchException) as exc:
+        build_view(ROOT, "current-day", payload)
+
+    assert exc.value.code == VIEW_ERROR
+    assert "Displayed quantitative figure" in exc.value.message
+    assert "drivers[0]" in exc.value.message
 
 
 def test_artemis_view_build_can_merge_hot_state_artifacts(tmp_path):

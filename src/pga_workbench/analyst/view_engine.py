@@ -24,6 +24,32 @@ _NARRATIVE_GROUNDING_KEYS = {
     "summary",
     "stance_summary",
 }
+_DISPLAY_SECTIONS = {
+    "drivers",
+    "driver_deltas",
+    "forecast_actual_diffs",
+    "prior_day_retrospective",
+    "current_day_view",
+    "fourteen_day_outlook",
+}
+_DISPLAY_NUMERIC_KEYS = {
+    "average_mw",
+    "blocked_feed_count",
+    "blocked_publication_count",
+    "candidate_publication_count",
+    "feed_count",
+    "manifest_count",
+    "page_count",
+    "publication_count",
+    "record_count",
+    "row_count",
+    "source_fetch_count",
+    "total_mwh",
+    "total_row_count",
+    "truncated_manifest_count",
+    "value",
+    "verified_feed_count",
+}
 
 
 def normalize_template_id(template_id: str) -> str:
@@ -268,7 +294,69 @@ def _quantitative_claims(value: Any, *, path: str) -> list[tuple[str, str]]:
     return []
 
 
-def _assert_grounded_quantitative_claims(payload: dict[str, Any], input_payload: dict[str, Any]) -> None:
+def _normalize_source_lineage(items: Any) -> list[dict[str, Any]]:
+    if not isinstance(items, list):
+        return []
+    normalized: list[dict[str, Any]] = []
+    for index, item in enumerate(items):
+        entry = dict(item) if isinstance(item, dict) else {"source": str(item)}
+        entry.setdefault("lineage_id", f"lineage.{index}")
+        normalized.append(entry)
+    return normalized
+
+
+def _default_lineage_ref(source_lineage: list[dict[str, Any]]) -> str | None:
+    if not source_lineage:
+        return None
+    return str(source_lineage[0].get("lineage_id") or "lineage.0")
+
+
+def _has_display_numeric(mapping: dict[str, Any]) -> bool:
+    return any(key in _DISPLAY_NUMERIC_KEYS and _normalized_number(value) is not None for key, value in mapping.items())
+
+
+def _attach_display_lineage(value: Any, *, lineage_ref: str | None) -> Any:
+    if isinstance(value, dict):
+        attached = {key: _attach_display_lineage(item, lineage_ref=lineage_ref) for key, item in value.items()}
+        if lineage_ref is not None and _has_display_numeric(attached) and "lineage_ref" not in attached and "lineage_id" not in attached:
+            attached["lineage_ref"] = lineage_ref
+        return attached
+    if isinstance(value, list):
+        return [_attach_display_lineage(item, lineage_ref=lineage_ref) for item in value]
+    return value
+
+
+def _assert_display_lineage(payload: dict[str, Any]) -> None:
+    lineage_ids = {str(item.get("lineage_id")) for item in payload.get("source_lineage") or [] if isinstance(item, dict) and item.get("lineage_id")}
+    missing: list[str] = []
+
+    def walk(value: Any, *, path: str) -> None:
+        if isinstance(value, dict):
+            if _has_display_numeric(value):
+                lineage_ref = value.get("lineage_ref") or value.get("lineage_id")
+                if not lineage_ref or str(lineage_ref) not in lineage_ids:
+                    missing.append(path)
+            for key, item in value.items():
+                walk(item, path=f"{path}.{key}")
+        elif isinstance(value, list):
+            for index, item in enumerate(value):
+                walk(item, path=f"{path}[{index}]")
+
+    for section in _DISPLAY_SECTIONS:
+        walk(payload.get(section), path=section)
+    if missing:
+        raise WorkbenchException(
+            VIEW_ERROR,
+            "Displayed quantitative figure(s) lack resolvable lineage reference: " + ", ".join(missing),
+        )
+
+
+def _assert_grounded_quantitative_claims(
+    payload: dict[str, Any],
+    input_payload: dict[str, Any],
+    *,
+    lineage_ref: str | None,
+) -> list[dict[str, str]]:
     grounded = _grounded_numbers(input_payload)
     claims = []
     claims.extend(_quantitative_claims(payload.get("summary"), path="summary"))
@@ -280,6 +368,12 @@ def _assert_grounded_quantitative_claims(payload: dict[str, Any], input_payload:
             VIEW_ERROR,
             "Unsupported quantitative claim(s) lack artifact grounding: " + ", ".join(unsupported),
         )
+    if claims and lineage_ref is None:
+        raise WorkbenchException(
+            VIEW_ERROR,
+            "Quantitative claim(s) lack resolvable lineage reference: " + ", ".join(f"{path}={claim}" for path, claim in claims),
+        )
+    return [{"path": path, "value": claim, "lineage_ref": str(lineage_ref)} for path, claim in claims]
 
 
 def build_view(
@@ -309,14 +403,24 @@ def build_view(
     if "exchange_scope" not in market_scope:
         market_scope = {**market_scope, "exchange_scope": []}
 
-    stance = Stance(summary=str(input_payload.get("stance_summary") or "Insufficient live inputs for authoritative stance; output is schema-valid from supplied inputs."))
-    data_quality = DataQuality(
-        missing_required_inputs=missing_inputs,
-        stale_inputs=list(input_payload.get("stale_inputs") or []),
-        fixture_mode=data_environment in {"fixture", "test"},
-        data_environment=data_environment,
+    data_quality_payload = to_plain(
+        DataQuality(
+            missing_required_inputs=missing_inputs,
+            stale_inputs=list(input_payload.get("stale_inputs") or []),
+            fixture_mode=data_environment in {"fixture", "test"},
+            data_environment=data_environment,
+        )
     )
+    source_lineage = _normalize_source_lineage(input_payload.get("source_lineage") or [])
+    default_lineage_ref = _default_lineage_ref(source_lineage)
     prior, current, fourteen = empty_section_for(view_type)
+    drivers = _attach_display_lineage(list(input_payload.get("drivers") or []), lineage_ref=default_lineage_ref)
+    driver_deltas = _attach_display_lineage(list(input_payload.get("driver_deltas") or []), lineage_ref=default_lineage_ref)
+    forecast_actual_diffs = _attach_display_lineage(list(input_payload.get("forecast_actual_diffs") or []), lineage_ref=default_lineage_ref)
+    prior_day_retrospective = _attach_display_lineage(input_payload.get("prior_day_retrospective", prior), lineage_ref=default_lineage_ref)
+    current_day_view = _attach_display_lineage(input_payload.get("current_day_view", current), lineage_ref=default_lineage_ref)
+    fourteen_day_outlook = _attach_display_lineage(input_payload.get("fourteen_day_outlook", fourteen), lineage_ref=default_lineage_ref)
+    stance = Stance(summary=str(input_payload.get("stance_summary") or "Insufficient live inputs for authoritative stance; output is schema-valid from supplied inputs."))
     payload = {
         "view_id": f"view.{view_type}.{as_of_date.isoformat()}",
         "view_type": view_type,
@@ -327,19 +431,22 @@ def build_view(
         "mode": "analyst",
         "stance": to_plain(stance),
         "summary": str(input_payload.get("summary") or ""),
-        "drivers": list(input_payload.get("drivers") or []),
-        "driver_deltas": list(input_payload.get("driver_deltas") or []),
-        "forecast_actual_diffs": list(input_payload.get("forecast_actual_diffs") or []),
-        "prior_day_retrospective": input_payload.get("prior_day_retrospective", prior),
-        "current_day_view": input_payload.get("current_day_view", current),
-        "fourteen_day_outlook": input_payload.get("fourteen_day_outlook", fourteen),
+        "drivers": drivers,
+        "driver_deltas": driver_deltas,
+        "forecast_actual_diffs": forecast_actual_diffs,
+        "prior_day_retrospective": prior_day_retrospective,
+        "current_day_view": current_day_view,
+        "fourteen_day_outlook": fourteen_day_outlook,
         "evidence": list(input_payload.get("evidence") or []),
-        "data_quality": to_plain(data_quality),
+        "data_quality": data_quality_payload,
         "missing_inputs": missing_inputs,
-        "source_lineage": list(input_payload.get("source_lineage") or []),
+        "source_lineage": source_lineage,
         "scenarios": list(input_payload.get("scenarios") or []),
     }
-    _assert_grounded_quantitative_claims(payload, input_payload)
+    claim_lineage = _assert_grounded_quantitative_claims(payload, input_payload, lineage_ref=default_lineage_ref)
+    if claim_lineage:
+        payload["data_quality"]["quantitative_claim_lineage_refs"] = claim_lineage
+    _assert_display_lineage(payload)
     _validate(load_yaml_unique(repo_root / "schemas" / "view.schema.json"), payload, "view")
     return payload
 
