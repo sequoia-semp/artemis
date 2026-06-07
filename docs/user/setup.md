@@ -71,11 +71,25 @@ ollama pull qwen3-coder:30b
 ollama serve
 ```
 
-In `local/artemis.local.yaml`, set:
+Keep `providers.default_profile: deterministic_only` for native Artemis
+commands. The `local_ollama` profile may remain configured as an optional
+external convenience profile, but it must not be the default deterministic
+profile unless it declares an explicit determinism guarantee with pinned model
+parameters.
+
+Example optional profile configuration:
 
 ```yaml
 providers:
-  default_profile: local_ollama
+  default_profile: deterministic_only
+  profiles:
+    local_ollama:
+      kind: openai_compatible
+      required: false
+      descriptor: integrations/providers/openai_compatible.example.yaml
+      base_url: http://localhost:11434/v1
+      model: qwen3-coder:30b
+      api_key_env: OLLAMA_API_KEY
 ```
 
 Then verify:

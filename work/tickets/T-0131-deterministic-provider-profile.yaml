@@ -1,7 +1,7 @@
 id: T-0131
 type: ticket
 title: Deterministic provider profile enforcement
-status: planned
+status: validated
 owner: user
 risk: high
 created_at: '2026-06-06'
@@ -25,7 +25,23 @@ required_tests:
   - .venv/bin/python -m pytest tests/test_artemis_config.py tests/test_release_readiness_native_validation.py -q
 affected_files:
   - src/pga_workbench/agent_runtime/
+  - src/pga_workbench/agent/runtime.py
   - configs/
+  - docs/user/setup.md
+  - local/artemis.local.example.yaml
   - tests/
 change_request_required: true
 change_id: CR-0098
+implemented_at: '2026-06-07T00:00:00Z'
+implementation_summary: >
+  Added deterministic default-provider validation, rejecting model-backed
+  defaults unless they explicitly guarantee determinism and pin temperature and
+  seed when supported. Capabilities now expose the deterministic-provider
+  summary, and setup docs/examples keep deterministic_only as the native
+  default.
+validated_at: '2026-06-07T00:00:00Z'
+validation_report: development/validation_reports/T-0131/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0131.md
+validation_summary: >
+  .venv/bin/python -m pytest tests/test_artemis_config.py
+  tests/test_release_readiness_native_validation.py -q passed.

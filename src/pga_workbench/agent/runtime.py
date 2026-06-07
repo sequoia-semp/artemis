@@ -8,6 +8,7 @@ from jsonschema import Draft202012Validator
 import yaml
 
 from ..agent_runtime.capabilities import collect_agent_capabilities
+from ..agent_runtime.provider_profiles import validate_provider_profiles
 from ..exceptions import WorkbenchException
 from ..registry import load_yaml_unique
 from ..tools.permissions import load_tool_permissions, summarize_tool_policy
@@ -141,6 +142,7 @@ def validate_artemis_config(repo_root: Path, config_path: Path | None = None) ->
                 default_tool_errors.append(f"{mode_name}.{tool_id}: registered for {sorted(tool_modes)}")
     if default_tool_errors:
         raise WorkbenchException(ARTEMIS_CONFIG_ERROR, f"Default tool registry mismatch: {default_tool_errors}")
+    validate_provider_profiles(config, error_code=ARTEMIS_CONFIG_ERROR)
     return config
 
 
@@ -157,6 +159,7 @@ def collect_artemis_capabilities(repo_root: Path, check_network: bool = False, c
     permissions = load_tool_permissions(repo_root / config["tools"]["permissions"], repo_root / "schemas")
 
     providers = config.get("providers") or {}
+    provider_determinism = validate_provider_profiles(config, error_code=ARTEMIS_CONFIG_ERROR)
     profiles = providers.get("profiles") or {}
     optional_profiles = {
         name: {
@@ -189,6 +192,7 @@ def collect_artemis_capabilities(repo_root: Path, check_network: bool = False, c
         "roles": config.get("roles") or {},
         "providers": {
             "default_profile": providers.get("default_profile"),
+            "determinism": provider_determinism,
             "profiles": optional_profiles,
         },
         "runtime": {

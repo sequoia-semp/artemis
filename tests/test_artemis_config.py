@@ -40,6 +40,9 @@ def test_capabilities_report_tool_policy_and_optional_providers():
     capabilities = collect_artemis_capabilities(ROOT, check_network=False)
 
     assert capabilities["name"] == "artemis"
+    assert capabilities["providers"]["determinism"]["default_profile"] == "deterministic_only"
+    assert capabilities["providers"]["determinism"]["deterministic"] is True
+    assert capabilities["providers"]["determinism"]["model_calls"] is False
     assert capabilities["providers"]["profiles"]["local_ollama"]["required"] is False
     assert capabilities["file_sources"]["marks_root_env"]["env"] == "ARTEMIS_MARKS_ROOT"
     assert capabilities["policies"]["cache"] == "configs/cache_policy.yaml"
@@ -89,6 +92,82 @@ def test_artemis_config_rejects_stale_root_profiles_shape(tmp_path):
 
     with pytest.raises(WorkbenchException):
         validate_artemis_config(ROOT, config_path=stale)
+
+
+def test_artemis_config_rejects_nondeterministic_default_provider(tmp_path):
+    overlay = tmp_path / "nondeterministic_provider.yaml"
+    overlay.write_text(yaml.safe_dump({"providers": {"default_profile": "local_ollama"}}), encoding="utf-8")
+
+    with pytest.raises(WorkbenchException) as exc:
+        validate_artemis_config(ROOT, config_path=overlay)
+
+    assert exc.value.code == "ARTEMIS_CONFIG_ERROR"
+    assert "not marked deterministic" in exc.value.message
+
+
+def test_artemis_config_accepts_guaranteed_seeded_deterministic_provider(tmp_path):
+    overlay = tmp_path / "deterministic_provider.yaml"
+    overlay.write_text(
+        yaml.safe_dump(
+            {
+                "providers": {
+                    "default_profile": "seeded_model",
+                    "profiles": {
+                        "seeded_model": {
+                            "kind": "openai_compatible",
+                            "required": False,
+                            "descriptor": "integrations/providers/openai_compatible.example.yaml",
+                            "model": "deterministic-fixture",
+                            "parameters": {"temperature": 0, "seed": 1234},
+                            "determinism": {
+                                "profile": "deterministic",
+                                "guaranteed": True,
+                                "supports_seed": True,
+                            },
+                        }
+                    },
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    config = validate_artemis_config(ROOT, config_path=overlay)
+
+    assert config["providers"]["default_profile"] == "seeded_model"
+
+
+def test_artemis_config_rejects_deterministic_provider_without_seed(tmp_path):
+    overlay = tmp_path / "missing_seed_provider.yaml"
+    overlay.write_text(
+        yaml.safe_dump(
+            {
+                "providers": {
+                    "default_profile": "missing_seed",
+                    "profiles": {
+                        "missing_seed": {
+                            "kind": "openai_compatible",
+                            "required": False,
+                            "descriptor": "integrations/providers/openai_compatible.example.yaml",
+                            "model": "deterministic-fixture",
+                            "parameters": {"temperature": 0},
+                            "determinism": {
+                                "profile": "deterministic",
+                                "guaranteed": True,
+                                "supports_seed": True,
+                            },
+                        }
+                    },
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(WorkbenchException) as exc:
+        validate_artemis_config(ROOT, config_path=overlay)
+
+    assert "must pin seed" in exc.value.message
 
 
 def test_artemis_config_rejects_missing_default_tool(tmp_path):
