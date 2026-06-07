@@ -1,7 +1,7 @@
 id: T-0128
 type: ticket
 title: View engine grounding pass
-status: planned
+status: validated
 owner: user
 risk: high
 created_at: '2026-06-06'
@@ -31,3 +31,16 @@ change_id: CR-0098
 dependencies:
   - T-0118
   - T-0119
+implemented_at: '2026-06-06T00:00:00Z'
+implementation_summary: >
+  Added a fail-closed quantitative grounding pass to the analyst view engine so
+  numeric claims in summaries, stance text, and driver text must resolve to
+  numeric values in supplied inputs, accepted HotState artifacts, or projected
+  evidence.
+validated_at: '2026-06-06T00:00:00Z'
+validation_report: development/validation_reports/T-0128/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0128.md
+validation_summary: >
+  .venv/bin/python -m pytest tests/test_analyst_views.py -q passed;
+  .venv/bin/python -m pytest tests/test_analyst_views.py
+  tests/test_pjm_fundamentals_semantic_core.py -q passed.

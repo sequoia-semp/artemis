@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 from datetime import date
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
+import re
 from typing import Any
 
 from jsonschema import Draft202012Validator
@@ -17,6 +19,11 @@ from .horizons import plus_minus_days, single_day_horizon
 from .view_models import DataQuality, Stance, empty_section_for
 
 VIEW_ERROR = "VIEW_ERROR"
+_NUMERIC_CLAIM_RE = re.compile(r"(?<![\w.-])-?\d+(?:,\d{3})*(?:\.\d+)?(?![\w.-])")
+_NARRATIVE_GROUNDING_KEYS = {
+    "summary",
+    "stance_summary",
+}
 
 
 def normalize_template_id(template_id: str) -> str:
@@ -206,6 +213,75 @@ def _horizon_for(view_type: str, as_of: date) -> dict[str, str]:
     return single_day_horizon(as_of, "current_day").to_dict()
 
 
+def _normalized_number(value: Any) -> str | None:
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, int | float | Decimal):
+        candidate = str(value)
+    elif isinstance(value, str):
+        candidate = value.replace(",", "")
+    else:
+        return None
+    try:
+        number = Decimal(candidate)
+    except (InvalidOperation, ValueError):
+        return None
+    return format(number.normalize(), "f")
+
+
+def _grounded_numbers(value: Any, *, parent_key: str | None = None) -> set[str]:
+    if parent_key in _NARRATIVE_GROUNDING_KEYS:
+        return set()
+    normalized = _normalized_number(value)
+    if normalized is not None:
+        return {normalized}
+    if isinstance(value, dict):
+        grounded: set[str] = set()
+        for key, item in value.items():
+            grounded.update(_grounded_numbers(item, parent_key=str(key)))
+        return grounded
+    if isinstance(value, list):
+        grounded = set()
+        for item in value:
+            grounded.update(_grounded_numbers(item, parent_key=parent_key))
+        return grounded
+    return set()
+
+
+def _quantitative_claims(value: Any, *, path: str) -> list[tuple[str, str]]:
+    if isinstance(value, str):
+        return [
+            (path, normalized)
+            for match in _NUMERIC_CLAIM_RE.finditer(value)
+            if (normalized := _normalized_number(match.group(0))) is not None
+        ]
+    if isinstance(value, dict):
+        claims: list[tuple[str, str]] = []
+        for key, item in value.items():
+            claims.extend(_quantitative_claims(item, path=f"{path}.{key}"))
+        return claims
+    if isinstance(value, list):
+        claims = []
+        for index, item in enumerate(value):
+            claims.extend(_quantitative_claims(item, path=f"{path}[{index}]"))
+        return claims
+    return []
+
+
+def _assert_grounded_quantitative_claims(payload: dict[str, Any], input_payload: dict[str, Any]) -> None:
+    grounded = _grounded_numbers(input_payload)
+    claims = []
+    claims.extend(_quantitative_claims(payload.get("summary"), path="summary"))
+    claims.extend(_quantitative_claims(payload.get("stance", {}).get("summary"), path="stance.summary"))
+    claims.extend(_quantitative_claims(payload.get("drivers"), path="drivers"))
+    unsupported = [f"{path}={claim}" for path, claim in claims if claim not in grounded]
+    if unsupported:
+        raise WorkbenchException(
+            VIEW_ERROR,
+            "Unsupported quantitative claim(s) lack artifact grounding: " + ", ".join(unsupported),
+        )
+
+
 def build_view(
     repo_root: Path,
     template_id: str,
@@ -263,6 +339,7 @@ def build_view(
         "source_lineage": list(input_payload.get("source_lineage") or []),
         "scenarios": list(input_payload.get("scenarios") or []),
     }
+    _assert_grounded_quantitative_claims(payload, input_payload)
     _validate(load_yaml_unique(repo_root / "schemas" / "view.schema.json"), payload, "view")
     return payload
 

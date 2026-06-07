@@ -31,6 +31,11 @@ source-publication status, raw-fetch manifest counts, and operational-event
 candidate-plan blockers. The projection is read-only and redacted; views do not
 call PJM adapters or read raw source rows.
 
+Analyst view summaries, stance text, and driver text are fail-closed for
+quantitative grounding. Any surfaced numeric claim must resolve to a numeric
+value in supplied inputs, accepted HotState artifacts, or projected evidence;
+unsupported numbers raise `VIEW_ERROR` instead of being narrated.
+
 The same accepted bundle evidence can be inspected directly:
 
 ```bash
