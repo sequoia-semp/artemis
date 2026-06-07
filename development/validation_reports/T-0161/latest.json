@@ -2,80 +2,50 @@
   "affected_files_snapshot": [
     {
       "exists": true,
-      "modified_at": 1780835910.4122908,
+      "modified_at": 1780836184.5115037,
       "path": "development/change_requests/CR-0112-gas-integration-bundle.yaml",
       "sha256": "0542172e122e007b95ebea8cc4ab85996d822b24f55d8794d612c9455af000df"
     },
     {
       "exists": true,
-      "modified_at": 1780835835.0694504,
+      "modified_at": 1780836184.5144215,
       "path": "docs/analyst/gas_integration_bundle.md",
       "sha256": "2f4cc4d0cd9ceb8e05be04138ae09b5925ca59d18beaf08c645a1a47cd9a92ec"
     },
     {
       "exists": true,
-      "modified_at": 1780835771.2109952,
+      "modified_at": 1780836184.5158694,
       "path": "registries/tools.yaml",
       "sha256": "94eb98c41af8c6e9064796df886975f1f3dafeae296a9e927f79acedfc247784"
     },
     {
       "exists": true,
-      "modified_at": 1780835762.6255941,
+      "modified_at": 1780836184.5162714,
       "path": "src/pga_workbench/cli.py",
       "sha256": "0b08141ce28459f8369c76a1cf384b0c9ea2679aabae7c7baa8c25543aea5c2a"
     },
     {
       "exists": true,
-      "modified_at": 1780835787.0884101,
+      "modified_at": 1780836184.516411,
       "path": "src/pga_workbench/services/gas_integration.py",
       "sha256": "cf849eb5e2b72aeb9684aeed0da89f412738122baca5ee72f6b5fa5b3b08c6da"
     },
     {
       "exists": true,
-      "modified_at": 1780835813.246561,
+      "modified_at": 1780836184.517009,
       "path": "tests/test_gas_integration.py",
       "sha256": "ae82e5f4065405782064206a921fb20c801df5944e1aa1ae2d894d999e07fffc"
     }
   ],
-  "branch": "codex/T-0134-pjm-multi-row-e2e-pipeline-test",
-  "changed_files_snapshot": [
-    "M docs/README.md",
-    " M registries/tools.yaml",
-    " M src/pga_workbench/cli.py",
-    "?? development/change_requests/CR-0107-gas-contract-definition-catalog.yaml",
-    "?? development/change_requests/CR-0108-gas-rollup-reconciliation.yaml",
-    "?? development/change_requests/CR-0109-gas-daily-risk-history.yaml",
-    "?? development/change_requests/CR-0110-gas-risk-oracle.yaml",
-    "?? development/change_requests/CR-0111-gas-diagnostics-definitions.yaml",
-    "?? development/change_requests/CR-0112-gas-integration-bundle.yaml",
-    "?? development/regression_reports/REGRESSION_REPORT_T-0156.md",
-    "?? development/regression_reports/REGRESSION_REPORT_T-0157.md",
-    "?? development/regression_reports/REGRESSION_REPORT_T-0158.md",
-    "?? development/regression_reports/REGRESSION_REPORT_T-0159.md",
-    "?? development/regression_reports/REGRESSION_REPORT_T-0160.md",
-    "?? development/regression_reports/REGRESSION_REPORT_T-0161.md",
-    "?? development/validation_reports/T-0156/",
-    "?? development/validation_reports/T-0157/",
-    "?? development/validation_reports/T-0158/",
-    "?? development/validation_reports/T-0159/",
-    "?? development/validation_reports/T-0160/",
-    "?? docs/analyst/gas_integration_bundle.md",
-    "?? src/pga_workbench/services/gas_integration.py",
-    "?? tests/test_gas_integration.py",
-    "?? work/tickets/T-0156-gas-contract-definition-catalog.yaml",
-    "?? work/tickets/T-0157-gas-rollup-reconciliation.yaml",
-    "?? work/tickets/T-0158-gas-daily-risk-history.yaml",
-    "?? work/tickets/T-0159-gas-risk-oracle.yaml",
-    "?? work/tickets/T-0160-gas-diagnostics-definitions.yaml",
-    "?? work/tickets/T-0161-gas-integration-bundle.yaml"
-  ],
+  "branch": "main",
+  "changed_files_snapshot": [],
   "checks": [
     {
       "check_id": "pytest",
       "details": {
         "returncode": 0
       },
-      "duration_seconds": 27.049966,
+      "duration_seconds": 26.596078,
       "label": "pytest",
       "required": true,
       "status": "passed",
@@ -86,7 +56,7 @@
       "details": {
         "returncode": 0
       },
-      "duration_seconds": 0.233475,
+      "duration_seconds": 0.230171,
       "label": "golden valuation scenarios",
       "required": true,
       "status": "passed",
@@ -132,7 +102,7 @@
         ],
         "warnings": []
       },
-      "duration_seconds": 0.213412,
+      "duration_seconds": 0.215219,
       "label": "registry validation",
       "required": true,
       "status": "passed",
@@ -313,7 +283,7 @@
           "/Users/zachfisher/Documents/Power Agent/work/tickets/T-wrapper-shim-cleanup.yaml"
         ]
       },
-      "duration_seconds": 0.50985,
+      "duration_seconds": 0.512464,
       "label": "work-item validation",
       "required": true,
       "status": "passed",
@@ -325,7 +295,7 @@
         "entries": 5,
         "manifest": "/Users/zachfisher/Documents/Power Agent/knowledge_base/MANIFEST.yaml"
       },
-      "duration_seconds": 0.001136,
+      "duration_seconds": 0.001125,
       "label": "knowledge-base validation",
       "required": true,
       "status": "passed",
@@ -336,7 +306,7 @@
       "details": {
         "name": "artemis"
       },
-      "duration_seconds": 0.02038,
+      "duration_seconds": 0.020507,
       "label": "artemis config validation",
       "required": true,
       "status": "passed",
@@ -372,7 +342,7 @@
           "/Users/zachfisher/Documents/Power Agent/skills/analyst/audit_power_system_sources.yaml"
         ]
       },
-      "duration_seconds": 0.022935,
+      "duration_seconds": 0.023678,
       "label": "skill manifest validation",
       "required": true,
       "status": "passed",
@@ -392,7 +362,7 @@
           "/Users/zachfisher/Documents/Power Agent/views/templates/forecast_actual_delta.yaml"
         ]
       },
-      "duration_seconds": 0.004826,
+      "duration_seconds": 0.004811,
       "label": "view manifest validation",
       "required": true,
       "status": "passed",
@@ -673,7 +643,7 @@
           }
         }
       },
-      "duration_seconds": 0.089479,
+      "duration_seconds": 0.088018,
       "label": "power-system reference validation",
       "required": true,
       "status": "passed",
@@ -758,7 +728,7 @@
         },
         "version": "0.1.0"
       },
-      "duration_seconds": 0.002203,
+      "duration_seconds": 0.002193,
       "label": "data-source descriptor validation",
       "required": true,
       "status": "passed",
@@ -769,7 +739,7 @@
       "details": {
         "recommended_mode": "opencode_external_model"
       },
-      "duration_seconds": 0.036875,
+      "duration_seconds": 0.036947,
       "label": "capability validation",
       "required": true,
       "status": "passed",
@@ -785,7 +755,7 @@
         "findings": [],
         "passed": true
       },
-      "duration_seconds": 0.016994,
+      "duration_seconds": 0.017368,
       "label": "context surface audit",
       "required": true,
       "status": "passed",
@@ -798,7 +768,7 @@
           "artemis validate --strict"
         ]
       },
-      "duration_seconds": 0.020033,
+      "duration_seconds": 0.020039,
       "label": "release-readiness sanity",
       "required": true,
       "status": "passed",
@@ -808,27 +778,27 @@
   "command_results": [
     {
       "command": "python -m pytest -q",
-      "duration_seconds": 27.049966,
+      "duration_seconds": 26.596078,
       "returncode": 0,
       "status": "passed",
       "stderr": "",
-      "stdout": "........................................................................ [ 13%]\n........................................................................ [ 26%]\n........................................................................ [ 39%]\n..........................................ss............................ [ 52%]\n........................................................................ [ 65%]\n........................................................................ [ 78%]\n........................................................................ [ 91%]\n.................................................                        [100%]\n551 passed, 2 skipped in 26.86s\n"
+      "stdout": "........................................................................ [ 13%]\n........................................................................ [ 26%]\n........................................................................ [ 39%]\n..........................................ss............................ [ 52%]\n........................................................................ [ 65%]\n........................................................................ [ 78%]\n........................................................................ [ 91%]\n.................................................                        [100%]\n551 passed, 2 skipped in 26.48s\n"
     },
     {
       "command": "python -m pytest tests/golden -q",
-      "duration_seconds": 0.233475,
+      "duration_seconds": 0.230171,
       "returncode": 0,
       "status": "passed",
       "stderr": "",
-      "stdout": "........                                                                 [100%]\n8 passed in 0.14s\n"
+      "stdout": "........                                                                 [100%]\n8 passed in 0.13s\n"
     }
   ],
-  "commit": "c71423545d3be40aaa8acbffe0b29dbe348cb256",
+  "commit": "96e5f39c1b6cc50c327010b81e1d986d409d0660",
   "errors": [],
-  "generated_at": "2026-06-07T12:41:46Z",
+  "generated_at": "2026-06-07T12:43:14Z",
   "overall_status": "passed",
   "repo_root": "/Users/zachfisher/Documents/Power Agent",
-  "report_id": "validation.T-0161.20260607T124146Z",
+  "report_id": "validation.T-0161.20260607T124314Z",
   "skipped": false,
   "strict": true,
   "ticket_id": "T-0161",
