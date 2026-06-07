@@ -123,6 +123,44 @@ def test_view_build_rejects_unsupported_quantitative_summary_claim():
     assert "summary=999" in exc.value.message
 
 
+def test_view_build_allows_grounded_quantitative_driver_text_claim():
+    payload = read_json(ROOT / "tests/fixtures/views/current_day_minimal.json")
+    payload["drivers"] = [
+        {
+            "name": "actual_load",
+            "note": "Actual load driver references 1,000 MW.",
+            "value": 1000,
+            "unit": "MW",
+        }
+    ]
+    payload["source_lineage"] = [{"source": "accepted_state_fixture", "artifact": "actual_load"}]
+
+    view = build_view(ROOT, "current-day", payload)
+
+    assert view["drivers"][0]["lineage_ref"] == "lineage.0"
+    assert view["data_quality"]["quantitative_claim_lineage_refs"][0]["path"] == "drivers[0].note"
+
+
+def test_view_build_rejects_unsupported_quantitative_driver_text_claim():
+    payload = read_json(ROOT / "tests/fixtures/views/current_day_minimal.json")
+    payload["drivers"] = [
+        {
+            "name": "actual_load",
+            "note": "Actual load driver references 999 MW.",
+            "value": 1000,
+            "unit": "MW",
+        }
+    ]
+    payload["source_lineage"] = [{"source": "accepted_state_fixture", "artifact": "actual_load"}]
+
+    with pytest.raises(WorkbenchException) as exc:
+        build_view(ROOT, "current-day", payload)
+
+    assert exc.value.code == VIEW_ERROR
+    assert "Unsupported quantitative claim" in exc.value.message
+    assert "drivers[0].note=999" in exc.value.message
+
+
 def test_view_build_rejects_grounded_quantitative_claim_without_lineage():
     payload = read_json(ROOT / "tests/fixtures/views/current_day_minimal.json")
     payload["summary"] = "Actual load is 1,000 MW."
