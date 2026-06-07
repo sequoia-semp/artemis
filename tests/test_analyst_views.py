@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from pga_workbench.analyst.view_engine import build_view
+from pga_workbench.analyst.view_engine import VIEW_ERROR, build_view
 from pga_workbench.cli import artemis_main
 from pga_workbench.data.contracts import DataResult
 from pga_workbench.exceptions import WorkbenchException
@@ -80,6 +80,45 @@ def test_view_build_allows_fixture_data_when_explicit():
     view = build_view(ROOT, "current-day", read_json(ROOT / "tests/fixtures/views/fixture_data_minimal.json"), allow_fixture=True)
 
     assert view["data_quality"]["fixture_mode"] is True
+
+
+def test_view_build_allows_grounded_quantitative_summary_claim():
+    payload = read_json(ROOT / "tests/fixtures/views/current_day_minimal.json")
+    payload["summary"] = "Actual load is 1,000 MW."
+    payload["inputs"] = {
+        "actual_load": [
+            {
+                "delivery_start": "2026-06-04T13:00:00Z",
+                "delivery_end": "2026-06-04T14:00:00Z",
+                "value": 1000,
+            }
+        ]
+    }
+
+    view = build_view(ROOT, "current-day", payload)
+
+    assert view["summary"] == "Actual load is 1,000 MW."
+
+
+def test_view_build_rejects_unsupported_quantitative_summary_claim():
+    payload = read_json(ROOT / "tests/fixtures/views/current_day_minimal.json")
+    payload["summary"] = "Actual load is 999 MW."
+    payload["inputs"] = {
+        "actual_load": [
+            {
+                "delivery_start": "2026-06-04T13:00:00Z",
+                "delivery_end": "2026-06-04T14:00:00Z",
+                "value": 1000,
+            }
+        ]
+    }
+
+    with pytest.raises(WorkbenchException) as exc:
+        build_view(ROOT, "current-day", payload)
+
+    assert exc.value.code == VIEW_ERROR
+    assert "Unsupported quantitative claim" in exc.value.message
+    assert "summary=999" in exc.value.message
 
 
 def test_artemis_view_build_can_merge_hot_state_artifacts(tmp_path):
