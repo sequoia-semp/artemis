@@ -10,6 +10,7 @@ providers:
   profiles:
     local_ollama:
       kind: openai_compatible
+      mode: exploratory
       required: false
       descriptor: integrations/providers/openai_compatible.example.yaml
       base_url: http://localhost:11434/v1

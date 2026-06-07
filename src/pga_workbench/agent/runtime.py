@@ -164,6 +164,7 @@ def collect_artemis_capabilities(repo_root: Path, check_network: bool = False, c
     optional_profiles = {
         name: {
             "kind": item.get("kind"),
+            "mode": item.get("mode"),
             "required": bool(item.get("required")),
             "configured_by_env": item.get("api_key_env"),
         }

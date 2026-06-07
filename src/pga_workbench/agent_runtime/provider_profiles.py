@@ -20,6 +20,8 @@ def validate_provider_profiles(config: dict[str, Any], *, error_code: str = PROV
         raise WorkbenchException(error_code, f"providers.default_profile references unknown profile: {default_profile}")
 
     kind = str(default.get("kind") or "")
+    if default.get("mode") == "exploratory":
+        raise WorkbenchException(error_code, f"Exploratory provider profile {default_profile} cannot be the default profile")
     if kind == "deterministic_only":
         return {
             "default_profile": default_profile,

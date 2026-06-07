@@ -98,9 +98,11 @@ Then verify:
 artemis capabilities --check-network
 ```
 
-Ollama is optional and non-authoritative. Deterministic calculations,
-conventions, mappings, and release approval still come from code, registries,
-schemas, tests, and human review.
+Ollama is optional, exploratory, and non-authoritative. Exploratory provider
+profiles are allowed for local investigation or external harness use, but they
+cannot be the default Artemis profile. Deterministic calculations, conventions,
+mappings, and release approval still come from code, registries, schemas,
+tests, and human review.
 
 ## Optional OpenCode
 
