@@ -43,6 +43,7 @@ def test_capabilities_report_tool_policy_and_optional_providers():
     assert capabilities["providers"]["determinism"]["default_profile"] == "deterministic_only"
     assert capabilities["providers"]["determinism"]["deterministic"] is True
     assert capabilities["providers"]["determinism"]["model_calls"] is False
+    assert capabilities["providers"]["profiles"]["local_ollama"]["mode"] == "exploratory"
     assert capabilities["providers"]["profiles"]["local_ollama"]["required"] is False
     assert capabilities["file_sources"]["marks_root_env"]["env"] == "ARTEMIS_MARKS_ROOT"
     assert capabilities["policies"]["cache"] == "configs/cache_policy.yaml"
@@ -102,7 +103,7 @@ def test_artemis_config_rejects_nondeterministic_default_provider(tmp_path):
         validate_artemis_config(ROOT, config_path=overlay)
 
     assert exc.value.code == "ARTEMIS_CONFIG_ERROR"
-    assert "not marked deterministic" in exc.value.message
+    assert "Exploratory provider profile local_ollama cannot be the default profile" in exc.value.message
 
 
 def test_artemis_config_accepts_guaranteed_seeded_deterministic_provider(tmp_path):
