@@ -1,0 +1,31 @@
+id: T-0160
+type: ticket
+title: Gas diagnostics and definitions
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-07'
+updated_at: '2026-06-07T00:00:00Z'
+validated_at: '2026-06-07T00:00:00Z'
+validation_report: development/validation_reports/T-0160/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0160.md
+epic: E-GAS-PORTFOLIO-ORACLE
+sprint: S-WAVE-3-GAS-INTEGRATION
+layer: [docs, valuation, tests]
+branch: codex/T-0134-pjm-multi-row-e2e-pipeline-test
+problem: Gas oracle outputs need transparent organization, definition sources, and non-authority boundaries.
+tasks:
+  - Add diagnostics section with books, strategies, definition sources, and gates.
+  - Preserve candidate strategy labels as advisory.
+acceptance_criteria:
+  - Diagnostics identify organization and definition source paths.
+  - Diagnostics expose roll-up, oracle, and strategy authority gates.
+required_tests:
+  - .venv/bin/python -m pytest tests/test_gas_integration.py -q
+affected_files:
+  - development/change_requests/CR-0111-gas-diagnostics-definitions.yaml
+  - docs/analyst/gas_integration_bundle.md
+  - src/pga_workbench/services/gas_integration.py
+  - tests/test_gas_integration.py
+change_request_required: true
+change_id: CR-0111

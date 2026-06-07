@@ -1,0 +1,31 @@
+id: T-0157
+type: ticket
+title: Gas portfolio roll-up reconciliation
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-07'
+updated_at: '2026-06-07T00:00:00Z'
+validated_at: '2026-06-07T00:00:00Z'
+validation_report: development/validation_reports/T-0157/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0157.md
+epic: E-GAS-PORTFOLIO-ORACLE
+sprint: S-WAVE-3-GAS-INTEGRATION
+layer: [valuation, tests]
+branch: codex/T-0134-pjm-multi-row-e2e-pipeline-test
+problem: Gas portfolio book, strategy, portfolio, sleeve, and tag roll-ups need explicit reconciliation diagnostics.
+tasks:
+  - Add market-value roll-ups by standard dimensions.
+  - Add PnL roll-ups by dimensions carried by PnL rows.
+acceptance_criteria:
+  - Book, strategy, portfolio, and sleeve roll-ups reconcile to parent totals.
+  - Tag roll-ups are labeled as multi-allocation diagnostics rather than single-total reconciliations.
+required_tests:
+  - .venv/bin/python -m pytest tests/test_gas_integration.py -q
+affected_files:
+  - development/change_requests/CR-0108-gas-rollup-reconciliation.yaml
+  - docs/analyst/gas_integration_bundle.md
+  - src/pga_workbench/services/gas_integration.py
+  - tests/test_gas_integration.py
+change_request_required: true
+change_id: CR-0108

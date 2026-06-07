@@ -28,6 +28,7 @@ from .services.fundamentals import build_pjm_load_artifacts, load_pjm_fundamenta
 from .services.gas_portfolio import build_sample_gas_portfolio_report, query_gas_portfolio_report
 from .services.local_llm_portfolio import run_local_llm_gas_risk_pack_question, run_local_llm_portfolio_question
 from .services.gas_risk_pack import build_cached_gas_risk_pack, query_gas_risk_pack
+from .services.gas_integration import build_gas_integration_bundle
 from .services.artifact_composition import compose_artifact_payloads
 from .services.generation_mix import (
     build_pjm_generation_mix_artifacts,
@@ -245,6 +246,18 @@ def _cmd_local_llm_gas_risk_pack(args: argparse.Namespace) -> int:
     )
     write_json(Path(args.output), response)
     print(f"wrote local LLM gas risk pack response to {args.output}")
+    return 0
+
+
+def _cmd_build_gas_integration_bundle(args: argparse.Namespace) -> int:
+    bundle = build_gas_integration_bundle(
+        Path(args.output_root),
+        registry_dir=Path(args.registries),
+        run_id=args.run_id,
+        force=args.force,
+    )
+    write_json(Path(args.output), bundle)
+    print(f"wrote gas integration bundle to {args.output}")
     return 0
 
 
@@ -2006,6 +2019,14 @@ def build_parser(prog: str | None = None) -> argparse.ArgumentParser:
     p.add_argument("--timeout-seconds", type=float, default=30.0)
     p.set_defaults(func=_cmd_local_llm_gas_risk_pack)
 
+    p = sub.add_parser("build-gas-integration-bundle")
+    p.add_argument("--output", required=True)
+    p.add_argument("--output-root", required=True)
+    p.add_argument("--registries", default="registries")
+    p.add_argument("--run-id", default="gas-integration-bundle")
+    p.add_argument("--force", action="store_true")
+    p.set_defaults(func=_cmd_build_gas_integration_bundle)
+
     p = sub.add_parser("build-pjm-load-fundamentals")
     p.add_argument("--as-of", required=True)
     p.add_argument("--output", required=True)
@@ -2289,6 +2310,15 @@ def build_parser(prog: str | None = None) -> argparse.ArgumentParser:
     gr.add_argument("--api-key")
     gr.add_argument("--timeout-seconds", type=float, default=30.0)
     gr.set_defaults(func=_cmd_local_llm_gas_risk_pack)
+    gas_integration = analyst_sub.add_parser("gas-integration")
+    gas_integration_sub = gas_integration.add_subparsers(dest="gas_integration_command", required=True)
+    gi = gas_integration_sub.add_parser("build")
+    gi.add_argument("--output", required=True)
+    gi.add_argument("--output-root", required=True)
+    gi.add_argument("--registries", default="registries")
+    gi.add_argument("--run-id", default="gas-integration-bundle")
+    gi.add_argument("--force", action="store_true")
+    gi.set_defaults(func=_cmd_build_gas_integration_bundle)
     fundamentals = analyst_sub.add_parser("fundamentals")
     fundamentals_sub = fundamentals.add_subparsers(dest="fundamentals_command", required=True)
     f = fundamentals_sub.add_parser("build-pjm-load")
@@ -2576,6 +2606,15 @@ def build_artemis_parser(prog: str | None = None) -> argparse.ArgumentParser:
     gr.add_argument("--api-key")
     gr.add_argument("--timeout-seconds", type=float, default=30.0)
     gr.set_defaults(func=_cmd_local_llm_gas_risk_pack)
+    gas_integration = analyst_sub.add_parser("gas-integration")
+    gas_integration_sub = gas_integration.add_subparsers(dest="gas_integration_command", required=True)
+    gi = gas_integration_sub.add_parser("build")
+    gi.add_argument("--output", required=True)
+    gi.add_argument("--output-root", required=True)
+    gi.add_argument("--registries", default="registries")
+    gi.add_argument("--run-id", default="gas-integration-bundle")
+    gi.add_argument("--force", action="store_true")
+    gi.set_defaults(func=_cmd_build_gas_integration_bundle)
     fundamentals = analyst_sub.add_parser("fundamentals")
     fundamentals_sub = fundamentals.add_subparsers(dest="fundamentals_command", required=True)
     f = fundamentals_sub.add_parser("build-pjm-load")

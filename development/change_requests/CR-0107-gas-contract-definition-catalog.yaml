@@ -1,0 +1,18 @@
+change_id: CR-0107
+title: Gas contract definition catalog
+created_at: 2026-06-07T00:00:00Z
+change_class: 4
+severity: medium
+tickets: [T-0156]
+problem_statement: >
+  The gas portfolio oracle needs inspectable contract definitions derived from
+  approved registries so positions can be diagnosed without implicit market
+  convention.
+affected_files:
+  - src/pga_workbench/services/gas_integration.py
+  - tests/test_gas_integration.py
+  - docs/analyst/gas_integration_bundle.md
+tests_required:
+  - .venv/bin/python -m pytest tests/test_gas_integration.py -q
+approval: {status: approved, approved_by: user_request, approved_at: 2026-06-07T00:00:00Z}
+rollback_plan: Remove the gas contract catalog functions, tests, docs, and T-0156 governance files.

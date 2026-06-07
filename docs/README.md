@@ -16,6 +16,7 @@ Use this file as the docs entrypoint.
 - `docs/analyst/eastern_power_scope.md`
 - `docs/analyst/ice_data_scope.md`
 - `docs/analyst/gas_portfolio_local_llm_test.md`
+- `docs/analyst/gas_integration_bundle.md`
 - `docs/analyst/gas_risk_pack.md`
 - `docs/analyst/gas_strategy_semantics.md`
 

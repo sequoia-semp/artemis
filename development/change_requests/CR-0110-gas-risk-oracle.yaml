@@ -1,0 +1,17 @@
+change_id: CR-0110
+title: Gas risk oracle checks
+created_at: 2026-06-07T00:00:00Z
+change_class: 4
+severity: medium
+tickets: [T-0159]
+problem_statement: >
+  Risk and scenario outputs need deterministic hand-checkable oracle checks to
+  distinguish tool facts from model narration.
+affected_files:
+  - src/pga_workbench/services/gas_integration.py
+  - tests/test_gas_integration.py
+  - docs/analyst/gas_integration_bundle.md
+tests_required:
+  - .venv/bin/python -m pytest tests/test_gas_integration.py -q
+approval: {status: approved, approved_by: user_request, approved_at: 2026-06-07T00:00:00Z}
+rollback_plan: Remove oracle checks from gas integration service, tests, docs, and T-0159 governance files.

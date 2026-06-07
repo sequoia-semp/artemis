@@ -1,0 +1,19 @@
+change_id: CR-0112
+title: Gas integration bundle
+created_at: 2026-06-07T00:00:00Z
+change_class: 4
+severity: medium
+tickets: [T-0161]
+problem_statement: >
+  The gas portfolio oracle needs one end-to-end bundle that proves valuation,
+  roll-up, risk, diagnostics, and grounded narrative paths are integrated.
+affected_files:
+  - src/pga_workbench/services/gas_integration.py
+  - src/pga_workbench/cli.py
+  - registries/tools.yaml
+  - tests/test_gas_integration.py
+  - docs/analyst/gas_integration_bundle.md
+tests_required:
+  - .venv/bin/python -m pytest tests/test_gas_integration.py tests/test_gas_risk_pack.py tests/test_gas_portfolio.py -q
+approval: {status: approved, approved_by: user_request, approved_at: 2026-06-07T00:00:00Z}
+rollback_plan: Remove gas integration bundle command, tool registry entry, service, tests, docs, and T-0161 governance files.

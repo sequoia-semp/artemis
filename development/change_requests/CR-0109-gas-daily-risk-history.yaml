@@ -1,0 +1,17 @@
+change_id: CR-0109
+title: Gas daily risk history
+created_at: 2026-06-07T00:00:00Z
+change_class: 4
+severity: medium
+tickets: [T-0158]
+problem_statement: >
+  Cached daily risk packs need a materialized history table so daily risk
+  questions do not recalculate each pack every time.
+affected_files:
+  - src/pga_workbench/services/gas_integration.py
+  - tests/test_gas_integration.py
+  - docs/analyst/gas_integration_bundle.md
+tests_required:
+  - .venv/bin/python -m pytest tests/test_gas_integration.py -q
+approval: {status: approved, approved_by: user_request, approved_at: 2026-06-07T00:00:00Z}
+rollback_plan: Remove daily risk history from gas integration service, tests, docs, and T-0158 governance files.

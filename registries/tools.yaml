@@ -272,6 +272,24 @@ tools:
     authority: deterministic_service
     deterministic_service: true
 
+  gas_integration_bundle:
+    command: artemis analyst gas-integration build
+    risk: workspace_write
+    modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: gas_integration_bundle_request
+      required: [output, output_root]
+    output_contract:
+      type: gas_integration_bundle
+    lineage:
+      records:
+        - src/pga_workbench/services/gas_integration.py
+        - src/pga_workbench/services/gas_portfolio.py
+        - src/pga_workbench/services/gas_risk_pack.py
+    authority: deterministic_service
+    deterministic_service: true
+
   pjm_load_fundamentals:
     command: artemis analyst fundamentals build-pjm-load
     risk: external_api

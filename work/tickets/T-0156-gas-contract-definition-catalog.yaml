@@ -1,0 +1,32 @@
+id: T-0156
+type: ticket
+title: Gas contract definition catalog
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-07'
+updated_at: '2026-06-07T00:00:00Z'
+validated_at: '2026-06-07T00:00:00Z'
+validation_report: development/validation_reports/T-0156/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0156.md
+epic: E-GAS-PORTFOLIO-ORACLE
+sprint: S-WAVE-3-GAS-INTEGRATION
+layer: [valuation, registry, docs, tests]
+branch: codex/T-0134-pjm-multi-row-e2e-pipeline-test
+problem: Registry-derived gas contract definitions should be inspectable inside the gas oracle.
+tasks:
+  - Add contract definition catalog derived from exchange, option, mapping, and quantity registries.
+  - Preserve source documents and verification status.
+acceptance_criteria:
+  - Henry LD1 futures and PHE option definitions are present.
+  - Gas .25/d quantity convention is surfaced from the registry.
+  - No inferred contract convention is introduced.
+required_tests:
+  - .venv/bin/python -m pytest tests/test_gas_integration.py -q
+affected_files:
+  - development/change_requests/CR-0107-gas-contract-definition-catalog.yaml
+  - docs/analyst/gas_integration_bundle.md
+  - src/pga_workbench/services/gas_integration.py
+  - tests/test_gas_integration.py
+change_request_required: true
+change_id: CR-0107
