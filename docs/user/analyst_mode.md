@@ -35,6 +35,10 @@ Analyst view summaries, stance text, and driver text are fail-closed for
 quantitative grounding. Any surfaced numeric claim must resolve to a numeric
 value in supplied inputs, accepted HotState artifacts, or projected evidence;
 unsupported numbers raise `VIEW_ERROR` instead of being narrated.
+Numeric claims are recorded in `data_quality.quantitative_claim_lineage_refs`,
+and structured display figures receive `lineage_ref` values that resolve to
+entries in `source_lineage`. Numeric display figures without resolvable lineage
+also raise `VIEW_ERROR`.
 
 The same accepted bundle evidence can be inspected directly:
 
