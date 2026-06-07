@@ -346,6 +346,14 @@ class RunManifest:
     run_id: str
     created_at: str
     agent_pack_version: str
+    provider: dict[str, Any] = field(
+        default_factory=lambda: {
+            "profile": "deterministic_only",
+            "kind": "deterministic_only",
+            "model_calls": False,
+            "parameters": {},
+        }
+    )
     inputs: list[dict[str, Any]] = field(default_factory=list)
     outputs: list[dict[str, Any]] = field(default_factory=list)
     tests: dict[str, Any] = field(default_factory=dict)

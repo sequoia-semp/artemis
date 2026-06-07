@@ -33,6 +33,11 @@ backends may propose patches, but deterministic Artemis checks decide readiness.
 Strict validation includes context audit evidence for prompt, tool, skill, and
 wrapper surface drift.
 
+State-pack `RunManifest` records must include provider provenance for
+reproducibility. Native deterministic runs default to the `deterministic_only`
+profile with no model calls and an empty parameter set; model-backed runs must
+record provider identity and parameters in the manifest.
+
 Semantic-impact tickets are gated before release readiness. Changes touching
 domain docs, locked conventions, product or market registries, semantic schemas,
 normalization, exposure, PnL, risk, units, periods, spreads, vol, or mapping

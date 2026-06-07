@@ -13,11 +13,22 @@
     "manifest": {
       "type": "object",
       "additionalProperties": true,
-      "required": ["run_id", "created_at", "agent_pack_version"],
+      "required": ["run_id", "created_at", "agent_pack_version", "provider"],
       "properties": {
         "run_id": {"type": "string", "minLength": 1},
         "created_at": {"type": "string"},
         "agent_pack_version": {"type": "string", "minLength": 1},
+        "provider": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": ["profile", "kind", "model_calls", "parameters"],
+          "properties": {
+            "profile": {"type": "string", "minLength": 1},
+            "kind": {"type": "string", "minLength": 1},
+            "model_calls": {"type": "boolean"},
+            "parameters": {"type": "object"}
+          }
+        },
         "inputs": {"type": "array"},
         "outputs": {"type": "array"},
         "tests": {"type": "object"},
