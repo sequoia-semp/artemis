@@ -1,0 +1,68 @@
+id: T-0153
+type: ticket
+title: Valuation ports and local LLM portfolio harness
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-07'
+updated_at: '2026-06-07T00:00:00Z'
+epic: E-GAS-PORTFOLIO-ORACLE
+sprint: S-WAVE-1-GAS-LLM
+layer:
+  - valuation
+  - cli
+  - agent
+  - local_llm
+  - tests
+branch: codex/workscope-valuation-live-safety
+context_profile: trading_domain
+problem: >
+  The first gas portfolio user test needs a formal anti-corruption port layer
+  for pricing/risk engines and a runnable local LLM harness that narrates
+  deterministic portfolio query outputs without becoming authoritative.
+tasks:
+  - Add PricingPort and RiskPort protocols with built-in deterministic adapters.
+  - Route the gas portfolio option valuation through the built-in pricing port.
+  - Add a local LLM portfolio Q&A harness over gas_portfolio_query outputs.
+  - Support deterministic dry-run mode for CI and optional OpenAI-compatible local model calls for user testing.
+  - Register and document the local LLM test command.
+acceptance_criteria:
+  - Built-in pricing/risk ports reproduce existing Black-76 Greeks and historical VaR behavior.
+  - Gas portfolio report lineage identifies the built-in pricing port implementation.
+  - Local LLM harness first calls the deterministic gas portfolio query tool and only then generates narration.
+  - Dry-run mode produces an LLM-shaped response with model_calls false and deterministic tool facts.
+  - Unsupported portfolio questions remain unsupported and are not narrated as facts.
+required_tests:
+  - .venv/bin/python -m pytest tests/test_gas_portfolio.py tests/test_valuation_ports_local_llm.py -q
+  - .venv/bin/python -m pytest tests/golden tests/test_price_instrument_spine.py -q
+affected_files:
+  - development/change_requests/CR-0104-valuation-ports-local-llm-harness.yaml
+  - docs/analyst/gas_portfolio_local_llm_test.md
+  - docs/architecture/power_gas_trading_agent_workbench.md
+  - registries/tools.yaml
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/gas_portfolio.py
+  - src/pga_workbench/services/local_llm_portfolio.py
+  - src/pga_workbench/services/ports.py
+  - tests/test_gas_portfolio.py
+  - tests/test_valuation_ports_local_llm.py
+change_request_required: true
+change_id: CR-0104
+dependencies:
+  - T-0152
+implemented_at: '2026-06-07T00:00:00Z'
+implementation_summary: >
+  Added PricingPort and RiskPort protocols with built-in deterministic adapters,
+  routed the sample gas portfolio through the built-in Black-76 pricing port,
+  added a model-agnostic local LLM portfolio harness over deterministic tool
+  facts, updated OpenCode/Ollama examples to accept any local model, and
+  generated dry-run plus live Ollama user-test artifacts.
+validated_at: '2026-06-07T00:00:00Z'
+validation_report: development/validation_reports/T-0153/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0153.md
+validation_summary: >
+  .venv/bin/python -m pytest tests/test_gas_portfolio.py
+  tests/test_valuation_ports_local_llm.py -q passed; .venv/bin/python -m pytest
+  tests/golden tests/test_price_instrument_spine.py -q passed; .venv/bin/pga
+  validate-work-items passed; .venv/bin/pga validate-registries passed;
+  .venv/bin/artemis validate --strict --ticket T-0153 passed.

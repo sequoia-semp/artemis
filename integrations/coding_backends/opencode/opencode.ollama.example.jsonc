@@ -1,7 +1,9 @@
 {
   "$schema": "https://opencode.ai/config.json",
   // Optional local provider example. Artemis core does not require Ollama.
-  "model": "ollama/qwen3-coder:30b",
+  // Replace "your-local-model" with any Ollama-served model, for example a
+  // local Kimi, DeepSeek, Qwen, or other OpenAI-compatible model name.
+  "model": "ollama/your-local-model",
   "provider": {
     "ollama": {
       "npm": "@ai-sdk/openai-compatible",
@@ -10,8 +12,8 @@
         "baseURL": "http://localhost:11434/v1"
       },
       "models": {
-        "qwen3-coder:30b": {
-          "name": "Qwen3 Coder 30B (local)",
+        "your-local-model": {
+          "name": "Your local Ollama model",
           "limit": {
             "context": 131072,
             "output": 32768

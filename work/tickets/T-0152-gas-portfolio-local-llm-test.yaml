@@ -1,0 +1,65 @@
+id: T-0152
+type: ticket
+title: Gas portfolio oracle and local LLM test surface
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-07'
+updated_at: '2026-06-07T00:00:00Z'
+epic: E-GAS-PORTFOLIO-ORACLE
+sprint: S-WAVE-1-GAS-LLM
+layer:
+  - valuation
+  - cli
+  - agent
+  - local_llm
+  - tests
+branch: codex/workscope-valuation-live-safety
+context_profile: trading_domain
+problem: >
+  Artemis needs a deterministic natural gas portfolio through-time fixture and
+  query surface that can support a first local LLM user test over positions,
+  Greeks, and PnL without making the LLM authoritative for calculations.
+tasks:
+  - Add a synthetic, labeled Henry Hub gas portfolio sample with futures and PHE options through time.
+  - Build deterministic valuation, Greeks, and PnL reports for the sample portfolio.
+  - Add a read/query interface for common analyst questions over the report.
+  - Register the gas portfolio build/query commands as deterministic analyst-safe tools.
+  - Document the local LLM user test flow and non-authority boundary.
+acceptance_criteria:
+  - The sample report contains multiple as-of dates, futures positions, option positions, linear PnL, option PnL, total PnL, and grouping metadata.
+  - The query interface answers total PnL, date-specific position, book PnL, and Greek questions from report facts only.
+  - Unsupported questions return a structured unsupported response instead of invented analytics.
+  - Tool registry validation accepts the new commands and labels them deterministic services.
+  - Tests cover report generation, CLI output, query behavior, and unsupported-question fail-closed behavior.
+required_tests:
+  - .venv/bin/python -m pytest tests/test_gas_portfolio.py -q
+  - .venv/bin/python -m pytest tests/golden tests/test_price_instrument_spine.py -q
+affected_files:
+  - development/change_requests/CR-0103-gas-portfolio-local-llm-test.yaml
+  - docs/analyst/gas_portfolio_local_llm_test.md
+  - registries/tools.yaml
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/gas_portfolio.py
+  - tests/test_gas_portfolio.py
+change_request_required: true
+change_id: CR-0103
+dependencies:
+  - T-0115
+  - T-0116
+  - T-0117
+  - T-0121
+implemented_at: '2026-06-07T00:00:00Z'
+implementation_summary: >
+  Added a deterministic synthetic Henry Hub gas portfolio sample with futures,
+  registered PHE options, through-time linear and option PnL, local-LLM-ready
+  query responses, analyst CLI commands, tool registry entries, and tests.
+validated_at: '2026-06-07T00:00:00Z'
+validation_report: development/validation_reports/T-0152/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0152.md
+validation_summary: >
+  .venv/bin/python -m pytest tests/test_gas_portfolio.py -q passed;
+  .venv/bin/python -m pytest tests/golden tests/test_price_instrument_spine.py
+  -q passed; .venv/bin/pga validate-work-items passed; .venv/bin/pga
+  validate-registries passed; .venv/bin/artemis validate --strict --ticket
+  T-0152 passed.

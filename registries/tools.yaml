@@ -156,6 +156,122 @@ tools:
     authority: deterministic_service
     deterministic_service: true
 
+  gas_portfolio_sample:
+    command: artemis analyst gas-portfolio build-sample
+    risk: workspace_write
+    modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: gas_portfolio_sample_request
+    output_contract:
+      type: gas_portfolio_report
+    lineage:
+      records:
+        - src/pga_workbench/services/gas_portfolio.py
+        - src/pga_workbench/services/normalization.py
+        - src/pga_workbench/services/pnl.py
+        - src/pga_workbench/services/greeks.py
+    authority: deterministic_service
+    deterministic_service: true
+
+  gas_portfolio_query:
+    command: artemis analyst gas-portfolio query
+    risk: workspace_write
+    modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: gas_portfolio_report_question
+      required: [input, question]
+    output_contract:
+      type: gas_portfolio_query_response
+    lineage:
+      records:
+        - src/pga_workbench/services/gas_portfolio.py
+    authority: deterministic_service
+    deterministic_service: true
+
+  gas_portfolio_local_llm_question:
+    command: artemis analyst gas-portfolio ask-local-llm
+    risk: workspace_write
+    modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: gas_portfolio_report_question
+      required: [input, question]
+    output_contract:
+      type: local_llm_grounded_portfolio_response
+    lineage:
+      records:
+        - src/pga_workbench/services/local_llm_portfolio.py
+        - src/pga_workbench/services/gas_portfolio.py
+    authority: deterministic_service
+    deterministic_service: true
+
+  valuation_adapter_catalog:
+    command: artemis analyst valuation-adapters
+    risk: read_only
+    modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: valuation_adapter_catalog_request
+    output_contract:
+      type: valuation_adapter_catalog
+    lineage:
+      records:
+        - src/pga_workbench/services/ports.py
+    authority: deterministic_service
+    deterministic_service: true
+
+  gas_risk_pack_build:
+    command: artemis analyst gas-risk build
+    risk: workspace_write
+    modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: gas_portfolio_report
+      required: [portfolio_report, as_of, output_root]
+    output_contract:
+      type: gas_risk_pack
+    lineage:
+      records:
+        - src/pga_workbench/services/gas_risk_pack.py
+        - docs/analyst/gas_risk_pack.md
+    authority: deterministic_service
+    deterministic_service: true
+
+  gas_risk_pack_query:
+    command: artemis analyst gas-risk query
+    risk: workspace_write
+    modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: gas_risk_pack_question
+      required: [input, question]
+    output_contract:
+      type: gas_risk_pack_query_response
+    lineage:
+      records:
+        - src/pga_workbench/services/gas_risk_pack.py
+    authority: deterministic_service
+    deterministic_service: true
+
+  gas_risk_pack_local_llm_question:
+    command: artemis analyst gas-risk ask-local-llm
+    risk: workspace_write
+    modes: [analyst, development]
+    adapter: cli
+    input_contract:
+      type: gas_risk_pack_question
+      required: [input, question]
+    output_contract:
+      type: local_llm_grounded_risk_response
+    lineage:
+      records:
+        - src/pga_workbench/services/local_llm_portfolio.py
+        - src/pga_workbench/services/gas_risk_pack.py
+    authority: deterministic_service
+    deterministic_service: true
+
   pjm_load_fundamentals:
     command: artemis analyst fundamentals build-pjm-load
     risk: external_api

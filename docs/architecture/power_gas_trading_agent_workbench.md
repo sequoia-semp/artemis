@@ -51,3 +51,16 @@ Optional model runtimes, coding tools, and orchestrators are descriptors under
 `integrations/`. They are not the product architecture and are not sources of
 market convention, analytics calculation, source mapping, state promotion, or
 release approval.
+
+## Valuation Ports
+
+Pricing and risk engines enter Artemis through deterministic ports. The built-in
+Black-76 and historical VaR services are the first implementations; future
+QuantLib, Riskfolio, cvxportfolio, or proprietary engines must sit behind the
+same canonical input/output contracts and reproduce oracle tests before use.
+The detailed intake rule is recorded in
+`docs/architecture/open_source_valuation_ports.md`.
+
+Local LLM portfolio tests are outer-loop narration over deterministic tool
+responses. The LLM may explain `gas_portfolio_query` facts, but it must not
+create PnL, Greeks, recommendations, missing positions, or source assumptions.

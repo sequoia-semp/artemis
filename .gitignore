@@ -1,6 +1,9 @@
 .DS_Store
 .env
 local/.env
+local/*.json
+local/*_state/
+local/gas_risk_packs/
 .venv/
 __pycache__/
 *.py[cod]

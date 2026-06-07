@@ -64,10 +64,12 @@ export ARTEMIS_ENV_FILE=/absolute/path/to/artemis.env
 
 ## Optional Ollama
 
-Install and start Ollama, then pull the configured local model:
+Install and start Ollama, then pull the local model you want to use:
 
 ```bash
-ollama pull qwen3-coder:30b
+ollama pull deepseek-r1:latest
+# or: ollama pull kimi-k2:latest
+# or any other local model exposed by your runtime
 ollama serve
 ```
 
@@ -88,7 +90,7 @@ providers:
       required: false
       descriptor: integrations/providers/openai_compatible.example.yaml
       base_url: http://localhost:11434/v1
-      model: qwen3-coder:30b
+      model_env: ARTEMIS_OPENAI_COMPATIBLE_MODEL
       api_key_env: OLLAMA_API_KEY
 ```
 
@@ -143,7 +145,7 @@ ARTEMIS_PJM_ACCOUNT_CLASS=non_member
 ARTEMIS_RUN_LIVE_PJM_TESTS=0
 OLLAMA_API_KEY=ollama
 ARTEMIS_OPENAI_COMPATIBLE_BASE_URL=http://localhost:11434/v1
-ARTEMIS_OPENAI_COMPATIBLE_MODEL=qwen3-coder:30b
+ARTEMIS_OPENAI_COMPATIBLE_MODEL=deepseek-r1:latest
 ```
 
 Credential values should never appear in committed config, fixtures, docs, logs,

@@ -1,0 +1,58 @@
+id: T-0154
+type: ticket
+title: Open-source valuation port adapter catalog
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-07'
+updated_at: '2026-06-07T00:00:00Z'
+epic: E-GAS-PORTFOLIO-ORACLE
+sprint: S-WAVE-1-GAS-LLM
+layer:
+  - valuation
+  - cli
+  - docs
+  - tests
+branch: codex/workscope-valuation-live-safety
+context_profile: trading_domain
+problem: >
+  Open-source pricing/risk engines should plug into Artemis through optional
+  adapters behind the valuation ports, but unavailable or unvalidated adapters
+  must not silently affect deterministic analytics.
+tasks:
+  - Add an OSS adapter catalog for optional pricing and risk engine candidates.
+  - Expose adapter availability through a deterministic CLI/tool command.
+  - Add fail-closed candidate adapter classes for optional OSS engines until oracle validation promotes them.
+  - Document the intake rules for adding QuantLib/Riskfolio-style adapters.
+acceptance_criteria:
+  - Built-in pricing and risk ports are always reported available.
+  - Optional OSS packages are reported as available/unavailable without importing them eagerly.
+  - Requesting an unimplemented optional OSS adapter fails closed with a structured exception.
+  - Tool registry validation accepts the adapter availability command.
+required_tests:
+  - .venv/bin/python -m pytest tests/test_oss_port_adapters.py tests/test_valuation_ports_local_llm.py -q
+affected_files:
+  - development/change_requests/CR-0105-oss-port-adapter-catalog.yaml
+  - docs/architecture/open_source_valuation_ports.md
+  - registries/tools.yaml
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/ports.py
+  - tests/test_oss_port_adapters.py
+  - work/tickets/T-0154-oss-port-adapter-catalog.yaml
+change_request_required: true
+change_id: CR-0105
+dependencies:
+  - T-0153
+implemented_at: '2026-06-07T00:00:00Z'
+implementation_summary: >
+  Added a deterministic valuation adapter catalog, built-in and optional OSS
+  adapter availability reporting, fail-closed QuantLib candidate behavior,
+  CLI/tool registry access, architecture documentation, and regression tests.
+validated_at: '2026-06-07T00:00:00Z'
+validation_report: development/validation_reports/T-0154/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0154.md
+validation_summary: >
+  .venv/bin/python -m pytest tests/test_oss_port_adapters.py
+  tests/test_valuation_ports_local_llm.py -q passed; .venv/bin/pga
+  validate-work-items passed; .venv/bin/pga validate-registries passed;
+  .venv/bin/artemis validate --strict --ticket T-0154 passed.

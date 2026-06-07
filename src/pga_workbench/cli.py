@@ -25,6 +25,9 @@ from .serialization import read_json, to_plain, write_json
 from .services.greeks import read_option_rows, run_black76_greeks
 from .services.heatmap import build_forward_price_heatmap, read_price_surface_points, validate_forward_price_heatmap
 from .services.fundamentals import build_pjm_load_artifacts, load_pjm_fundamental_feeds, normalize_pjm_fundamental_records, validate_fundamental_state
+from .services.gas_portfolio import build_sample_gas_portfolio_report, query_gas_portfolio_report
+from .services.local_llm_portfolio import run_local_llm_gas_risk_pack_question, run_local_llm_portfolio_question
+from .services.gas_risk_pack import build_cached_gas_risk_pack, query_gas_risk_pack
 from .services.artifact_composition import compose_artifact_payloads
 from .services.generation_mix import (
     build_pjm_generation_mix_artifacts,
@@ -62,6 +65,7 @@ from .services.power_system_source_metadata import (
 )
 from .services.power_system_sources import build_power_system_source_publication_report
 from .services.power_system_state import stage_power_system_bundle_candidate
+from .services.ports import valuation_port_catalog
 from .services.source_query_plans import (
     build_pjm_generation_mix_query_requests,
     build_pjm_hourly_lmp_query_requests,
@@ -165,6 +169,82 @@ def _cmd_build_forward_price_heatmap(args: argparse.Namespace) -> int:
     validate_forward_price_heatmap(report, Path(args.schemas))
     write_json(Path(args.output), report)
     print(f"wrote forward price heatmap to {args.output}")
+    return 0
+
+
+def _cmd_build_gas_portfolio_sample(args: argparse.Namespace) -> int:
+    report = build_sample_gas_portfolio_report(args.run_id)
+    write_json(Path(args.output), report)
+    print(f"wrote gas portfolio sample report to {args.output}")
+    return 0
+
+
+def _cmd_query_gas_portfolio(args: argparse.Namespace) -> int:
+    response = query_gas_portfolio_report(read_json(Path(args.input)), args.question, args.run_id)
+    write_json(Path(args.output), response)
+    print(f"wrote gas portfolio query response to {args.output}")
+    return 0
+
+
+def _cmd_local_llm_gas_portfolio(args: argparse.Namespace) -> int:
+    response = run_local_llm_portfolio_question(
+        read_json(Path(args.input)),
+        args.question,
+        run_id=args.run_id,
+        dry_run=args.dry_run,
+        base_url=args.base_url,
+        model=args.model,
+        api_key=args.api_key,
+        timeout_seconds=args.timeout_seconds,
+    )
+    write_json(Path(args.output), response)
+    print(f"wrote local LLM gas portfolio response to {args.output}")
+    return 0
+
+
+def _cmd_valuation_adapters(args: argparse.Namespace) -> int:
+    catalog = valuation_port_catalog()
+    if args.output:
+        write_json(Path(args.output), catalog)
+    else:
+        print(json.dumps(catalog, indent=2, sort_keys=True))
+    return 0
+
+
+def _cmd_build_gas_risk_pack(args: argparse.Namespace) -> int:
+    pack = build_cached_gas_risk_pack(
+        read_json(Path(args.portfolio_report)),
+        args.as_of,
+        Path(args.output_root),
+        force=args.force,
+        run_id=args.run_id,
+    )
+    if args.output:
+        write_json(Path(args.output), pack)
+    print(f"wrote gas risk pack for {args.as_of} under {args.output_root}; cache_status={pack.get('cache_status')}")
+    return 0
+
+
+def _cmd_query_gas_risk_pack(args: argparse.Namespace) -> int:
+    response = query_gas_risk_pack(read_json(Path(args.input)), args.question, args.run_id)
+    write_json(Path(args.output), response)
+    print(f"wrote gas risk pack query response to {args.output}")
+    return 0
+
+
+def _cmd_local_llm_gas_risk_pack(args: argparse.Namespace) -> int:
+    response = run_local_llm_gas_risk_pack_question(
+        read_json(Path(args.input)),
+        args.question,
+        run_id=args.run_id,
+        dry_run=args.dry_run,
+        base_url=args.base_url,
+        model=args.model,
+        api_key=args.api_key,
+        timeout_seconds=args.timeout_seconds,
+    )
+    write_json(Path(args.output), response)
+    print(f"wrote local LLM gas risk pack response to {args.output}")
     return 0
 
 
@@ -1870,6 +1950,62 @@ def build_parser(prog: str | None = None) -> argparse.ArgumentParser:
     p.add_argument("--schemas", default="schemas")
     p.set_defaults(func=_cmd_build_forward_price_heatmap)
 
+    p = sub.add_parser("build-gas-portfolio-sample")
+    p.add_argument("--output", required=True)
+    p.add_argument("--run-id", default="gas-portfolio-sample")
+    p.set_defaults(func=_cmd_build_gas_portfolio_sample)
+
+    p = sub.add_parser("query-gas-portfolio")
+    p.add_argument("--input", required=True)
+    p.add_argument("--question", required=True)
+    p.add_argument("--output", required=True)
+    p.add_argument("--run-id", default="gas-portfolio-query")
+    p.set_defaults(func=_cmd_query_gas_portfolio)
+
+    p = sub.add_parser("ask-local-llm-gas-portfolio")
+    p.add_argument("--input", required=True)
+    p.add_argument("--question", required=True)
+    p.add_argument("--output", required=True)
+    p.add_argument("--run-id", default="local-llm-gas-portfolio-question")
+    p.add_argument("--dry-run", action="store_true")
+    p.add_argument("--base-url")
+    p.add_argument("--model")
+    p.add_argument("--api-key")
+    p.add_argument("--timeout-seconds", type=float, default=30.0)
+    p.set_defaults(func=_cmd_local_llm_gas_portfolio)
+
+    p = sub.add_parser("valuation-adapters")
+    p.add_argument("--output")
+    p.set_defaults(func=_cmd_valuation_adapters)
+
+    p = sub.add_parser("build-gas-risk-pack")
+    p.add_argument("--portfolio-report", required=True)
+    p.add_argument("--as-of", required=True)
+    p.add_argument("--output-root", required=True)
+    p.add_argument("--output")
+    p.add_argument("--run-id", default="gas-risk-pack")
+    p.add_argument("--force", action="store_true")
+    p.set_defaults(func=_cmd_build_gas_risk_pack)
+
+    p = sub.add_parser("query-gas-risk-pack")
+    p.add_argument("--input", required=True)
+    p.add_argument("--question", required=True)
+    p.add_argument("--output", required=True)
+    p.add_argument("--run-id", default="gas-risk-query")
+    p.set_defaults(func=_cmd_query_gas_risk_pack)
+
+    p = sub.add_parser("ask-local-llm-gas-risk-pack")
+    p.add_argument("--input", required=True)
+    p.add_argument("--question", required=True)
+    p.add_argument("--output", required=True)
+    p.add_argument("--run-id", default="local-llm-gas-risk-question")
+    p.add_argument("--dry-run", action="store_true")
+    p.add_argument("--base-url")
+    p.add_argument("--model")
+    p.add_argument("--api-key")
+    p.add_argument("--timeout-seconds", type=float, default=30.0)
+    p.set_defaults(func=_cmd_local_llm_gas_risk_pack)
+
     p = sub.add_parser("build-pjm-load-fundamentals")
     p.add_argument("--as-of", required=True)
     p.add_argument("--output", required=True)
@@ -2100,6 +2236,59 @@ def build_parser(prog: str | None = None) -> argparse.ArgumentParser:
     h.add_argument("--registries", default="registries")
     h.add_argument("--schemas", default="schemas")
     h.set_defaults(func=_cmd_build_forward_price_heatmap)
+    gas_portfolio = analyst_sub.add_parser("gas-portfolio")
+    gas_portfolio_sub = gas_portfolio.add_subparsers(dest="gas_portfolio_command", required=True)
+    gp = gas_portfolio_sub.add_parser("build-sample")
+    gp.add_argument("--output", required=True)
+    gp.add_argument("--run-id", default="gas-portfolio-sample")
+    gp.set_defaults(func=_cmd_build_gas_portfolio_sample)
+    gp = gas_portfolio_sub.add_parser("query")
+    gp.add_argument("--input", required=True)
+    gp.add_argument("--question", required=True)
+    gp.add_argument("--output", required=True)
+    gp.add_argument("--run-id", default="gas-portfolio-query")
+    gp.set_defaults(func=_cmd_query_gas_portfolio)
+    gp = gas_portfolio_sub.add_parser("ask-local-llm")
+    gp.add_argument("--input", required=True)
+    gp.add_argument("--question", required=True)
+    gp.add_argument("--output", required=True)
+    gp.add_argument("--run-id", default="local-llm-gas-portfolio-question")
+    gp.add_argument("--dry-run", action="store_true")
+    gp.add_argument("--base-url")
+    gp.add_argument("--model")
+    gp.add_argument("--api-key")
+    gp.add_argument("--timeout-seconds", type=float, default=30.0)
+    gp.set_defaults(func=_cmd_local_llm_gas_portfolio)
+    va = analyst_sub.add_parser("valuation-adapters")
+    va.add_argument("--output")
+    va.set_defaults(func=_cmd_valuation_adapters)
+    gas_risk = analyst_sub.add_parser("gas-risk")
+    gas_risk_sub = gas_risk.add_subparsers(dest="gas_risk_command", required=True)
+    gr = gas_risk_sub.add_parser("build")
+    gr.add_argument("--portfolio-report", required=True)
+    gr.add_argument("--as-of", required=True)
+    gr.add_argument("--output-root", required=True)
+    gr.add_argument("--output")
+    gr.add_argument("--run-id", default="gas-risk-pack")
+    gr.add_argument("--force", action="store_true")
+    gr.set_defaults(func=_cmd_build_gas_risk_pack)
+    gr = gas_risk_sub.add_parser("query")
+    gr.add_argument("--input", required=True)
+    gr.add_argument("--question", required=True)
+    gr.add_argument("--output", required=True)
+    gr.add_argument("--run-id", default="gas-risk-query")
+    gr.set_defaults(func=_cmd_query_gas_risk_pack)
+    gr = gas_risk_sub.add_parser("ask-local-llm")
+    gr.add_argument("--input", required=True)
+    gr.add_argument("--question", required=True)
+    gr.add_argument("--output", required=True)
+    gr.add_argument("--run-id", default="local-llm-gas-risk-question")
+    gr.add_argument("--dry-run", action="store_true")
+    gr.add_argument("--base-url")
+    gr.add_argument("--model")
+    gr.add_argument("--api-key")
+    gr.add_argument("--timeout-seconds", type=float, default=30.0)
+    gr.set_defaults(func=_cmd_local_llm_gas_risk_pack)
     fundamentals = analyst_sub.add_parser("fundamentals")
     fundamentals_sub = fundamentals.add_subparsers(dest="fundamentals_command", required=True)
     f = fundamentals_sub.add_parser("build-pjm-load")
@@ -2334,6 +2523,59 @@ def build_artemis_parser(prog: str | None = None) -> argparse.ArgumentParser:
     h.add_argument("--registries", default="registries")
     h.add_argument("--schemas", default="schemas")
     h.set_defaults(func=_cmd_build_forward_price_heatmap)
+    gas_portfolio = analyst_sub.add_parser("gas-portfolio")
+    gas_portfolio_sub = gas_portfolio.add_subparsers(dest="gas_portfolio_command", required=True)
+    gp = gas_portfolio_sub.add_parser("build-sample")
+    gp.add_argument("--output", required=True)
+    gp.add_argument("--run-id", default="gas-portfolio-sample")
+    gp.set_defaults(func=_cmd_build_gas_portfolio_sample)
+    gp = gas_portfolio_sub.add_parser("query")
+    gp.add_argument("--input", required=True)
+    gp.add_argument("--question", required=True)
+    gp.add_argument("--output", required=True)
+    gp.add_argument("--run-id", default="gas-portfolio-query")
+    gp.set_defaults(func=_cmd_query_gas_portfolio)
+    gp = gas_portfolio_sub.add_parser("ask-local-llm")
+    gp.add_argument("--input", required=True)
+    gp.add_argument("--question", required=True)
+    gp.add_argument("--output", required=True)
+    gp.add_argument("--run-id", default="local-llm-gas-portfolio-question")
+    gp.add_argument("--dry-run", action="store_true")
+    gp.add_argument("--base-url")
+    gp.add_argument("--model")
+    gp.add_argument("--api-key")
+    gp.add_argument("--timeout-seconds", type=float, default=30.0)
+    gp.set_defaults(func=_cmd_local_llm_gas_portfolio)
+    va = analyst_sub.add_parser("valuation-adapters")
+    va.add_argument("--output")
+    va.set_defaults(func=_cmd_valuation_adapters)
+    gas_risk = analyst_sub.add_parser("gas-risk")
+    gas_risk_sub = gas_risk.add_subparsers(dest="gas_risk_command", required=True)
+    gr = gas_risk_sub.add_parser("build")
+    gr.add_argument("--portfolio-report", required=True)
+    gr.add_argument("--as-of", required=True)
+    gr.add_argument("--output-root", required=True)
+    gr.add_argument("--output")
+    gr.add_argument("--run-id", default="gas-risk-pack")
+    gr.add_argument("--force", action="store_true")
+    gr.set_defaults(func=_cmd_build_gas_risk_pack)
+    gr = gas_risk_sub.add_parser("query")
+    gr.add_argument("--input", required=True)
+    gr.add_argument("--question", required=True)
+    gr.add_argument("--output", required=True)
+    gr.add_argument("--run-id", default="gas-risk-query")
+    gr.set_defaults(func=_cmd_query_gas_risk_pack)
+    gr = gas_risk_sub.add_parser("ask-local-llm")
+    gr.add_argument("--input", required=True)
+    gr.add_argument("--question", required=True)
+    gr.add_argument("--output", required=True)
+    gr.add_argument("--run-id", default="local-llm-gas-risk-question")
+    gr.add_argument("--dry-run", action="store_true")
+    gr.add_argument("--base-url")
+    gr.add_argument("--model")
+    gr.add_argument("--api-key")
+    gr.add_argument("--timeout-seconds", type=float, default=30.0)
+    gr.set_defaults(func=_cmd_local_llm_gas_risk_pack)
     fundamentals = analyst_sub.add_parser("fundamentals")
     fundamentals_sub = fundamentals.add_subparsers(dest="fundamentals_command", required=True)
     f = fundamentals_sub.add_parser("build-pjm-load")

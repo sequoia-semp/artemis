@@ -1,0 +1,36 @@
+change_id: CR-0106
+title: Cached gas risk pack and strict strategy semantics
+created_at: 2026-06-07T00:00:00Z
+change_class: 4
+severity: medium
+tickets:
+  - T-0155
+problem_statement: >
+  The gas portfolio example needs daily materialized risk packs, cached query
+  facts, and transparent strategy/structure semantics so local LLM questions do
+  not trigger repeated recalculation or invent unapproved market conventions.
+root_cause: >
+  The current gas portfolio report is queryable, but risk metrics, exposure
+  buckets, stress scenarios, option PnL explain, and strategy labels are not yet
+  packaged into immutable daily artifacts with lineage and cache keys.
+affected_files:
+  - docs/analyst/gas_risk_pack.md
+  - docs/analyst/gas_strategy_semantics.md
+  - knowledge_base/MANIFEST.yaml
+  - knowledge_base/market_conventions/gas_strategy_labels_candidate.md
+  - registries/tools.yaml
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/gas_risk_pack.py
+  - src/pga_workbench/services/local_llm_portfolio.py
+  - tests/test_gas_risk_pack.py
+tests_required:
+  - .venv/bin/python -m pytest tests/test_gas_risk_pack.py tests/test_gas_portfolio.py tests/test_valuation_ports_local_llm.py -q
+  - .venv/bin/artemis validate --strict --ticket T-0155
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-07T00:00:00Z
+rollback_plan: >
+  Remove the gas risk pack service, CLI/tool entries, candidate semantics docs,
+  generated local risk pack artifacts, tests, and T-0155 work item; retain the
+  validated gas portfolio and local LLM harness from T-0152/T-0153.

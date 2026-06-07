@@ -17,4 +17,4 @@ def test_knowledge_base_scaffold_declares_advisory_authority():
 
 def test_validate_knowledge_base_manifest():
     result = validate_knowledge_base(ROOT / "knowledge_base", ROOT / "schemas")
-    assert result["entries"] == 4
+    assert result["entries"] == 5

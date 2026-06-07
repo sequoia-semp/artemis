@@ -15,6 +15,9 @@ Use this file as the docs entrypoint.
 - `docs/analyst/data_sources.md`
 - `docs/analyst/eastern_power_scope.md`
 - `docs/analyst/ice_data_scope.md`
+- `docs/analyst/gas_portfolio_local_llm_test.md`
+- `docs/analyst/gas_risk_pack.md`
+- `docs/analyst/gas_strategy_semantics.md`
 
 ## Developer Docs
 
@@ -44,6 +47,7 @@ Use this file as the docs entrypoint.
 
 - `docs/ARCHITECTURE.md`
 - `docs/architecture/direct_pjm_authoritative_sources.md`
+- `docs/architecture/open_source_valuation_ports.md`
 - `docs/architecture/power_gas_trading_agent_workbench.md`
 
 ## Archive / Compatibility Records

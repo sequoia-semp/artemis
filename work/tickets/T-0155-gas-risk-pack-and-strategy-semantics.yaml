@@ -1,0 +1,65 @@
+id: T-0155
+type: ticket
+title: Cached gas risk pack and strict strategy semantics
+status: validated
+owner: user
+risk: medium
+created_at: '2026-06-07'
+updated_at: '2026-06-07T00:00:00Z'
+validated_at: '2026-06-07T00:00:00Z'
+validation_report: development/validation_reports/T-0155/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0155.md
+epic: E-GAS-PORTFOLIO-ORACLE
+sprint: S-WAVE-2-GAS-RISK
+layer:
+  - valuation
+  - cli
+  - docs
+  - knowledge_base
+  - tests
+branch: codex/workscope-valuation-live-safety
+context_profile: trading_domain
+problem: >
+  Gas portfolio facts and daily risk metrics should be materialized into cached
+  risk packs with transparent definitions and query indexes instead of being
+  recalculated for every analyst or local LLM question.
+tasks:
+  - Add a Gas Risk Pack artifact builder with manifest, cache key, and query index.
+  - Add deterministic exposure buckets, historical VaR/expected shortfall, stress scenarios, and option PnL explain.
+  - Add query support for exposure, risk, stress, option explain, cache/lineage, and strategy semantics.
+  - Add local LLM Q&A over cached risk pack tool responses.
+  - Document strategy/structure labels as candidate advisory semantics requiring human review before promotion.
+acceptance_criteria:
+  - Building the same risk pack twice reuses the cached artifact unless force rebuild is requested.
+  - Risk pack metrics are materialized into a daily JSON artifact and referenced by query index.
+  - XH/JV and month-code periods are treated as existing locked period grammar; structures such as straddle, costless collar, 25d RR, and breakeven remain reporting labels unless human-approved.
+  - Supported risk questions answer from cached pack facts only.
+  - Unsupported or unapproved semantics fail closed instead of becoming conventions.
+required_tests:
+  - .venv/bin/python -m pytest tests/test_gas_risk_pack.py tests/test_gas_portfolio.py tests/test_valuation_ports_local_llm.py -q
+validation:
+  status: passed
+  validation_report: development/validation_reports/T-0155/latest.json
+  regression_report: development/regression_reports/REGRESSION_REPORT_T-0155.md
+  commands:
+    - .venv/bin/python -m pytest tests/test_gas_risk_pack.py tests/test_gas_portfolio.py tests/test_valuation_ports_local_llm.py tests/test_oss_port_adapters.py tests/test_knowledge_base.py -q
+    - .venv/bin/pga validate-registries
+    - .venv/bin/pga validate-work-items
+    - .venv/bin/artemis validate --strict --ticket T-0155 --output development/validation_reports/T-0155/latest.json
+affected_files:
+  - development/change_requests/CR-0106-gas-risk-pack-and-strategy-semantics.yaml
+  - docs/analyst/gas_risk_pack.md
+  - docs/analyst/gas_strategy_semantics.md
+  - knowledge_base/MANIFEST.yaml
+  - knowledge_base/market_conventions/gas_strategy_labels_candidate.md
+  - registries/tools.yaml
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/gas_risk_pack.py
+  - src/pga_workbench/services/local_llm_portfolio.py
+  - tests/test_gas_risk_pack.py
+change_request_required: true
+change_id: CR-0106
+dependencies:
+  - T-0152
+  - T-0153
+  - T-0154

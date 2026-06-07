@@ -1,0 +1,32 @@
+change_id: CR-0105
+title: Open-source valuation port adapter catalog
+created_at: 2026-06-07T00:00:00Z
+change_class: 3
+severity: medium
+tickets:
+  - T-0154
+problem_statement: >
+  Artemis needs a concrete open-source adapter intake point for QuantLib,
+  Riskfolio, cvxportfolio, and similar engines without making those packages
+  authoritative or required dependencies.
+root_cause: >
+  The pricing/risk ports exist, but there is no deterministic way to inspect
+  which optional OSS engines are available or to fail closed when a package
+  adapter is requested before it is implemented and oracle-validated.
+affected_files:
+  - docs/architecture/open_source_valuation_ports.md
+  - registries/tools.yaml
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/ports.py
+  - tests/test_oss_port_adapters.py
+tests_required:
+  - .venv/bin/python -m pytest tests/test_oss_port_adapters.py tests/test_valuation_ports_local_llm.py -q
+  - .venv/bin/artemis validate --strict --ticket T-0154
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-07T00:00:00Z
+rollback_plan: >
+  Remove the optional OSS adapter catalog, CLI/tool registry entry,
+  documentation, tests, and T-0154 work item; retain the built-in pricing/risk
+  ports from T-0153.

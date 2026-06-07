@@ -14,7 +14,7 @@ providers:
       required: false
       descriptor: integrations/providers/openai_compatible.example.yaml
       base_url: http://localhost:11434/v1
-      model: qwen3-coder:30b
+      model_env: ARTEMIS_OPENAI_COMPATIBLE_MODEL
       api_key_env: OLLAMA_API_KEY
 
 backends:

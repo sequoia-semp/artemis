@@ -13,3 +13,6 @@ entries:
   - path: examples/README.md
     status: scaffold
     authority: advisory
+  - path: market_conventions/gas_strategy_labels_candidate.md
+    status: human_review_required
+    authority: advisory

@@ -1,0 +1,38 @@
+change_id: CR-0104
+title: Valuation ports and local LLM portfolio harness
+created_at: 2026-06-07T00:00:00Z
+change_class: 4
+severity: medium
+tickets:
+  - T-0153
+problem_statement: >
+  The gas portfolio user-test surface needs formal pricing/risk ports and a
+  local LLM harness so open-source or local model integrations can sit behind
+  deterministic contracts instead of leaking package-specific behavior into the
+  canonical core.
+root_cause: >
+  T-0152 added a deterministic portfolio report and query tool, but the pricing
+  and risk engines are still called directly and there is no runnable harness
+  that proves a local LLM can narrate only deterministic tool facts.
+affected_files:
+  - docs/analyst/gas_portfolio_local_llm_test.md
+  - docs/architecture/power_gas_trading_agent_workbench.md
+  - registries/tools.yaml
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/gas_portfolio.py
+  - src/pga_workbench/services/local_llm_portfolio.py
+  - src/pga_workbench/services/ports.py
+  - tests/test_gas_portfolio.py
+  - tests/test_valuation_ports_local_llm.py
+tests_required:
+  - .venv/bin/python -m pytest tests/test_gas_portfolio.py tests/test_valuation_ports_local_llm.py -q
+  - .venv/bin/python -m pytest tests/golden tests/test_price_instrument_spine.py -q
+  - .venv/bin/artemis validate --strict --ticket T-0153
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-07T00:00:00Z
+rollback_plan: >
+  Remove the port abstractions, local LLM harness, related CLI/tool registry
+  entries, tests, docs, and T-0153 work item; restore T-0152 gas portfolio
+  service to direct deterministic engine calls and rerun valuation tests.

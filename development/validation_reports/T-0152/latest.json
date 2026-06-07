@@ -1,0 +1,824 @@
+{
+  "affected_files_snapshot": [
+    {
+      "exists": true,
+      "modified_at": 1780792210.87741,
+      "path": "development/change_requests/CR-0103-gas-portfolio-local-llm-test.yaml",
+      "sha256": "a325c0a1b01d0d62c87b3d0295a54372e45fe2048c37efc66ce24e39fc108f79"
+    },
+    {
+      "exists": true,
+      "modified_at": 1780792374.0964627,
+      "path": "docs/analyst/gas_portfolio_local_llm_test.md",
+      "sha256": "b6bb9b2bc057fdbd7ff4493870b741b3ae0cd23c12f5a47974ae3061e22d352f"
+    },
+    {
+      "exists": true,
+      "modified_at": 1780792374.0961943,
+      "path": "registries/tools.yaml",
+      "sha256": "a8cca1cb3b17b2cfdd4a4cccd7bfe8ab2725a1dac632b5ddf1527b066188e913"
+    },
+    {
+      "exists": true,
+      "modified_at": 1780792356.2783856,
+      "path": "src/pga_workbench/cli.py",
+      "sha256": "5ac8af36fbf81f728efaa1e5e68b43d2b68c42f9f5998e5b99d7dfcd0c997dc9"
+    },
+    {
+      "exists": true,
+      "modified_at": 1780792392.4249706,
+      "path": "src/pga_workbench/services/gas_portfolio.py",
+      "sha256": "02f41124e4d9149c9834ef8a4a1483cb6f464fe31d5a3c97ae447dbbd6bfa9e8"
+    },
+    {
+      "exists": true,
+      "modified_at": 1780792441.349404,
+      "path": "tests/test_gas_portfolio.py",
+      "sha256": "9f79b1dd688d9e7f84c91915e14f6ac3bad0e6f5ea92ed382aa67a142074ace2"
+    }
+  ],
+  "branch": "codex/T-0134-pjm-multi-row-e2e-pipeline-test",
+  "changed_files_snapshot": [
+    "M registries/tools.yaml",
+    " M src/pga_workbench/cli.py",
+    "?? development/change_requests/CR-0103-gas-portfolio-local-llm-test.yaml",
+    "?? development/validation_reports/T-0152/",
+    "?? docs/analyst/gas_portfolio_local_llm_test.md",
+    "?? local/gas_portfolio_answer_latest_greeks.json",
+    "?? local/gas_portfolio_answer_positions_20260603.json",
+    "?? local/gas_portfolio_answer_total_pnl.json",
+    "?? local/gas_portfolio_sample.json",
+    "?? local/gen_by_fuel_sample.json",
+    "?? local/pjm_live_candidate_state/",
+    "?? local/pjm_live_morning_bundle.json",
+    "?? local/pjm_live_pipeline_bundle.json",
+    "?? local/pjm_live_pipeline_readiness.json",
+    "?? local/pjm_live_pipeline_report.json",
+    "?? local/pjm_live_smoke_bundle_gate.json",
+    "?? local/pjm_live_smoke_error_evidence_latest.json",
+    "?? local/pjm_live_smoke_latest.json",
+    "?? local/pjm_live_smoke_prelim_latest.json",
+    "?? local/pjm_live_smoke_prelim_metadata_latest.json",
+    "?? local/pjm_load_live_bundle.json",
+    "?? local/pjm_load_live_report.json",
+    "?? local/pjm_load_live_state/",
+    "?? src/pga_workbench/services/gas_portfolio.py",
+    "?? tests/test_gas_portfolio.py",
+    "?? work/tickets/T-0152-gas-portfolio-local-llm-test.yaml"
+  ],
+  "checks": [
+    {
+      "check_id": "pytest",
+      "details": {
+        "returncode": 0
+      },
+      "duration_seconds": 25.418599,
+      "label": "pytest",
+      "required": true,
+      "status": "passed",
+      "summary": "pytest passed"
+    },
+    {
+      "check_id": "golden_valuation",
+      "details": {
+        "returncode": 0
+      },
+      "duration_seconds": 0.242603,
+      "label": "golden valuation scenarios",
+      "required": true,
+      "status": "passed",
+      "summary": "golden valuation passed"
+    },
+    {
+      "check_id": "registries",
+      "details": {
+        "checked_records": 230,
+        "registry_dir": "/Users/zachfisher/Documents/Power Agent/registries",
+        "validated_files": [
+          "data_sources.yaml",
+          "delivery_window_policies.yaml",
+          "exchange_contracts.yaml",
+          "forward_fundamental_mappings.yaml",
+          "fundamental_metrics.yaml",
+          "gas_locations.yaml",
+          "market_indices.yaml",
+          "market_regions.yaml",
+          "option_contracts.yaml",
+          "period_aliases.yaml",
+          "pjm_fundamental_feeds.yaml",
+          "pjm_load_areas.yaml",
+          "power_generation_fuels.yaml",
+          "power_generation_mix_feeds.yaml",
+          "power_locations.yaml",
+          "power_market_calendars.yaml",
+          "power_price_shape_rules.yaml",
+          "power_system_artifact_products.yaml",
+          "power_system_artifact_retention_policies.yaml",
+          "power_system_operational_event_feeds.yaml",
+          "power_system_operators.yaml",
+          "power_system_price_feeds.yaml",
+          "power_system_source_access_policies.yaml",
+          "power_system_source_catalog.yaml",
+          "power_system_source_query_plans.yaml",
+          "product_master.yaml",
+          "quantity_conventions.yaml",
+          "quoted_spreads.yaml",
+          "tool_permissions.yaml",
+          "tools.yaml",
+          "vol_surface_universe.yaml"
+        ],
+        "warnings": []
+      },
+      "duration_seconds": 0.210644,
+      "label": "registry validation",
+      "required": true,
+      "status": "passed",
+      "summary": "registry validation passed"
+    },
+    {
+      "check_id": "work_items",
+      "details": {
+        "validated": [
+          "/Users/zachfisher/Documents/Power Agent/work/epics/E-0001-vcs-versioning-and-local-agent.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/epics/E-NATIVE-WORKFLOW.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/sprints/S-0001-merge-vcs-governance-local-agent.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/sprints/S-001-native-workflow-hardening.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/sprints/S-002-context-control-agent-harness-cleanup.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0001-merge-existing-branch.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0002-add-vcs-policy.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0003-add-work-item-schemas.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0004-add-local-llm-config-scaffold.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0005-update-status-docs-to-current-main.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0006-harden-opencode-poc.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0007-agent-kb-skill-release-loop.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0008-evaluate-agent-wrapper-options.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0009-wrapper-abstraction-layer.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0010-standardize-dev-env-and-vcs-readiness.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0011-integration-capability-registry.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0012-flexible-local-llm-profiles.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0013-opencode-hardening.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0014-work-context-onboarding.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0015-deterministic-kb-groundwork.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0016-registry-driven-normalization.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0017-release-spec-integration.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0018-artemis-core-abstraction.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0019-consolidate-artemis-architecture.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0020-foundation-architecture-cleanup.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0021-architecture-authority-consolidation.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0022-pjm-wh-rt-peak-forward-fundamental-mapping.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0023-pjm-hub-contract-grid-price-storage-semantics.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0024-ice-gas-contract-index-mapping.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0025-artemis-runtime-hardening-and-setup.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0026-price-instrument-position-pnl-spine.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0030-native-validation-runner.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0031-validation-report-bridge.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0032-release-readiness-native-validation.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0033-native-ticket-lifecycle.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0034-native-local-agent-loop.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0035-native-setup-docs.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0036-native-policy-release-gates.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0037-affected-file-snapshot-staleness.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0038-change-request-enforcement.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0040-fundamental-metric-registry-and-schema.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0041-pjm-fundamentals-semantic-core.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0042-power-system-price-source-core.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0043-power-price-shape-rollups.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0044-power-market-calendars.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0045-pjm-pnode-verification.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0046-power-system-source-catalog.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0047-pjm-source-access-policy.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0048-lmp-component-price-products.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0049-pjm-hourly-lmp-query-planning.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0050-pjm-generation-mix-source-core.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0051-generation-mix-hotstate-view.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0052-power-price-shape-hotstate-view.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0053-power-system-operator-registry.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0054-operational-event-feed-descriptors.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0055-state-artifact-composition.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0056-artifact-composition-audit-metadata.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0057-state-pack-composition-metadata-validation.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0058-power-system-artifact-product-registry.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0059-state-pack-artifact-product-publish-gate.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0060-composition-product-key-terminology.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0061-power-system-artifact-retention-policies.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0062-power-system-source-metadata-verification.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0063-power-system-ingestion-bundle.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0064-pjm-source-metadata-verification-command.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0065-pjm-ingestion-preflight.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0066-preflight-evidence-on-ingestion-bundles.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0067-power-system-bundle-state-candidate-staging.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0068-pjm-morning-candidate-pipeline.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0069-metadata-verification-evidence-on-pjm-bundles.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0070-pjm-live-smoke-readiness-report.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0071-pjm-prelim-load-source-contract.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0072-pjm-live-smoke-source-error-evidence.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0073-power-system-source-readiness-schema.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0074-source-readiness-evidence-on-power-system-bundles.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0075-pjm-generation-storage-fuel.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0076-pjm-pipeline-source-readiness-summary.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0077-power-system-source-publication-lifecycle.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0078-source-publication-evidence-on-power-system-bundles.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0079-power-system-price-source-contract-hardening.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0080-power-system-query-execution-records.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0081-query-execution-evidence-on-source-readiness.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0082-bounded-interval-source-query-records.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0083-registry-backed-bounded-query-plans.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0084-source-query-plan-reference-validation.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0085-power-location-source-identity-validation.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0086-live-lmp-approved-pnode-gate.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0087-hourly-lmp-history-retention-policy.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0088-heatmap-retention-policy-windows.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0089-hotstate-forward-price-heatmap.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0090-hotstate-only-analyst-views.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0091-pjm-preflight-query-plan-components.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0092-multi-surface-query-plan-bundle-evidence.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0093-raw-source-fetch-manifests.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0094-source-publication-publish-gate.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0095-pjm-load-actual-approval-readiness.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0096-pjm-pnode-effective-date-price-gate.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0097-historical-source-request-router.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0098-candidate-five-minute-rt-lmp-descriptor.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0099-operational-event-candidate-plan.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0100-operational-event-plan-cli.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0101-operational-event-plan-tool-registry.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0102-operational-event-plan-bundle-evidence.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0103-raw-source-fetch-bundle-evidence.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0104-hotstate-source-evidence-view-projection.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0105-power-system-source-audit-report.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0106-source-audit-tool-registry.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0107-source-audit-analyst-skill.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0108-direct-pjm-authoritative-source-plan.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0109-source-readiness-publish-gate.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0110-pjm-lmp-delivery-window-consistency.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0111-hotstate-price-query-helpers.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0112-hotstate-fundamental-query-helpers.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0113-hotstate-gap-query-helpers.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0114-pjm-load-live-pipeline.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0115-golden-valuation-scenario-harness.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0116-hand-derived-valuation-scenarios.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0117-golden-valuation-ci-gate.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0118-pnl-bridge-independent-tie-out.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0119-var-fail-closed.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0120-typed-var-factor-join.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0121-greeks-vol-oracle-labeling.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0122-pjm-token-bucket-limiter.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0123-pjm-429-retry-after-backoff.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0124-pjm-rate-override-validation.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0125-constructive-redaction-guarantee.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0126-pjm-definition-url-housekeeping.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0127-pjm-payload-envelope-hardening.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0128-view-engine-grounding-pass.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0129-view-lineage-reference-requirement.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0130-view-grounding-tests.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0131-deterministic-provider-profile.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0132-run-manifest-provider-provenance.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0133-nondeterministic-exploratory-mode.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0134-pjm-multi-row-e2e-pipeline-test.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0135-pjm-morning-pipeline-runbook.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0136-power-system-registry-schema-handlers.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0137-validate-power-system-registries-ci.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0138-curve-vintage-abstraction.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0139-period-vintage-math-tests.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0140-typed-domain-identifiers.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0141-exact-gas-family-mapping.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0142-robust-period-parser.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0143-decimal-money.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0144-registry-cache-sizing.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0145-ttf-reference-index.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0146-rggi-reference-index.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0147-publish-path-durability.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0148-read-only-textual-tui.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0149-tui-popout-cross-filtering.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0150-shared-read-only-cache-contract.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0151-cache-shared-rate-budget.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-0152-gas-portfolio-local-llm-test.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-context-audit.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-context-profiles.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-context-tool-integrity.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-skill-surface-validation.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-tool-spec-v2.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-validation-release-consolidation.yaml",
+          "/Users/zachfisher/Documents/Power Agent/work/tickets/T-wrapper-shim-cleanup.yaml"
+        ]
+      },
+      "duration_seconds": 0.497723,
+      "label": "work-item validation",
+      "required": true,
+      "status": "passed",
+      "summary": "work items passed"
+    },
+    {
+      "check_id": "knowledge_base",
+      "details": {
+        "entries": 4,
+        "manifest": "/Users/zachfisher/Documents/Power Agent/knowledge_base/MANIFEST.yaml"
+      },
+      "duration_seconds": 0.001041,
+      "label": "knowledge-base validation",
+      "required": true,
+      "status": "passed",
+      "summary": "knowledge base passed"
+    },
+    {
+      "check_id": "artemis_config",
+      "details": {
+        "name": "artemis"
+      },
+      "duration_seconds": 0.018202,
+      "label": "artemis config validation",
+      "required": true,
+      "status": "passed",
+      "summary": "artemis config passed"
+    },
+    {
+      "check_id": "skills",
+      "details": {
+        "manifest": "/Users/zachfisher/Documents/Power Agent/skills/manifest.yaml",
+        "procedural_manifest": "/Users/zachfisher/Documents/Power Agent/skills/procedural_manifest.yaml",
+        "procedural_skills": 10,
+        "procedural_validated": [
+          "/Users/zachfisher/Documents/Power Agent/skills/market_index_normalization/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/period_parsing/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/spread_basis_decomposition/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/atc_strip_decomposition/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/position_normalization/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/price_surface_normalization/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/vol_surface_normalization/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/pnl_bridge/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/exception_diagnosis/SKILL.md",
+          "/Users/zachfisher/Documents/Power Agent/skills/dashboard_narrative/SKILL.md"
+        ],
+        "skills": 8,
+        "validated": [
+          "/Users/zachfisher/Documents/Power Agent/skills/analyst/build_current_day_view.yaml",
+          "/Users/zachfisher/Documents/Power Agent/skills/analyst/build_prior_day_retrospective.yaml",
+          "/Users/zachfisher/Documents/Power Agent/skills/analyst/build_fourteen_day_fundamental_view.yaml",
+          "/Users/zachfisher/Documents/Power Agent/skills/analyst/explain_forecast_actual_delta.yaml",
+          "/Users/zachfisher/Documents/Power Agent/skills/analyst/rank_fundamental_drivers.yaml",
+          "/Users/zachfisher/Documents/Power Agent/skills/analyst/build_gas_basis_view.yaml",
+          "/Users/zachfisher/Documents/Power Agent/skills/analyst/build_eastern_power_view.yaml",
+          "/Users/zachfisher/Documents/Power Agent/skills/analyst/audit_power_system_sources.yaml"
+        ]
+      },
+      "duration_seconds": 0.020695,
+      "label": "skill manifest validation",
+      "required": true,
+      "status": "passed",
+      "summary": "skill manifest passed"
+    },
+    {
+      "check_id": "views",
+      "details": {
+        "manifest": "/Users/zachfisher/Documents/Power Agent/views/manifest.yaml",
+        "templates": 6,
+        "validated": [
+          "/Users/zachfisher/Documents/Power Agent/views/templates/current_day.yaml",
+          "/Users/zachfisher/Documents/Power Agent/views/templates/prior_day_retrospective.yaml",
+          "/Users/zachfisher/Documents/Power Agent/views/templates/fourteen_day_fundamentals.yaml",
+          "/Users/zachfisher/Documents/Power Agent/views/templates/eastern_power_market.yaml",
+          "/Users/zachfisher/Documents/Power Agent/views/templates/gas_basis_market.yaml",
+          "/Users/zachfisher/Documents/Power Agent/views/templates/forecast_actual_delta.yaml"
+        ]
+      },
+      "duration_seconds": 0.004767,
+      "label": "view manifest validation",
+      "required": true,
+      "status": "passed",
+      "summary": "view manifest passed"
+    },
+    {
+      "check_id": "power_system_references",
+      "details": {
+        "artifact_products": {
+          "artifact_product_count": 5,
+          "composition_product_keys": [
+            "pjm_generation_mix",
+            "pjm_load_fundamentals",
+            "pjm_power_prices",
+            "power_price_shape_rollups"
+          ]
+        },
+        "artifact_retention": {
+          "covered_artifact_products": [
+            "pjm_generation_mix",
+            "pjm_load_fundamentals",
+            "pjm_power_prices",
+            "power_price_shape_rollups",
+            "power_system_operational_event_feeds"
+          ],
+          "historical_source_policies": {
+            "pjm_generation_mix": {
+              "approved_query_plan_ids": [
+                "PJM_DATAMINER_GENERATION_MIX_BOUNDED_INTERVAL"
+              ],
+              "derived_view_windows_days": [
+                14
+              ],
+              "max_hot_history_days": 14,
+              "row_version_policy": "not_applicable",
+              "source_restorable": true
+            },
+            "pjm_load_fundamentals": {
+              "approved_query_plan_ids": [
+                "PJM_DATAMINER_LOAD_BOUNDED_INTERVAL"
+              ],
+              "derived_view_windows_days": [
+                14
+              ],
+              "max_hot_history_days": 14,
+              "row_version_policy": "not_applicable",
+              "source_restorable": true
+            },
+            "pjm_power_prices": {
+              "approved_query_plan_ids": [
+                "PJM_DATAMINER_HOURLY_LMP_DAILY_CHUNKS"
+              ],
+              "derived_view_windows_days": [
+                1,
+                5,
+                10,
+                30
+              ],
+              "max_hot_history_days": 30,
+              "row_version_policy": "current_row_filter_required",
+              "source_restorable": true
+            },
+            "power_price_shape_rollups": {
+              "approved_query_plan_ids": [],
+              "derived_view_windows_days": [
+                1,
+                5,
+                10,
+                30
+              ],
+              "max_hot_history_days": 30,
+              "row_version_policy": "not_applicable",
+              "source_restorable": false
+            },
+            "power_system_operational_event_feeds": {
+              "approved_query_plan_ids": [],
+              "derived_view_windows_days": [],
+              "max_hot_history_days": null,
+              "row_version_policy": "source_specific_pending",
+              "source_restorable": false
+            }
+          },
+          "retention_policy_count": 5,
+          "state_pack_publish_allowed": [
+            "pjm_generation_mix",
+            "pjm_load_fundamentals",
+            "pjm_power_prices",
+            "power_price_shape_rollups"
+          ]
+        },
+        "location_source_identity": {
+          "AD": {
+            "operator_id": "PJM",
+            "pnode_id": 34497127,
+            "pnode_name": "AEP-DAYTON HUB",
+            "pnode_source_status": "official_pjm_data_miner_verified",
+            "pnode_type": "HUB",
+            "source_identity_policy": "official_pjm_data_miner_pnode_required"
+          },
+          "NI": {
+            "operator_id": "PJM",
+            "pnode_id": 33092315,
+            "pnode_name": "N ILLINOIS HUB",
+            "pnode_source_status": "official_pjm_data_miner_verified",
+            "pnode_type": "HUB",
+            "source_identity_policy": "official_pjm_data_miner_pnode_required"
+          },
+          "WH": {
+            "operator_id": "PJM",
+            "pnode_id": 51288,
+            "pnode_name": "WESTERN HUB",
+            "pnode_source_status": "official_pjm_data_miner_verified",
+            "pnode_type": "HUB",
+            "source_identity_policy": "official_pjm_data_miner_pnode_required"
+          }
+        },
+        "operators": {
+          "PJM": [
+            "power_system_source_catalog:PJM_DATAMINER_LOAD_ACTUALS",
+            "power_system_source_catalog:PJM_DATAMINER_LOAD_FORECASTS",
+            "power_system_source_catalog:PJM_DATAMINER_HOURLY_LMP_CORE",
+            "power_system_source_catalog:PJM_DATAMINER_FIVE_MINUTE_RT_LMP",
+            "power_system_source_catalog:PJM_DATAMINER_GENERATION_BY_FUEL",
+            "power_system_source_catalog:PJM_DATAMINER_OUTAGES",
+            "power_system_source_catalog:PJM_DATAMINER_TRANSMISSION_CONSTRAINTS",
+            "power_locations:WH",
+            "power_locations:AD",
+            "power_locations:NI",
+            "pjm_fundamental_feeds.yaml:hrl_load_metered",
+            "pjm_fundamental_feeds.yaml:hrl_load_prelim",
+            "pjm_fundamental_feeds.yaml:load_frcstd_7_day",
+            "pjm_fundamental_feeds.yaml:load_frcstd_hist",
+            "pjm_load_areas.yaml:PJM_RTO",
+            "pjm_load_areas.yaml:AE_MIDATL",
+            "pjm_load_areas.yaml:AECO",
+            "pjm_load_areas.yaml:AEP",
+            "pjm_load_areas.yaml:AP",
+            "pjm_load_areas.yaml:ATSI",
+            "pjm_load_areas.yaml:COMED",
+            "pjm_load_areas.yaml:DAYTON",
+            "pjm_load_areas.yaml:DEOK",
+            "pjm_load_areas.yaml:DOMINION",
+            "pjm_load_areas.yaml:DUQUESNE",
+            "pjm_load_areas.yaml:EKPC",
+            "pjm_load_areas.yaml:MIDATL",
+            "pjm_load_areas.yaml:SOUTHERN_REGION",
+            "pjm_load_areas.yaml:WESTERN_REGION",
+            "power_system_price_feeds.yaml:PJM_PNODE",
+            "power_system_price_feeds.yaml:PJM_DA_HOURLY_LMP",
+            "power_system_price_feeds.yaml:PJM_RT_HOURLY_LMP",
+            "power_system_price_feeds.yaml:PJM_RT_FIVE_MINUTE_LMP",
+            "power_generation_mix_feeds.yaml:PJM_GEN_BY_FUEL",
+            "power_system_operational_event_feeds.yaml:PJM_FRCSTD_GEN_OUTAGES",
+            "power_system_operational_event_feeds.yaml:PJM_DA_TRANSCONSTRAINTS",
+            "power_system_operational_event_feeds.yaml:PJM_RT_TRANSN_CONSTRAINTS",
+            "power_market_calendars:PJM_EPT_POWER_DAY"
+          ]
+        },
+        "price_feed_contracts": {
+          "approved_lmp_feeds": [
+            "PJM_DA_HOURLY_LMP",
+            "PJM_RT_HOURLY_LMP"
+          ],
+          "metadata_feeds": [
+            "PJM_PNODE"
+          ]
+        },
+        "source_catalog": {
+          "PJM_DATAMINER_FIVE_MINUTE_RT_LMP": [
+            "PJM_RT_FIVE_MINUTE_LMP"
+          ],
+          "PJM_DATAMINER_GENERATION_BY_FUEL": [
+            "PJM_GEN_BY_FUEL"
+          ],
+          "PJM_DATAMINER_HOURLY_LMP_CORE": [
+            "PJM_PNODE",
+            "PJM_DA_HOURLY_LMP",
+            "PJM_RT_HOURLY_LMP"
+          ],
+          "PJM_DATAMINER_LOAD_ACTUALS": [
+            "hrl_load_metered",
+            "hrl_load_prelim"
+          ],
+          "PJM_DATAMINER_LOAD_FORECASTS": [
+            "load_frcstd_7_day",
+            "load_frcstd_hist"
+          ],
+          "PJM_DATAMINER_OUTAGES": [
+            "PJM_FRCSTD_GEN_OUTAGES"
+          ],
+          "PJM_DATAMINER_TRANSMISSION_CONSTRAINTS": [
+            "PJM_DA_TRANSCONSTRAINTS",
+            "PJM_RT_TRANSN_CONSTRAINTS"
+          ]
+        },
+        "source_metadata": {
+          "approved_catalog_feed_ids": [
+            "PJM_DA_HOURLY_LMP",
+            "PJM_GEN_BY_FUEL",
+            "PJM_PNODE",
+            "PJM_RT_HOURLY_LMP",
+            "load_frcstd_7_day",
+            "load_frcstd_hist"
+          ],
+          "data_miner_feeds": [
+            "da_hrl_lmps",
+            "gen_by_fuel",
+            "hrl_load_metered",
+            "hrl_load_prelim",
+            "load_frcstd_7_day",
+            "load_frcstd_hist",
+            "pnode",
+            "rt_fivemin_hrl_lmps",
+            "rt_hrl_lmps"
+          ],
+          "metadata_expectation_count": 9
+        },
+        "source_query_plans": {
+          "PJM_DATAMINER_FIVE_MINUTE_RT_LMP_CANDIDATE_DAILY_CHUNKS": {
+            "feed_ids": [
+              "PJM_RT_FIVE_MINUTE_LMP"
+            ],
+            "feed_publications": {
+              "PJM_RT_FIVE_MINUTE_LMP": [
+                "PJM_DATAMINER_FIVE_MINUTE_RT_LMP"
+              ]
+            },
+            "publication_id": "PJM_DATAMINER_FIVE_MINUTE_RT_LMP"
+          },
+          "PJM_DATAMINER_GENERATION_MIX_BOUNDED_INTERVAL": {
+            "feed_ids": [
+              "PJM_GEN_BY_FUEL"
+            ],
+            "feed_publications": {
+              "PJM_GEN_BY_FUEL": [
+                "PJM_DATAMINER_GENERATION_BY_FUEL"
+              ]
+            },
+            "publication_id": "PJM_DATAMINER_GENERATION_BY_FUEL"
+          },
+          "PJM_DATAMINER_HOURLY_LMP_DAILY_CHUNKS": {
+            "feed_ids": [
+              "PJM_DA_HOURLY_LMP",
+              "PJM_RT_HOURLY_LMP"
+            ],
+            "feed_publications": {
+              "PJM_DA_HOURLY_LMP": [
+                "PJM_DATAMINER_HOURLY_LMP_CORE"
+              ],
+              "PJM_RT_HOURLY_LMP": [
+                "PJM_DATAMINER_HOURLY_LMP_CORE"
+              ]
+            },
+            "publication_id": "PJM_DATAMINER_HOURLY_LMP_CORE"
+          },
+          "PJM_DATAMINER_LOAD_BOUNDED_INTERVAL": {
+            "feed_ids": [
+              "hrl_load_metered",
+              "hrl_load_prelim",
+              "load_frcstd_7_day",
+              "load_frcstd_hist"
+            ],
+            "feed_publications": {
+              "hrl_load_metered": [
+                "PJM_DATAMINER_LOAD_ACTUALS"
+              ],
+              "hrl_load_prelim": [
+                "PJM_DATAMINER_LOAD_ACTUALS"
+              ],
+              "load_frcstd_7_day": [
+                "PJM_DATAMINER_LOAD_FORECASTS"
+              ],
+              "load_frcstd_hist": [
+                "PJM_DATAMINER_LOAD_FORECASTS"
+              ]
+            },
+            "publication_id": "PJM_DATAMINER_LOAD_FORECASTS"
+          }
+        }
+      },
+      "duration_seconds": 0.089141,
+      "label": "power-system reference validation",
+      "required": true,
+      "status": "passed",
+      "summary": "power system references passed"
+    },
+    {
+      "check_id": "data_sources",
+      "details": {
+        "data_sources": {
+          "file_drop": {
+            "credentials": "none",
+            "kind": "file",
+            "required": true,
+            "supported_contracts": [
+              "market_prices",
+              "positions",
+              "trades",
+              "fundamentals",
+              "weather_forecast",
+              "iso_load",
+              "ice_settlements"
+            ]
+          },
+          "ice_exchange": {
+            "credentials": {
+              "mode": "env",
+              "required_env": [
+                "ARTEMIS_ICE_API_KEY"
+              ]
+            },
+            "kind": "ice_exchange",
+            "required": false,
+            "supported_contracts": [
+              "ice_settlements",
+              "forward_curves"
+            ]
+          },
+          "iso_api": {
+            "credentials": {
+              "mode": "env",
+              "required_env": []
+            },
+            "kind": "iso_api",
+            "required": false,
+            "supported_contracts": [
+              "iso_load",
+              "outages",
+              "fuel_mix"
+            ]
+          },
+          "pjm_dataminer": {
+            "credentials": {
+              "mode": "env",
+              "required_env": [
+                "ARTEMIS_PJM_API_KEY"
+              ]
+            },
+            "kind": "iso_api",
+            "required": false,
+            "supported_contracts": [
+              "fundamentals",
+              "iso_load",
+              "market_prices",
+              "fuel_mix"
+            ]
+          },
+          "vendor_api": {
+            "credentials": {
+              "mode": "env",
+              "required_env": [
+                "ARTEMIS_VENDOR_API_KEY"
+              ]
+            },
+            "kind": "vendor_api",
+            "required": false,
+            "supported_contracts": [
+              "fundamentals",
+              "weather_forecast",
+              "market_prices"
+            ]
+          }
+        },
+        "version": "0.1.0"
+      },
+      "duration_seconds": 0.002292,
+      "label": "data-source descriptor validation",
+      "required": true,
+      "status": "passed",
+      "summary": "data sources passed"
+    },
+    {
+      "check_id": "capabilities",
+      "details": {
+        "recommended_mode": "opencode_external_model"
+      },
+      "duration_seconds": 0.033061,
+      "label": "capability validation",
+      "required": true,
+      "status": "passed",
+      "summary": "capabilities passed"
+    },
+    {
+      "check_id": "context_audit",
+      "details": {
+        "counts": {
+          "blockers": 0,
+          "findings": 0
+        },
+        "findings": [],
+        "passed": true
+      },
+      "duration_seconds": 0.015059,
+      "label": "context surface audit",
+      "required": true,
+      "status": "passed",
+      "summary": "context audit passed"
+    },
+    {
+      "check_id": "release_sanity",
+      "details": {
+        "validation_commands": [
+          "artemis validate --strict"
+        ]
+      },
+      "duration_seconds": 0.018073,
+      "label": "release-readiness sanity",
+      "required": true,
+      "status": "passed",
+      "summary": "native release sanity checks passed"
+    }
+  ],
+  "command_results": [
+    {
+      "command": "python -m pytest -q",
+      "duration_seconds": 25.418599,
+      "returncode": 0,
+      "status": "passed",
+      "stderr": "",
+      "stdout": "........................................................................ [ 13%]\n........................................................................ [ 27%]\n........................................................................ [ 40%]\n............................ss.......................................... [ 54%]\n........................................................................ [ 67%]\n........................................................................ [ 81%]\n........................................................................ [ 94%]\n...........................                                              [100%]\n529 passed, 2 skipped in 25.28s\n"
+    },
+    {
+      "command": "python -m pytest tests/golden -q",
+      "duration_seconds": 0.242603,
+      "returncode": 0,
+      "status": "passed",
+      "stderr": "",
+      "stdout": "........                                                                 [100%]\n8 passed in 0.14s\n"
+    }
+  ],
+  "commit": "5e8f572bcac959ff5d2b4e0ac09743f3b898fbd3",
+  "errors": [],
+  "generated_at": "2026-06-07T00:35:32Z",
+  "overall_status": "passed",
+  "repo_root": "/Users/zachfisher/Documents/Power Agent",
+  "report_id": "validation.T-0152.20260607T003532Z",
+  "skipped": false,
+  "strict": true,
+  "ticket_id": "T-0152",
+  "warnings": []
+}

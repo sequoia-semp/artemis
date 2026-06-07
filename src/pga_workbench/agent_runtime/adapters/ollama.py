@@ -1,16 +1,19 @@
 from __future__ import annotations
 
 import json
+import os
 import urllib.request
 
 
 class OllamaAdapter:
-    def __init__(self, base_url: str = "http://localhost:11434", model: str = "qwen3-coder:30b", timeout: float = 60.0):
+    def __init__(self, base_url: str = "http://localhost:11434", model: str | None = None, timeout: float = 60.0):
         self.base_url = base_url.rstrip("/")
-        self.model = model
+        self.model = model or os.environ.get("ARTEMIS_OPENAI_COMPATIBLE_MODEL") or os.environ.get("OLLAMA_MODEL") or ""
         self.timeout = timeout
 
     def complete(self, prompt: str) -> str:
+        if not self.model:
+            raise ValueError("Ollama model is required; pass model or set ARTEMIS_OPENAI_COMPATIBLE_MODEL")
         payload = json.dumps({"model": self.model, "prompt": prompt, "stream": False}).encode("utf-8")
         request = urllib.request.Request(
             f"{self.base_url}/api/generate",

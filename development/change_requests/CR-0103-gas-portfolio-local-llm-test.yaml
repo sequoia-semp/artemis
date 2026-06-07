@@ -1,0 +1,33 @@
+change_id: CR-0103
+title: Gas portfolio oracle and local LLM test surface
+created_at: 2026-06-07T00:00:00Z
+change_class: 4
+severity: medium
+tickets:
+  - T-0152
+problem_statement: >
+  Artemis needs a first end-to-end natural gas portfolio user test where a local
+  LLM can ask questions about positions, Greeks, and PnL through time while the
+  actual calculations remain deterministic and tool-grounded.
+root_cause: >
+  Existing valuation golden scenarios cover individual economic examples, but
+  they do not yet provide a multi-date gas portfolio report or query surface
+  that an analyst-facing local LLM can use without inventing portfolio math.
+affected_files:
+  - domain/price_instrument_model.md
+  - docs/analyst/gas_portfolio_local_llm_test.md
+  - registries/tools.yaml
+  - src/pga_workbench/cli.py
+  - src/pga_workbench/services/gas_portfolio.py
+  - tests/test_gas_portfolio.py
+tests_required:
+  - .venv/bin/python -m pytest tests/test_gas_portfolio.py tests/golden tests/test_price_instrument_spine.py -q
+  - .venv/bin/artemis validate --strict --ticket T-0152
+approval:
+  status: approved
+  approved_by: user_request
+  approved_at: 2026-06-07T00:00:00Z
+rollback_plan: >
+  Remove the gas portfolio sample service, CLI commands, tool registry entries,
+  documentation, tests, and T-0152 work item; rerun golden valuation tests to
+  confirm the existing valuation oracle is unchanged.
