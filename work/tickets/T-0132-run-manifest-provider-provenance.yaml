@@ -1,7 +1,7 @@
 id: T-0132
 type: ticket
 title: Run manifest provider provenance
-status: planned
+status: validated
 owner: user
 risk: medium
 created_at: '2026-06-06'
@@ -24,9 +24,24 @@ required_tests:
   - .venv/bin/python -m pytest tests/test_release_readiness_native_validation.py -q
 affected_files:
   - src/pga_workbench/agent_runtime/
+  - src/pga_workbench/models.py
   - src/pga_workbench/state/
+  - schemas/state_pack.schema.json
+  - docs/developer/native_workflow.md
   - tests/
 change_request_required: true
 change_id: CR-0098
 dependencies:
   - T-0131
+implemented_at: '2026-06-07T00:00:00Z'
+implementation_summary: >
+  Added provider provenance to RunManifest defaults and required persisted
+  state-pack manifests to include provider profile, kind, model-call flag, and
+  parameters.
+validated_at: '2026-06-07T00:00:00Z'
+validation_report: development/validation_reports/T-0132/latest.json
+regression_report: development/regression_reports/REGRESSION_REPORT_T-0132.md
+validation_summary: >
+  .venv/bin/python -m pytest tests/test_release_readiness_native_validation.py
+  -q passed; .venv/bin/python -m pytest tests/test_workbench_mvp.py
+  tests/test_power_system_state.py -q passed.

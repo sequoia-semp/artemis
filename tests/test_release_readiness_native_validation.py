@@ -5,11 +5,23 @@ from pathlib import Path
 
 from pga_workbench.agent_runtime.release_workflow import collect_release_readiness
 from pga_workbench.agent_runtime.work_item_loader import load_ticket
+from pga_workbench.models import RunManifest
 from pga_workbench.validation.models import ValidationCheckResult, ValidationReport
 from pga_workbench.validation.reports import write_validation_report
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_run_manifest_records_default_provider_provenance():
+    manifest = RunManifest(run_id="state-1", created_at="2026-06-04T12:00:00Z", agent_pack_version="0.1.0")
+
+    assert manifest.provider == {
+        "profile": "deterministic_only",
+        "kind": "deterministic_only",
+        "model_calls": False,
+        "parameters": {},
+    }
 
 
 def _snapshot_for_ticket(ticket_id: str) -> list[dict[str, object]]:
